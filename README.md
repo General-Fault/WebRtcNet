@@ -22,7 +22,7 @@ Download and install Chromium deopt_tools See "http://dev.chromium.org/developer
 Set up your git client:
 Start cmd and execute:
 
-	gclient.bat"
+	gclient.bat
 	git config --global user.name "My Name"
 	git config --global user.email "name@email"
 	git config --global core.autocrlf false
@@ -32,6 +32,7 @@ Start cmd and execute:
 
 
 Set required environment variables for this build.
+
 	set DEPOT_TOOLS_WIN_TOOLCHAIN=0
 	set GYP_DEFINES=component=shared_library
 	set GYP_GENERATORS=ninja,msvs-ninja
@@ -45,3 +46,12 @@ Download the WebRtc source.
 
 To build:
 	ninja -C out\Debug
+
+	
+As of this time , WebRtc does not build with Visual Studio 2015. There are a small handful of changes that you will need to make 
+
+gflags changes: https://codereview.appspot.com/270690043/
+These will not be necessary when issue https://code.google.com/p/webrtc/issues/detail?id=5185 is fixed.
+
+webrtc changes: https://codereview.webrtc.org/1412653006
+These will not be necessary when issue https://code.google.com/p/webrtc/issues/detail?id=5183 is fixed.
