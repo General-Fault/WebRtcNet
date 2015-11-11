@@ -1,4 +1,7 @@
 #include "stdafx.h"
+
+using namespace System;
+
 #include "RtcIdentityAssertion.h"
 
 WEBRTCNET_START

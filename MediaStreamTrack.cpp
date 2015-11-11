@@ -1,5 +1,10 @@
 #include "stdafx.h"
+
+using namespace System;
+using namespace System::Collections::Generic;
+
 #include "MediaStreamTrack.h"
+
 
 
 WEBRTCNET_START
@@ -14,36 +19,36 @@ MediaStreamTrack::~MediaStreamTrack()
 
 IMediaStreamTrack ^ MediaStreamTrack::Clone()
 {
-	throw gcnew System::NotImplementedException();
+	throw gcnew NotImplementedException();
 	// TODO: insert return statement here
 }
 
 void MediaStreamTrack::Stop()
 {
-	throw gcnew System::NotImplementedException();
+	throw gcnew NotImplementedException();
 }
 
 MediaTrackCapabilities ^ MediaStreamTrack::GetCapabilities()
 {
-	throw gcnew System::NotImplementedException();
+	throw gcnew NotImplementedException();
 	// TODO: insert return statement here
 }
 
 MediaTrackConstraints ^ MediaStreamTrack::GetConstraints()
 {
-	throw gcnew System::NotImplementedException();
+	throw gcnew NotImplementedException();
 	// TODO: insert return statement here
 }
 
 MediaTrackSettings ^ MediaStreamTrack::GetSettings()
 {
-	throw gcnew System::NotImplementedException();
+	throw gcnew NotImplementedException();
 	// TODO: insert return statement here
 }
 
 void MediaStreamTrack::ApplyConstraints(MediaTrackConstraints ^ constraints)
 {
-	throw gcnew System::NotImplementedException();
+	throw gcnew NotImplementedException();
 }
 
 WEBRTCNET_END

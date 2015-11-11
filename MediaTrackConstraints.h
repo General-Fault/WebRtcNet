@@ -1,5 +1,6 @@
 #pragma once
 
+
 WEBRTCNET_START
 
 public value struct ConstrainLong
@@ -47,10 +48,10 @@ public value struct ConstrainBoolean
 public value struct ConstrainString
 {
 	/// The exact required value for this property.
-	property IEnumerable<String^>^ Exact;
+	property Collections::Generic::IEnumerable<String ^> ^ Exact;
 
 	/// The ideal (target) value for this property.
-	property IEnumerable<String^>^ Ideal;
+	property Collections::Generic::IEnumerable<String ^> ^ Ideal;
 };
 
 
@@ -78,7 +79,7 @@ public:
 	MediaTrackConstraints();
 	virtual ~MediaTrackConstraints();
 
-	property IList<MediaTrackConstraintSet^>^ Advanced;
+	property Collections::Generic::IList<MediaTrackConstraintSet ^> ^ Advanced;
 };
 
 

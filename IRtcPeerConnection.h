@@ -10,7 +10,6 @@
 #include "RtcIdentityAssertion.h"
 #include "RtcIceCandidate.h"
 
-
 WEBRTCNET_START
 
 public enum class RtcGatheringState
@@ -80,6 +79,10 @@ public enum class RtcSignalingState
 	Closed
 };
 
+/// <Summary>
+/// A .Net implementation of the WebRTC RTCPeerConnection Interface 
+/// <seealso href="http://w3c.github.io/webrtc-pc/#rtcpeerconnection-interface"/>
+/// </Summary>
 public interface class IRtcPeerConnection
 {
 	/// The createOffer method generates a blob of SDP that contains an RFC 3264 offer with the supported configurations for the session, 
@@ -214,7 +217,10 @@ public interface class IRtcPeerConnection
 
 	/// Contains the peer identity assertion information if an identity assertion was provided and verified. 
 	/// Once this value is set to a non-null value, it cannot change.
-	property Task<RtcIdentityAssertion ^> ^ PeerIdentity { Task<RtcIdentityAssertion ^> ^ get(); }
+	property Task<RtcIdentityAssertion ^> ^ PeerIdentity 
+	{ 
+		Task<RtcIdentityAssertion ^> ^ get(); 
+	}
 
 
 	property String ^ IdpLoginUrl { String ^ get(); }

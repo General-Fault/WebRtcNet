@@ -8,7 +8,7 @@ public ref class RtcDataChannelInit
 	property UInt32 MaxPacketLifeTime { UInt32 get() { throw gcnew NotImplementedException(); } void set(UInt32 value) { throw gcnew NotImplementedException(); } }
 	property UInt32 MaxRetransmits { UInt32 get() { throw gcnew NotImplementedException(); } void set(UInt32 value) { throw gcnew NotImplementedException(); } }
 	property String ^ Protocol { String ^ get() { throw gcnew NotImplementedException(); } void set(String ^ value) { throw gcnew NotImplementedException(); } }
-	property Boolean Negotiated { Boolean get() { throw gcnew NotImplementedException(); } void set(Boolean value) { throw gcnew NotImplementedException(); } }
+	property Boolean Negotiated {Boolean get() { throw gcnew NotImplementedException(); } void set(Boolean value) { throw gcnew NotImplementedException(); } }
 	property UInt32 Id { UInt32 get() { throw gcnew NotImplementedException(); } void set(UInt32 value) { throw gcnew NotImplementedException(); } }
 };
 

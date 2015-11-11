@@ -13,7 +13,7 @@ public:
 	property Int32 SampleRate;
 	property Int32 SampleSize;
 	property IEnumerable<Boolean>^ EchoCancellation;
-
+			 
 	property Double Latency;
 	property Int32 ChannelCount;
 	property String^ DeviceId;

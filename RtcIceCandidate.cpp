@@ -1,5 +1,9 @@
 #include "Stdafx.h"
+
+using namespace System;
+
 #include "RtcIceCandidate.h"
+
 
 WEBRTCNET_START
 
@@ -35,8 +39,7 @@ void RtcIceCandidate::SdpLineIndex::set(Nullable<UInt16> value)
 
 String ^ RtcIceCandidate::ToString()
 {
-	throw gcnew System::NotImplementedException();
-	// TODO: insert return statement here
+	throw gcnew NotImplementedException();
 }
 
 WEBRTCNET_END

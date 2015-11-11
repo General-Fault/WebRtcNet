@@ -1,4 +1,7 @@
 #include "stdafx.h"
+
+using namespace System;
+
 #include "RtcOfferOptions.h"
 
 WEBRTCNET_START

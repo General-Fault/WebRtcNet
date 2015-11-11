@@ -35,14 +35,14 @@ public ref class MediaStreamError
 public interface class IMediaStreamTrack
 {
 	/// The string "audio" if the object represents an audio track or "video" if object represents a video track.
-	property String^ Kind { String^ get(); }
+	property String ^ Kind { String ^ get(); }
 
 	/// A generated identifier for the track.
-	property String^ Id { String^ get(); }
+	property String ^ Id { String ^ get(); }
 
 	/// The audio or video source label if available (e.g., "Internal microphone" or "External USB Webcam"). 
 	/// Empty string if no label is available.
-	property String^ Label { String^ get(); }
+	property String ^ Label { String ^ get(); }
 
 	/// Enabled controls the enabled state for the object.
 	property Boolean Enabled { Boolean get(); void set(Boolean value); }
@@ -73,7 +73,7 @@ public interface class IMediaStreamTrack
 	event EventHandler<MediaStreamError ^> ^ OnEnded;
 
 	/// Clones the given MediaStreamTrack.
-	IMediaStreamTrack^ Clone();
+	IMediaStreamTrack ^ Clone();
 
 	/// Stops the locally sourced track. If the track is remote, this does nothing.
 	void Stop();
@@ -90,7 +90,7 @@ public interface class IMediaStreamTrack
 	MediaTrackSettings ^ GetSettings();
 
 	/// Apply the supplied constraints. Use null to remove all constraints.
-	void ApplyConstraints([Optional] MediaTrackConstraints ^ constraints);
+	void ApplyConstraints([Runtime::InteropServices::Optional] MediaTrackConstraints ^ constraints);
 
 	/// Fired when no longer able to satisfy the requiredConstraints from the currently valid Constraints.
 	event EventHandler<MediaStreamError ^> ^ OnOverConstrained;

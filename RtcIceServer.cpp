@@ -1,4 +1,8 @@
 #include "stdafx.h"
+
+using namespace System;
+using namespace System::Collections::Generic;
+
 #include "RtcIceServer.h"
 
 WEBRTCNET_START
