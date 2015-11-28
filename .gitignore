@@ -1,0 +1,9 @@
+*.opensdf
+obj
+/x64
+/WebRtcInterop/x64
+/WebRtcInterop.UnitTests/bin
+/WebRtcNet/bin
+.vs
+Debug
+/WebRtcNet.sdf
