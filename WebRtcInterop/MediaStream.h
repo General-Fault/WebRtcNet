@@ -9,7 +9,6 @@ namespace rtc
 	template <class T> class scoped_refptr;
 }
 
-
 namespace WebRtcInterop {
 
 public ref class MediaStream : WebRtcNet::IMediaStream
@@ -21,9 +20,6 @@ public:
 
 	/// Composes a new stream out of existing tracks
 	//MediaStream(IEnumerable<IMediaStreamTrack^>^ tracks);
-
-
-	static WebRtcNet::IMediaStream^ GetUserMedia();
 
 	// Inherited via IMediaStream
 	virtual property System::String ^ Id;
@@ -47,6 +43,32 @@ internal:
 
 private:
 	rtc::scoped_refptr<webrtc::MediaStreamInterface> * _rpMediaStreamInterface;
+};
+
+}
+
+namespace WebRtcNet {
+
+public ref class Media
+{
+public:
+	static IMediaStream ^ GetUserMedia(MediaConstraints ^ constraints);
+private:
+	Media() {};
+};
+
+
+public ref class MediaStreamException : System::Exception 
+{
+public:
+	MediaStreamException(IMediaStream ^ stream) : _stream(stream) {};
+	MediaStreamException(IMediaStream ^ stream, System::String ^ msg) : System::Exception(msg), _stream(stream) {};
+	MediaStreamException(System::String ^ msg) : System::Exception(msg), _stream(nullptr) {};
+
+	property IMediaStream ^ Stream { IMediaStream ^ get() { return _stream; } };
+
+private:
+	IMediaStream ^ _stream;
 };
 
 }

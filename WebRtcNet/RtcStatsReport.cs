@@ -18,7 +18,7 @@ namespace WebRtcNet
     };
 
     /// <summary>
-    /// <seealso cref="http://www.w3.org/TR/webrtc/#rtcstats-dictionary"/>
+    /// <seealso href="http://www.w3.org/TR/webrtc/#rtcstats-dictionary"/>
     /// </summary>
     public abstract class RtcStats
     {
@@ -36,7 +36,7 @@ namespace WebRtcNet
     }
 
     /// <summary>
-    /// <seealso cref="http://www.w3.org/TR/webrtc/#dictionary-rtcrtpstreamstats-members"/>
+    /// <seealso href="http://www.w3.org/TR/webrtc/#dictionary-rtcrtpstreamstats-members"/>
     /// </summary>
     public class RtcRtpStreamStats : RtcStats
     {
@@ -50,7 +50,7 @@ namespace WebRtcNet
 
 
     /// <summary>
-    /// <seealso cref="http://www.w3.org/TR/webrtc/#dictionary-rtcinboundrtpstreamstats-members"/>
+    /// <seealso href="http://www.w3.org/TR/webrtc/#dictionary-rtcinboundrtpstreamstats-members"/>
     /// </summary>
     public class RtcInboundRtpStreamStats : RtcRtpStreamStats
     {
@@ -59,7 +59,7 @@ namespace WebRtcNet
     }
 
     /// <summary>
-    /// <seealso cref="http://www.w3.org/TR/webrtc/#dictionary-rtcoutboundrtpstreamstats-members"/>
+    /// <seealso href="http://www.w3.org/TR/webrtc/#dictionary-rtcoutboundrtpstreamstats-members"/>
     /// </summary>
     public class RtcOutboundRtpStreamStats : RtcRtpStreamStats
     {
@@ -68,8 +68,8 @@ namespace WebRtcNet
     }
 
     /// <summary>
-    /// <seealso cref="http://www.w3.org/TR/webrtc/#idl-def-RTCStatsReport"/>
-    /// The set of supported property names <seealso cref="http://www.w3.org/TR/WebIDL-1/">[WEBIDL]</seealso> is defined 
+    /// <seealso href="http://www.w3.org/TR/webrtc/#idl-def-RTCStatsReport"/>
+    /// The set of supported property names <seealso href="http://www.w3.org/TR/WebIDL-1/">[WEBIDL]</seealso> is defined 
     /// as the ids of all the RTCStats-derived dictionaries that have been generated for this stats report.
     /// </summary>
     public interface IRtcStatsReport : IReadOnlyDictionary<string, RtcStats>

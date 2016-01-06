@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// MediaTrackSettings represents the Settings of an IMediaStreamTrack object.
-    /// <seealso cref="http://www.w3.org/TR/mediacapture-streams/#media-track-settings"/>
+    /// <seealso href="http://www.w3.org/TR/mediacapture-streams/#media-track-settings"/>
     /// </summary>
     public struct MediaTrackSettings
     {

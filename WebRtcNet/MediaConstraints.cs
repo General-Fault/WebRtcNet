@@ -6,8 +6,8 @@ namespace WebRtcNet
 
     /// <summary>
     /// Constraints for the MediaTrack. 
-    /// <seealso cref="http://www.w3.org/TR/mediacapture-streams/#media-track-constraints"/>
-    /// <seealso cref="http://tools.ietf.org/html/draft-alvestrand-constraints-resolution-03"/>
+    /// <seealso href="http://www.w3.org/TR/mediacapture-streams/#media-track-constraints"/>
+    /// <seealso href="http://tools.ietf.org/html/draft-alvestrand-constraints-resolution-03"/>
     /// </summary>
     public class MediaConstraints
     {
@@ -123,24 +123,24 @@ namespace WebRtcNet
             get { return _optional; }
         }
 
-        void AddMandatory<T>(string key, T value)
+        public void AddMandatory<T>(string key, T value)
         {
             _mandatory.Add(new Constraint(key, value.ToString()));
         }
 
-        void SetMandatory<T>(string key, T value)
+        public void SetMandatory<T>(string key, T value)
         {
             _mandatory.RemoveAll(new Predicate<Constraint>(c => c.Key == key));
             _mandatory.Add(new Constraint(key, value.ToString()));
 
         }
 
-        void AddOptional<T>(string key, T value)
+        public void AddOptional<T>(string key, T value)
         {
             _optional.Add(new Constraint(key, value.ToString()));
         }
 
-        void SetOptional<T>(string key, T value)
+        public void SetOptional<T>(string key, T value)
         {
             _optional.RemoveAll(new Predicate<Constraint>(c => c.Key == key));
             _optional.Add(new Constraint(key, value.ToString()));

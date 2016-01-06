@@ -1,11 +1,8 @@
-﻿/// <summary>
-/// 
-/// </summary>
-namespace WebRtcNet
+﻿namespace WebRtcNet
 {
 
     /// <summary>
-    /// <seealso cref="http://www.w3.org/TR/webrtc/#offer-answer-options"/>
+    /// <seealso href="http://www.w3.org/TR/webrtc/#offer-answer-options"/>
     /// </summary>
     public abstract class RtcOfferAnswerOptions
     {
@@ -24,7 +21,7 @@ namespace WebRtcNet
     };
 
     /// <summary>
-    /// <seealso cref="http://www.w3.org/TR/webrtc/#offer-answer-options"/>
+    /// <seealso href="http://www.w3.org/TR/webrtc/#offer-answer-options"/>
     /// Used by IRtcPeerConnection.CreateOffer
     /// </summary>
     public class RtcOfferOptions : RtcOfferAnswerOptions

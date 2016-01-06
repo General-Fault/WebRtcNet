@@ -4,9 +4,6 @@
 #include "talk\app\webrtc\peerconnection.h"
 #include "talk\app\webrtc\mediaconstraintsinterface.h"
 
-#include "webrtc\base\win32socketserver.h"
-#include "webrtc\base\win32socketinit.h"
-#include "webrtc\base\ssladapter.h"
 
 
 using namespace System;
@@ -17,34 +14,28 @@ using namespace System::Runtime::InteropServices;
 using namespace WebRtcNet;
 
 #include "RtcPeerConnection.h"
+#include "RtcPeerConnectionFactory.h"
+#include "MediaStream.h"
 #include "Observers\PeerConnectionObserver.h"
 #include "Observers\CreateSessionDescriptionObserver.h"
 #include "Marshaling\MarshalPeerConnection.h"
 #include "Marshaling\MarshalRtcConfiguration.h"
+#include "Marshaling\MarshalMediaConstraints.h"
 
 namespace WebRtcInterop {
 
 RtcPeerConnection::RtcPeerConnection(RtcConfiguration ^ configuration)
 	: _observer(new webrtc_observers::PeerConnectionObserver(this))
+	, _configuration(configuration)
 {
-	if (_signalThread == nullptr)
-	{
-		_signalThread = new rtc::Win32Thread();
-		_signalThread->SetName("WebRtc Signal Thread", NULL);
-	}
-
-	rtc::ThreadManager::Instance()->SetCurrentThread(_signalThread);
-
-	rtc::EnsureWinsockInit();
-	rtc::InitializeSSL();
-
-	auto nativePeerConnectionFactory = webrtc::CreatePeerConnectionFactory();
-	_rpPeerConnectionFactory = new rtc::scoped_refptr<webrtc::PeerConnectionFactoryInterface>(nativePeerConnectionFactory);
-		
+	auto nativePeerConnectionFactory = RtcPeerConnectionFactory::Instance->GetNativePeerConnectionFactoryInterface(true);
+	
 	auto nativeConfig = marshal_as<webrtc::PeerConnectionInterface::RTCConfiguration>(configuration);
-	_rpPeerConnection = new rtc::scoped_refptr<webrtc::PeerConnectionInterface>(
-		nativePeerConnectionFactory->CreatePeerConnection(nativeConfig, nullptr, nullptr, 
-			rtc::scoped_ptr<webrtc::DtlsIdentityStoreInterface>(nullptr), _observer));
+	auto nativePeerConnection = nativePeerConnectionFactory->CreatePeerConnection(nativeConfig, nullptr, nullptr,
+		rtc::scoped_ptr<webrtc::DtlsIdentityStoreInterface>(nullptr), _observer);
+	if (nativePeerConnection == nullptr) throw gcnew System::NotSupportedException("Failed to create native PeerConnection");
+
+	_rpPeerConnection = new rtc::scoped_refptr<webrtc::PeerConnectionInterface>(nativePeerConnection);
 }
 
 RtcPeerConnection::~RtcPeerConnection()
@@ -57,25 +48,9 @@ RtcPeerConnection::!RtcPeerConnection()
 	delete _rpPeerConnection;
 	_rpPeerConnection = nullptr;
 
-	delete _rpPeerConnectionFactory;
-	_rpPeerConnectionFactory = nullptr;
 
 	delete _observer;
 	_observer = nullptr;
-
-	rtc::ThreadManager::Instance()->SetCurrentThread(nullptr);
-	rtc::CleanupSSL();
-}
-
-webrtc::PeerConnectionFactoryInterface * RtcPeerConnection::GetNativePeerConnectionFactory(bool throwOnDisposed)
-{
-	if (_rpPeerConnectionFactory == nullptr || _rpPeerConnectionFactory->get() == nullptr)
-	{
-		if (throwOnDisposed) throw gcnew ObjectDisposedException("RtcPeerConnection");
-		return nullptr;
-	}
-
-	return _rpPeerConnectionFactory->get();
 }
 
 webrtc::PeerConnectionInterface * RtcPeerConnection::GetNativePeerConnection(bool throwOnDisposed)
@@ -89,19 +64,42 @@ webrtc::PeerConnectionInterface * RtcPeerConnection::GetNativePeerConnection(boo
 	return _rpPeerConnection->get();
 }
 
-Task<RtcSessionDescription> ^ RtcPeerConnection::CreateOffer(RtcOfferOptions ^options)
+Task<RtcSessionDescription> ^ RtcPeerConnection::CreateOffer(RtcOfferOptions ^ options)
 {
-	auto nativeOptions = marshal_as<webrtc::PeerConnection::RTCOfferAnswerOptions>(options);
 	auto tcs = gcnew TaskCompletionSource<RtcSessionDescription>();
 	auto pc = GetNativePeerConnection(true);
-	rtc::scoped_refptr<webrtc::CreateSessionDescriptionObserver> observer(
-		dynamic_cast<webrtc::CreateSessionDescriptionObserver*>(
-			new rtc::RefCountedObject<webrtc_observers::CreateSessionDescriptionObserver>(tcs)));
-	
-	pc->CreateOffer(observer, nativeOptions);
+	auto observer = new rtc::RefCountedObject<webrtc_observers::CreateSessionDescriptionObserver>(tcs);
+
+	if (options == nullptr)
+	{
+		pc->CreateOffer(observer, NULL);
+	}
+	else
+	{
+		//TODO: Once the native PeerConnection proxy implements the CreateOffer that acception options, this conversion will no longer be necessary.
+		webrtc::FakeConstraints constraints;
+		constraints.AddMandatory<int>(webrtc::MediaConstraintsInterface::kOfferToReceiveAudio, static_cast<const int>(options->OfferToReceiveAudio));
+		constraints.AddMandatory<int>(webrtc::MediaConstraintsInterface::kOfferToReceiveVideo, static_cast<const int>(options->OfferToReceiveVideo));
+		constraints.AddMandatory<bool>(webrtc::MediaConstraintsInterface::kVoiceActivityDetection, static_cast<const bool>(options->VoiceActivityDetection));
+		constraints.AddMandatory<bool>(webrtc::MediaConstraintsInterface::kIceRestart, static_cast<const bool>(options->IceRestart));
+
+		pc->CreateOffer(observer, &constraints);
+	}
 
 	return tcs->Task;
+
+
+	//auto tcs = gcnew TaskCompletionSource<RtcSessionDescription>();
+	//auto pc = GetNativePeerConnection(true);
+	//auto observer = new rtc::RefCountedObject<webrtc_observers::CreateSessionDescriptionObserver>(tcs);
+
+	//auto nativeOptions = marshal_as<webrtc::PeerConnection::RTCOfferAnswerOptions>(options);
+
+	//pc->CreateOffer(observer, nativeOptions);
+
+	//return tcs->Task;
 }
+
 
 Task<RtcSessionDescription> ^ RtcPeerConnection::CreateAnswer()
 {
@@ -123,7 +121,10 @@ Task ^ RtcPeerConnection::SetRemoteDescription(RtcSessionDescription description
 
 void RtcPeerConnection::UpdateIce(RtcConfiguration ^configuration)
 {
-	throw gcnew NotImplementedException();
+	auto nativeConfig = marshal_as<webrtc::PeerConnectionInterface::RTCConfiguration>(configuration);
+	auto pc = GetNativePeerConnection(true);
+	pc->SetConfiguration(nativeConfig);
+	_configuration = configuration;
 }
 
 Task ^ RtcPeerConnection::AddIceCandidate(RtcIceCandidate candidate)
@@ -134,8 +135,7 @@ Task ^ RtcPeerConnection::AddIceCandidate(RtcIceCandidate candidate)
 
 RtcConfiguration ^ RtcPeerConnection::GetConfiguration()
 {
-	throw gcnew NotImplementedException();
-	// TODO: insert return statement here
+	return _configuration;
 }
 
 void RtcPeerConnection::SetConfiguration(RtcConfiguration ^configuration)
@@ -163,12 +163,28 @@ IMediaStream ^ RtcPeerConnection::GetStreamById(String ^streamId)
 
 void RtcPeerConnection::AddStream(IMediaStream ^stream)
 {
-	throw gcnew NotImplementedException();
+	auto nativePeerConnection = GetNativePeerConnection(true);
+	
+	//TODO: This should be done with a marshaller. This marshaller would return the nativestream if the managed stream is a WebRtcInterop::MediaStream
+	// and would try to create a new native stream wrapper if it is not.
+	auto managedStream = dynamic_cast<WebRtcInterop::MediaStream ^>(stream);
+	if (managedStream == nullptr) throw gcnew ArgumentException("Invalid MediaStream");
+
+	auto nativeStream = managedStream->GetNativeMediaStreamInterface(true);
+	nativePeerConnection->AddStream(nativeStream);
 }
 
 void RtcPeerConnection::RemoveStream(IMediaStream ^stream)
 {
-	throw gcnew NotImplementedException();
+	auto nativePeerConnection = GetNativePeerConnection(true);
+
+	//TODO: This should be done with a marshaller. This marshaller would return the nativestream if the managed stream is a WebRtcInterop::MediaStream
+	// and would try to create a new native stream wrapper if it is not.
+	auto managedStream = dynamic_cast<WebRtcInterop::MediaStream ^>(stream);
+	if (managedStream == nullptr) throw gcnew ArgumentException("Invalid MediaStream");
+
+	auto nativeStream = managedStream->GetNativeMediaStreamInterface(true);
+	nativePeerConnection->RemoveStream(nativeStream);
 }
 
 void RtcPeerConnection::Close()

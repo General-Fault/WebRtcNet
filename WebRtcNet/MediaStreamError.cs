@@ -1,9 +1,7 @@
-﻿using System;
-
-namespace WebRtcNet
+﻿namespace WebRtcNet
 {
     /// <summary>
-    /// <seealso cref="http://w3c.github.io/mediacapture-main/#idl-def-MediaStreamError"/>
+    /// <seealso href="http://w3c.github.io/mediacapture-main/#idl-def-MediaStreamError"/>
     /// </summary>
     public class MediaStreamError
     {

@@ -2,6 +2,9 @@
 
 namespace WebRtcNet
 {
+    /// <summary>
+    /// The state of the MediaStreamTrack
+    /// </summary>
     public enum MediaStreamTrackState
     {
         /// The track is active (the track's underlying media source is making a best-effort attempt to provide data in real time).
@@ -21,7 +24,7 @@ namespace WebRtcNet
     /// most suitable on the user's platform.
     /// A client can indicate that a track no longer needs its source with the MediaStreamTrack.stop() method.
     /// When all tracks using a source have been stopped, the given permission for that source is revoked and the source is stopped.
-    /// <seealso cref="http://www.w3.org/TR/mediacapture-streams/#mediastreamtrack"/>
+    /// <seealso href="http://www.w3.org/TR/mediacapture-streams/#mediastreamtrack"/>
     /// </summary>
     public interface IMediaStreamTrack
     {

@@ -24,7 +24,7 @@
     }
 
     /// <summary>
-    /// <seealso cref="http://www.w3.org/TR/webrtc/#rtcsessiondescription-class"/>
+    /// <seealso href="http://www.w3.org/TR/webrtc/#rtcsessiondescription-class"/>
     /// The RtcSessionDescription is used by IRtcPeerConnection to expose local and remote session descriptions. 
     /// Attributes on this struct are mutable for legacy reasons.
     /// </summary>
@@ -36,7 +36,7 @@
             Sdp = sdp;
         }
 
-        RtcSdpType Type;
-        string Sdp;
+        public readonly RtcSdpType Type;
+        public readonly string Sdp;
     }
 }

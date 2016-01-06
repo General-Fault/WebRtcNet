@@ -3,12 +3,10 @@
 namespace rtc
 {
 	template <class T> class scoped_refptr;
-	class Thread;
 }
 
 namespace webrtc
 {
-	class PeerConnectionFactoryInterface;
 	class PeerConnectionInterface;
 }
 
@@ -44,7 +42,7 @@ public:
 	virtual event System::EventHandler ^ OnPeerIdentity;
 	virtual event System::EventHandler<WebRtcNet::RtcIdentityErrorEventArgs ^> ^ OnIdpAssertiOnError;
 	virtual event System::EventHandler<WebRtcNet::RtcIdentityErrorEventArgs ^> ^ OnIdpValidatiOnError;
-	virtual System::Threading::Tasks::Task<WebRtcNet::RtcSessionDescription> ^ CreateOffer(WebRtcNet::RtcOfferOptions ^options);
+	virtual System::Threading::Tasks::Task<WebRtcNet::RtcSessionDescription> ^ CreateOffer([System::Runtime::InteropServices::Optional] WebRtcNet::RtcOfferOptions ^options);
 	virtual System::Threading::Tasks::Task<WebRtcNet::RtcSessionDescription> ^ CreateAnswer();
 	virtual System::Threading::Tasks::Task ^ SetLocalDescription(WebRtcNet::RtcSessionDescription description);
 	virtual System::Threading::Tasks::Task ^ SetRemoteDescription(WebRtcNet::RtcSessionDescription description);
@@ -66,7 +64,6 @@ public:
 
 internal:
 	!RtcPeerConnection();
-	webrtc::PeerConnectionFactoryInterface* GetNativePeerConnectionFactory(bool throwOnDisposed);
 	webrtc::PeerConnectionInterface* GetNativePeerConnection(bool throwOnDisposed);
 
 	//Event invocation 
@@ -80,11 +77,10 @@ internal:
 	void FireOnIceCandidate(WebRtcNet::RtcIceCandidate candidate) { OnIceCandidate(this, gcnew WebRtcNet::RtcIceCandidateEventArgs(candidate)); }
 
 private:
-	static rtc::Thread* _signalThread;
-	static rtc::scoped_refptr<webrtc::PeerConnectionFactoryInterface>* _rpPeerConnectionFactory;
 	rtc::scoped_refptr<webrtc::PeerConnectionInterface>* _rpPeerConnection;
 	webrtc_observers::PeerConnectionObserver* _observer;
 
+	WebRtcNet::RtcConfiguration ^ _configuration;
 };
 
 }

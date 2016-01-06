@@ -5,9 +5,10 @@ namespace WebRtcNet
 {
     /// <summary>
     /// Represents a media stream containing at least one audio or video track.
-    /// <seealso cref="http://www.w3.org/TR/mediacapture-streams/#mediastream"/>
+    /// <seealso href="http://www.w3.org/TR/mediacapture-streams/#mediastream"/>
+    /// Disposable to allow management of native resources.
     /// </summary>
-    public interface IMediaStream
+    public interface IMediaStream : IDisposable
     {
         /// <summary>
         /// The Id that the stream was initialized with.

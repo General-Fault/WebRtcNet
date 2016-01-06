@@ -1,15 +1,13 @@
-﻿using System.Collections.Generic;
-
-namespace WebRtcNet
+﻿namespace WebRtcNet
 {
     /// <summary>
-    /// <seealso cref="http://www.w3.org/TR/mediacapture-streams/#idl-def-VideoFacingModeEnum"/>
+    /// <seealso href="http://www.w3.org/TR/mediacapture-streams/#idl-def-VideoFacingModeEnum"/>
     /// </summary>
     public enum FacingModes { user, environment, left, right }
 
     /// <summary>
     /// MediaTrackCapabilities represents the Capabilities of an IMediaStreamTrack object.
-    /// <seealso cref="http://www.w3.org/TR/mediacapture-streams/#media-track-capabilities"/>
+    /// <seealso href="http://www.w3.org/TR/mediacapture-streams/#media-track-capabilities"/>
     /// </summary>
     public struct MediaTrackCapabilities
     {

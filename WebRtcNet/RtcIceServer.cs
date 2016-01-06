@@ -1,20 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace WebRtcNet
 {
 
     /// <summary>
-    /// <seealso cref="http://www.w3.org/TR/webrtc/#rtciceserver-type"/>
+    /// <seealso href="http://www.w3.org/TR/webrtc/#rtciceserver-type"/>
     /// </summary>
     public class RtcIceServer
     {
         //TODO: Implement Ice definition parsing from string
         //RtcIceServer(string  definition);
 
-        public RtcIceServer(IEnumerable<string> urls, string userName, string credential)
+        /// <summary>
+        /// Create an RtcIceServer from a list of urls, and optionally a username and credential (password).
+        /// </summary>
+        /// <param name="urls">STUN or TURN URIs as defined in <seealso href="https://tools.ietf.org/html/rfc7064">[RFC7064]</seealso> and 
+        /// <seealso href="https://tools.ietf.org/html/rfc7065">[RFC7065]</seealso> or other URI types.</param>
+        /// <param name="userName">If this RtcIceServer object represents a TURN server, then this attribute specifies the username to use with that TURN server.</param>
+        /// <param name="credential">If this RtcIceServer object represents a TURN server, then this attribute specifies the credential to use with that TURN server.</param>
+        public RtcIceServer(IEnumerable<string> urls, string userName = null, string credential = null)
         {
             Urls = urls;
             UserName = userName;
@@ -22,18 +26,32 @@ namespace WebRtcNet
         }
 
         /// <summary>
-        /// STUN or TURN URI(s) as defined in <seealso cref="https://tools.ietf.org/html/rfc7064">[RFC7064]</seealso> and 
-        /// <seealso cref="https://tools.ietf.org/html/rfc7065">[RFC7065]</seealso> or other URI types.
+        /// Create an RtcIceServer from a url, and optionally a username and credential (password).
+        /// </summary>
+        /// <param name="url">STUN or TURN URI as defined in <seealso href="https://tools.ietf.org/html/rfc7064">[RFC7064]</seealso> and 
+        /// <seealso href="https://tools.ietf.org/html/rfc7065">[RFC7065]</seealso> or other URI types.</param>
+        /// <param name="username">If this RtcIceServer object represents a TURN server, then this attribute specifies the username to use with that TURN server.</param>
+        /// <param name="credential">If this RtcIceServer object represents a TURN server, then this attribute specifies the credential to use with that TURN server.</param>
+        public RtcIceServer(string url, string username = null, string credential = null)
+        {
+            Urls = new string[] { url };
+            UserName = username;
+            Credential = credential;
+        }
+
+        /// <summary>
+        /// STUN or TURN URI(s) as defined in <seealso href="https://tools.ietf.org/html/rfc7064">[RFC7064]</seealso> and 
+        /// <seealso href="https://tools.ietf.org/html/rfc7065">[RFC7065]</seealso> or other URI types.
         /// </summary>
         public IEnumerable<string> Urls { get; }
 
         /// <summary>
-        /// If this RTCIceServer object represents a TURN server, then this attribute specifies the username to use with that TURN server.
+        /// If this RtcIceServer object represents a TURN server, then this attribute specifies the username to use with that TURN server.
         /// </summary>
         public string UserName { get; }
 
         /// <summary>
-        /// If this RTCIceServer object represents a TURN server, then this attribute specifies the credential to use with that TURN server.
+        /// If this RtcIceServer object represents a TURN server, then this attribute specifies the credential to use with that TURN server.
         /// </summary>
         public string Credential { get; }
     };

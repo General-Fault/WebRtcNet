@@ -1,7 +1,7 @@
 ﻿namespace WebRtcNet
 {
     /// <summary>
-    /// <seealso cref="http://www.w3.org/TR/webrtc/#idl-def-RTCIdentityAssertion"/>
+    /// <seealso href="http://www.w3.org/TR/webrtc/#idl-def-RTCIdentityAssertion"/>
     /// </summary>
     public struct RtcIdentityAssertion
     {
@@ -17,7 +17,7 @@
         string Idp { get; }
 
         /// <summary>
-        /// An RFC5322-conformant <seealso cref="https://tools.ietf.org/html/rfc5322">[RFC5322]</seealso>
+        /// An RFC5322-conformant <seealso href="https://tools.ietf.org/html/rfc5322">[RFC5322]</seealso>
         /// representation of the verified peer identity. This identity will have been verified via 
         /// the procedures described in [RTCWEB-SECURITY-ARCH].
         /// </summary>

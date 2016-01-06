@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace WebRtcNet
 {
 
     /// <summary>
-    /// <seealso cref="http://www.w3.org/TR/webrtc/#rtcicetransportpolicy-enum"/>
+    /// <seealso href="http://www.w3.org/TR/webrtc/#rtcicetransportpolicy-enum"/>
     /// </summary>
     public enum RtcIceTransportPolicy
     {
@@ -30,7 +27,7 @@ namespace WebRtcNet
     };
 
     /// <summary>
-    /// <seealso cref="http://www.w3.org/TR/webrtc/#rtcbundlepolicy-enum"/>
+    /// <seealso href="http://www.w3.org/TR/webrtc/#rtcbundlepolicy-enum"/>
     /// </summary>
     public enum RtcBundlePolicy
     {
@@ -55,7 +52,7 @@ namespace WebRtcNet
     };
 
     /// <summary>
-    /// <seealso cref="http://www.w3.org/TR/webrtc/#rtcconfiguration-type"/>
+    /// <seealso href="http://www.w3.org/TR/webrtc/#rtcconfiguration-type"/>
     /// </summary>
     public class RtcConfiguration
     {

@@ -4,7 +4,7 @@ namespace WebRtcNet
 {
 
     /// <summary>
-    /// <seealso cref="http://w3c.github.io/webrtc-pc/#idl-def-RTCDataChannelInit"/>
+    /// <seealso href="http://w3c.github.io/webrtc-pc/#idl-def-RTCDataChannelInit"/>
     /// </summary>
     public class RtcDataChannelInit
     {
@@ -45,7 +45,7 @@ namespace WebRtcNet
     };
 
     /// <summary>
-    /// <seealso cref="http://w3c.github.io/webrtc-pc/#idl-def-RTCDataChannelState"/>
+    /// <seealso href="http://w3c.github.io/webrtc-pc/#idl-def-RTCDataChannelState"/>
     /// </summary>
     public enum RtcDataChannelState
     {
@@ -91,7 +91,7 @@ namespace WebRtcNet
     };
 
     /// <summary>
-    /// <seealso cref="http://w3c.github.io/webrtc-pc/#rtcdatachannel"/>
+    /// <seealso href="http://w3c.github.io/webrtc-pc/#rtcdatachannel"/>
     /// </summary>
     public interface IRtcDataChannel
     {
@@ -152,7 +152,7 @@ namespace WebRtcNet
 
         /// <summary>
         /// This BinaryType controls how binary data is exposed to scripts. See the 
-        /// <seealso cref="http://www.w3.org/TR/websockets/">[WEBSOCKETS-API]</seealso> for more information.
+        /// <seealso href="http://www.w3.org/TR/websockets/">[WEBSOCKETS-API]</seealso> for more information.
         /// </summary>
         string BinaryType { get; set; }
 

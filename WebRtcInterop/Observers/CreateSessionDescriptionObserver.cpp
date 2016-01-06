@@ -28,6 +28,7 @@ void CreateSessionDescriptionObserver::OnSuccess(webrtc::SessionDescriptionInter
 void CreateSessionDescriptionObserver::OnFailure(const std::string & error)
 {
 	auto exception = gcnew WebRtcNet::CreateSessionDescriptionFailue(marshal_as<System::String^>(error));
+	_task->SetException(exception);
 }
 
 WebRtcObservers_End

@@ -1,30 +1,63 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Threading.Tasks;
+using NUnit.Framework;
 
-using WebRtcInterop;
 using WebRtcNet;
 
-namespace WebRtcNetTests
+namespace WebRtcInterop.UnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class RtcPeerConnectionTests
     {
-        [TestMethod]
+        private RtcPeerConnection _peerConnection;
+
+        [SetUp]
+        public void Setup()
+        {
+            var configuration = new RtcConfiguration(new RtcIceServer[] { });
+            _peerConnection = new RtcPeerConnection(configuration);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            _peerConnection?.Dispose();
+        }
+
+        [Test]
         public void TestCreateRtcPeerConnection()
+        {
+            Assert.IsNotNull(_peerConnection);
+        }
+
+        [Test]
+        public void TestCreateRtcPeerConnection_InitialConfiguration()
         {
             var configuration = new RtcConfiguration(new RtcIceServer[] { });
             var rtcPeerConnection = new RtcPeerConnection(configuration);
 
-            Assert.IsNotNull(rtcPeerConnection);
             Assert.AreEqual(configuration, rtcPeerConnection.GetConfiguration());
-            Assert.AreEqual(RtcSignalingState.Stable, rtcPeerConnection.SignalingState);
-            Assert.AreEqual(RtcIceConnectionState.New, rtcPeerConnection.IceConnectionState);
-            Assert.AreEqual(RtcGatheringState.New, rtcPeerConnection.IceGatheringState);
         }
 
-        [TestMethod]
-        public void TestDefaultOfferOptions()
+        [Test]
+        public void TestCreateRtcPeerConnection_InitialSignalingState()
+        {
+            Assert.AreEqual(RtcSignalingState.Stable, _peerConnection.SignalingState);
+        }
+
+        [Test]
+        public void TestCreateRtcPeerConnection_InitialIceConnectionState()
+        {
+            Assert.AreEqual(RtcIceConnectionState.New, _peerConnection.IceConnectionState);
+        }
+
+        [Test]
+        public void TestCreateRtcPeerConnection_InitialIceGatheringState()
+        {
+            Assert.AreEqual(RtcGatheringState.New, _peerConnection.IceGatheringState);
+        }
+
+        [Test]
+        public void DefaultOfferOptionsTest()
         {
             var options = new RtcOfferOptions();
 
@@ -34,17 +67,25 @@ namespace WebRtcNetTests
             Assert.IsTrue(options.VoiceActivityDetection);
         }
 
-        [TestMethod]
-        public async Task TestCreateOffer()
+        [Test]
+        public void UpdateIceTest()
         {
-            var configuration = new RtcConfiguration(new RtcIceServer[] { });
-            var rtcPeerConnection = new RtcPeerConnection(configuration);
+            var newConfiguration = new RtcConfiguration(new RtcIceServer[] { new RtcIceServer("stun:stun1.google.com", "username", "credential") });
+            _peerConnection.UpdateIce(newConfiguration);
+            var configuration = _peerConnection.GetConfiguration();
 
-            var options = new RtcOfferOptions();
+            Assert.AreSame(newConfiguration, configuration);
+        }
 
-            var sessionDescription = await rtcPeerConnection.CreateOffer(options);
+        [Test]
+        public async Task CreateOfferTest()
+        {
+            RtcSessionDescription sessionDescription = new RtcSessionDescription(RtcSdpType.Answer, string.Empty);
+            var task = _peerConnection.CreateOffer();
+            sessionDescription = await task;
 
-            Assert.IsNotNull(sessionDescription);
+            Assert.AreEqual(RtcSdpType.Offer, sessionDescription.Type);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(sessionDescription.Sdp));
         }
     }
 }

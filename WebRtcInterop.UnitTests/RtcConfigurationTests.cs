@@ -1,9 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WebRtcInterop;
+﻿using NUnit.Framework;
 
 namespace WebRtcNetTests
 {
-    [TestClass]
+    [TestFixture]
     public class RtcConfigurationTests
     {
         //[TestMethod]

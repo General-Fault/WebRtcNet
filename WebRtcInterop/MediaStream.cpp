@@ -1,22 +1,70 @@
 #include "stdafx.h"
 
 #include "webrtc\base\scoped_ref_ptr.h"
+#include "webrtc\base\scoped_ptr.h"
 #include "talk\app\webrtc\mediastreaminterface.h"
+#include "talk\media\devices\devicemanager.h"
+#include "talk\app\webrtc\peerconnectionfactory.h"
+#include "talk\app\webrtc\videosourceinterface.h"
 
 using namespace System;
 using namespace System::Collections::Generic;
+using namespace System::Threading::Tasks;
 
 #include "MediaStream.h"
+#include "RtcPeerConnectionFactory.h"
+#include "Marshaling\MarshalMediaConstraints.h"
 
 using namespace WebRtcNet;
 
-namespace WebRtcInterop {
 
-IMediaStream ^ MediaStream::GetUserMedia()
+namespace WebRtcNet
 {
-	throw gcnew NotImplementedException();
-	// TODO: insert return statement here
+	cricket::VideoCapturer* OpenVideoCaptureDevice()
+	{
+		rtc::scoped_ptr<cricket::DeviceManagerInterface> dev_manager(
+			cricket::DeviceManagerFactory::Create());
+		if (!dev_manager->Init())
+		{
+			throw gcnew MediaStreamException("Can't create device manager");
+		}
+		std::vector<cricket::Device> devs;
+		if (!dev_manager->GetVideoCaptureDevices(&devs))
+		{
+			throw gcnew MediaStreamException("Can't enumerate video devices");
+		}
+
+		cricket::VideoCapturer* capturer = nullptr;
+		for (auto dev : devs)
+		{
+			capturer = dev_manager->CreateVideoCapturer(dev);
+			if (capturer != nullptr)
+				break;
+		}
+		return capturer;
+	}
+
+	IMediaStream ^ Media::GetUserMedia(MediaConstraints ^ constraints)
+	{
+		auto peerConnectionFactory = RtcPeerConnectionFactory::Instance->GetNativePeerConnectionFactoryInterface(true);
+
+		webrtc::FakeConstraints nativeConstraints(marshal_as<webrtc::FakeConstraints>(constraints));
+		auto audioSource(peerConnectionFactory->CreateAudioSource(&nativeConstraints));
+		auto audioTrack(peerConnectionFactory->CreateAudioTrack("audio_label", audioSource));
+
+		auto videoSource(peerConnectionFactory->CreateVideoSource(OpenVideoCaptureDevice(), &nativeConstraints));
+		auto videoTrack(peerConnectionFactory->CreateVideoTrack("video_label", videoSource));
+
+		auto stream(peerConnectionFactory->CreateLocalMediaStream("stream_label"));
+
+		stream->AddTrack(audioTrack);
+		stream->AddTrack(videoTrack);
+
+		return gcnew WebRtcInterop::MediaStream(stream.release());
+	}
 }
+
+namespace WebRtcInterop {
 
 MediaStream::MediaStream(MediaStream ^ & stream)
 	: _rpMediaStreamInterface(nullptr)
