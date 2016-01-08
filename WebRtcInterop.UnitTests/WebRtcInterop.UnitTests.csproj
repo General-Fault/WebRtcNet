@@ -72,10 +72,6 @@
       <Project>{f6828c3e-8642-4a31-bbe6-b7ad5387f3fe}</Project>
       <Name>WebRtcInterop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WebRtcNet.Utils\WebRtcNet.Utils.csproj">
-      <Project>{cf324879-b607-4d88-b3c0-f1ac2f21784d}</Project>
-      <Name>WebRtcNet.Utils</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WebRtcNet\WebRtcNet.csproj">
       <Project>{98433217-c99b-4b08-a19b-3f97a1f1e633}</Project>
       <Name>WebRtcNet</Name>
