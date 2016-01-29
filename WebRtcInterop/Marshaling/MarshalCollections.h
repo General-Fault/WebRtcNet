@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+#include <map>
+
 #include <msclr\marshal.h>
 #include <msclr\marshal_cppstd.h>
 
@@ -10,7 +13,7 @@ namespace msclr {namespace interop
 
 //copy a vector to into an IEnumerable
 template<class TManaged, class TNative>
-inline IEnumerable<TManaged>^ marshal_vector_as(const std::vector<TNative> from)
+inline IEnumerable<TManaged>^ marshal_vector_as(const std::vector<TNative> & from)
 {
 	auto to = gcnew List<TManaged>();
 	for (auto item : from)
@@ -23,7 +26,7 @@ inline IEnumerable<TManaged>^ marshal_vector_as(const std::vector<TNative> from)
 
 //Copy a map into an IDictionary
 template<class TNativeKey, class TNativeValue, class TManagedKey, class TManagedValue>
-inline IDictionary<TManagedKey, TManagedValue> ^ marshal_map_as(const std::map<TNativeKey, TNativeValue> from)
+inline IDictionary<TManagedKey, TManagedValue> ^ marshal_map_as(const std::map<TNativeKey, TNativeValue> & from)
 {
 	auto to = gcnew Dictionary<TManagedKey, TManagedValue>();
 	for (auto kv : from)
