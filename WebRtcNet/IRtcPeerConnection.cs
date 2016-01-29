@@ -226,30 +226,22 @@ namespace WebRtcNet
         bool CanTrickleIceCandidates { get; }
 
         /// <summary>
-        /// Returns a RtcConfiguration object representing the current configuration of this RtcPeerConnection object.
-        /// </summary>
-        /// <returns></returns>
-        RtcConfiguration GetConfiguration();
-
-
-        /// <summary>
-        /// The SetConfiguration method updates the ICE Agent process of gathering local candidates and pinging remote candidates.
+        /// Gets or sets the RtcConfiguration object representing the current configuration of this RtcPeerConnection object.
+        /// Setting the configuration updates the ICE Agent process of gathering local candidates and pinging remote candidates.
         /// This call may result in a change to the state of the ICE Agent, and may result in a change to media state if it results 
         /// in connectivity being established.
         /// </summary>
-        /// <param name="configuration">The new configuration to apply.</param>
-        void SetConfiguration(RtcConfiguration configuration);
+        RtcConfiguration Configuration { get; set; }
 
         ///// <summary>
         ///// Returns a sequence of MediaStream objects representing the streams that are currently sent with this RtcPeerConnection object.
         ///// </summary>
-        ///// <returns></returns>
-        IEnumerable<IMediaStream> GetLocalStreams();
+        IEnumerable<IMediaStream> LocalStreams { get; }
 
         ///// <summary>
         ///// Returns a sequence of MediaStream objects representing the streams that are currently received with this RtcPeerConnection object.
         ///// </summary>
-        IEnumerable<IMediaStream> GetRemoteStreams();
+        IEnumerable<IMediaStream> RemoteStreams { get; }
 
         ///// <summary>
         ///// If a MediaStream object, with an id equal to streamId, exists in this RTCPeerConnection object's stream sets 

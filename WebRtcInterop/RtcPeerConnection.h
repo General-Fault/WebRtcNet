@@ -48,10 +48,9 @@ public:
 	virtual System::Threading::Tasks::Task ^ SetRemoteDescription(WebRtcNet::RtcSessionDescription description);
 	virtual void UpdateIce(WebRtcNet::RtcConfiguration ^configuration);
 	virtual System::Threading::Tasks::Task ^ AddIceCandidate(WebRtcNet::RtcIceCandidate candidate);
-	virtual WebRtcNet::RtcConfiguration ^ GetConfiguration();
-	virtual void SetConfiguration(WebRtcNet::RtcConfiguration ^configuration);
-	virtual System::Collections::Generic::IEnumerable<WebRtcNet::IMediaStream ^> ^ GetLocalStreams();
-	virtual System::Collections::Generic::IEnumerable<WebRtcNet::IMediaStream ^> ^ GetRemoteStreams();
+	virtual property WebRtcNet::RtcConfiguration ^ Configuration { WebRtcNet::RtcConfiguration ^ get(); void set(WebRtcNet::RtcConfiguration ^ configuration); };
+	virtual property System::Collections::Generic::IEnumerable<WebRtcNet::IMediaStream ^> ^ LocalStreams { System::Collections::Generic::IEnumerable<WebRtcNet::IMediaStream ^> ^ get(); };
+	virtual property System::Collections::Generic::IEnumerable<WebRtcNet::IMediaStream ^> ^ RemoteStreams { System::Collections::Generic::IEnumerable<WebRtcNet::IMediaStream ^> ^ get(); };
 	virtual WebRtcNet::IMediaStream ^ GetStreamById(System::String ^streamId);
 	virtual void AddStream(WebRtcNet::IMediaStream ^stream);
 	virtual void RemoveStream(WebRtcNet::IMediaStream ^stream);

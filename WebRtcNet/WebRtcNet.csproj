@@ -49,6 +49,7 @@
     <Compile Include="IRtcDataChannel.cs" />
     <Compile Include="IRtcDtmfSender.cs" />
     <Compile Include="IRtcPeerConnection.cs" />
+    <Compile Include="IVideoRenderer.cs" />
     <Compile Include="MediaConstraints.cs" />
     <Compile Include="MediaStreamError.cs" />
     <Compile Include="MediaTrackCapabilities.cs" />

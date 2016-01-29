@@ -66,9 +66,9 @@ webrtc::PeerConnectionInterface * RtcPeerConnection::GetNativePeerConnection(boo
 
 Task<RtcSessionDescription> ^ RtcPeerConnection::CreateOffer(RtcOfferOptions ^ options)
 {
-	auto tcs = gcnew TaskCompletionSource<RtcSessionDescription>();
 	auto pc = GetNativePeerConnection(true);
-	auto observer = new rtc::RefCountedObject<webrtc_observers::CreateSessionDescriptionObserver>(tcs);
+	auto observer = new rtc::RefCountedObject<webrtc_observers::CreateSessionDescriptionObserver>();
+	auto task = observer->CreateSessionTask();
 
 	if (options == nullptr)
 	{
@@ -86,25 +86,19 @@ Task<RtcSessionDescription> ^ RtcPeerConnection::CreateOffer(RtcOfferOptions ^ o
 		pc->CreateOffer(observer, &constraints);
 	}
 
-	return tcs->Task;
-
-
-	//auto tcs = gcnew TaskCompletionSource<RtcSessionDescription>();
-	//auto pc = GetNativePeerConnection(true);
-	//auto observer = new rtc::RefCountedObject<webrtc_observers::CreateSessionDescriptionObserver>(tcs);
-
-	//auto nativeOptions = marshal_as<webrtc::PeerConnection::RTCOfferAnswerOptions>(options);
-
-	//pc->CreateOffer(observer, nativeOptions);
-
-	//return tcs->Task;
+	return task;
 }
 
 
 Task<RtcSessionDescription> ^ RtcPeerConnection::CreateAnswer()
 {
-	throw gcnew NotImplementedException();
-	// TODO: insert return statement here
+	auto pc = GetNativePeerConnection(true);
+	auto observer = new rtc::RefCountedObject<webrtc_observers::CreateSessionDescriptionObserver>();
+	auto task = observer->CreateSessionTask();
+
+	pc->CreateAnswer(observer, NULL);
+
+	return task;
 }
 
 Task ^ RtcPeerConnection::SetLocalDescription(RtcSessionDescription description)
@@ -133,23 +127,24 @@ Task ^ RtcPeerConnection::AddIceCandidate(RtcIceCandidate candidate)
 	// TODO: insert return statement here
 }
 
-RtcConfiguration ^ RtcPeerConnection::GetConfiguration()
+RtcConfiguration ^ RtcPeerConnection::Configuration::get()
 {
 	return _configuration;
 }
 
-void RtcPeerConnection::SetConfiguration(RtcConfiguration ^configuration)
+void RtcPeerConnection::Configuration::set(RtcConfiguration ^configuration)
 {
 	throw gcnew NotImplementedException();
 }
 
-Collections::Generic::IEnumerable<IMediaStream ^> ^ RtcPeerConnection::GetLocalStreams()
+Collections::Generic::IEnumerable<IMediaStream ^> ^ RtcPeerConnection::LocalStreams::get()
 {
 	throw gcnew NotImplementedException();
 	// TODO: insert return statement here
 }
 
-Collections::Generic::IEnumerable<IMediaStream ^> ^ RtcPeerConnection::GetRemoteStreams()
+
+Collections::Generic::IEnumerable<IMediaStream ^> ^ RtcPeerConnection::RemoteStreams::get()
 {
 	throw gcnew NotImplementedException();
 	// TODO: insert return statement here
