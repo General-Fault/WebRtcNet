@@ -86,5 +86,4 @@ namespace WebRtcNet
         /// </summary>
         event EventHandler<IMediaStreamTrack> OnRemoveTrack;
     }
-
 }

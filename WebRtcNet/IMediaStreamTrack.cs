@@ -87,6 +87,7 @@ namespace WebRtcNet
         void ApplyConstraints(MediaConstraints constraints = null);
 
         /// Fired when no longer able to satisfy the requiredConstraints from the currently valid Constraints.
+        /// NOT CURRENTLY IMPLEMENTED.
         event EventHandler<MediaStreamError> OnOverConstrained;
 
     };

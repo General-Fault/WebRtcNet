@@ -44,21 +44,27 @@ namespace WebRtcNet
 		return capturer;
 	}
 
-	IMediaStream ^ Media::GetUserMedia(MediaConstraints ^ constraints)
+	IMediaStream ^ Media::GetUserMedia(MediaStreamConstraints ^ constraints)
 	{
 		auto peerConnectionFactory = RtcPeerConnectionFactory::Instance->GetNativePeerConnectionFactoryInterface(true);
 
-		webrtc::FakeConstraints nativeConstraints(marshal_as<webrtc::FakeConstraints>(constraints));
-		auto audioSource(peerConnectionFactory->CreateAudioSource(&nativeConstraints));
-		auto audioTrack(peerConnectionFactory->CreateAudioTrack("audio_label", audioSource));
-
-		auto videoSource(peerConnectionFactory->CreateVideoSource(OpenVideoCaptureDevice(), &nativeConstraints));
-		auto videoTrack(peerConnectionFactory->CreateVideoTrack("video_label", videoSource));
-
 		auto stream(peerConnectionFactory->CreateLocalMediaStream("stream_label"));
 
-		stream->AddTrack(audioTrack);
-		stream->AddTrack(videoTrack);
+		if (constraints == nullptr || constraints->Audio)
+		{
+			auto nativeConstraints = marshal_as<webrtc::FakeConstraints>(constraints->AudioConstraints);
+			auto audioSource = peerConnectionFactory->CreateAudioSource(&nativeConstraints);
+			auto audioTrack(peerConnectionFactory->CreateAudioTrack("audio_label", audioSource));
+			stream->AddTrack(audioTrack); //returns false if track is already in the stream. Not a problem here.
+		}
+
+		if (constraints == nullptr || constraints->Video)
+		{
+			auto nativeConstraints = marshal_as<webrtc::FakeConstraints>(constraints->VideoConstraints);
+			auto videoSource = peerConnectionFactory->CreateVideoSource(OpenVideoCaptureDevice(), &nativeConstraints);
+			auto videoTrack = peerConnectionFactory->CreateVideoTrack("video_label", videoSource);
+			stream->AddTrack(videoTrack); //returns false if track is already in the stream. Not a problem here.
+		}
 
 		return gcnew WebRtcInterop::MediaStream(stream.release());
 	}

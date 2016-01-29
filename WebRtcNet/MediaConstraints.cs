@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WebRtcNet
 {
-
     /// <summary>
     /// Constraints for the MediaTrack. 
     /// <seealso href="http://www.w3.org/TR/mediacapture-streams/#media-track-constraints"/>
@@ -101,49 +101,126 @@ namespace WebRtcNet
             _optional = new List<Constraint>(optional);
         }
 
-        public struct Constraint
+        public abstract class Constraint
         {
-            public readonly string Key;
-            public string Value;
-
-            public Constraint(string key, string value)
+            protected Constraint(string key)
             {
                 Key = key;
+            }
+
+            public string Key { get; }
+            public abstract string ValueString { get; }
+        }
+
+        public class Constraint<T> : Constraint
+        {
+            public T Value { get; }
+
+            public override string ValueString  => Value.ToString();
+
+            public Constraint(Constraint constraint)
+                : base(constraint.Key)
+            {
+                //cooerce the unknown value type
+                Value = (T)Convert.ChangeType(constraint.ValueString, typeof(T));
+            }
+
+            public Constraint(string key, T value) : base(key)
+            {
                 Value = value;
             }
         }
 
-        public IList<Constraint> Mandatory
+        public Constraint<T> FindConstraint<T>(string key, out bool mandatory, T defaultVal)
         {
-            get { return _mandatory; }
+            if (Mandatory.Any(c => c.Key == key))
+            {
+                mandatory = true;
+                var constraint = Mandatory.First(c => c.Key == key);
+                return constraint as Constraint<T> ?? new Constraint<T>(constraint);
+            }
+
+            mandatory = false;
+            if (Optional.Any(c=>c.Key == key))
+            {
+                var constraint = Optional.First(c => c.Key == key);
+                return constraint as Constraint<T> ?? new Constraint<T>(constraint);
+            }
+
+            return null;
         }
 
-        public IList<Constraint> Optional
-        {
-            get { return _optional; }
-        }
+        public IEnumerable<Constraint> Mandatory => _mandatory;
+
+        public IEnumerable<Constraint> Optional => _optional;
 
         public void AddMandatory<T>(string key, T value)
         {
-            _mandatory.Add(new Constraint(key, value.ToString()));
+            _mandatory.Add(new Constraint<T>(key, value));
         }
 
         public void SetMandatory<T>(string key, T value)
         {
             _mandatory.RemoveAll(new Predicate<Constraint>(c => c.Key == key));
-            _mandatory.Add(new Constraint(key, value.ToString()));
-
+            _mandatory.Add(new Constraint<T>(key, value));
         }
 
         public void AddOptional<T>(string key, T value)
         {
-            _optional.Add(new Constraint(key, value.ToString()));
+            _optional.Add(new Constraint<T>(key, value));
         }
 
         public void SetOptional<T>(string key, T value)
         {
             _optional.RemoveAll(new Predicate<Constraint>(c => c.Key == key));
-            _optional.Add(new Constraint(key, value.ToString()));
+            _optional.Add(new Constraint<T>(key, value));
         }
     };
+
+
+    public class MediaStreamConstraints
+    {
+        public MediaStreamConstraints(bool audio, bool video)
+        {
+            Audio = audio;
+            AudioConstraints = null;
+
+            Video = video;
+            VideoConstraints = null;
+        }
+
+        public MediaStreamConstraints(MediaConstraints audio, bool video)
+        {
+            Audio = true;
+            AudioConstraints = audio;
+
+            Video = video;
+            VideoConstraints = null;
+        }
+
+        public MediaStreamConstraints(bool audio, MediaConstraints video)
+        {
+            Audio = audio;
+            AudioConstraints = null;
+
+            Video = true;
+            VideoConstraints = video;
+        }
+
+        public MediaStreamConstraints(MediaConstraints audio, MediaConstraints video)
+        {
+            Audio = true;
+            AudioConstraints = audio;
+
+            Video = true;
+            VideoConstraints = video;
+        }
+
+
+        public bool Audio { get; set; }
+        public MediaConstraints AudioConstraints { get; set; }
+
+        public bool Video { get; set; }
+        public MediaConstraints VideoConstraints { get; set; }
+    }
 }

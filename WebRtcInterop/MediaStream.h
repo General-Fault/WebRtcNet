@@ -52,7 +52,7 @@ namespace WebRtcNet {
 public ref class Media
 {
 public:
-	static IMediaStream ^ GetUserMedia(MediaConstraints ^ constraints);
+	static IMediaStream ^ GetUserMedia(MediaStreamConstraints ^ constraints);
 private:
 	Media() {};
 };

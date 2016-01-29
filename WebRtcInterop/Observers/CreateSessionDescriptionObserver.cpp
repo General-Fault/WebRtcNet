@@ -9,8 +9,8 @@ using namespace msclr;
 
 WebRtcObservers_Start
 
-CreateSessionDescriptionObserver::CreateSessionDescriptionObserver(TaskCompletionSource<WebRtcNet::RtcSessionDescription> ^ task)
-	: _task(task)
+CreateSessionDescriptionObserver::CreateSessionDescriptionObserver()
+	: _task(gcnew TaskCompletionSource<WebRtcNet::RtcSessionDescription>())
 {
 }
 
@@ -18,6 +18,12 @@ CreateSessionDescriptionObserver::~CreateSessionDescriptionObserver()
 {
 	_task->TrySetCanceled();
 }
+
+gcroot<Task<WebRtcNet::RtcSessionDescription> ^> CreateSessionDescriptionObserver::CreateSessionTask()
+{
+	return _task->Task;
+}
+
 
 void CreateSessionDescriptionObserver::OnSuccess(webrtc::SessionDescriptionInterface * desc)
 {

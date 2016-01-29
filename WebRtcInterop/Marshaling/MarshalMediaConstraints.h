@@ -18,14 +18,12 @@ namespace msclr {
 
 			for each (auto constraint in from->Mandatory)
 			{
-				auto key = constraint.Key;
-				to.AddMandatory(marshal_as<std::string>(key), marshal_as<std::string>(constraint.Value));
+				to.AddMandatory(marshal_as<std::string>(constraint->Key), marshal_as<std::string>(constraint->ValueString));
 			}
 
 			for each (auto constraint in from->Optional)
 			{
-				auto key = constraint.Key;
-				to.AddOptional(marshal_as<std::string>(key), marshal_as<std::string>(constraint.Value));
+				to.AddOptional(marshal_as<std::string>(constraint->Key), marshal_as<std::string>(constraint->ValueString));
 			}
 
 			return to;

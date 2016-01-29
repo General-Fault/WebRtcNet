@@ -17,7 +17,9 @@ public:
 	virtual void OnSuccess(webrtc::SessionDescriptionInterface * desc) override;
 	virtual void OnFailure(const std::string & error) override;
 
-	CreateSessionDescriptionObserver(TaskCompletionSource<WebRtcNet::RtcSessionDescription> ^ task);
+	CreateSessionDescriptionObserver();
+
+	gcroot<Task<WebRtcNet::RtcSessionDescription> ^> CreateSessionTask();
 
 private:
 	gcroot<TaskCompletionSource<WebRtcNet::RtcSessionDescription> ^> _task;
