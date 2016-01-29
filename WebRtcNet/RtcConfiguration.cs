@@ -56,10 +56,17 @@ namespace WebRtcNet
     /// </summary>
     public class RtcConfiguration
     {
+        public RtcConfiguration()
+            :this(null)
+        {
+        }
+
         public RtcConfiguration(IEnumerable<RtcIceServer> servers)
         {
-            IceServers = new List<RtcIceServer>(servers);
-
+            IceServers = servers == null ?  new List<RtcIceServer>() : new List<RtcIceServer>(servers);
+            IceTransportPolicy = RtcIceTransportPolicy.All;
+            BundlePolicy = RtcBundlePolicy.Balanced;
+            PeerIdentity = null;
         }
 
         /// A list containing URIs of servers available to be used by ICE, such as STUN and TURN server.
