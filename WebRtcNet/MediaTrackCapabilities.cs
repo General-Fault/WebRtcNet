@@ -1,4 +1,7 @@
-﻿namespace WebRtcNet
+﻿using System;
+using System.Diagnostics.Contracts;
+
+namespace WebRtcNet
 {
     /// <summary>
     /// <seealso href="http://www.w3.org/TR/mediacapture-streams/#idl-def-VideoFacingModeEnum"/>
@@ -38,6 +41,8 @@
 
         public static implicit operator T(ValueRange<T> from)
         {
+            Contract.Requires<ArgumentNullException>(from != null);
+
             return from.Max;
         }
 

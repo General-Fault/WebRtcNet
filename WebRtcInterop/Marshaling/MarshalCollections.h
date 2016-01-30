@@ -13,7 +13,7 @@ namespace msclr {namespace interop
 
 //copy a vector to into an IEnumerable
 template<class TManaged, class TNative>
-inline IEnumerable<TManaged>^ marshal_vector_as(const std::vector<TNative> & from)
+inline IEnumerable<TManaged> ^ marshal_vector_as(const std::vector<TNative> & from)
 {
 	auto to = gcnew List<TManaged>();
 	for (auto item : from)
@@ -25,13 +25,15 @@ inline IEnumerable<TManaged>^ marshal_vector_as(const std::vector<TNative> & fro
 
 
 //Copy a map into an IDictionary
-template<class TNativeKey, class TNativeValue, class TManagedKey, class TManagedValue>
+template<class TManagedKey, class TManagedValue, class TNativeKey, class TNativeValue>
 inline IDictionary<TManagedKey, TManagedValue> ^ marshal_map_as(const std::map<TNativeKey, TNativeValue> & from)
 {
 	auto to = gcnew Dictionary<TManagedKey, TManagedValue>();
 	for (auto kv : from)
 	{
-		to->Insert(marshal_as<TManagedKey>(kv->first), marshal_as<TManagedValue>(kv->second));
+		auto key = marshal_as<TManagedKey>(kv.first);
+		auto value = marshal_as<TManagedValue>(kv.second);
+		to->Add(key, value);
 	}
 	return safe_cast<IDictionary<TManagedKey, TManagedValue>^>(to);
 };

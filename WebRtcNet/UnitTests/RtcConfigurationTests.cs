@@ -12,7 +12,6 @@ namespace WebRtcNet.UnitTests
         {
             var configuration = new RtcConfiguration();
 
-            Assert.IsNotNull(configuration.IceServers);
             Assert.AreEqual(0, configuration.IceServers.Count);
             Assert.AreEqual(RtcIceTransportPolicy.All, configuration.IceTransportPolicy);
             Assert.AreEqual(RtcBundlePolicy.Balanced, configuration.BundlePolicy);
@@ -20,7 +19,7 @@ namespace WebRtcNet.UnitTests
         }
 
         [TestMethod]
-        public void RtcConfiguration_Constructor_HasServers_Test()
+        public void RtcConfiguration_Constructor_WithServers_Test()
         {
             var configuration = new RtcConfiguration(new[] { new RtcIceServer("stun:stun1.example.net"), new RtcIceServer(new[] { "turns:turn.example.org", "turns:turn.example.net" }, "user", "myPassword") });
 

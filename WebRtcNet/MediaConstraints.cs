@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace WebRtcNet
@@ -121,6 +122,8 @@ namespace WebRtcNet
             public Constraint(Constraint constraint)
                 : base(constraint.Key)
             {
+                Contract.Requires<ArgumentNullException>(constraint != null);
+
                 //cooerce the unknown value type
                 Value = (T)Convert.ChangeType(constraint.ValueString, typeof(T));
             }
