@@ -9,7 +9,7 @@ namespace msclr {
 	namespace interop
 	{
 		template<>
-		inline WebRtcNet::RtcDataChannelState marshal_as(const webrtc::DataChannelInterface::DataState & from)
+		inline WebRtcNet::RtcDataChannelState marshal_as(webrtc::DataChannelInterface::DataState const & from)
 		{
 			switch (from)
 			{
