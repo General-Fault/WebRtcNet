@@ -1,7 +1,7 @@
 #include "Stdafx.h"
 
 #include <string>
-#include "..\Marshaling\MarshalIceServer.h"
+#include "..\MarshalIceServer.h"
 
 #using <System.Core.dll>
 

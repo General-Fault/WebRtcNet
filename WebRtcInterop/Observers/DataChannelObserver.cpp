@@ -11,6 +11,8 @@ DataChannelObserver::DataChannelObserver(WebRtcInterop::RtcDataChannel ^ dataCha
 	: _dataChannel(dataChannel)
 	, _nativeDataChannel(nativeDataChannel)
 {
+	if (dataChannel == nullptr) throw gcnew System::ArgumentNullException("dataChannel");
+	if (nativeDataChannel == nullptr) throw gcnew System::ArgumentNullException("nativeDataChannel");
 }
 
 DataChannelObserver::~DataChannelObserver()

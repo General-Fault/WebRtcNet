@@ -1,6 +1,6 @@
 #include "Stdafx.h"
 
-#include "..\Marshaling\MarshalRtcConfiguration.h"
+#include "..\MarshalRtcConfiguration.h"
 
 using namespace msclr::interop;
 

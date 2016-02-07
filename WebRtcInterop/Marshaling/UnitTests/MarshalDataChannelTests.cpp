@@ -1,6 +1,6 @@
 #include "Stdafx.h"
 
-#include "..\Marshaling\MarshalDataChannel.h"
+#include "..\MarshalDataChannel.h"
 
 using namespace msclr::interop;
 

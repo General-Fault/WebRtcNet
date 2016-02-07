@@ -1,6 +1,6 @@
 #include "Stdafx.h"
 
-#include "..\Marshaling\MarshalPeerConnection.h"
+#include "..\MarshalPeerConnection.h"
 #include "talk\app\webrtc\jsepsessiondescription.h"
 
 using namespace msclr::interop;

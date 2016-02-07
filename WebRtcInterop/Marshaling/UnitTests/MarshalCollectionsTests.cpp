@@ -1,6 +1,6 @@
 #include "Stdafx.h"
 
-#include "..\Marshaling\MarshalCollections.h"
+#include "..\MarshalCollections.h"
 #using <System.Core.dll>
 
 using namespace msclr::interop;

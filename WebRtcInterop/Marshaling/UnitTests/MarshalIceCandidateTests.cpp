@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "..\Marshaling\MarshalIceCandidate.h"
+#include "..\MarshalIceCandidate.h"
 #include "FakeIceCandidate.h"
 
 #include "webrtc\base\bind.h"

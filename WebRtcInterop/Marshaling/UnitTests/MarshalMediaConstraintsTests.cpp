@@ -1,7 +1,7 @@
 #include "Stdafx.h"
 
 #include <string>
-#include "..\Marshaling\MarshalMediaConstraints.h"
+#include "..\MarshalMediaConstraints.h"
 #include "webrtc\base\scoped_ptr.h"
 
 #using <System.Core.dll>

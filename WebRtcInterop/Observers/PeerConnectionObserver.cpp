@@ -20,7 +20,9 @@ WebRtcObservers_Start
 
 PeerConnectionObserver::PeerConnectionObserver(WebRtcInterop::RtcPeerConnection ^ peerConnection)
 	: _peerConnection(peerConnection)
-{}
+{
+	if (peerConnection == nullptr) throw gcnew System::ArgumentNullException("peerConnection");
+}
 
 PeerConnectionObserver::~PeerConnectionObserver()
 {
