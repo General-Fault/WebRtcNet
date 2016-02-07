@@ -29,7 +29,7 @@ PeerConnectionObserver::~PeerConnectionObserver()
 
 void PeerConnectionObserver::OnSignalingChange(webrtc::PeerConnectionInterface::SignalingState new_state)
 {
-	_peerConnection->FireOnSignalingStateChange(marshal_as(new_state));
+	_peerConnection->FireOnSignalingStateChange(marshal_as<WebRtcNet::RtcSignalingState>(new_state));
 }
 
 void PeerConnectionObserver::OnAddStream(webrtc::MediaStreamInterface * stream)
@@ -54,12 +54,12 @@ void PeerConnectionObserver::OnRenegotiationNeeded()
 
 void PeerConnectionObserver::OnIceConnectionChange(webrtc::PeerConnectionInterface::IceConnectionState new_state)
 {
-	_peerConnection->FireOnIceConnectionStateChange(marshal_as(new_state));
+	_peerConnection->FireOnIceConnectionStateChange(marshal_as<WebRtcNet::RtcIceConnectionState>(new_state));
 }
 
 void PeerConnectionObserver::OnIceGatheringChange(webrtc::PeerConnectionInterface::IceGatheringState new_state)
 {
-	_peerConnection->FireOnGatheringStateChange(marshal_as(new_state));
+	_peerConnection->FireOnGatheringStateChange(marshal_as<WebRtcNet::RtcGatheringState>(new_state));
 }
 
 void PeerConnectionObserver::OnIceCandidate(const webrtc::IceCandidateInterface* candidate)

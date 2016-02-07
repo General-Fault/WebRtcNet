@@ -29,8 +29,8 @@
     	public RtcOfferOptions()
         {
             IceRestart = false;
-            OfferToReceiveAudio = 1;
-            OfferToReceiveVideo = 1;
+            OfferToReceiveTrue = 1;
+            OfferToReceiveTrue = 1;
         }
 
         /// <summary>
@@ -57,5 +57,11 @@
         /// the generated description will have the same ICE credentials as the current value from the localDescription attribute.
         /// </summary>
         public bool IceRestart;
+
+
+        public static int Undefined = -1;
+        public static int MaxOfferToReceiveMedia = 1;
+        public static int OfferToReceiveTrue = 1;
+        public static int OfferToReceiveFalse = 0;
     };
 }

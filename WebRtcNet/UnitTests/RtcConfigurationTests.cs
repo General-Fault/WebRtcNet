@@ -1,13 +1,12 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WebRtcNet;
+using NUnit.Framework;
 
 namespace WebRtcNet.UnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class RtcConfigurationTests
     {
-        [TestMethod]
+        [Test]
         public void RtcConfiguration_Constructor_Defaults_Test()
         {
             var configuration = new RtcConfiguration();
@@ -18,7 +17,7 @@ namespace WebRtcNet.UnitTests
             Assert.IsNull(configuration.PeerIdentity);
         }
 
-        [TestMethod]
+        [Test]
         public void RtcConfiguration_Constructor_WithServers_Test()
         {
             var configuration = new RtcConfiguration(new[] { new RtcIceServer("stun:stun1.example.net"), new RtcIceServer(new[] { "turns:turn.example.org", "turns:turn.example.net" }, "user", "myPassword") });

@@ -76,13 +76,13 @@
     <IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)out\$(Platform)\$(Configuration)\</OutDir>
     <IgnoreImportLibrary>false</IgnoreImportLibrary>
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)out\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>obj\$(Platform)\$(Configuration)\</IntDir>
     <IgnoreImportLibrary>false</IgnoreImportLibrary>
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -112,6 +112,8 @@
       <RuntimeTypeInfo>
       </RuntimeTypeInfo>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      <MinimalRebuild>
+      </MinimalRebuild>
     </ClCompile>
     <Link>
       <AdditionalDependencies>boringssl.dll.lib;libyuv.lib;protobuf_lite.dll.lib;obj\talk\libjingle_media.lib;obj\talk\libjingle_p2p.lib;obj\talk\libjingle_peerconnection.lib;obj\third_party\expat\expat.lib;obj\third_party\jsoncpp\jsoncpp.lib;obj\third_party\libjpeg_turbo\libjpeg.lib;obj\third_party\libsrtp\libsrtp.lib;obj\third_party\libvpx_new\libvpx_new.lib;obj\third_party\libvpx_new\libvpx_intrinsics_avx.lib;obj\third_party\libvpx_new\libvpx_intrinsics_avx2.lib;obj\third_party\libvpx_new\libvpx_intrinsics_mmx.lib;obj\third_party\libvpx_new\libvpx_intrinsics_sse2.lib;obj\third_party\libvpx_new\libvpx_intrinsics_sse4_1.lib;obj\third_party\libvpx_new\libvpx_intrinsics_ssse3.lib;obj\third_party\openmax_dl\dl\openmax_dl.lib;obj\third_party\opus\opus.lib;obj\third_party\usrsctp\usrsctplib.lib;obj\third_party\winsdk_samples\directshow_baseclasses.lib;obj\webrtc\base\rtc_base.lib;obj\webrtc\base\rtc_base_approved.lib;obj\webrtc\common_audio\common_audio.lib;obj\webrtc\common_audio\common_audio_sse2.lib;obj\webrtc\common_video\common_video.lib;obj\webrtc\libjingle\xmllite\rtc_xmllite.lib;obj\webrtc\libjingle\xmpp\rtc_xmpp.lib;obj\webrtc\modules\audio_coding_module.lib;obj\webrtc\modules\audio_conference_mixer.lib;obj\webrtc\modules\audio_decoder_interface.lib;obj\webrtc\modules\audio_device.lib;obj\webrtc\modules\audio_encoder_interface.lib;obj\webrtc\modules\audio_processing.lib;obj\webrtc\modules\audio_processing_sse2.lib;obj\webrtc\modules\audioproc_debug_proto.lib;obj\webrtc\modules\audioproc_protobuf_utils.lib;obj\webrtc\modules\bitrate_controller.lib;obj\webrtc\modules\cng.lib;obj\webrtc\modules\desktop_capture.lib;obj\webrtc\modules\desktop_capture_differ_sse2.lib;obj\webrtc\modules\g711.lib;obj\webrtc\modules\g722.lib;obj\webrtc\modules\ilbc.lib;obj\webrtc\modules\isac.lib;obj\webrtc\modules\isac_common.lib;obj\webrtc\modules\isac_fix.lib;obj\webrtc\modules\media_file.lib;obj\webrtc\modules\neteq.lib;obj\webrtc\modules\paced_sender.lib;obj\webrtc\modules\pcm16b.lib;obj\webrtc\modules\red.lib;obj\webrtc\modules\remote_bitrate_estimator.lib;obj\webrtc\modules\rent_a_codec.lib;obj\webrtc\modules\rtc_event_log_source.lib;obj\webrtc\modules\rtp_rtcp.lib;obj\webrtc\modules\video_capture.lib;obj\webrtc\modules\video_capture_module.lib;obj\webrtc\modules\video_capture_module_internal_impl.lib;obj\webrtc\modules\video_coding\codecs\vp8\webrtc_vp8.lib;obj\webrtc\modules\video_coding\codecs\vp9\webrtc_vp9.lib;obj\webrtc\modules\video_coding\utility\video_coding_utility.lib;obj\webrtc\modules\video_processing.lib;obj\webrtc\modules\video_processing_sse2.lib;obj\webrtc\modules\video_render.lib;obj\webrtc\modules\video_render_module.lib;obj\webrtc\modules\video_render_module_internal_impl.lib;obj\webrtc\modules\webrtc_h264.lib;obj\webrtc\modules\webrtc_i420.lib;obj\webrtc\modules\webrtc_opus.lib;obj\webrtc\modules\webrtc_utility.lib;obj\webrtc\modules\webrtc_video_coding.lib;obj\webrtc\p2p\rtc_p2p.lib;obj\webrtc\rtc_event_log.lib;obj\webrtc\rtc_event_log_proto.lib;obj\webrtc\sound\rtc_sound.lib;obj\webrtc\system_wrappers\field_trial_default.lib;obj\webrtc\system_wrappers\metrics_default.lib;obj\webrtc\system_wrappers\system_wrappers.lib;obj\webrtc\voice_engine\voice_engine.lib;obj\webrtc\webrtc.lib;obj\webrtc\webrtc_common.lib;advapi32.lib;comdlg32.lib;credui.lib;dbghelp.lib;delayimp.lib;dmoguids.lib;dnsapi.lib;gdi32.lib;kernel32.lib;msdmo.lib;msimg32.lib;netapi32.lib;odbc32.lib;odbccp32.lib;ole32.lib;oleaut32.lib;psapi.lib;secur32.lib;shell32.lib;shlwapi.lib;Strmiids.lib;user32.lib;usp10.lib;uuid.lib;version.lib;wininet.lib;winmm.lib;winspool.lib;wmcodecdspuuid.lib;ws2_32.lib</AdditionalDependencies>
@@ -150,6 +152,8 @@ xcopy /Y /D  "$(SolutionDir)..\Google\WebRtc\src\out\Debug\boringssl.dll" "$(Out
       <RuntimeTypeInfo>
       </RuntimeTypeInfo>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      <MinimalRebuild>
+      </MinimalRebuild>
     </ClCompile>
     <Link>
       <AdditionalDependencies>boringssl.dll.lib;libyuv.lib;protobuf_lite.dll.lib;obj\talk\libjingle_media.lib;obj\talk\libjingle_p2p.lib;obj\talk\libjingle_peerconnection.lib;obj\third_party\expat\expat.lib;obj\third_party\jsoncpp\jsoncpp.lib;obj\third_party\libjpeg_turbo\libjpeg.lib;obj\third_party\libsrtp\libsrtp.lib;obj\third_party\libvpx_new\libvpx_new.lib;obj\third_party\libvpx_new\libvpx_intrinsics_avx.lib;obj\third_party\libvpx_new\libvpx_intrinsics_avx2.lib;obj\third_party\libvpx_new\libvpx_intrinsics_mmx.lib;obj\third_party\libvpx_new\libvpx_intrinsics_sse2.lib;obj\third_party\libvpx_new\libvpx_intrinsics_sse4_1.lib;obj\third_party\libvpx_new\libvpx_intrinsics_ssse3.lib;obj\third_party\openmax_dl\dl\openmax_dl.lib;obj\third_party\opus\opus.lib;obj\third_party\usrsctp\usrsctplib.lib;obj\third_party\winsdk_samples\directshow_baseclasses.lib;obj\webrtc\base\rtc_base.lib;obj\webrtc\base\rtc_base_approved.lib;obj\webrtc\common_audio\common_audio.lib;obj\webrtc\common_audio\common_audio_sse2.lib;obj\webrtc\common_video\common_video.lib;obj\webrtc\libjingle\xmllite\rtc_xmllite.lib;obj\webrtc\libjingle\xmpp\rtc_xmpp.lib;obj\webrtc\modules\audio_coding_module.lib;obj\webrtc\modules\audio_conference_mixer.lib;obj\webrtc\modules\audio_decoder_interface.lib;obj\webrtc\modules\audio_device.lib;obj\webrtc\modules\audio_encoder_interface.lib;obj\webrtc\modules\audio_processing.lib;obj\webrtc\modules\audio_processing_sse2.lib;obj\webrtc\modules\audioproc_debug_proto.lib;obj\webrtc\modules\audioproc_protobuf_utils.lib;obj\webrtc\modules\bitrate_controller.lib;obj\webrtc\modules\cng.lib;obj\webrtc\modules\desktop_capture.lib;obj\webrtc\modules\desktop_capture_differ_sse2.lib;obj\webrtc\modules\g711.lib;obj\webrtc\modules\g722.lib;obj\webrtc\modules\ilbc.lib;obj\webrtc\modules\isac.lib;obj\webrtc\modules\isac_common.lib;obj\webrtc\modules\isac_fix.lib;obj\webrtc\modules\media_file.lib;obj\webrtc\modules\neteq.lib;obj\webrtc\modules\paced_sender.lib;obj\webrtc\modules\pcm16b.lib;obj\webrtc\modules\red.lib;obj\webrtc\modules\remote_bitrate_estimator.lib;obj\webrtc\modules\rent_a_codec.lib;obj\webrtc\modules\rtc_event_log_source.lib;obj\webrtc\modules\rtp_rtcp.lib;obj\webrtc\modules\video_capture.lib;obj\webrtc\modules\video_capture_module.lib;obj\webrtc\modules\video_capture_module_internal_impl.lib;obj\webrtc\modules\video_coding\codecs\vp8\webrtc_vp8.lib;obj\webrtc\modules\video_coding\codecs\vp9\webrtc_vp9.lib;obj\webrtc\modules\video_coding\utility\video_coding_utility.lib;obj\webrtc\modules\video_processing.lib;obj\webrtc\modules\video_processing_sse2.lib;obj\webrtc\modules\video_render.lib;obj\webrtc\modules\video_render_module.lib;obj\webrtc\modules\video_render_module_internal_impl.lib;obj\webrtc\modules\webrtc_h264.lib;obj\webrtc\modules\webrtc_i420.lib;obj\webrtc\modules\webrtc_opus.lib;obj\webrtc\modules\webrtc_utility.lib;obj\webrtc\modules\webrtc_video_coding.lib;obj\webrtc\p2p\rtc_p2p.lib;obj\webrtc\rtc_event_log.lib;obj\webrtc\rtc_event_log_proto.lib;obj\webrtc\sound\rtc_sound.lib;obj\webrtc\system_wrappers\field_trial_default.lib;obj\webrtc\system_wrappers\metrics_default.lib;obj\webrtc\system_wrappers\system_wrappers.lib;obj\webrtc\voice_engine\voice_engine.lib;obj\webrtc\webrtc.lib;obj\webrtc\webrtc_common.lib;advapi32.lib;comdlg32.lib;credui.lib;dbghelp.lib;delayimp.lib;dmoguids.lib;dnsapi.lib;gdi32.lib;kernel32.lib;msdmo.lib;msimg32.lib;netapi32.lib;odbc32.lib;odbccp32.lib;ole32.lib;oleaut32.lib;psapi.lib;secur32.lib;shell32.lib;shlwapi.lib;Strmiids.lib;user32.lib;usp10.lib;uuid.lib;version.lib;wininet.lib;winmm.lib;winspool.lib;wmcodecdspuuid.lib;ws2_32.lib</AdditionalDependencies>
@@ -236,37 +240,52 @@ xcopy /Y /D  "$(SolutionDir)..\Google\WebRtc\src\out\Release_x64\boringssl.dll" 
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='Debug'">
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.3.0.1\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <ClInclude Include="UnitTests\FakeIceCandidate.h" />
+    <ClCompile Include="UnitTests\MarshalCollectionsTests.cpp" />
+    <ClCompile Include="UnitTests\MarshalDataChannelTests.cpp" />
+    <ClCompile Include="UnitTests\MarshalIceCandidateTests.cpp" />
+  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Marshaling\MarshalMediaConstraints.h" />
-    <ClInclude Include="Observers\CreateSessionDescriptionObserver.h" />
     <ClInclude Include="Marshaling\MarshalIceCandidate.h" />
-    <ClInclude Include="Observers\DataChannelObserver.h" />
     <ClInclude Include="Marshaling\MarshalDataChannel.h" />
-    <ClInclude Include="RtcDataChannel.h" />
     <ClInclude Include="Marshaling\MarshalCollections.h" />
     <ClInclude Include="Marshaling\MarshalIceServer.h" />
     <ClInclude Include="Marshaling\MarshalPeerConnection.h" />
     <ClInclude Include="Marshaling\MarshalRtcConfiguration.h" />
-    <ClInclude Include="MediaStream.h" />
-    <ClInclude Include="MediaStreamTrack.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="UnitTests\MarshalIceServerTests.cpp" />
+    <ClCompile Include="UnitTests\MarshalMediaConstraintsTests.cpp" />
+    <ClCompile Include="UnitTests\MarshalPeerConnectionTests.cpp" />
+    <ClCompile Include="UnitTests\MarshalRtcConfigurationTests.cpp" />
+    <ClInclude Include="Observers\CreateSessionDescriptionObserver.h" />
+    <ClCompile Include="Observers\CreateSessionDescriptionObserver.cpp" />
+    <ClInclude Include="Observers\DataChannelObserver.h" />
+    <ClCompile Include="Observers\DataChannelObserver.cpp" />
     <ClInclude Include="Observers\PeerConnectionObserver.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="RtcPeerConnection.h">
-      <FileType>CppHeader</FileType>
-    </ClInclude>
+    <ClCompile Include="Observers\PeerConnectionObserver.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RtcDataChannel.h" />
+    <ClCompile Include="RtcDataChannel.cpp" />
+    <ClInclude Include="MediaStream.h" />
+    <ClCompile Include="MediaStream.cpp" />
+    <ClInclude Include="MediaStreamTrack.h" />
+    <ClCompile Include="MediaStreamTrack.cpp" />
+    <ClInclude Include="RtcPeerConnection.h" />
+    <ClCompile Include="RtcPeerConnection.cpp" />
     <ClInclude Include="RtcPeerConnectionFactory.h" />
-    <ClInclude Include="Stdafx.h" />
+    <ClCompile Include="RtcPeerConnectionFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="Observers\CreateSessionDescriptionObserver.cpp" />
-    <ClCompile Include="Observers\DataChannelObserver.cpp" />
-    <ClCompile Include="RtcDataChannel.cpp" />
-    <ClCompile Include="MediaStream.cpp" />
-    <ClCompile Include="MediaStreamTrack.cpp" />
-    <ClCompile Include="Observers\PeerConnectionObserver.cpp" />
-    <ClCompile Include="RtcPeerConnection.cpp" />
-    <ClCompile Include="RtcPeerConnectionFactory.cpp" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Stdafx.h" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -278,9 +297,7 @@ xcopy /Y /D  "$(SolutionDir)..\Google\WebRtc\src\out\Release_x64\boringssl.dll" 
     <ResourceCompile Include="app.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="LICENSE.google.webrtc" />
-    <None Include="LICENSE_THIRD_PARTY" />
-    <None Include="README.md" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebRtcNet\WebRtcNet.csproj">

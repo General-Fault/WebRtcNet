@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 
 namespace WebRtcNet
@@ -391,6 +392,7 @@ namespace WebRtcNet
     {
         public MediaStreamEventArgs(IMediaStream stream)
         {
+            Contract.Requires<ArgumentNullException>(stream != null, nameof(stream));
             Stream = stream;
         }
 
@@ -435,6 +437,8 @@ namespace WebRtcNet
     {
         public RtcDataChannelEventArgs(IRtcDataChannel channel)
         {
+            Contract.Requires<ArgumentNullException>(channel != null, nameof(channel));
+
             Channel = channel;
         }
 

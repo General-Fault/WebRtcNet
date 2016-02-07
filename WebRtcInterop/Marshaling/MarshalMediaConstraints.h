@@ -13,7 +13,7 @@ namespace msclr {
 		template<>
 		inline webrtc::FakeConstraints marshal_as(WebRtcNet::MediaConstraints ^ const & from)
 		{
-			if (from == nullptr) throw gcnew ArgumentNullException("from");
+			if (from == nullptr) throw gcnew System::ArgumentNullException("from");
 			webrtc::FakeConstraints to;
 
 			for each (auto constraint in from->Mandatory)
