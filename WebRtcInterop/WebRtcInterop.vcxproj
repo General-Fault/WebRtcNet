@@ -244,10 +244,10 @@ xcopy /Y /D  "$(SolutionDir)..\Google\WebRtc\src\out\Release_x64\boringssl.dll" 
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.3.0.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
-    <ClInclude Include="UnitTests\FakeIceCandidate.h" />
-    <ClCompile Include="UnitTests\MarshalCollectionsTests.cpp" />
-    <ClCompile Include="UnitTests\MarshalDataChannelTests.cpp" />
-    <ClCompile Include="UnitTests\MarshalIceCandidateTests.cpp" />
+    <ClInclude Include="Marshaling\UnitTests\FakeIceCandidate.h" />
+    <ClCompile Include="Marshaling\UnitTests\MarshalCollectionsTests.cpp" />
+    <ClCompile Include="Marshaling\UnitTests\MarshalDataChannelTests.cpp" />
+    <ClCompile Include="Marshaling\UnitTests\MarshalIceCandidateTests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Marshaling\MarshalMediaConstraints.h" />
@@ -259,10 +259,10 @@ xcopy /Y /D  "$(SolutionDir)..\Google\WebRtc\src\out\Release_x64\boringssl.dll" 
     <ClInclude Include="Marshaling\MarshalRtcConfiguration.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="UnitTests\MarshalIceServerTests.cpp" />
-    <ClCompile Include="UnitTests\MarshalMediaConstraintsTests.cpp" />
-    <ClCompile Include="UnitTests\MarshalPeerConnectionTests.cpp" />
-    <ClCompile Include="UnitTests\MarshalRtcConfigurationTests.cpp" />
+    <ClCompile Include="Marshaling\UnitTests\MarshalIceServerTests.cpp" />
+    <ClCompile Include="Marshaling\UnitTests\MarshalMediaConstraintsTests.cpp" />
+    <ClCompile Include="Marshaling\UnitTests\MarshalPeerConnectionTests.cpp" />
+    <ClCompile Include="Marshaling\UnitTests\MarshalRtcConfigurationTests.cpp" />
     <ClInclude Include="Observers\CreateSessionDescriptionObserver.h" />
     <ClCompile Include="Observers\CreateSessionDescriptionObserver.cpp" />
     <ClInclude Include="Observers\DataChannelObserver.h" />

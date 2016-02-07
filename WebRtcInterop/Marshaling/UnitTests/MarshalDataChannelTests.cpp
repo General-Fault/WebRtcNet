@@ -9,7 +9,7 @@ using namespace NUnit::Framework;
 using namespace WebRtcNet;
 using namespace webrtc;
 
-namespace WebRtcInterop { namespace UnitTests
+namespace WebRtcInterop { namespace Marshaling { namespace UnitTests
 {
 	[TestFixture]
 	public ref class MarshalDataChannelTests
@@ -43,4 +43,4 @@ namespace WebRtcInterop { namespace UnitTests
 			Assert::Fail("Should not have made it here");
 		}
 	};
-}}
+}}}

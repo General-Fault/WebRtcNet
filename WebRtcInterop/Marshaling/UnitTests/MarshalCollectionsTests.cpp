@@ -10,7 +10,7 @@ using namespace System::Text;
 using namespace System::Collections::Generic;
 using namespace NUnit::Framework;
 
-namespace WebRtcInterop { namespace UnitTests
+namespace WebRtcInterop { namespace Marshaling { namespace UnitTests
 {
 	[TestFixture]
 	public ref class MarshalCollectionsTests
@@ -77,4 +77,4 @@ namespace WebRtcInterop { namespace UnitTests
 			Assert::AreEqual((Object ^)0, result[2].compare("c"));
 		}
 	};
-}}
+}}}

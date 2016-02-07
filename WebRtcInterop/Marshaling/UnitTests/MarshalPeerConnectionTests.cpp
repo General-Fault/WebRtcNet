@@ -11,7 +11,7 @@ using namespace NUnit::Framework;
 using namespace webrtc;
 using namespace WebRtcNet;
 
-namespace WebRtcInterop { namespace UnitTests
+namespace WebRtcInterop { namespace Marshaling { namespace UnitTests
 {
 	[TestFixture]
 	public ref class MarshalPeerConnectionTests
@@ -358,4 +358,4 @@ namespace WebRtcInterop { namespace UnitTests
 		
 #pragma endregion
 	};
-}}
+}}}

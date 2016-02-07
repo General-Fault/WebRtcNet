@@ -9,7 +9,7 @@ namespace webrtc
 	class IceCandidateInterface;
 }
 
-namespace WebRtcInterop { namespace UnitTests
+namespace WebRtcInterop { namespace Marshaling { namespace UnitTests
 {
 	class FakeIceCandidate : public webrtc::IceCandidateInterface
 	{
@@ -36,4 +36,4 @@ namespace WebRtcInterop { namespace UnitTests
 		int _sdp_mline_index;
 		cricket::Candidate _candidate;
 	};
-}}
+}}}

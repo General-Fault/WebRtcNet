@@ -15,7 +15,7 @@ using namespace NUnit::Framework;
 
 using namespace WebRtcNet;
 
-namespace WebRtcInterop { namespace UnitTests
+namespace WebRtcInterop { namespace Marshaling { namespace UnitTests
 {
 	[TestFixture]
 	public ref class MarshalMediaConstraintsTests
@@ -63,4 +63,4 @@ namespace WebRtcInterop { namespace UnitTests
 			Assert::Fail("Should not have made it here");
 		}
 	};
-}}
+}}}

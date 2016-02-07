@@ -14,7 +14,7 @@ using namespace System::Runtime::InteropServices;
 using namespace NUnit::Framework;
 
 
-namespace WebRtcInterop { namespace UnitTests
+namespace WebRtcInterop { namespace Marshaling { namespace UnitTests
 {
 	[TestFixture]
 	public ref class MarshalIceCandidateTests
@@ -48,4 +48,4 @@ namespace WebRtcInterop { namespace UnitTests
 			Assert::Fail("Should not have made it here");
 		}
 	};
-}}
+}}}
