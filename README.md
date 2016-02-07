@@ -40,18 +40,19 @@ Set required environment variables for this build.
 
 Download the WebRtc source.
 
-	mkdir [WebRtc Working Directory]\src\Google\src
-	cd [WebRtc Working Directory]\src\Google\src
-	fetch webrtc
+	cd [WebRtcNet Working Directory]\third-party\WebRtc
+	gclient sync
 
+This may take a couple of hours. The sync command downloads the WebRtc native client from https://chromium.googlesource.com/external/webrtc.git including much of the chromium tree https://chromium.googlesource.com/chromium/src.git. These add up to nearly 10 GB.
+	
 To build:
 	ninja -C out\Debug
 
 	
-As of this time , WebRtc does not build with Visual Studio 2015. There are a small handful of changes that you will need to make 
+As of this time, WebRtc does not build with Visual Studio 2015. There are a small handful of changes that you will need to make 
 
 gflags changes: https://codereview.appspot.com/270690043/
 These will not be necessary when issue https://code.google.com/p/webrtc/issues/detail?id=5185 is fixed.
 
-webrtc changes: https://codereview.webrtc.org/1412653006
+webrtc changes: https://codereview.webrtc.org/1412653006 (now fixed for x86 builds)
 These will not be necessary when issue https://code.google.com/p/webrtc/issues/detail?id=5183 is fixed.
