@@ -78,7 +78,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WebRtcInterop.Framework\WebRtcInterop.Framework.vcxproj">
+    <ProjectReference Include="..\WebRtcInterop\WebRtcInterop.Framework.vcxproj">
       <Project>{26f36298-7f6a-4bd1-893b-2572ba180259}</Project>
     </ProjectReference>
     <ProjectReference Include="..\WebRtcNet.Api\WebRtcNet.Api.csproj">

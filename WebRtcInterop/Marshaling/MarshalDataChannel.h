@@ -25,4 +25,21 @@ namespace msclr::interop
 		}
 		throw gcnew InvalidCastException("Invalid DataChannelInterface::DataState value.");
 	}
+
+	template<>
+	inline webrtc::DataChannelInterface::DataState marshal_as(WebRtcNet::RtcDataChannelState const & from)
+	{
+		switch (from)
+		{
+		case WebRtcNet::RtcDataChannelState::Connecting:
+			return webrtc::DataChannelInterface::DataState::kConnecting;
+		case WebRtcNet::RtcDataChannelState::Open:
+			return webrtc::DataChannelInterface::DataState::kOpen;
+		case WebRtcNet::RtcDataChannelState::Closing:
+			return webrtc::DataChannelInterface::DataState::kClosing;
+		case WebRtcNet::RtcDataChannelState::Closed:
+			return webrtc::DataChannelInterface::DataState::kClosed;
+		}
+		throw gcnew InvalidCastException("Invalid DataChannelState value.");
+	}
 }

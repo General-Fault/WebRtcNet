@@ -4,18 +4,31 @@
     <Filter Include="Marshaling">
       <UniqueIdentifier>{0c0e95fa-ad47-4c7f-a95b-b4ada7c818de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Observers">
+      <UniqueIdentifier>{9ba0ba64-d5f2-4e0f-9f00-5a827edbb003}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Observers\DataChannelObserver.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RtcDataChannel.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Observers\DataChannelObserver.cpp">
+      <Filter>Observers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory) ManagedScopedRefPtr.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory) Marshaling\MarshalCollections.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory) Marshaling\MarshalDataChannel.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory) Marshaling\MarshalNullable.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory) Observers\DataChannelObserver.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory) Resource.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory) RtcDataChannel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ManagedScopedRefPtr.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Resource.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RtcDataChannel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Observers\DataChannelObserver.h">
+      <Filter>Observers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalCollections.h">
+      <Filter>Marshaling</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalDataChannel.h">
+      <Filter>Marshaling</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalNullable.h">
+      <Filter>Marshaling</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

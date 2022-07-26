@@ -11,7 +11,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>obj/webrtc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>obj\webrtc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcmtd;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -21,10 +21,10 @@
 echo Generating WebRtc Build Files
 cmd /c gn gen "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)" --args="target_cpu=\"x64\" is_debug=false"
 echo Compiling WebRtc Build Files
-ninja -C $(SolutionDir)\third-party\google\webrtc\out\$(Configuration)\$(Platform)
+ninja -C $(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)
 </Command>
       <Message>Building Google WebRtc Library</Message>
-      <Outputs>$(SolutionDir)\third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj\webrtc.lib</Outputs>
+      <Outputs>$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj\webrtc.lib</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -33,10 +33,10 @@ ninja -C $(SolutionDir)\third-party\google\webrtc\out\$(Configuration)\$(Platfor
 echo Generating WebRtc Build Files
 cmd /c gn gen "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)" --args="target_cpu=\"x64\" is_debug=true"
 echo Compiling WebRtc Build Files
-ninja -C $(SolutionDir)\third-party\google\webrtc\out\$(Configuration)\$(Platform)
+ninja -C $(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)
 </Command>
       <Message>Building Google WebRtc Library</Message>
-      <Outputs>$(SolutionDir)\third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj\webrtc.lib</Outputs>
+      <Outputs>$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj\webrtc.lib</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -45,10 +45,10 @@ ninja -C $(SolutionDir)\third-party\google\webrtc\out\$(Configuration)\$(Platfor
 echo Generating WebRtc Build Files
 cmd /c gn gen "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)" --args="target_cpu=\"x86\" is_debug=false"
 echo Compiling WebRtc Build Files
-ninja -C $(SolutionDir)\third-party\google\webrtc\out\$(Configuration)\$(Platform)
+ninja -C $(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)
 </Command>
       <Message>Building Google WebRtc Library</Message>
-      <Outputs>$(SolutionDir)\third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj\webrtc.lib</Outputs>
+      <Outputs>$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj\webrtc.lib</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -57,23 +57,23 @@ ninja -C $(SolutionDir)\third-party\google\webrtc\out\$(Configuration)\$(Platfor
 echo Generating WebRtc Build Files
 cmd /c gn gen "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)" --args="target_cpu=\"x86\" is_debug=true"
 echo Compiling WebRtc Build Files
-ninja -C $(SolutionDir)\third-party\google\webrtc\out\$(Configuration)\$(Platform)
+ninja -C $(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)
 </Command>
       <Message>Building Google WebRtc Library</Message>
-      <Outputs>$(SolutionDir)\third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj\webrtc.lib</Outputs>
+      <Outputs>$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj\webrtc.lib</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory) ManagedScopedRefPtr.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory) Marshaling\MarshalCollections.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory) Marshaling\MarshalDataChannel.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory) Marshaling\MarshalNullable.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory) Observers\DataChannelObserver.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory) Resource.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory) RtcDataChannel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ManagedScopedRefPtr.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalCollections.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalDataChannel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalNullable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Observers\DataChannelObserver.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Resource.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RtcDataChannel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Observers\DataChannelObserver.cpp" />

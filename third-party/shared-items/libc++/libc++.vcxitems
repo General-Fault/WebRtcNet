@@ -36,7 +36,6 @@
     <Object Include="$(MSBuildThisFileDirectory)..\..\google\webrtc\out\$(Configuration)\$(Platform)\obj\buildtools\third_party\libc++\libc++\ios.instantiations.obj" />
     <Object Include="$(MSBuildThisFileDirectory)..\..\google\webrtc\out\$(Configuration)\$(Platform)\obj\buildtools\third_party\libc++\libc++\ios.obj" />
     <Object Include="$(MSBuildThisFileDirectory)..\..\google\webrtc\out\$(Configuration)\$(Platform)\obj\buildtools\third_party\libc++\libc++\iostream.obj" />
-    <Object Include="$(MSBuildThisFileDirectory)..\..\google\webrtc\out\$(Configuration)\$(Platform)\obj\buildtools\third_party\libc++\libc++\legacy_debug_handler.obj" />
     <Object Include="$(MSBuildThisFileDirectory)..\..\google\webrtc\out\$(Configuration)\$(Platform)\obj\buildtools\third_party\libc++\libc++\legacy_pointer_safety.obj" />
     <Object Include="$(MSBuildThisFileDirectory)..\..\google\webrtc\out\$(Configuration)\$(Platform)\obj\buildtools\third_party\libc++\libc++\locale.obj" />
     <Object Include="$(MSBuildThisFileDirectory)..\..\google\webrtc\out\$(Configuration)\$(Platform)\obj\buildtools\third_party\libc++\libc++\locale_win32.obj" />

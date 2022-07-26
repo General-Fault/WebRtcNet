@@ -2,6 +2,7 @@
 
 #include "Marshaling/MarshalDataChannel.h"
 #include "gtest/gtest.h"
+#include "TestUtils.h"
 
 using namespace msclr::interop;
 
@@ -61,18 +62,17 @@ TEST_P(marshal_data_channel_state_tests, marshal_as_managed_RtcDataChannelState_
 
 INSTANTIATE_TEST_CASE_P(DataChannelStates, marshal_data_channel_state_tests, testing::ValuesIn(state_map), marshal_data_channel_state_tests::param_test_name);
 
-//
-//	[Test]
-//	void marshal_as_native_DataState_to_managed_RtcDataChannelState_invalid_test()
-//	{
-//		auto action = gcnew TestDelegate(&MarshalDataChannelTests::MarshalInvalidRtcDataChannelState);
-//
-//		Assert::Throws<InvalidCastException ^>(action);
-//	}
-//
-//private:
-//	static void MarshalInvalidRtcDataChannelState()
-//	{
-//		auto to = marshal_as<RtcDataChannelState>((DataChannelInterface::DataState)(DataChannelInterface::DataState::kClosed + 1));
-//		Assert::Fail("Should not have made it here");
-//	}
+TEST(marshal_data_channel_state_tests, marshal_as_native_dataState_to_managed_rtcdatachannelstate_invalid_test)
+{
+	try
+	{
+		auto to = marshal_as<RtcDataChannelState>(static_cast<DataChannelInterface::DataState>(DataChannelInterface::DataState::kClosed + 1));
+		FAIL();
+	}
+	catch (Exception^ ex)
+	{
+		// check exception
+		EXPECT_MANAGED_TYPE_EQ(*ex, InvalidCastException::typeid);
+		EXPECT_MANAGED_STREQ(ex->Message, "Invalid DataChannelInterface::DataState value.");
+	}
+}
