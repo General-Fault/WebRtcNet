@@ -2,9 +2,9 @@
 
 #include "CreateSessionDescriptionObserver.h"
 
-#include "..\Marshaling\MarshalPeerConnection.h"
+#include "../Marshaling/MarshalPeerConnection.h"
 
-#include "msclr\marshal_cppstd.h"
+#include "msclr/marshal_cppstd.h"
 using namespace msclr;
 
 WebRtcObservers_Start

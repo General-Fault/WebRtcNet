@@ -11,7 +11,9 @@ namespace rtc
 
 namespace WebRtcInterop {
 
-public ref class MediaStream : WebRtcNet::IMediaStream
+using namespace WebRtcNet::Media;
+
+public ref class MediaStream : IMediaStream
 {
 public:
 	/// Composes a new stream from the tracks of an existing stream.
@@ -22,22 +24,22 @@ public:
 	//MediaStream(IEnumerable<IMediaStreamTrack^>^ tracks);
 
 	// Inherited via IMediaStream
-	virtual property System::String ^ Id;
-	virtual IEnumerable<WebRtcNet::IMediaStreamTrack^>^ GetAudioTracks();
-	virtual IEnumerable<WebRtcNet::IMediaStreamTrack^>^ GetVideoTracks();
-	virtual IEnumerable<WebRtcNet::IMediaStreamTrack^>^ GetTracks();
-	virtual WebRtcNet::IMediaStreamTrack ^ GetTrackById(System::String ^ trackId);
-	virtual void AddTrack(WebRtcNet::IMediaStreamTrack ^ track);
-	virtual void RemoveTrack(WebRtcNet::IMediaStreamTrack ^ track);
-	virtual WebRtcNet::IMediaStream ^ Clone();
-	virtual property System::Boolean Active;
-	virtual event System::EventHandler ^ OnActive;
-	virtual event System::EventHandler ^ OnInactive;
-	virtual event System::EventHandler<WebRtcNet::IMediaStreamTrack^>^ OnAddTrack;
-	virtual event System::EventHandler<WebRtcNet::IMediaStreamTrack^>^ OnRemoveTrack;
+	virtual property String^ Id;
+	virtual IEnumerable<IMediaStreamTrack^>^ GetAudioTracks();
+	virtual IEnumerable<IMediaStreamTrack^>^ GetVideoTracks();
+	virtual IEnumerable<IMediaStreamTrack^>^ GetTracks();
+	virtual IMediaStreamTrack ^ GetTrackById(String^ trackId);
+	virtual void AddTrack(IMediaStreamTrack ^ track);
+	virtual void RemoveTrack(IMediaStreamTrack ^ track);
+	virtual IMediaStream ^ Clone();
+	virtual property Boolean Active;
+	virtual event EventHandler^ OnActive;
+	virtual event EventHandler^ OnInactive;
+	virtual event EventHandler<IMediaStreamTrack^>^ OnAddTrack;
+	virtual event EventHandler<IMediaStreamTrack^>^ OnRemoveTrack;
 
 internal:
-	MediaStream(webrtc::MediaStreamInterface * stream);
+	MediaStream(rtc::scoped_refptr <webrtc::MediaStreamInterface> stream);
 	!MediaStream();
 	webrtc::MediaStreamInterface * GetNativeMediaStreamInterface(bool throwOnDisposed);
 
@@ -49,21 +51,23 @@ private:
 
 namespace WebRtcNet {
 
-public ref class Media
+using namespace Media;
+
+public ref class MediaDevices : IMediaDevices
 {
 public:
 	static IMediaStream ^ GetUserMedia(MediaStreamConstraints ^ constraints);
 private:
-	Media() {};
+	MediaDevices() {};
 };
 
 
-public ref class MediaStreamException : System::Exception 
+public ref class MediaStreamException : Exception
 {
 public:
 	MediaStreamException(IMediaStream ^ stream) : _stream(stream) {};
-	MediaStreamException(IMediaStream ^ stream, System::String ^ msg) : System::Exception(msg), _stream(stream) {};
-	MediaStreamException(System::String ^ msg) : System::Exception(msg), _stream(nullptr) {};
+	MediaStreamException(IMediaStream ^ stream, String^ msg) : Exception(msg), _stream(stream) {};
+	MediaStreamException(String^ msg) : Exception(msg), _stream(nullptr) {};
 
 	property IMediaStream ^ Stream { IMediaStream ^ get() { return _stream; } };
 

@@ -1,73 +1,72 @@
 #pragma once
 
+#include "MarshalCollections.h"
 #include "MarshalIceServer.h"
 #include "MarshalPeerConnection.h"
-#include "MarshalCollections.h"
-
-#include "talk\app\webrtc\peerconnectioninterface.h"
+#include "api/peer_connection_interface.h"
 
 namespace msclr { namespace interop
 {
 	template<>
-	inline webrtc::PeerConnectionInterface::IceTransportsType marshal_as(WebRtcNet::RtcIceTransportPolicy const & from)
+	inline webrtc::PeerConnectionInterface::IceTransportsType marshal_as(RtcIceTransportPolicy const & from)
 	{
 		switch (from)
 		{
-		case WebRtcNet::RtcIceTransportPolicy::Relay:
+		case RtcIceTransportPolicy::Relay:
 			return webrtc::PeerConnectionInterface::IceTransportsType::kRelay;
-		case WebRtcNet::RtcIceTransportPolicy::All:
+		case RtcIceTransportPolicy::All:
 			return webrtc::PeerConnectionInterface::IceTransportsType::kAll;
-		case WebRtcNet::RtcIceTransportPolicy::None:
+		case RtcIceTransportPolicy::None:
 			return webrtc::PeerConnectionInterface::IceTransportsType::kNone;
 		//case WebRtcNet::RtcIceTransportPolicy::NoHost: // No support for nohost at the moment.
 		//	return webrtc::PeerConnectionInterface::IceTransportsType::kNoHost;
 		}
 
-		throw gcnew System::InvalidCastException(System::String::Format("Invalid RtcIceTransportPolicy - '{0}'.", from.ToString()));
+		throw gcnew InvalidCastException(String::Format("Invalid RtcIceTransportPolicy - '{0}'.", from.ToString()));
 	}
 
 	template<>
-	inline webrtc::PeerConnectionInterface::BundlePolicy marshal_as(WebRtcNet::RtcBundlePolicy const & from)
+	inline webrtc::PeerConnectionInterface::BundlePolicy marshal_as(RtcBundlePolicy const & from)
 	{
 		switch (from)
 		{
-		case WebRtcNet::RtcBundlePolicy::Balanced:
+		case RtcBundlePolicy::Balanced:
 			return webrtc::PeerConnectionInterface::BundlePolicy::kBundlePolicyBalanced;
-		case WebRtcNet::RtcBundlePolicy::MaxBundle:
+		case RtcBundlePolicy::MaxBundle:
 			return webrtc::PeerConnectionInterface::BundlePolicy::kBundlePolicyMaxBundle;
-		case WebRtcNet::RtcBundlePolicy::MaxCompat:
+		case RtcBundlePolicy::MaxCompat:
 			return webrtc::PeerConnectionInterface::BundlePolicy::kBundlePolicyMaxCompat;
 		}
 
-		throw gcnew System::InvalidCastException(System::String::Format("Invalid RtcBundlePolicy - '{0}'.", from.ToString()));
+		throw gcnew InvalidCastException(String::Format("Invalid RtcBundlePolicy - '{0}'.", from.ToString()));
 	}
 
 	template<>
-	inline webrtc::PeerConnectionInterface::RTCConfiguration marshal_as(WebRtcNet::RtcConfiguration ^ const & from)
+	inline webrtc::PeerConnectionInterface::RTCConfiguration marshal_as(RtcConfiguration^ const & from)
 	{
-		auto servers = (System::Collections::Generic::IEnumerable<WebRtcNet::RtcIceServer ^> ^)from->IceServers;
+		auto servers = safe_cast<IEnumerable<RtcIceServer^>^>(from->IceServers);
 
 		webrtc::PeerConnectionInterface::RTCConfiguration to;
-		to.type = marshal_as<webrtc::PeerConnectionInterface::IceTransportsType>((WebRtcNet::RtcIceTransportPolicy)from->IceTransportPolicy);
-		to.servers = marshal_enumerable_as<webrtc::PeerConnectionInterface::IceServer, WebRtcNet::RtcIceServer^>(servers);
+		to.type = marshal_as<webrtc::PeerConnectionInterface::IceTransportsType>((RtcIceTransportPolicy)from->IceTransportPolicy);
+		to.servers = marshal_enumerable_as<webrtc::PeerConnectionInterface::IceServer, RtcIceServer^>(servers);
 
-		to.bundle_policy = marshal_as<webrtc::PeerConnectionInterface::BundlePolicy>((WebRtcNet::RtcBundlePolicy)from->BundlePolicy);
+		to.bundle_policy = marshal_as<webrtc::PeerConnectionInterface::BundlePolicy>((RtcBundlePolicy)from->BundlePolicy);
 
 		return to;
 	};
 
 
 	template <>
-	inline WebRtcNet::RtcConfiguration ^ marshal_as(const webrtc::PeerConnectionInterface::RTCConfiguration & from)
+	inline RtcConfiguration^ marshal_as(const webrtc::PeerConnectionInterface::RTCConfiguration & from)
 	{
 
-		auto servers = gcnew System::Collections::Generic::List<WebRtcNet::RtcIceServer ^>(
-			marshal_vector_as<WebRtcNet::RtcIceServer ^, webrtc::PeerConnectionInterface::IceServer>(from.servers));
+		auto servers = gcnew List<RtcIceServer^>(
+			marshal_vector_as<RtcIceServer^, webrtc::PeerConnectionInterface::IceServer>(from.servers));
 
-		auto to = gcnew WebRtcNet::RtcConfiguration(servers);
+		auto to = gcnew RtcConfiguration(servers);
 
-		to->IceTransportPolicy = marshal_as<WebRtcNet::RtcIceTransportPolicy>(from.type);
-		to->BundlePolicy = marshal_as<WebRtcNet::RtcBundlePolicy>(from.bundle_policy);
+		to->IceTransportPolicy = marshal_as<RtcIceTransportPolicy>(from.type);
+		to->BundlePolicy = marshal_as<RtcBundlePolicy>(from.bundle_policy);
 
 		//to->RtcpMuxPolicy = marshal<WebRtcInterop::RtcpMuxPolicy>(from.rtcp_mux_policy);
 		//to->TcpCandidatePolicy = marshal<WebRtcInterop::TcpCandidatePolicy>(from.tcp_candidate_policy);

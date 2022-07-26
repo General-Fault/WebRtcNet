@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{fac2e2bf-5a09-428f-a224-1ce7a160a2d1}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(SolutionDir)third-party\google\webrtc\src;$(SolutionDir)third-party\google\webrtc\src\third_party\abseil-cpp;$(SolutionDir)third-party\google\webrtc\src\buildtools\third_party\libc++;$(SolutionDir)third-party\google\webrtc\src\third_party\libyuv\include;$(SolutionDir)third-party\google\webrtc\src\third_party\jsoncpp\source\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>obj/webrtc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>libcmtd;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <CustomBuildStep>
+      <Command>cd "$(SolutionDir)third-party\google\webrtc\src"
+echo Generating WebRtc Build Files
+cmd /c gn gen "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)" --args="target_cpu=\"x64\" is_debug=false"
+echo Compiling WebRtc Build Files
+ninja -C $(SolutionDir)\third-party\google\webrtc\out\$(Configuration)\$(Platform)
+</Command>
+      <Message>Building Google WebRtc Library</Message>
+      <Outputs>$(SolutionDir)\third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj\webrtc.lib</Outputs>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <CustomBuildStep>
+      <Command>cd "$(SolutionDir)third-party\google\webrtc\src"
+echo Generating WebRtc Build Files
+cmd /c gn gen "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)" --args="target_cpu=\"x64\" is_debug=true"
+echo Compiling WebRtc Build Files
+ninja -C $(SolutionDir)\third-party\google\webrtc\out\$(Configuration)\$(Platform)
+</Command>
+      <Message>Building Google WebRtc Library</Message>
+      <Outputs>$(SolutionDir)\third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj\webrtc.lib</Outputs>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <CustomBuildStep>
+      <Command>cd "$(SolutionDir)third-party\google\webrtc\src"
+echo Generating WebRtc Build Files
+cmd /c gn gen "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)" --args="target_cpu=\"x86\" is_debug=false"
+echo Compiling WebRtc Build Files
+ninja -C $(SolutionDir)\third-party\google\webrtc\out\$(Configuration)\$(Platform)
+</Command>
+      <Message>Building Google WebRtc Library</Message>
+      <Outputs>$(SolutionDir)\third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj\webrtc.lib</Outputs>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <CustomBuildStep>
+      <Command>cd "$(SolutionDir)third-party\google\webrtc\src"
+echo Generating WebRtc Build Files
+cmd /c gn gen "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)" --args="target_cpu=\"x86\" is_debug=true"
+echo Compiling WebRtc Build Files
+ninja -C $(SolutionDir)\third-party\google\webrtc\out\$(Configuration)\$(Platform)
+</Command>
+      <Message>Building Google WebRtc Library</Message>
+      <Outputs>$(SolutionDir)\third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj\webrtc.lib</Outputs>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory) ManagedScopedRefPtr.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory) Marshaling\MarshalCollections.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory) Marshaling\MarshalDataChannel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory) Marshaling\MarshalNullable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory) Observers\DataChannelObserver.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory) Resource.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory) RtcDataChannel.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Observers\DataChannelObserver.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)RtcDataChannel.cpp" />
+  </ItemGroup>
+</Project>

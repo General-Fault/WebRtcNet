@@ -1,8 +1,8 @@
 #pragma once
 
-#include "talk\app\webrtc\jsep.h"
+#include "api/jsep.h"
 
-#include <msclr\auto_gcroot.h>
+#include <msclr/auto_gcroot.h>
 
 using namespace System::Threading::Tasks;
 

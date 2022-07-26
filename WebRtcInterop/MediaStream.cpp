@@ -1,11 +1,8 @@
 #include "stdafx.h"
 
-#include "webrtc\base\scoped_ref_ptr.h"
-#include "webrtc\base\scoped_ptr.h"
-#include "talk\app\webrtc\mediastreaminterface.h"
-#include "talk\media\devices\devicemanager.h"
-#include "talk\app\webrtc\peerconnectionfactory.h"
-#include "talk\app\webrtc\videosourceinterface.h"
+#include "api/scoped_refptr.h"
+#include "api/media_stream_interface.h"
+#include "api/peer_connection_interface.h"
 
 using namespace System;
 using namespace System::Collections::Generic;
@@ -13,7 +10,7 @@ using namespace System::Threading::Tasks;
 
 #include "MediaStream.h"
 #include "RtcPeerConnectionFactory.h"
-#include "Marshaling\MarshalMediaConstraints.h"
+#include "Marshaling/MarshalMediaConstraints.h"
 
 using namespace WebRtcNet;
 
@@ -44,7 +41,7 @@ namespace WebRtcNet
 		return capturer;
 	}
 
-	IMediaStream ^ Media::GetUserMedia(MediaStreamConstraints ^ constraints)
+	IMediaStream ^ MediaDevices::GetUserMedia(MediaStreamConstraints ^ constraints)
 	{
 		auto peerConnectionFactory = RtcPeerConnectionFactory::Instance->GetNativePeerConnectionFactoryInterface(true);
 
@@ -52,16 +49,16 @@ namespace WebRtcNet
 
 		if (constraints == nullptr || constraints->Audio)
 		{
-			auto nativeConstraints = marshal_as<webrtc::FakeConstraints>(constraints->AudioConstraints);
-			auto audioSource = peerConnectionFactory->CreateAudioSource(&nativeConstraints);
-			auto audioTrack(peerConnectionFactory->CreateAudioTrack("audio_label", audioSource));
+			auto audio_options = marshal_as<cricket::AudioOptions>(constraints->AudioConstraints);
+			auto audio_source = peerConnectionFactory->CreateAudioSource(audio_options);
+			auto audioTrack(peerConnectionFactory->CreateAudioTrack("audio_label", audio_source.get()));
 			stream->AddTrack(audioTrack); //returns false if track is already in the stream. Not a problem here.
 		}
 
 		if (constraints == nullptr || constraints->Video)
 		{
-			auto nativeConstraints = marshal_as<webrtc::FakeConstraints>(constraints->VideoConstraints);
-			auto videoSource = peerConnectionFactory->CreateVideoSource(OpenVideoCaptureDevice(), &nativeConstraints);
+			auto nativeConstraints = marshal_as<cricket::VideoOptions>(constraints->VideoConstraints);
+			auto videoSource = peerConnectionFactory->CreateVideoTrack(OpenVideoCaptureDevice(), &nativeConstraints);
 			auto videoTrack = peerConnectionFactory->CreateVideoTrack("video_label", videoSource);
 			stream->AddTrack(videoTrack); //returns false if track is already in the stream. Not a problem here.
 		}
@@ -79,8 +76,8 @@ MediaStream::MediaStream(MediaStream ^ & stream)
 	_rpMediaStreamInterface = new rtc::scoped_refptr<webrtc::MediaStreamInterface>(nativeStream);
 }
 
-MediaStream::MediaStream(webrtc::MediaStreamInterface * stream)
-	: _rpMediaStreamInterface(new rtc::scoped_refptr<webrtc::MediaStreamInterface>(stream))
+MediaStream::MediaStream(rtc::scoped_refptr<webrtc::MediaStreamInterface> stream)
+	: _rpMediaStreamInterface(new rtc::scoped_refptr(stream))
 {
 }
 

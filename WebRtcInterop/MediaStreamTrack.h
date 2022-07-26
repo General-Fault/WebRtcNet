@@ -20,7 +20,6 @@ public:
 	virtual event System::EventHandler ^ OnMute;
 	virtual event System::EventHandler ^ OnUnMute;
 	virtual event System::EventHandler<WebRtcNet::MediaStreamError ^> ^ OnEnded;
-	virtual event System::EventHandler<WebRtcNet::MediaStreamError ^> ^ OnOverConstrained;
 	virtual WebRtcNet::IMediaStreamTrack ^ Clone();
 	virtual void Stop();
 	virtual WebRtcNet::MediaTrackCapabilities GetCapabilities();

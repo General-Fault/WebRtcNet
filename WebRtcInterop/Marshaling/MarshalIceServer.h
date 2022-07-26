@@ -1,10 +1,10 @@
 #pragma once
 
-#include "talk\app\webrtc\peerconnectioninterface.h"
+#include "api/peer_connection_interface.h"
 #include "MarshalCollections.h"
 
-#include <msclr\marshal.h>
-#include <msclr\marshal_cppstd.h>
+#include <msclr/marshal.h>
+#include <msclr/marshal_cppstd.h>
 
 namespace msclr { namespace interop
 {

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Marshaling">
+      <UniqueIdentifier>{0c0e95fa-ad47-4c7f-a95b-b4ada7c818de}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Observers\DataChannelObserver.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)RtcDataChannel.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory) ManagedScopedRefPtr.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory) Marshaling\MarshalCollections.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory) Marshaling\MarshalDataChannel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory) Marshaling\MarshalNullable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory) Observers\DataChannelObserver.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory) Resource.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory) RtcDataChannel.h" />
+  </ItemGroup>
+</Project>

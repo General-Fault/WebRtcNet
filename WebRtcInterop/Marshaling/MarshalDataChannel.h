@@ -1,12 +1,14 @@
 #pragma once
 
-#include "talk\app\webrtc\datachannelinterface.h"
+#include "api/data_channel_interface.h"
 
-#include <msclr\marshal.h>
-#include <msclr\marshal_cppstd.h>
+#include <msclr/marshal.h>
+#include <msclr/marshal_cppstd.h>
 
-namespace msclr { namespace interop
+namespace msclr::interop
 {
+	using namespace System;
+
 	template<>
 	inline WebRtcNet::RtcDataChannelState marshal_as(webrtc::DataChannelInterface::DataState const & from)
 	{
@@ -21,6 +23,6 @@ namespace msclr { namespace interop
 		case webrtc::DataChannelInterface::DataState::kClosed:
 			return WebRtcNet::RtcDataChannelState::Closed;
 		}
-		throw gcnew System::InvalidCastException("Invalid DataChannelInterface::DataState value.");
+		throw gcnew InvalidCastException("Invalid DataChannelInterface::DataState value.");
 	}
-}}
+}

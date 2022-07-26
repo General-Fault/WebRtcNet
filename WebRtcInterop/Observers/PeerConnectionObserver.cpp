@@ -1,27 +1,27 @@
 #include "stdafx.h"
 
-#include "talk\app\webrtc\peerconnectioninterface.h"
-#include "talk\app\webrtc\mediastreaminterface.h"
+#include "api/peer_connection_interface.h"
+#include "api/media_stream_interface.h"
 
 using namespace System;
-using namespace System::Collections::Generic;
-using namespace System::Runtime::InteropServices;
-using namespace System::Threading::Tasks;
+using namespace Collections::Generic;
+using namespace Runtime::InteropServices;
+using namespace Threading::Tasks;
 
 #include "PeerConnectionObserver.h"
-#include "..\RtcDataChannel.h"
-#include "..\RtcPeerConnection.h"
-#include "..\MediaStream.h"
-#include "..\Marshaling\MarshalPeerConnection.h"
-#include "..\Marshaling\MarshalIceCandidate.h"
+#include "../RtcDataChannel.h"
+#include "../RtcPeerConnection.h"
+#include "../MediaStream.h"
+#include "../Marshaling/MarshalPeerConnection.h"
+#include "../Marshaling/MarshalIceCandidate.h"
 
 
 WebRtcObservers_Start
 
-PeerConnectionObserver::PeerConnectionObserver(WebRtcInterop::RtcPeerConnection ^ peerConnection)
+PeerConnectionObserver::PeerConnectionObserver(RtcPeerConnection^ peerConnection)
 	: _peerConnection(peerConnection)
 {
-	if (peerConnection == nullptr) throw gcnew System::ArgumentNullException("peerConnection");
+	if (peerConnection == nullptr) throw gcnew ArgumentNullException("peerConnection");
 }
 
 PeerConnectionObserver::~PeerConnectionObserver()
@@ -34,19 +34,19 @@ void PeerConnectionObserver::OnSignalingChange(webrtc::PeerConnectionInterface::
 	_peerConnection->FireOnSignalingStateChange(marshal_as<WebRtcNet::RtcSignalingState>(new_state));
 }
 
-void PeerConnectionObserver::OnAddStream(webrtc::MediaStreamInterface * stream)
+void PeerConnectionObserver::OnAddStream(rtc::scoped_refptr<webrtc::MediaStreamInterface> stream)
 {
-	_peerConnection->FireOnAddStream(gcnew WebRtcInterop::MediaStream(stream));
+	_peerConnection->FireOnAddStream(gcnew MediaStream(stream));
 }
 
-void PeerConnectionObserver::OnRemoveStream(webrtc::MediaStreamInterface * stream)
+void PeerConnectionObserver::OnRemoveStream(rtc::scoped_refptr<webrtc::MediaStreamInterface> stream)
 {
-	_peerConnection->FireOnRemoveStream(gcnew WebRtcInterop::MediaStream(stream));
+	_peerConnection->FireOnRemoveStream(gcnew MediaStream(stream));
 }
 
-void PeerConnectionObserver::OnDataChannel(webrtc::DataChannelInterface* data_channel)
+void PeerConnectionObserver::OnDataChannel(rtc::scoped_refptr<webrtc::DataChannelInterface> data_channel)
 {
-	_peerConnection->FireOnDataChannel(gcnew WebRtcInterop::RtcDataChannel(data_channel));
+	_peerConnection->FireOnDataChannel(gcnew RtcDataChannel(data_channel));
 }
 
 void PeerConnectionObserver::OnRenegotiationNeeded()

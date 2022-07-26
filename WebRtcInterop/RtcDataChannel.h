@@ -1,53 +1,67 @@
 #pragma once
 
+#include "ManagedScopedRefPtr.h"
+
 namespace webrtc
 {
 	class DataChannelInterface;
 }
-namespace rtc
+
+namespace WebRtcInterop
 {
-	template <class T> class scoped_refptr;
-}
+	using namespace System;
+	using namespace WebRtcNet;
 
-namespace WebRtcInterop {
-
-	public ref class RtcDataChannel : WebRtcNet::IRtcDataChannel
+	public ref class RtcDataChannel : IRtcDataChannel
 	{
 	public:
 		~RtcDataChannel();
 
 		// Inherited via IRtcDataChannel
-		virtual property System::String ^ Label { System::String ^ get(); }
+		virtual property String^ Label { String^ get(); }
 		virtual property bool Ordered { bool get(); }
-		virtual property System::Nullable<unsigned int> MaxPacketLifeTime { System::Nullable<unsigned int> get();  }
-		virtual property System::Nullable<unsigned int> MaxRetransmits { System::Nullable<unsigned int> get();  }
-		virtual property System::String ^ Protocol { System::String ^ get(); }
+		virtual property Nullable<uint32_t> MaxPacketLifeTime { Nullable<uint32_t> get(); }
+		virtual property Nullable<uint32_t> MaxRetransmits { Nullable<uint32_t> get(); }
+		virtual property String^ Protocol { String^ get(); }
 		virtual property bool Negotiated { bool get(); }
-		virtual property unsigned int Id { unsigned int get(); }
-		virtual property WebRtcNet::RtcDataChannelState ReadyState { WebRtcNet::RtcDataChannelState get(); }
-		virtual property unsigned int BufferedAmount { unsigned int get(); }
-		virtual property System::String ^ BinaryType { System::String ^ get(); void set(System::String ^ value); }
-		virtual event System::EventHandler ^ OnOpen;
-		virtual event System::EventHandler ^ OnError;
-		virtual event System::EventHandler ^ OnClose;
-		virtual event System::EventHandler<WebRtcNet::MessageEventArgs ^> ^ OnMessage;
+		virtual property UInt32 Id { UInt32 get(); }
+		virtual property RtcDataChannelState ReadyState { RtcDataChannelState get(); }
+		virtual property UInt64 BufferedAmount { uint64_t get(); }
+		virtual property Nullable<uint64_t> BufferedAmountLowThreshold
+		{
+			Nullable<uint64_t> get(); void set(Nullable<uint64_t> value);
+		}
+		virtual property String^ BinaryType { String^ get(); void set(String^ value); }
+
+		virtual event EventHandler^ OnOpen;
+		virtual event EventHandler<RtcErrorEventArgs^>^ OnError;
+		virtual event EventHandler^ OnClose;
+		virtual event EventHandler<MessageEventArgs^>^ OnMessage;
+		virtual event EventHandler^ OnBufferedAmountLow;
+
 		virtual void Close();
-		virtual void Send(System::String ^data);
-		virtual void Send(array<unsigned char, 1> ^ data);
+		virtual void Send(String^ data);
+		virtual void Send(Collections::Generic::IEnumerable<Byte>^ data);
+		virtual void Send(array<Byte>^ data);
 	internal:
-		RtcDataChannel(webrtc::DataChannelInterface* dataChannelInterface);
+		RtcDataChannel(webrtc::DataChannelInterface* data_channel_interface);
 		!RtcDataChannel();
 		webrtc::DataChannelInterface* GetNativeDataChannelInterface(bool throwOnDisposed);
 
 		//Event invocation 
-		void FireOnOpen() { OnOpen(this, System::EventArgs::Empty); }
-		void FireOnError() { OnError(this, System::EventArgs::Empty); }
-		void FireOnClose() { OnClose(this, System::EventArgs::Empty); }
-		void FireOnMessage(System::Object ^ data, System::String ^ origin, System::String ^ lastEventId) 
-		{ OnMessage(this, gcnew WebRtcNet::MessageEventArgs(data, origin, lastEventId)); }
+		void FireOnOpen() { OnOpen(this, EventArgs::Empty); }
+		void FireOnError(RtcError^ error) { OnError(this, gcnew RtcErrorEventArgs(error)); }
+		void FireOnClose() { OnClose(this, EventArgs::Empty); }
+
+		void FireOnMessage(Object^ data, String^ origin, String^ lastEventId)
+		{
+			OnMessage(this, gcnew MessageEventArgs(data, origin, lastEventId));
+		}
+
+		void FireOnBufferAmountLow() { OnBufferedAmountLow(this, EventArgs::Empty); }
 
 	private:
-		rtc::scoped_refptr<webrtc::DataChannelInterface> * _rpDataChannelInterface;
+		ManagedScopedRefPtr<webrtc::DataChannelInterface> rp_data_channel_interface_;
+		Nullable<uint64_t> buffered_amount_low_threshold_;
 	};
-
 }

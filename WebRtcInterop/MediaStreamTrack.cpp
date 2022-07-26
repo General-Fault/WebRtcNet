@@ -2,8 +2,11 @@
 
 #include "MediaStreamTrack.h"
 
+#include "api/media_stream_track.h"
+
 using namespace System;
 using namespace WebRtcNet;
+using namespace WebRtcNet::Media;
 
 namespace WebRtcInterop {
 MediaStreamTrack::MediaStreamTrack()

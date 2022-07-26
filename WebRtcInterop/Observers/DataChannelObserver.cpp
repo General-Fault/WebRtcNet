@@ -1,65 +1,73 @@
-#include "stdafx.h"
+#include "pch.h"
 
 #include "DataChannelObserver.h"
 
+using namespace WebRtcInterop;
 using namespace System;
-using namespace System::Runtime::InteropServices;
+using namespace Runtime::InteropServices;
 
-WebRtcObservers_Start
-
-DataChannelObserver::DataChannelObserver(WebRtcInterop::RtcDataChannel ^ dataChannel, webrtc::DataChannelInterface * nativeDataChannel)
-	: _dataChannel(dataChannel)
-	, _nativeDataChannel(nativeDataChannel)
+namespace WebRtcInterop::Observers
 {
-	if (dataChannel == nullptr) throw gcnew System::ArgumentNullException("dataChannel");
-	if (nativeDataChannel == nullptr) throw gcnew System::ArgumentNullException("nativeDataChannel");
-}
-
-DataChannelObserver::~DataChannelObserver()
-{
-	_dataChannel = nullptr;
-}
-
-void DataChannelObserver::OnStateChange()
-{
-	auto state = _nativeDataChannel->state();
-	if (state == webrtc::DataChannelInterface::DataState::kOpen)
+	DataChannelObserver::DataChannelObserver(RtcDataChannel^ data_channel,
+		DataChannelInterface* native_data_channel)
+		: data_channel_(data_channel)
+		, native_data_channel_(native_data_channel)
 	{
-		_dataChannel->FireOnOpen();
+		if (data_channel == nullptr) throw gcnew ArgumentNullException("dataChannel");
+		if (native_data_channel == nullptr) throw gcnew ArgumentNullException("nativeDataChannel");
 	}
-	else if (state == webrtc::DataChannelInterface::DataState::kClosed)
+
+	DataChannelObserver::~DataChannelObserver()
 	{
-		_dataChannel->FireOnClose();
+		data_channel_ = nullptr;
 	}
-}
 
-void DataChannelObserver::OnMessage(const webrtc::DataBuffer & buffer)
-{
-	if (buffer.binary)
+	void DataChannelObserver::OnStateChange()
 	{
-		auto data = buffer.data.data<unsigned char>();
-		
-		int size = buffer.data.size();
-		auto managedData = gcnew array<unsigned char>(size);
-
+		const auto state = native_data_channel_->state();
+		if (state == DataChannelInterface::DataState::kOpen)
 		{
-			pin_ptr<unsigned char> ptrBuffer = &managedData[managedData->GetLowerBound(0)];
-			memccpy(ptrBuffer, data, 0, size);
+			data_channel_->FireOnOpen();
 		}
-
-		_dataChannel->FireOnMessage(managedData, "N/A", "N/A");
+		else if (state == DataChannelInterface::DataState::kClosed)
+		{
+			data_channel_->FireOnClose();
+		}
 	}
-	else
+
+	void DataChannelObserver::OnMessage(const DataBuffer& buffer)
 	{
-		auto data = buffer.data.data<char>();
-		auto str = marshal_as<System::String ^>(data);
-		_dataChannel->FireOnMessage(str, "N/A", "N/A");
+		if (buffer.binary)
+		{
+			const auto data = buffer.data.data<unsigned char>();
+
+			const auto size = buffer.data.size();
+			auto managedData = gcnew array<unsigned char>(static_cast<int>(size));
+
+			{
+				const pin_ptr<unsigned char> ptrBuffer = &managedData[managedData->GetLowerBound(0)];
+				_memccpy(ptrBuffer, data, 0, size);
+			}
+
+			data_channel_->FireOnMessage(managedData, "N/A", "N/A");
+		}
+		else
+		{
+			const auto data = buffer.data.data<char>();
+			auto str = marshal_as<String^>(data);
+			data_channel_->FireOnMessage(str, "N/A", "N/A");
+		}
 	}
-}
 
-void DataChannelObserver::OnBufferedAmountChange(uint64_t previous_amount)
-{
-	//Ignore.
-}
+	void DataChannelObserver::OnBufferedAmountChange(uint64_t previous_amount)
+	{
+		if (!data_channel_->BufferedAmountLowThreshold.HasValue) return;
 
-WebRtcObservers_End
+		const auto threshold = data_channel_->BufferedAmountLowThreshold.Value;
+		if (previous_amount > threshold && native_data_channel_->buffered_amount() < threshold)
+		{
+			data_channel_->FireOnBufferAmountLow();
+		}
+	}
+
+}

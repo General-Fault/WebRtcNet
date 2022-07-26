@@ -1,123 +1,150 @@
-#include "stdafx.h"
+#include "pch.h"
+
 #include "RtcDataChannel.h"
 
-#include "webrtc\base\scoped_ref_ptr.h"
-#include "talk\app\webrtc\datachannelinterface.h"
+#include "api/data_channel_interface.h"
+#include "Marshaling/MarshalCollections.h"
 
-#include "Marshaling\MarshalDataChannel.h"
-#include "Observers\DataChannelObserver.h"
+#include "Marshaling/MarshalDataChannel.h"
+#include "Marshaling/MarshalNullable.h"
+#include "Observers/DataChannelObserver.h"
 
 using namespace System;
 using namespace WebRtcNet;
 
-namespace WebRtcInterop {
-
-RtcDataChannel::RtcDataChannel(webrtc::DataChannelInterface* dataChannelInterface)
-	:_rpDataChannelInterface(new rtc::scoped_refptr<webrtc::DataChannelInterface>(dataChannelInterface))
+namespace WebRtcInterop
 {
-	dataChannelInterface->RegisterObserver(new WebRtcInterop::Observers::DataChannelObserver(this, dataChannelInterface));
-}
-
-RtcDataChannel::~RtcDataChannel()
-{
-	this->!RtcDataChannel();
-}
-
-RtcDataChannel::!RtcDataChannel()
-{
-	delete _rpDataChannelInterface;
-	_rpDataChannelInterface = nullptr;
-}
-
-webrtc::DataChannelInterface* RtcDataChannel::GetNativeDataChannelInterface(bool throwOnDisposed)
-{
-	if (_rpDataChannelInterface == nullptr || _rpDataChannelInterface->get() == nullptr)
+	RtcDataChannel::RtcDataChannel(DataChannelInterface* data_channel_interface)
+		: rp_data_channel_interface_(data_channel_interface),
+		  buffered_amount_low_threshold_()
 	{
-		if (throwOnDisposed) throw gcnew ObjectDisposedException("RtcDataChannel");
-		return nullptr;
+		if (data_channel_interface == nullptr) throw gcnew NullReferenceException("data_channel_interface");
+
+		rp_data_channel_interface_->RegisterObserver(new Observers::DataChannelObserver(this, data_channel_interface));
 	}
 
-	return _rpDataChannelInterface->get();
-}
+	RtcDataChannel::~RtcDataChannel()
+	{
+		this->!RtcDataChannel();
+	}
 
-String ^ RtcDataChannel::Label::get()
-{
-	return marshal_as<String ^>(GetNativeDataChannelInterface(true)->label());
-}
+	RtcDataChannel::!RtcDataChannel()
+	{
+		rp_data_channel_interface_ = nullptr;
+	}
 
-bool RtcDataChannel::Ordered::get()
-{
-	return GetNativeDataChannelInterface(true)->ordered();
-}
+	DataChannelInterface* RtcDataChannel::GetNativeDataChannelInterface(bool throwOnDisposed)
+	{
+		if (rp_data_channel_interface_.Get() == nullptr)
+		{
+			if (throwOnDisposed) throw gcnew ObjectDisposedException("RtcDataChannel");
+			return nullptr;
+		}
 
-Nullable<unsigned int> RtcDataChannel::MaxPacketLifeTime::get()
-{ 
-	return GetNativeDataChannelInterface(true)->maxRetransmitTime();
-}
+		return rp_data_channel_interface_.Get();
+	}
 
-Nullable<unsigned int> RtcDataChannel::MaxRetransmits::get()
-{
-	return GetNativeDataChannelInterface(true)->maxRetransmits();
-}
+	String^ RtcDataChannel::Label::get()
+	{
+		return marshal_as<String^>(GetNativeDataChannelInterface(true)->label());
+	}
 
-String ^ RtcDataChannel::Protocol::get()
-{
-	return marshal_as<String^>(GetNativeDataChannelInterface(true)->protocol());
-}
+	bool RtcDataChannel::Ordered::get()
+	{
+		return GetNativeDataChannelInterface(true)->ordered();
+	}
 
-bool RtcDataChannel::Negotiated::get()
-{
-	return GetNativeDataChannelInterface(true)->negotiated();
-}
+	Nullable<uint32_t> RtcDataChannel::MaxPacketLifeTime::get()
+	{
+		return marshal_as<uint32_t>(GetNativeDataChannelInterface(true)->maxPacketLifeTime());
+	}
 
-unsigned int RtcDataChannel::Id::get()
-{
-	return GetNativeDataChannelInterface(true)->id();
-}
+	Nullable<uint32_t> RtcDataChannel::MaxRetransmits::get()
+	{
+		return GetNativeDataChannelInterface(true)->maxRetransmits();
+	}
 
-RtcDataChannelState RtcDataChannel::ReadyState::get()
-{
-	return marshal_as<RtcDataChannelState>(GetNativeDataChannelInterface(true)->state());
-}
+	String^ RtcDataChannel::Protocol::get()
+	{
+		return marshal_as<String^>(GetNativeDataChannelInterface(true)->protocol());
+	}
 
-unsigned int RtcDataChannel::BufferedAmount::get()
-{
-	return static_cast<int>(GetNativeDataChannelInterface(true)->buffered_amount());
-}
+	bool RtcDataChannel::Negotiated::get()
+	{
+		return GetNativeDataChannelInterface(true)->negotiated();
+	}
 
-String ^ RtcDataChannel::BinaryType::get()
-{
-	return "blob";
-}
+	unsigned int RtcDataChannel::Id::get()
+	{
+		return GetNativeDataChannelInterface(true)->id();
+	}
 
-void RtcDataChannel::BinaryType::set(String ^ value)
-{
-	throw gcnew NotImplementedException();
-}
+	RtcDataChannelState RtcDataChannel::ReadyState::get()
+	{
+		return marshal_as<RtcDataChannelState>(GetNativeDataChannelInterface(true)->state());
+	}
 
-void RtcDataChannel::Close()
-{
-	auto native = GetNativeDataChannelInterface(false);
-	if (native == nullptr) return;
+	uint64_t RtcDataChannel::BufferedAmount::get()
+	{
+		return static_cast<int>(GetNativeDataChannelInterface(true)->buffered_amount());
+	}
 
-	native->Close();
-}
+	Nullable<uint64_t> RtcDataChannel::BufferedAmountLowThreshold::get()
+	{
+		return buffered_amount_low_threshold_;
+	}
 
-void RtcDataChannel::Send(String ^data)
-{
-	auto native = GetNativeDataChannelInterface(true);
-	webrtc::DataBuffer buffer(marshal_as<std::string>(data));
-	native->Send(buffer);
-}
+	void RtcDataChannel::BufferedAmountLowThreshold::set(Nullable<uint64_t> value)
+	{
+		buffered_amount_low_threshold_ = value;
+		if (buffered_amount_low_threshold_.HasValue && buffered_amount_low_threshold_.Value < BufferedAmount)
+		{
+			FireOnBufferAmountLow();
+		}
+	}
 
-void RtcDataChannel::Send(array<unsigned char, 1> ^data)
-{
-	auto native = GetNativeDataChannelInterface(true);
+	String^ RtcDataChannel::BinaryType::get()
+	{
+		return "blob";
+	}
 
-	pin_ptr<unsigned char> dataPtr = &data[data->GetLowerBound(0)];
+	void RtcDataChannel::BinaryType::set(String^ value)
+	{
+		throw gcnew NotImplementedException();
+	}
 
-	rtc::Buffer buffer((const unsigned char *)dataPtr, data->Length);
-	native->Send(webrtc::DataBuffer(buffer, true));
-}
+	void RtcDataChannel::Close()
+	{
+		auto native = GetNativeDataChannelInterface(false);
+		if (native == nullptr) return;
 
+		native->Close();
+	}
+
+	void RtcDataChannel::Send(String^ data)
+	{
+		const auto native = GetNativeDataChannelInterface(true);
+		const DataBuffer buffer(marshal_as<std::string>(data));
+		native->Send(buffer);
+	}
+
+	void RtcDataChannel::Send(IEnumerable<Byte>^ data)
+	{
+		const auto native = GetNativeDataChannelInterface(true);
+
+		const auto vector = marshal_as<std::vector, uint8_t>(data);
+
+		const CopyOnWriteBuffer buffer(vector);
+		native->Send(DataBuffer(buffer, true));
+	}
+
+	void RtcDataChannel::Send(array<Byte>^ data)
+	{
+		const auto native = GetNativeDataChannelInterface(true);
+
+		const pin_ptr<Byte> ptr = &data[0];
+		const Byte* np = ptr;
+		const CopyOnWriteBuffer buffer(np, data->Length);
+		native->Send(DataBuffer(buffer, true));
+	}
 }

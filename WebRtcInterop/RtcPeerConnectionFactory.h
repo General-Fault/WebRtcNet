@@ -37,7 +37,12 @@ private:
 	rtc::scoped_refptr<webrtc::PeerConnectionFactoryInterface>* _rpPeerConnectionFactory;
 
 	static RtcPeerConnectionFactory ^ _instance;
-	static rtc::Thread* _signalThread;
+
+	static std::unique_ptr<rtc::Thread> _signalThread;
+
+	rtc::WinsockInitializer _winsock_init;
+	rtc::PhysicalSocketServer _ss;
+	rtc::AutoSocketServerThread _main_thread;
 };
 
 /// <summary>
