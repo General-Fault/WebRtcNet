@@ -1,5 +1,5 @@
 # WebRtcNet
-A .Net implementation of the WebRTC standard built using the WebRTC Project native client. This was originally developed as the Google PeerConnection native API. WebRtcNet is not endorsed by or affiliated with Google or the WebRTC Project in any way.
+A .Net implementation of the WebRTC standard built using the WebRTC Project native client for Windows desktop applications. WebRtcNet is not endorsed by or affiliated with Google or the WebRTC Project in any way.
 
 See the WebRTC 1.0: Real-time Communication Between Browsers - W3C Recommendation 26 January 2021 for more documentation on the WebRtc interface. 
 https://www.w3.org/TR/webrtc/
