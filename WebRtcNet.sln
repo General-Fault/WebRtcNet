@@ -45,10 +45,10 @@ Global
 		{83740B9A-9962-483D-9695-3EA5422F384A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83740B9A-9962-483D-9695-3EA5422F384A}.Debug|ARM.ActiveCfg = Debug - .Net Core|Any CPU
 		{83740B9A-9962-483D-9695-3EA5422F384A}.Debug|ARM.Build.0 = Debug - .Net Core|Any CPU
-		{83740B9A-9962-483D-9695-3EA5422F384A}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{83740B9A-9962-483D-9695-3EA5422F384A}.Debug|x64.Build.0 = Debug|Any CPU
-		{83740B9A-9962-483D-9695-3EA5422F384A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{83740B9A-9962-483D-9695-3EA5422F384A}.Debug|x86.Build.0 = Debug|Any CPU
+		{83740B9A-9962-483D-9695-3EA5422F384A}.Debug|x64.ActiveCfg = Debug|x64
+		{83740B9A-9962-483D-9695-3EA5422F384A}.Debug|x64.Build.0 = Debug|x64
+		{83740B9A-9962-483D-9695-3EA5422F384A}.Debug|x86.ActiveCfg = Debug|x86
+		{83740B9A-9962-483D-9695-3EA5422F384A}.Debug|x86.Build.0 = Debug|x86
 		{83740B9A-9962-483D-9695-3EA5422F384A}.GN|Any CPU.ActiveCfg = Release|Any CPU
 		{83740B9A-9962-483D-9695-3EA5422F384A}.GN|Any CPU.Build.0 = Release|Any CPU
 		{83740B9A-9962-483D-9695-3EA5422F384A}.GN|ARM.ActiveCfg = Release|Any CPU
@@ -199,6 +199,7 @@ Global
 		third-party\shared-items\libc++\libc++.vcxitems*{26f36298-7f6a-4bd1-893b-2572ba180259}*SharedItemsImports = 4
 		WebRtcInterop\WebRtcInterop.Shared.vcxitems*{26f36298-7f6a-4bd1-893b-2572ba180259}*SharedItemsImports = 4
 		third-party\shared-items\libc++\libc++.vcxitems*{4bee6f2c-6b00-4a40-a2ed-6e9fa5f9b1fe}*SharedItemsImports = 9
+		third-party\shared-items\absl\absl.vcxitems*{5cfb4d3d-2e45-4a55-91ca-e45b7db34bf7}*SharedItemsImports = 4
 		third-party\shared-items\libc++\libc++.vcxitems*{5cfb4d3d-2e45-4a55-91ca-e45b7db34bf7}*SharedItemsImports = 4
 		third-party\shared-items\absl\absl.vcxitems*{9e0ef3c2-3b76-4a9b-b459-b482de52458c}*SharedItemsImports = 9
 		third-party\shared-items\libc++\libc++.vcxitems*{f259d9c3-8b07-4b62-a9b8-f0836178bc58}*SharedItemsImports = 4
