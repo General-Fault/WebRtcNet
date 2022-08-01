@@ -1,4 +1,3 @@
-[submodule "third-party/.\\google\\WebRtc"]
-	path = third-party/.\\google\\WebRtc
+[submodule "third-party/google/webrtc/src"]
+	path = third-party/google/webrtc/src
 	url = https://webrtc.googlesource.com/src
-	branch = refs/remotes/branch-heads/5112
