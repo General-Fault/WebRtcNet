@@ -6,8 +6,8 @@ using namespace System::Runtime::CompilerServices;
 using namespace System::Runtime::InteropServices;
 using namespace System::Security::Permissions;
 
-[assembly:AssemblyTitleAttribute(L"WebRtcInterop")];
-[assembly:AssemblyDescriptionAttribute(L"A .Net WebRtc implementation using the Google WebRtc native client.")];
+[assembly:AssemblyTitleAttribute(L"WebRtcInterop UnitTests")];
+[assembly:AssemblyDescriptionAttribute(L"Unit Tests for WebRtcNetInterop.")];
 [assembly:AssemblyConfigurationAttribute(L"")];
 [assembly:AssemblyCompanyAttribute(L"")];
 [assembly:AssemblyProductAttribute(L"WebRtcNet")];

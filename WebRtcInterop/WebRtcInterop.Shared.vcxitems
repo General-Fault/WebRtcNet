@@ -8,10 +8,11 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(SolutionDir)third-party\google\webrtc\src;$(SolutionDir)third-party\google\webrtc\src\third_party\abseil-cpp;$(SolutionDir)third-party\google\webrtc\src\buildtools\third_party\libc++;$(SolutionDir)third-party\google\webrtc\src\third_party\libyuv\include;$(SolutionDir)third-party\google\webrtc\src\third_party\jsoncpp\source\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);_HAS_EXCEPTIONS=0;__STD_C;_CRT_RAND_S;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_ATL_NO_OPENGL;_WINDOWS;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;PSAPI_VERSION=2;WIN32;_SECURE_ATL;__WRL_NO_DEFAULT_LIB__;WINAPI_FAMILY=WINAPI_FAMILY_DESKTOP_APP;WIN10=_WIN32_WINNT_WIN10;WIN32_LEAN_AND_MEAN;NOMINMAX;_UNICODE;UNICODE;NTDDI_VERSION=NTDDI_WIN10_RS2;_WIN32_WINNT=0x0A00;WINVER=0x0A00;NVALGRIND;DYNAMIC_ANNOTATIONS_ENABLED=0;WEBRTC_ENABLE_PROTOBUF=0;WEBRTC_INCLUDE_INTERNAL_AUDIO_DEVICE;RTC_ENABLE_VP9;HAVE_SCTP;WEBRTC_LIBRARY_IMPL;WEBRTC_NON_STATIC_TRACE_EVENT_HANDLERS=0;WEBRTC_WIN;ABSL_ALLOCATOR_NOTHROW=1;HAVE_SCTP</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>obj\webrtc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj</AdditionalLibraryDirectories>
+      <AdditionalDependencies>webrtc.lib;Ws2_32.lib;iphlpapi.lib;Winmm.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcmtd;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -19,9 +20,9 @@
     <CustomBuildStep>
       <Command>cd "$(SolutionDir)third-party\google\webrtc\src"
 echo Generating WebRtc Build Files
-cmd /c gn gen "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)" --args="target_cpu=\"x64\" is_debug=false"
+cmd /c gn gen --ide=vs2019 "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)" --filters=//:webrtc --args="target_cpu=\"x64\" is_debug=false enable_iterator_debugging=false use_lld=false rtc_include_tests=false rtc_build_tools=false rtc_build_examples=false enable_libaom=false rtc_enable_protobuf=false libcxx_is_shared=true"
 echo Compiling WebRtc Build Files
-ninja -C $(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)
+ninja -C "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)"
 </Command>
       <Message>Building Google WebRtc Library</Message>
       <Outputs>$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj\webrtc.lib</Outputs>
@@ -31,9 +32,9 @@ ninja -C $(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform
     <CustomBuildStep>
       <Command>cd "$(SolutionDir)third-party\google\webrtc\src"
 echo Generating WebRtc Build Files
-cmd /c gn gen "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)" --args="target_cpu=\"x64\" is_debug=true"
+cmd /c gn gen --ide=vs2019 "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)" --filters=//:webrtc --args="target_cpu=\"x64\" is_debug=true enable_iterator_debugging=true use_lld=false rtc_include_tests=false rtc_build_tools=false rtc_build_examples=false enable_libaom=false rtc_enable_protobuf=false use_custom_libcxx=false libcxx_is_shared=true"
 echo Compiling WebRtc Build Files
-ninja -C $(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)
+ninja -C "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)"
 </Command>
       <Message>Building Google WebRtc Library</Message>
       <Outputs>$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj\webrtc.lib</Outputs>
@@ -43,9 +44,9 @@ ninja -C $(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform
     <CustomBuildStep>
       <Command>cd "$(SolutionDir)third-party\google\webrtc\src"
 echo Generating WebRtc Build Files
-cmd /c gn gen "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)" --args="target_cpu=\"x86\" is_debug=false"
+cmd /c gn gen --ide=vs2019 "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)" --filters=//:webrtc --args="target_cpu=\"x86\" is_debug=false enable_iterator_debugging=false use_lld=false rtc_include_tests=false rtc_build_tools=false rtc_build_examples=false enable_libaom=false rtc_enable_protobuf=false libcxx_is_shared=true"
 echo Compiling WebRtc Build Files
-ninja -C $(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)
+ninja -C "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)"
 </Command>
       <Message>Building Google WebRtc Library</Message>
       <Outputs>$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj\webrtc.lib</Outputs>
@@ -55,9 +56,9 @@ ninja -C $(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform
     <CustomBuildStep>
       <Command>cd "$(SolutionDir)third-party\google\webrtc\src"
 echo Generating WebRtc Build Files
-cmd /c gn gen "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)" --args="target_cpu=\"x86\" is_debug=true"
+cmd /c gn gen --ide=vs2019 "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)" --filters=//:webrtc --args="target_cpu=\"x86\" is_debug=true enable_iterator_debugging=true use_lld=false rtc_include_tests=false rtc_build_tools=false rtc_build_examples=false enable_libaom=false rtc_enable_protobuf=false libcxx_is_shared=true"
 echo Compiling WebRtc Build Files
-ninja -C $(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)
+ninja -C "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)"
 </Command>
       <Message>Building Google WebRtc Library</Message>
       <Outputs>$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj\webrtc.lib</Outputs>

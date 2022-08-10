@@ -19,11 +19,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WebRtcInterop.UnitTests", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "third_party", "third_party", "{740DC5DA-39B3-4B8D-A9FD-FE20D417C8C7}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "absl", "third-party\shared-items\absl\absl.vcxitems", "{9E0EF3C2-3B76-4A9B-B459-B482DE52458C}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libc++", "third-party\shared-items\libc++\libc++.vcxitems", "{4BEE6F2C-6B00-4A40-A2ED-6E9FA5F9B1FE}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interop", "Interop", "{88C5DECA-6228-4DBC-866C-A84BA97AD890}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "googletest", "third-party\shared-items\googletest\googletest.vcxitems", "{357B6B66-AB73-41CD-9271-1B4E5C41DDE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -189,20 +187,15 @@ Global
 		{F259D9C3-8B07-4B62-A9B8-F0836178BC58} = {88C5DECA-6228-4DBC-866C-A84BA97AD890}
 		{26F36298-7F6A-4BD1-893B-2572BA180259} = {88C5DECA-6228-4DBC-866C-A84BA97AD890}
 		{5CFB4D3D-2E45-4A55-91CA-E45B7DB34BF7} = {88C5DECA-6228-4DBC-866C-A84BA97AD890}
-		{9E0EF3C2-3B76-4A9B-B459-B482DE52458C} = {740DC5DA-39B3-4B8D-A9FD-FE20D417C8C7}
-		{4BEE6F2C-6B00-4A40-A2ED-6E9FA5F9B1FE} = {740DC5DA-39B3-4B8D-A9FD-FE20D417C8C7}
+		{357B6B66-AB73-41CD-9271-1B4E5C41DDE1} = {740DC5DA-39B3-4B8D-A9FD-FE20D417C8C7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {68A0D453-2FA4-4504-B76F-EBC0BF4C05A0}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		third-party\shared-items\libc++\libc++.vcxitems*{26f36298-7f6a-4bd1-893b-2572ba180259}*SharedItemsImports = 4
 		WebRtcInterop\WebRtcInterop.Shared.vcxitems*{26f36298-7f6a-4bd1-893b-2572ba180259}*SharedItemsImports = 4
-		third-party\shared-items\libc++\libc++.vcxitems*{4bee6f2c-6b00-4a40-a2ed-6e9fa5f9b1fe}*SharedItemsImports = 9
-		third-party\shared-items\absl\absl.vcxitems*{5cfb4d3d-2e45-4a55-91ca-e45b7db34bf7}*SharedItemsImports = 4
-		third-party\shared-items\libc++\libc++.vcxitems*{5cfb4d3d-2e45-4a55-91ca-e45b7db34bf7}*SharedItemsImports = 4
-		third-party\shared-items\absl\absl.vcxitems*{9e0ef3c2-3b76-4a9b-b459-b482de52458c}*SharedItemsImports = 9
-		third-party\shared-items\libc++\libc++.vcxitems*{f259d9c3-8b07-4b62-a9b8-f0836178bc58}*SharedItemsImports = 4
+		third-party\shared-items\googletest\googletest.vcxitems*{357b6b66-ab73-41cd-9271-1b4e5c41dde1}*SharedItemsImports = 9
+		third-party\shared-items\googletest\googletest.vcxitems*{5cfb4d3d-2e45-4a55-91ca-e45b7db34bf7}*SharedItemsImports = 4
 		WebRtcInterop\WebRtcInterop.Shared.vcxitems*{f259d9c3-8b07-4b62-a9b8-f0836178bc58}*SharedItemsImports = 4
 		WebRtcInterop\WebRtcInterop.Shared.vcxitems*{fac2e2bf-5a09-428f-a224-1ce7a160a2d1}*SharedItemsImports = 9
 	EndGlobalSection

@@ -101,30 +101,33 @@ TEST(marshal_as_collections_test, marshal_empty_map_as_dictionary)
 
 TEST(marshal_as_collections_test, marshal_enumerable_of_strings_as_vector)
 {
+	using size_type = std::vector<std::string>::size_type;
 	auto managed_enumerable = gcnew array<String^>{"a", "b", "c"};
 
 	auto result = marshal_as<std::vector, std::string>(safe_cast<IEnumerable<String^>^>(managed_enumerable));
 
 	ASSERT_TYPE_EQ(result, typeid(std::vector<std::string>));
 	ASSERT_EQ(result.size(), 3) << "Expected a vector with 3 items, but found " << result.size();
-	for (int i = 0; i < result.size(); i++)
+	for (size_type i{0}; i < result.size(); i++)
 	{
-		auto expected = managed_enumerable[i];
+		auto expected = managed_enumerable[static_cast<int>(i)];
 		EXPECT_EQ(result[i], marshal_as<std::string>(expected)) << "Expected element " << i << " to contain \"" << marshal_as<std::string>(expected) << "\" but found \"" << result[i] << "\"";
 	}
 }
 
 TEST(marshal_as_collections_test, marshal_enumerable_of_ints_as_vector)
 {
+	using size_type = std::vector<std::string>::size_type;
 	auto managed_enumerable = gcnew array<Int32>{1, 2, 3};
 
 	auto result = marshal_as<std::vector, std::int32_t>(safe_cast<IEnumerable<Int32>^>(managed_enumerable));
 
 	ASSERT_TYPE_EQ(result, typeid(std::vector<std::int32_t>));
 	ASSERT_EQ(result.size(), 3) << "Expected a vector with 3 items, but found " << result.size();
-	for (int i = 0; i < result.size(); i++)
+	for (size_type i{ 0 }; i < result.size(); i++)
 	{
-		EXPECT_EQ(result[i], managed_enumerable[i]) << "Expected element " << i << " to contain [" << managed_enumerable[i] << "] but found [" << result[i] << "]";
+		auto managed_i = static_cast<int>(i);
+		EXPECT_EQ(result[i], managed_enumerable[managed_i]) << "Expected element " << i << " to contain [" << managed_enumerable[managed_i] << "] but found [" << result[i] << "]";
 	}
 }
 

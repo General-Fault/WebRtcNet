@@ -3,5 +3,4 @@
 //
 
 #pragma once
-
-#include "gtest/gtest.h"
+#define GTEST_IS_THREADSAFE FALSE

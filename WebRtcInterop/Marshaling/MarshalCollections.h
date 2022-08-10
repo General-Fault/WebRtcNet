@@ -59,7 +59,7 @@ namespace msclr::interop
 	template <typename TNativeFirst, typename TNativeSecond, typename TManagedKey, typename TManagedValue>
 	std::pair<TNativeFirst, TNativeSecond>& marshal_as(KeyValuePair<TManagedKey, TManagedValue> from)
 	{
-		std::pair<TNativeFirst, TNativeValue> pair{};
+		std::pair<TNativeFirst, TNativeSecond> pair{};
 		if (from == nullptr) return pair;
 
 		if constexpr (std::is_convertible_v<TManagedKey, TNativeFirst>)
@@ -204,18 +204,19 @@ namespace msclr::interop
 	          typename TManaged>
 	TNativeArray<TNative, NativeArraySize> marshal_as(array<TManaged>^ from)
 	{
+		using size_type = typename TNativeArray<TNative, NativeArraySize>::size_type;
 		TNativeArray<TNative, NativeArraySize> to{};
 		if (from == nullptr) return to;
 
-		for (int i = 0; i < from->Length && i < to.size(); i++)
+		for (int i{0}; i < from->Length && static_cast<size_type>(i) < to.size(); ++i)
 		{
 			if constexpr (std::is_convertible_v<TNative, TManaged>)
 			{
-				to[i] = from[i];
+				to[static_cast<size_type>(i)] = from[i];
 			}
 			else
 			{
-				to[i] = marshal_as<TNative>(from[i]);
+				to[static_cast<size_type>(i)] = marshal_as<TNative>(from[i]);
 			}
 		}
 
@@ -235,9 +236,10 @@ namespace msclr::interop
 	          typename TNative, size_t NativeArraySize>
 	array<TManaged>^ marshal_as(const std::array<TNative, NativeArraySize>& from)
 	{
+		using size_type = typename std::array<TNative, NativeArraySize>::size_type;
 		auto to = gcnew array<TManaged>(NativeArraySize);
 
-		for (int i = 0; i < from.size(); i++)
+		for (size_type i{0}; i < from.size(); ++i)
 		{
 			if constexpr (std::is_convertible_v<TNative, TManaged>)
 			{

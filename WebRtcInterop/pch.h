@@ -7,8 +7,6 @@
 #ifndef PCH_H
 #define PCH_H
 
-#define NOMINMAX //some windows headers define a min and max macro that causes confusion with std::min and std::max.
-
 #include <cstddef>
 #include <cstdint>
 #include <string>
