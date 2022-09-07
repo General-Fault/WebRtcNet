@@ -4,23 +4,26 @@
     <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
     <ItemsProjectGuid>{357b6b66-ab73-41cd-9271-1b4e5c41dde1}</ItemsProjectGuid>
+	<CustomBuildBeforeTargets>Link</CustomBuildBeforeTargets>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(SolutionDir)third-party\google\webrtc\src\third_party\googletest\src\googletest\include;$(SolutionDir)third-party\google\webrtc\src\third_party\googletest\src\googlemock\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GTEST_IS_THREADSAFE=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
 	<Link>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(SolutionDir)third-party\shared-items\googletest\lib\Debug</AdditionalLibraryDirectories>
-	  <AdditionalDependencies>gmock.lib;gmock_main.lib;gtest.lib;gtest_main.lib</AdditionalDependencies>
+	  <AdditionalDependencies>gmock.lib;gtest.lib;gtest_main.lib</AdditionalDependencies>
 	</Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup >
     <CustomBuildStep>
-      <Command>cd "$(SolutionDir)third-party\google\webrtc\src\third_party\googletest"
-"$(DevEnvDir)\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -D gtest_force_shared_crt=ON $(SolutionDir)third-party\google\webrtc\src\third_party\googletest\src
+      <Command>cd "$(SolutionDir)third-party\shared-items\googletest"
+"$(DevEnvDir)\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -Dgtest_force_shared_crt=ON -Dgtest_disable_threadsafe=ON -Dgtest_disable_deathtest=ON $(SolutionDir)third-party\google\webrtc\src\third_party\googletest\src
 "$(DevEnvDir)\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --build .</Command>
       <Message>Building GoogleTest</Message>
-      <Outputs>$(SolutionDir)third-party\shared-items\googletest\lib\Debug\gmock.lib;$(SolutionDir)third-party\shared-items\googletest\lib\Debug\gmock_main.lib;$(SolutionDir)third-party\shared-items\googletest\lib\Debug\gtest.lib;$(SolutionDir)third-party\shared-items\googletest\lib\Debug\gtest_main.lib</Outputs>
+	  <Inputs>$(SolutionDir)third-party\google\webrtc\src\third_party\googletest\src\CMakeLists.txt</Inputs>
+      <Outputs>$(SolutionDir)third-party\shared-items\googletest\CMakeFiles\generate.stamp</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>

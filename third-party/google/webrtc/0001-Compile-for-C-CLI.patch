@@ -1,0 +1,142 @@
+From 69810b136323b2188cb187f62d1c1d4ef7eb2b14 Mon Sep 17 00:00:00 2001
+From: Cody Barnes <cbarnes@conceptgenesis.com>
+Date: Tue, 6 Sep 2022 21:30:24 -0700
+Subject: [PATCH] Compile for C++/CLI
+
+---
+ googlemock/cmake/gmock.pc.in                  |  2 +-
+ googlemock/cmake/gmock_main.pc.in             |  2 +-
+ googletest/CMakeLists.txt                     |  4 ++++
+ googletest/cmake/gtest.pc.in                  |  2 +-
+ googletest/cmake/gtest_main.pc.in             |  2 +-
+ googletest/cmake/internal_utils.cmake         | 24 +++++++++++++++++++
+ .../include/gtest/internal/gtest-port.h       |  2 ++
+ 7 files changed, 34 insertions(+), 4 deletions(-)
+
+diff --git a/googlemock/cmake/gmock.pc.in b/googlemock/cmake/gmock.pc.in
+index 23c67b5c..5dff62e0 100644
+--- a/googlemock/cmake/gmock.pc.in
++++ b/googlemock/cmake/gmock.pc.in
+@@ -7,4 +7,4 @@ Version: @PROJECT_VERSION@
+ URL: https://github.com/google/googletest
+ Requires: gtest = @PROJECT_VERSION@
+ Libs: -L${libdir} -lgmock @CMAKE_THREAD_LIBS_INIT@
+-Cflags: -I${includedir} @GTEST_HAS_PTHREAD_MACRO@
++Cflags: -I${includedir} @GTEST_HAS_PTHREAD_MACRO@ @GTEST_IS_THREADSAFE_MACRO@ @GTEST_HAS_DEATH_TEST_MACRO@
+diff --git a/googlemock/cmake/gmock_main.pc.in b/googlemock/cmake/gmock_main.pc.in
+index 66ffea7f..c55baae4 100644
+--- a/googlemock/cmake/gmock_main.pc.in
++++ b/googlemock/cmake/gmock_main.pc.in
+@@ -7,4 +7,4 @@ Version: @PROJECT_VERSION@
+ URL: https://github.com/google/googletest
+ Requires: gmock = @PROJECT_VERSION@
+ Libs: -L${libdir} -lgmock_main @CMAKE_THREAD_LIBS_INIT@
+-Cflags: -I${includedir} @GTEST_HAS_PTHREAD_MACRO@
++Cflags: -I${includedir} @GTEST_HAS_PTHREAD_MACRO@ @GTEST_IS_THREADSAFE_MACRO@ @GTEST_HAS_DEATH_TEST_MACRO@
+diff --git a/googletest/CMakeLists.txt b/googletest/CMakeLists.txt
+index aa00a5f3..0b948451 100644
+--- a/googletest/CMakeLists.txt
++++ b/googletest/CMakeLists.txt
+@@ -21,6 +21,8 @@ option(gtest_build_samples "Build gtest's sample programs." OFF)
+ 
+ option(gtest_disable_pthreads "Disable uses of pthreads in gtest." OFF)
+ 
++option(gtest_disable_threadsafe "Disable threads in gtest." OFF)
++
+ option(
+   gtest_hide_internal_symbols
+   "Build gtest with internal symbols hidden in shared libraries."
+@@ -72,6 +74,8 @@ else()
+     gtest_build_tests
+     gtest_build_samples
+     gtest_disable_pthreads
++	gtest_disable_threadsafe
++	gtest_disable_deathtest
+     gtest_hide_internal_symbols)
+ 
+ endif()
+diff --git a/googletest/cmake/gtest.pc.in b/googletest/cmake/gtest.pc.in
+index b4148fae..0d34dbef 100644
+--- a/googletest/cmake/gtest.pc.in
++++ b/googletest/cmake/gtest.pc.in
+@@ -6,4 +6,4 @@ Description: GoogleTest (without main() function)
+ Version: @PROJECT_VERSION@
+ URL: https://github.com/google/googletest
+ Libs: -L${libdir} -lgtest @CMAKE_THREAD_LIBS_INIT@
+-Cflags: -I${includedir} @GTEST_HAS_PTHREAD_MACRO@
++Cflags: -I${includedir} @GTEST_HAS_PTHREAD_MACRO@ @GTEST_IS_THREADSAFE_MACRO@ @GTEST_HAS_DEATH_TEST_MACRO@
+diff --git a/googletest/cmake/gtest_main.pc.in b/googletest/cmake/gtest_main.pc.in
+index 38c88c54..3d95220a 100644
+--- a/googletest/cmake/gtest_main.pc.in
++++ b/googletest/cmake/gtest_main.pc.in
+@@ -7,4 +7,4 @@ Version: @PROJECT_VERSION@
+ URL: https://github.com/google/googletest
+ Requires: gtest = @PROJECT_VERSION@
+ Libs: -L${libdir} -lgtest_main @CMAKE_THREAD_LIBS_INIT@
+-Cflags: -I${includedir} @GTEST_HAS_PTHREAD_MACRO@
++Cflags: -I${includedir} @GTEST_HAS_PTHREAD_MACRO@ @GTEST_IS_THREADSAFE_MACRO@ @GTEST_HAS_DEATH_TEST_MACRO@
+diff --git a/googletest/cmake/internal_utils.cmake b/googletest/cmake/internal_utils.cmake
+index 5a34c07a..6976855b 100644
+--- a/googletest/cmake/internal_utils.cmake
++++ b/googletest/cmake/internal_utils.cmake
+@@ -68,6 +68,16 @@ macro(config_compiler_and_linker)
+     endif()
+   endif()
+ 
++  unset(GTEST_DISABLE_THREADSAFE)
++  if (gtest_disable_threadsafe)
++	set (GTEST_DISABLE_THREADSAFE ON)
++  endif()
++
++  unset(GTEST_DISABLE_DEATHTEST)
++  if (gtest_disable_deathtest)
++	set (GTEST_DISABLE_DEATHTEST ON)
++  endif()
++  
+   fix_default_compiler_settings_()
+   if (MSVC)
+     # Newlines inside flags variables break CMake's NMake generator.
+@@ -132,6 +142,20 @@ macro(config_compiler_and_linker)
+     set(GTEST_HAS_PTHREAD_MACRO "-DGTEST_HAS_PTHREAD=0")
+   endif()
+   set(cxx_base_flags "${cxx_base_flags} ${GTEST_HAS_PTHREAD_MACRO}")
++  
++  if (DEFINED GTEST_DISABLE_THREADSAFE)
++    set(GTEST_IS_THREADSAFE_MACRO "-DGTEST_IS_THREADSAFE=0")
++  else()
++    set(GTEST_IS_THREADSAFE_MACRO "") #Let the test in gtest-port.h figure it out.
++  endif()
++  set(cxx_base_flags "${cxx_base_flags} ${GTEST_IS_THREADSAFE_MACRO}")
++
++  if (DEFINED GTEST_DISABLE_DEATHTEST)
++    set(GTEST_HAS_DEATH_TEST_MACRO "-DGTEST_HAS_DEATH_TEST=0")
++  else()
++    set(GTEST_HAS_DEATH_TEST_MACRO "") #Let the test in gtest-port.h figure it out.
++  endif()
++  set(cxx_base_flags "${cxx_base_flags} ${GTEST_HAS_DEATH_TEST_MACRO}")
+ 
+   # For building gtest's own tests and samples.
+   set(cxx_exception "${cxx_base_flags} ${cxx_exception_flags}")
+diff --git a/googletest/include/gtest/internal/gtest-port.h b/googletest/include/gtest/internal/gtest-port.h
+index e178782c..added010 100644
+--- a/googletest/include/gtest/internal/gtest-port.h
++++ b/googletest/include/gtest/internal/gtest-port.h
+@@ -596,6 +596,7 @@ typedef struct _RTL_CRITICAL_SECTION GTEST_CRITICAL_SECTION;
+ 
+ // Determines whether to support death tests.
+ // pops up a dialog window that cannot be suppressed programmatically.
++#ifndef GTEST_HAS_DEATH_TEST
+ #if (GTEST_OS_LINUX || GTEST_OS_CYGWIN || GTEST_OS_SOLARIS ||             \
+      (GTEST_OS_MAC && !GTEST_OS_IOS) ||                                   \
+      (GTEST_OS_WINDOWS_DESKTOP && _MSC_VER) || GTEST_OS_WINDOWS_MINGW ||  \
+@@ -604,6 +605,7 @@ typedef struct _RTL_CRITICAL_SECTION GTEST_CRITICAL_SECTION;
+      GTEST_OS_DRAGONFLY || GTEST_OS_GNU_KFREEBSD || GTEST_OS_HAIKU ||     \
+      GTEST_OS_GNU_HURD)
+ #define GTEST_HAS_DEATH_TEST 1
++#endif //!GTEST_HAS_DEATH_TEST
+ #endif
+ 
+ // Determines whether to support type-driven tests.
+-- 
+2.28.0.windows.1
+

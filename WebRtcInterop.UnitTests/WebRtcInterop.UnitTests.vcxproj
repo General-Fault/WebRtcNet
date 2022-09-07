@@ -25,6 +25,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -49,14 +50,17 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SolutionDir)WebRtcInterop;$(IncludePath)</IncludePath>
     <ExternalIncludePath>$(SolutionDir)third-party\google\webrtc\src;$(SolutionDir)third-party\google\webrtc\src\third_party\abseil-cpp;$(ExternalIncludePath)</ExternalIncludePath>
+    <ManagedAssembly>true</ManagedAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)WebRtcInterop;$(IncludePath)</IncludePath>
     <ExternalIncludePath>$(SolutionDir)third-party\google\webrtc\src;$(SolutionDir)third-party\google\webrtc\src\third_party\abseil-cpp;$(ExternalIncludePath)</ExternalIncludePath>
+    <ManagedAssembly>true</ManagedAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)WebRtcInterop;$(IncludePath)</IncludePath>
     <ExternalIncludePath>$(SolutionDir)third-party\google\webrtc\src;$(SolutionDir)third-party\google\webrtc\src\third_party\abseil-cpp;$(ExternalIncludePath)</ExternalIncludePath>
+    <ManagedAssembly>true</ManagedAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)WebRtcInterop;$(IncludePath)</IncludePath>
@@ -66,6 +70,7 @@
     <ClInclude Include="include\TestUtils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ManagedScopedRefPtrTests.cpp" />
     <ClCompile Include="Marshaling\MarshalCollectionsTests.cpp" />
     <ClCompile Include="Marshaling\MarshalDataChannelTests.cpp" />
     <ClCompile Include="Marshaling\MarshalNullableTests.cpp" />
@@ -81,7 +86,7 @@
   <ItemDefinitionGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -99,10 +104,11 @@
       <AdditionalDependencies>webrtc.lib;Ws2_32.lib;iphlpapi.lib;Winmm.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj</AdditionalLibraryDirectories>
     </Link>
+    <CustomBuildStep />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>X64;_DEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -120,11 +126,11 @@
       <AdditionalDependencies>webrtc.lib;Ws2_32.lib;iphlpapi.lib;Winmm.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj</AdditionalLibraryDirectories>
     </Link>
+    <CustomBuildStep />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
@@ -132,6 +138,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalIncludeDirectories>$(SolutionDir)WebRtcInterop.Shared;$(MSBuildProjectDirectory);$(MSBuildProjectDirectory)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -142,11 +149,11 @@
       <AdditionalDependencies>webrtc.lib;Ws2_32.lib;iphlpapi.lib;Winmm.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj</AdditionalLibraryDirectories>
     </Link>
+    <CustomBuildStep />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PreprocessorDefinitions>X64;NDEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
@@ -154,6 +161,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalIncludeDirectories>$(SolutionDir)WebRtcInterop.Shared;$(MSBuildProjectDirectory);$(MSBuildProjectDirectory)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -164,6 +172,7 @@
       <AdditionalDependencies>webrtc.lib;Ws2_32.lib;iphlpapi.lib;Winmm.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj</AdditionalLibraryDirectories>
     </Link>
+    <CustomBuildStep />
   </ItemDefinitionGroup>
   <ItemGroup>
     <Reference Include="System.Core" />

@@ -1,0 +1,24 @@
+From 4f717ef83891ca6c4bbca6b35386966f447b5748 Mon Sep 17 00:00:00 2001
+From: Cody Barnes <cbarnes@conceptgenesis.com>
+Date: Tue, 9 Aug 2022 22:43:03 -0700
+Subject: [PATCH] compile for windows using dynamic c++ library
+
+---
+ .../desktop_capture/win/full_screen_win_application_handler.cc   | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/modules/desktop_capture/win/full_screen_win_application_handler.cc b/modules/desktop_capture/win/full_screen_win_application_handler.cc
+index f7047dba06..dedff916c6 100644
+--- a/modules/desktop_capture/win/full_screen_win_application_handler.cc
++++ b/modules/desktop_capture/win/full_screen_win_application_handler.cc
+@@ -14,6 +14,7 @@
+ #include <memory>
+ #include <string>
+ #include <vector>
++#include <cwctype>
+ 
+ #include "absl/strings/ascii.h"
+ #include "absl/strings/match.h"
+-- 
+2.28.0.windows.1
+

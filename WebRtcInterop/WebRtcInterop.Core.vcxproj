@@ -97,9 +97,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
-    <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)third-party\google\webrtc\src\out\Default%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
+    <Link />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -110,9 +108,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
-    <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)third-party\google\webrtc\src\out\Default%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
+    <Link />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -123,9 +119,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
-    <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)third-party\google\webrtc\src\out\Default%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
+    <Link />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -136,9 +130,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
-    <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)third-party\google\webrtc\src\out\Default%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-    </Link>
+    <Link />
   </ItemDefinitionGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebRtcNet.Api\WebRtcNet.Api.csproj">
