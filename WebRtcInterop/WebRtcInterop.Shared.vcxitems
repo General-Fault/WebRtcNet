@@ -71,13 +71,17 @@ ninja -C "$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platfor
     <ClInclude Include="$(MSBuildThisFileDirectory)ManagedScopedRefPtr.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalCollections.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalDataChannel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalEnums.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalIceTransport.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalNullable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Observers\DataChannelObserver.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Resource.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RtcDataChannel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RtcIceTransport.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Observers\DataChannelObserver.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RtcDataChannel.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)RtcIceTransport.cpp" />
   </ItemGroup>
 </Project>

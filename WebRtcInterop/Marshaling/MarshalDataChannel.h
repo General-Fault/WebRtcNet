@@ -5,41 +5,30 @@
 #include <msclr/marshal.h>
 #include <msclr/marshal_cppstd.h>
 
+#include <map>
+
+#include "MarshalEnums.h"
+
 namespace msclr::interop
 {
 	using namespace System;
 
+	static const std::map<const webrtc::DataChannelInterface::DataState, const WebRtcNet::RtcDataChannelState> data_channel_state_map {
+		{webrtc::DataChannelInterface::DataState::kConnecting, WebRtcNet::RtcDataChannelState::Connecting},
+		{webrtc::DataChannelInterface::DataState::kOpen, WebRtcNet::RtcDataChannelState::Open},
+		{webrtc::DataChannelInterface::DataState::kClosing, WebRtcNet::RtcDataChannelState::Closing},
+		{webrtc::DataChannelInterface::DataState::kClosed, WebRtcNet::RtcDataChannelState::Closed},
+	};
+
 	template<>
-	inline WebRtcNet::RtcDataChannelState marshal_as(webrtc::DataChannelInterface::DataState const & from)
+	inline WebRtcNet::RtcDataChannelState marshal_as(const webrtc::DataChannelInterface::DataState& from)
 	{
-		switch (from)
-		{
-		case webrtc::DataChannelInterface::DataState::kConnecting:
-			return WebRtcNet::RtcDataChannelState::Connecting;
-		case webrtc::DataChannelInterface::DataState::kOpen:
-			return WebRtcNet::RtcDataChannelState::Open;
-		case webrtc::DataChannelInterface::DataState::kClosing:
-			return WebRtcNet::RtcDataChannelState::Closing;
-		case webrtc::DataChannelInterface::DataState::kClosed:
-			return WebRtcNet::RtcDataChannelState::Closed;
-		}
-		throw gcnew InvalidCastException("Invalid DataChannelInterface::DataState value.");
+		return marshal_mapped_native_type(data_channel_state_map, from);
 	}
 
 	template<>
-	inline webrtc::DataChannelInterface::DataState marshal_as(WebRtcNet::RtcDataChannelState const & from)
+	inline webrtc::DataChannelInterface::DataState marshal_as(const WebRtcNet::RtcDataChannelState& from)
 	{
-		switch (from)
-		{
-		case WebRtcNet::RtcDataChannelState::Connecting:
-			return webrtc::DataChannelInterface::DataState::kConnecting;
-		case WebRtcNet::RtcDataChannelState::Open:
-			return webrtc::DataChannelInterface::DataState::kOpen;
-		case WebRtcNet::RtcDataChannelState::Closing:
-			return webrtc::DataChannelInterface::DataState::kClosing;
-		case WebRtcNet::RtcDataChannelState::Closed:
-			return webrtc::DataChannelInterface::DataState::kClosed;
-		}
-		throw gcnew InvalidCastException("Invalid DataChannelState value.");
+		return marshal_mapped_managed_type(data_channel_state_map, from);
 	}
 }

@@ -13,6 +13,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Observers\DataChannelObserver.cpp">
       <Filter>Observers</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)RtcIceTransport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)ManagedScopedRefPtr.h" />
@@ -30,5 +31,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalNullable.h">
       <Filter>Marshaling</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)RtcIceTransport.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalIceTransport.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalEnums.h" />
   </ItemGroup>
 </Project>
