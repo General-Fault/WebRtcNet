@@ -23,7 +23,7 @@ namespace WebRtcNet
         /// A controlling agent as defined by
         /// <see href="https://datatracker.ietf.org/doc/html/rfc5245#section-3">[RFC5245] Section 3</see>.
         /// </summary>
-        /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicerole-controlling"/>
+        /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicerole"/>
         Controlling,
 
         /// <summary>
@@ -305,18 +305,18 @@ namespace WebRtcNet
         /// 
         /// </summary>
         /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-onstatechange"/>
-        event EventHandler OnOnStateChange;
+        event EventHandler OnStateChange;
 
         /// <summary>
         /// 
         /// </summary>
         /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-ongatheringstatechange"/>
-        event EventHandler OnOnGatheringStateChange;
+        event EventHandler OnGatheringStateChange;
 
         /// <summary>
         /// 
         /// </summary>
         /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-onselectedcandidatepairchange"/>
-        event EventHandler OnOnSelectedCandidatePairChange;
+        event EventHandler OnSelectedCandidatePairChange;
     };
 }
