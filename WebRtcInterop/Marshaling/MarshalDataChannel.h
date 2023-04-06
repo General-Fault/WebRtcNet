@@ -27,7 +27,7 @@ namespace msclr::interop
 	}
 
 	template<>
-	inline webrtc::DataChannelInterface::DataState marshal_as(const WebRtcNet::RtcDataChannelState& from)
+	inline webrtc::DataChannelInterface::DataState marshal_as<webrtc::DataChannelInterface::DataState, WebRtcNet::RtcDataChannelState>(const WebRtcNet::RtcDataChannelState& from)
 	{
 		return marshal_mapped_managed_type(data_channel_state_map, from);
 	}

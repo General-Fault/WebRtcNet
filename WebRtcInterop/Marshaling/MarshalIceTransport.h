@@ -25,6 +25,12 @@ namespace msclr::interop
 		return marshal_mapped_native_type(ice_role_map, from);
 	}
 
+	template<>
+	inline cricket::IceRole marshal_as<cricket::IceRole>(const WebRtcNet::RtcIceRole& from)
+	{
+		return marshal_mapped_managed_type(ice_role_map, from);
+	}
+
 	static const std::map<const int, const WebRtcNet::RtcIceComponent> ice_component_map {
 		{0, WebRtcNet::RtcIceComponent::Rtp},
 		{1, WebRtcNet::RtcIceComponent::Rtcp}
