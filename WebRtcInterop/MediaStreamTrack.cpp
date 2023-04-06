@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 
 #include "MediaStreamTrack.h"
 
@@ -21,7 +21,6 @@ MediaStreamTrack::~MediaStreamTrack()
 IMediaStreamTrack ^ MediaStreamTrack::Clone()
 {
 	throw gcnew NotImplementedException();
-	// TODO: insert return statement here
 }
 
 void MediaStreamTrack::Stop()
@@ -37,7 +36,6 @@ MediaTrackCapabilities MediaStreamTrack::GetCapabilities()
 MediaConstraints ^ MediaStreamTrack::GetConstraints()
 {
 	throw gcnew NotImplementedException();
-	// TODO: insert return statement here
 }
 
 MediaTrackSettings MediaStreamTrack::GetSettings()

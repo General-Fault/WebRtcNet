@@ -18,7 +18,7 @@ namespace WebRtcInterop
 		: rp_data_channel_interface_(data_channel_interface),
 		  buffered_amount_low_threshold_()
 	{
-		if (data_channel_interface == nullptr) throw gcnew NullReferenceException("data_channel_interface");
+		if (data_channel_interface == nullptr) throw gcnew ArgumentNullException(NAMEOF(data_channel_interface));
 
 		rp_data_channel_interface_->RegisterObserver(new Observers::DataChannelObserver(this, data_channel_interface));
 	}
@@ -33,15 +33,16 @@ namespace WebRtcInterop
 		rp_data_channel_interface_ = nullptr;
 	}
 
-	DataChannelInterface* RtcDataChannel::GetNativeDataChannelInterface(bool throwOnDisposed)
+	DataChannelInterface* RtcDataChannel::GetNativeDataChannelInterface(const bool throwOnDisposed)
 	{
-		if (rp_data_channel_interface_.Get() == nullptr)
+		const auto result = rp_data_channel_interface_.Get();
+		if (result == nullptr)
 		{
-			if (throwOnDisposed) throw gcnew ObjectDisposedException("RtcDataChannel");
+			if (throwOnDisposed) throw gcnew ObjectDisposedException(NAMEOF(RtcDataChannel));
 			return nullptr;
 		}
 
-		return rp_data_channel_interface_.Get();
+		return result;
 	}
 
 	String^ RtcDataChannel::Label::get()

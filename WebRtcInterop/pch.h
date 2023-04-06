@@ -17,4 +17,7 @@
 
 using namespace msclr::interop;
 
+
+#define NAMEOF(name) #name
+
 #endif //PCH_H
