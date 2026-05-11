@@ -1,0 +1,50 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="GN" />
+    <BuildType Name="Release" />
+    <Platform Name="Any CPU" />
+    <Platform Name="ARM" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/Interop/">
+    <Project Path="WebRtcInterop.UnitTests/WebRtcInterop.UnitTests.vcxproj">
+      <BuildType Solution="GN|*" Project="Release" />
+      <Platform Solution="*|Any CPU" Project="Win32" />
+      <Platform Solution="*|ARM" Project="x64" />
+      <Build Solution="Release|ARM" Project="false" />
+    </Project>
+    <Project Path="WebRtcInterop/WebRtcInterop.Core.vcxproj">
+      <BuildType Solution="GN|*" Project="Debug" />
+      <Platform Solution="*|ARM" Project="x64" />
+      <Platform Solution="Debug|Any CPU" Project="Win32" />
+    </Project>
+    <Project Path="WebRtcInterop/WebRtcInterop.Framework.vcxproj">
+      <BuildType Solution="GN|*" Project="Release" />
+      <Platform Solution="*|Any CPU" Project="Win32" />
+      <Platform Solution="*|ARM" Project="x64" />
+      <Build Solution="Release|ARM" Project="false" />
+    </Project>
+    <Project Path="WebRtcInterop/WebRtcInterop.Shared.vcxitems" />
+  </Folder>
+  <Folder Name="/third_party/">
+    <Project Path="third-party/shared-items/googletest/googletest.vcxitems" />
+  </Folder>
+  <Project Path="WebRtcNet.Api.UnitTests/WebRtcNet.Api.UnitTests.csproj">
+    <BuildType Solution="GN|*" Project="Release" />
+    <Build Solution="Release|ARM" Project="false" />
+  </Project>
+  <Project Path="WebRtcNet.Api/WebRtcNet.Api.csproj">
+    <BuildType Solution="Debug|ARM" Project="Debug - .Net Core" />
+    <BuildType Solution="GN|*" Project="Release" />
+    <Build Solution="Release|ARM" Project="false" />
+  </Project>
+  <Project Path="WebRtcNet/WebRtcNet.csproj">
+    <BuildType Solution="Debug|ARM" Project="Debug - .Net Core" />
+    <BuildType Solution="GN|*" Project="Release" />
+    <Platform Solution="Debug|x64" Project="x64" />
+    <Platform Solution="Debug|x86" Project="x86" />
+    <Build Solution="Release|ARM" Project="false" />
+  </Project>
+</Solution>
