@@ -1,3 +1,0 @@
-[submodule "third-party/google/webrtc/src"]
-	path = third-party/google/webrtc/src
-	url = https://webrtc.googlesource.com/src

@@ -12,7 +12,6 @@ ipch
 *.user
 TestResults
 *.opendb
-/third-party/google/webrtc/.cipd
 /third-party/shared-items/googletest/CMakeFiles
 /third-party/shared-items/googletest/googlemock/CMakeFiles
 /third-party/shared-items/googletest/ZERO_CHECK.vcxproj.filters

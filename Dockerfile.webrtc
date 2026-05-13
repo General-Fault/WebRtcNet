@@ -24,7 +24,6 @@ RUN & C:\build\sync-webrtc.ps1
 
 FROM webrtc-sync AS webrtc-builder
 
-COPY third-party\google\webrtc\0001-*.patch C:\patches\
 COPY docker\build-webrtc.ps1 C:\build\build-webrtc.ps1
 
 RUN & C:\build\build-webrtc.ps1 -Mode build

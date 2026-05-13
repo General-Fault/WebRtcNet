@@ -11,7 +11,8 @@ SHELL ["C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "-NoLog
 
 ENV CHOCOLATEY_USE_WINDOWS_COMPRESSION=false `
     WEBRTC_SRC_PATH=C:\opt\webrtc\src `
-    WEBRTC_OUT_PATH=C:\opt\webrtc\out
+    WEBRTC_OUT_PATH=C:\opt\webrtc\out `
+    WEBRTC_PREBUILT=1
 
 # Build tools and the .NET SDK needed to compile the managed + C++/CLI layers.
 RUN $ErrorActionPreference = 'Stop'; `
@@ -23,11 +24,13 @@ RUN $ErrorActionPreference = 'Stop'; `
     New-Item -ItemType Directory -Force C:\TEMP | Out-Null; `
     $installer = 'C:\TEMP\vs_buildtools.exe'; `
     Invoke-WebRequest -Uri 'https://aka.ms/vs/17/release/vs_buildtools.exe' -OutFile $installer; `
-    Start-Process -FilePath $installer -Wait -ArgumentList '--quiet', '--wait', '--norestart', '--nocache', '--installPath', 'C:\BuildTools', '--add', 'Microsoft.VisualStudio.Workload.NativeDesktop', '--add', 'Microsoft.VisualStudio.Component.VC.Tools.x86.x64', '--add', 'Microsoft.VisualStudio.Component.VC.CLI.Support', '--add', 'Microsoft.VisualStudio.Component.Windows10SDK.20348', '--add', 'Microsoft.VisualStudio.Component.Windows11SDK.22621', '--add', 'Microsoft.VisualStudio.Component.Windows11SDK.26100', '--includeRecommended'; `
+    Start-Process -FilePath $installer -Wait -ArgumentList '--quiet', '--wait', '--norestart', '--nocache', '--installPath', 'C:\BuildTools', '--add', 'Microsoft.VisualStudio.Workload.NativeDesktop', '--add', 'Microsoft.VisualStudio.Component.VC.Tools.x86.x64', '--add', 'Microsoft.VisualStudio.Component.VC.CLI.Support', '--add', 'Microsoft.Net.Component.4.5.TargetingPack', '--add', 'Microsoft.Net.Component.4.7.TargetingPack', '--add', 'Microsoft.VisualStudio.Component.Windows10SDK.20348', '--add', 'Microsoft.VisualStudio.Component.Windows11SDK.22621', '--add', 'Microsoft.VisualStudio.Component.Windows11SDK.26100', '--includeRecommended'; `
     Remove-Item $installer -Force
 
 COPY . C:\workspace
-COPY --from=webrtc-artifacts C:\artifacts C:\opt\webrtc
+RUN New-Item -ItemType Directory -Force C:\opt\webrtc\out\Release\x64\obj | Out-Null
+COPY --from=webrtc-artifacts C:\artifacts\src C:\opt\webrtc\src
+COPY --from=webrtc-artifacts C:\artifacts\out\Release\x64\obj\webrtc.lib C:\opt\webrtc\out\Release\x64\obj\webrtc.lib
 COPY docker\build-webrtcnet.ps1 C:\build\build-webrtcnet.ps1
 
 WORKDIR C:\workspace

@@ -25,21 +25,6 @@ function Invoke-NativeCommand {
   }
 }
 
-function Apply-PatchBestEffort {
-  param([Parameter(Mandatory = $true)][string]$PatchPath)
-
-  & git apply --ignore-whitespace --whitespace=nowarn $PatchPath
-  if ($LASTEXITCODE -eq 0) {
-    return
-  }
-
-  Write-Warning "Patch did not apply cleanly, retrying with --reject: $PatchPath"
-  & git apply --ignore-whitespace --whitespace=nowarn --reject $PatchPath
-  if ($LASTEXITCODE -ne 0) {
-    Write-Warning "Patch still has rejects; continuing with partial application: $PatchPath"
-  }
-}
-
 function Resolve-BuildToolsPath {
   $vsWhere = 'C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe'
   if (Test-Path $vsWhere) {
@@ -203,11 +188,8 @@ if ($Mode -eq 'full' -or $Mode -eq 'build') {
   Ensure-WindowsSdkDebuggersFiles
   Ensure-NinjaAvailable
 
-  Set-Location C:\src\src\third_party\googletest\src
-  Apply-PatchBestEffort 'C:\patches\0001-Compile-for-C-CLI.patch'
   Set-Location C:\src\src
   Invoke-NativeCommand gclient @('runhooks')
-  Apply-PatchBestEffort 'C:\patches\0001-compile-for-windows-using-dynamic-c-library.patch'
   # Force dynamic CRT (/MD, /MDd) for all targets so the static lib is
   # compatible with C++/CLI projects that require the shared MSVC runtime.
   $winBuildGnPath = 'C:\src\src\build\config\win\BUILD.gn'
