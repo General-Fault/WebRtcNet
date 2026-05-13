@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -27,6 +27,7 @@
     <CharacterSet>Unicode</CharacterSet>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
   </PropertyGroup>
+  <Import Project="..\WebRtcInterop\WebRtcInterop.BuildPaths.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <CLRSupport>true</CLRSupport>
@@ -49,22 +50,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SolutionDir)WebRtcInterop;$(IncludePath)</IncludePath>
-    <ExternalIncludePath>$(SolutionDir)third-party\google\webrtc\src;$(SolutionDir)third-party\google\webrtc\src\third_party\abseil-cpp;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(WebRtcSrcRoot);$(WebRtcSrcRoot)\third_party\abseil-cpp;$(ExternalIncludePath)</ExternalIncludePath>
     <ManagedAssembly>true</ManagedAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)WebRtcInterop;$(IncludePath)</IncludePath>
-    <ExternalIncludePath>$(SolutionDir)third-party\google\webrtc\src;$(SolutionDir)third-party\google\webrtc\src\third_party\abseil-cpp;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(WebRtcSrcRoot);$(WebRtcSrcRoot)\third_party\abseil-cpp;$(ExternalIncludePath)</ExternalIncludePath>
     <ManagedAssembly>true</ManagedAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)WebRtcInterop;$(IncludePath)</IncludePath>
-    <ExternalIncludePath>$(SolutionDir)third-party\google\webrtc\src;$(SolutionDir)third-party\google\webrtc\src\third_party\abseil-cpp;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(WebRtcSrcRoot);$(WebRtcSrcRoot)\third_party\abseil-cpp;$(ExternalIncludePath)</ExternalIncludePath>
     <ManagedAssembly>true</ManagedAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)WebRtcInterop;$(IncludePath)</IncludePath>
-    <ExternalIncludePath>$(SolutionDir)third-party\google\webrtc\src;$(SolutionDir)third-party\google\webrtc\src\third_party\abseil-cpp;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(WebRtcSrcRoot);$(WebRtcSrcRoot)\third_party\abseil-cpp;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="include\TestUtils.h" />
@@ -103,7 +104,7 @@
       <SubSystem>Console</SubSystem>
       <IgnoreSpecificDefaultLibraries>libcmtd;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <AdditionalDependencies>webrtc.lib;Ws2_32.lib;iphlpapi.lib;Winmm.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(WebRtcOutRoot)\$(Configuration)\$(Platform)\obj</AdditionalLibraryDirectories>
     </Link>
     <CustomBuildStep />
   </ItemDefinitionGroup>
@@ -125,7 +126,7 @@
       <SubSystem>Console</SubSystem>
       <IgnoreSpecificDefaultLibraries>libcmtd;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <AdditionalDependencies>webrtc.lib;Ws2_32.lib;iphlpapi.lib;Winmm.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(WebRtcOutRoot)\$(Configuration)\$(Platform)\obj</AdditionalLibraryDirectories>
     </Link>
     <CustomBuildStep />
   </ItemDefinitionGroup>
@@ -148,7 +149,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <IgnoreSpecificDefaultLibraries>libcmtd;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <AdditionalDependencies>webrtc.lib;Ws2_32.lib;iphlpapi.lib;Winmm.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(WebRtcOutRoot)\$(Configuration)\$(Platform)\obj</AdditionalLibraryDirectories>
     </Link>
     <CustomBuildStep />
   </ItemDefinitionGroup>
@@ -171,7 +172,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <IgnoreSpecificDefaultLibraries>libcmtd;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <AdditionalDependencies>webrtc.lib;Ws2_32.lib;iphlpapi.lib;Winmm.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(SolutionDir)third-party\google\webrtc\out\$(Configuration)\$(Platform)\obj</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(WebRtcOutRoot)\$(Configuration)\$(Platform)\obj</AdditionalLibraryDirectories>
     </Link>
     <CustomBuildStep />
   </ItemDefinitionGroup>

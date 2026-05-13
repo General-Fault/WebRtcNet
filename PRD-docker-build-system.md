@@ -59,7 +59,7 @@ Implement a **two-tier Docker-based build system** that separates WebRTC compila
 
 10. As a **enterprise user**, I want to cache Docker images in our private registry, so that developers don't re-download WebRTC artifacts across multiple machines
 
-11. As a **release engineer**, I want separate Docker images for different WebRTC versions (5111, 5112, main branch), so that we can support multiple versions simultaneously
+11. As a **release engineer**, I want separate Docker images for different WebRTC versions (7778, main branch), so that we can support multiple versions simultaneously
 
 12. As a **developer in a bandwidth-constrained environment**, I want to build WebRtcNet from a cached Docker layer instead of downloading 10GB each time, so that I can develop reliably on slow connections
 
@@ -116,7 +116,7 @@ The implementation spans three key areas:
   - Enables faster iteration on both WebRTC and WebRtcNet
 
 - **Image Tagging Scheme**:
-  - WebRTC: `ghcr.io/general-fault/webrtc:5112-artifacts-full`, `ghcr.io/general-fault/webrtc:latest`
+  - WebRTC: `ghcr.io/general-fault/webrtc:7778-artifacts-full`, `ghcr.io/general-fault/webrtc:latest`
   - WebRtcNet: `ghcr.io/general-fault/webrtcnet:latest`, `ghcr.io/general-fault/webrtcnet:{version}`, `ghcr.io/general-fault/webrtcnet:{commit-sha}`
   - Rationale: Multiple tags enable both "latest" fast updates and reproducible pinned versions
 
@@ -133,7 +133,7 @@ The implementation spans three key areas:
 - **Incremental WebRTC Updates**:
   - Rebuild WebRTC monthly on schedule, or on-demand if submodule pointer changes
   - Do NOT rebuild if only managed code (WebRtcNet/) changes
-  - Rationale: WebRTC is stable branch (5112); monthly refresh sufficient for security patches
+  - Rationale: WebRTC is stable branch (7778, Chrome M148); monthly refresh sufficient for security patches
 
 ### Interfaces and Contracts
 
@@ -144,7 +144,7 @@ The implementation spans three key areas:
 
 **WebRTC Image Contract**:
 - Provides: `/artifacts/out/Release_x64/obj/webrtc.lib`, `/artifacts/out/Release_Win32/obj/webrtc.lib`, etc., plus `/artifacts/src/` (headers)
-- Guarantees: Built from branch-heads/5112, all 4 configurations included, ready for immediate linking
+- Guarantees: Built from branch-heads/7778, all 4 configurations included, ready for immediate linking
 - Stability: Image tag immutable; rebuilds on new tag only
 
 **WebRtcNet Build Input**:
@@ -159,7 +159,7 @@ The implementation spans three key areas:
 ### Environment Variables & Configuration
 
 **In Dockerfile.webrtc**:
-- `WEBRTC_BRANCH`: refs/remotes/branch-heads/5112 (hardcoded, can parameterize later)
+- `WEBRTC_BRANCH`: refs/branch-heads/7778 (hardcoded, can parameterize later)
 - `GN_ARGS`: Per-configuration parameters (target_cpu, is_debug, optimization flags)
 
 **In Dockerfile.webrtcnet**:
@@ -203,11 +203,11 @@ The implementation spans three key areas:
 **For Docker Desktop users (Windows/Mac/Linux)**:
 ```bash
 # One-time: Pull WebRTC base image
-docker pull ghcr.io/general-fault/webrtc:5112-artifacts-full
+docker pull ghcr.io/general-fault/webrtc:7778-artifacts-full
 
 # Build WebRtcNet locally
 docker build -f Dockerfile.webrtcnet \
-  --build-arg WEBRTC_IMAGE=ghcr.io/general-fault/webrtc:5112-artifacts-full \
+  --build-arg WEBRTC_IMAGE=ghcr.io/general-fault/webrtc:7778-artifacts-full \
   -t webrtcnet:local .
 
 # Extract compiled binaries
@@ -329,7 +329,7 @@ Enterprise scenario: 50 builds/month
 3. **ARM64 support** — Add GN args and Azure Pipelines ARM runner when Windows ARM builds are tested
 4. **Automatic dependency updates** — Monitor WebRTC branch for new patches, auto-build and notify
 5. **Build time analytics** — Track trends in build times; identify optimization opportunities
-6. **Multi-version support** — Maintain pre-built images for 5111, 5112, and main branch in parallel
+6. **Multi-version support** — Maintain pre-built images for 7778 (current stable) and main branch in parallel
 
 ### Success Metrics
 

@@ -1,0 +1,9 @@
+.git
+.vs
+**/bin
+**/obj
+Debug
+TestResults
+third-party/google/webrtc/out
+third-party/shared-items/googletest/CMakeFiles
+third-party/shared-items/googletest/lib

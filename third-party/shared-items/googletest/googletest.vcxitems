@@ -1,28 +1,29 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="Globals">
     <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
     <ItemsProjectGuid>{357b6b66-ab73-41cd-9271-1b4e5c41dde1}</ItemsProjectGuid>
-	<CustomBuildBeforeTargets>Link</CustomBuildBeforeTargets>
+    <CustomBuildBeforeTargets>Link</CustomBuildBeforeTargets>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)WebRtcInterop\WebRtcInterop.BuildPaths.props" Condition="'$(WebRtcSrcRoot)' == '' Or '$(WebRtcGoogletestRoot)' == ''" />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(SolutionDir)third-party\google\webrtc\src\third_party\googletest\src\googletest\include;$(SolutionDir)third-party\google\webrtc\src\third_party\googletest\src\googlemock\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(WebRtcGoogletestRoot)\googletest\include;$(WebRtcGoogletestRoot)\googlemock\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GTEST_IS_THREADSAFE=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-	<Link>
+    <Link>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(SolutionDir)third-party\shared-items\googletest\lib\Debug</AdditionalLibraryDirectories>
-	  <AdditionalDependencies>gmock.lib;gtest.lib;gtest_main.lib</AdditionalDependencies>
-	</Link>
+      <AdditionalDependencies>gmock.lib;gtest.lib;gtest_main.lib</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup >
+  <ItemDefinitionGroup>
     <CustomBuildStep>
       <Command>cd "$(SolutionDir)third-party\shared-items\googletest"
-"$(DevEnvDir)\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -Dgtest_force_shared_crt=ON -Dgtest_disable_threadsafe=ON -Dgtest_disable_deathtest=ON $(SolutionDir)third-party\google\webrtc\src\third_party\googletest\src
+"$(DevEnvDir)\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -Dgtest_force_shared_crt=ON -Dgtest_disable_threadsafe=ON -Dgtest_disable_deathtest=ON $(WebRtcGoogletestRoot)
 "$(DevEnvDir)\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --build .</Command>
       <Message>Building GoogleTest</Message>
-	  <Inputs>$(SolutionDir)third-party\google\webrtc\src\third_party\googletest\src\CMakeLists.txt</Inputs>
+      <Inputs>$(WebRtcGoogletestRoot)\CMakeLists.txt</Inputs>
       <Outputs>$(SolutionDir)third-party\shared-items\googletest\CMakeFiles\generate.stamp</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>

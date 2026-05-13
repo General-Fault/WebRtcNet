@@ -162,7 +162,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <PackageLicenseFile>C:\Source\WebRtcNet\LICENSE</PackageLicenseFile>
+    <PackageLicenseFile>..\LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net47' ">

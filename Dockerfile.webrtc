@@ -1,0 +1,40 @@
+# escape=`
+
+ARG WINDOWS_BASE_IMAGE=webrtc-toolchain:ltsc2022
+ARG WINDOWS_ARTIFACTS_BASE_IMAGE=mcr.microsoft.com/windows/servercore:ltsc2022
+
+FROM ${WINDOWS_BASE_IMAGE} AS webrtc-sync
+
+SHELL ["C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command"]
+
+ARG FAST_DEV_SYNC=false
+
+ENV CHOCOLATEY_USE_WINDOWS_COMPRESSION=false `
+    DEPOT_TOOLS_PATH=C:\depot_tools `
+    DEPOT_TOOLS_WIN_TOOLCHAIN=0 `
+    DEPOT_TOOLS_UPDATE=0 `
+    WEBRTC_WORK_ROOT=C:\src\webrtc `
+    WEBRTC_BRANCH=refs/branch-heads/7778 `
+    WEBRTC_BRANCH_NAME=webrtcnet_7778 `
+    FAST_DEV_SYNC=${FAST_DEV_SYNC}
+
+COPY docker\sync-webrtc.ps1 C:\build\sync-webrtc.ps1
+
+RUN & C:\build\sync-webrtc.ps1
+
+FROM webrtc-sync AS webrtc-builder
+
+COPY third-party\google\webrtc\0001-*.patch C:\patches\
+COPY docker\build-webrtc.ps1 C:\build\build-webrtc.ps1
+
+RUN & C:\build\build-webrtc.ps1 -Mode build
+
+ARG WINDOWS_ARTIFACTS_BASE_IMAGE
+FROM ${WINDOWS_ARTIFACTS_BASE_IMAGE} AS webrtc-artifacts
+
+WORKDIR C:\artifacts
+COPY --from=webrtc-builder C:\artifacts C:\artifacts
+
+LABEL org.opencontainers.image.description="Prebuilt WebRTC branch-heads/7778 artifacts for WebRtcNet"
+LABEL org.opencontainers.image.source="https://github.com/General-Fault/WebRtcNet"
+LABEL org.opencontainers.image.version="7778"

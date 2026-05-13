@@ -1,7 +1,25 @@
 # WebRtcNet
 A .Net implementation of the WebRTC standard built using the WebRTC Project native client for Windows desktop applications. WebRtcNet is not endorsed by or affiliated with Google or the WebRTC Project in any way.
 
-See the WebRTC 1.0: Real-time Communication Between Browsers - W3C Recommendation 26 January 2021 for more documentation on the WebRtc interface. 
+## Docker quick start
+
+Build the reusable toolchain image once, then build WebRTC artifacts, then WebRtcNet:
+
+```powershell
+docker build -f Dockerfile.webrtc-toolchain -t webrtc-toolchain:ltsc2022 .
+docker build -f Dockerfile.webrtc -t webrtc-artifacts:local .
+docker build -f Dockerfile.webrtcnet --build-arg WEBRTC_IMAGE=webrtc-artifacts:local -t webrtcnet:local .
+```
+
+During iteration on Docker/script changes, you can skip destructive sync cleanup to reduce retries:
+
+```powershell
+docker build -f Dockerfile.webrtc --build-arg FAST_DEV_SYNC=true -t webrtc-artifacts:local .
+```
+
+Use the default (`FAST_DEV_SYNC=false`) for final end-to-end validation to ensure a clean dependency graph.
+
+See the WebRTC 1.0: Real-time Communication Between Browsers - W3C Recommendation 26 January 2021 for more documentation on the WebRtc interface.
 https://www.w3.org/TR/webrtc/
 
 If building WebRtcNet, you will need to fetch and build the WebRTC native client. Information on how to do that can be found here.

@@ -1,0 +1,56 @@
+# escape=`
+
+ARG WINDOWS_BASE_IMAGE=mcr.microsoft.com/dotnet/framework/sdk:4.8-windowsservercore-ltsc2022
+
+FROM ${WINDOWS_BASE_IMAGE}
+
+SHELL ["C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command"]
+
+ENV CHOCOLATEY_USE_WINDOWS_COMPRESSION=false `
+    DEPOT_TOOLS_PATH=C:\depot_tools `
+    DEPOT_TOOLS_WIN_TOOLCHAIN=0
+
+# Install git (required to clone depot_tools; also used by depot_tools bootstrap to create git.bat wrapper)
+RUN $ErrorActionPreference = 'Stop'; `
+    [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor 3072; `
+    Set-ExecutionPolicy Bypass -Scope Process -Force; `
+    Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1')); `
+    choco feature enable -n allowGlobalConfirmation; `
+    choco install -y git
+
+# Install VS Build Tools 2022 with C++, CLI support, and Windows SDKs
+RUN $ErrorActionPreference = 'Stop'; `
+    New-Item -ItemType Directory -Force C:\TEMP | Out-Null; `
+    New-Item -ItemType Directory -Force C:\src | Out-Null; `
+    $installer = 'C:\TEMP\vs_buildtools.exe'; `
+    Invoke-WebRequest -Uri 'https://aka.ms/vs/17/release/vs_buildtools.exe' -OutFile $installer; `
+    $installPath = 'C:\BuildTools'; `
+    $args = @('--quiet', '--wait', '--norestart', '--nocache', '--installPath', $installPath, '--includeRecommended', '--add', 'Microsoft.VisualStudio.Workload.NativeDesktop', '--add', 'Microsoft.VisualStudio.Component.VC.Tools.x86.x64', '--add', 'Microsoft.VisualStudio.Component.VC.CLI.Support', '--add', 'Microsoft.VisualStudio.Component.Windows10SDK.20348', '--add', 'Microsoft.VisualStudio.Component.Windows11SDK.22621', '--add', 'Microsoft.VisualStudio.Component.Windows11SDK.26100'); `
+    $proc = Start-Process -FilePath $installer -Wait -PassThru -ArgumentList $args; `
+    if ($proc.ExitCode -ne 0 -and $proc.ExitCode -ne 3010) { throw "Visual Studio Build Tools setup failed with exit code $($proc.ExitCode)." }; `
+    Remove-Item $installer -Force; `
+    if (!(Test-Path (Join-Path $installPath 'Common7\Tools\VsDevCmd.bat'))) { throw 'VsDevCmd.bat is missing after setup.' }; `
+    if (!(Test-Path (Join-Path $installPath 'MSBuild\Current\Bin\MSBuild.exe'))) { throw 'MSBuild.exe is missing after setup.' }; `
+    $sdkIncludeRoot = Join-Path ${env:ProgramFiles(x86)} 'Windows Kits\10\Include'; `
+    if (!(Test-Path $sdkIncludeRoot)) { throw "Windows SDK include root not found at $sdkIncludeRoot." }
+
+# Clone depot_tools and register it at the front of the machine PATH
+RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git C:\depot_tools; `
+    [Environment]::SetEnvironmentVariable('PATH', ('C:\depot_tools;{0}' -f $env:PATH), 'Machine'); `
+    [Environment]::SetEnvironmentVariable('DEPOT_TOOLS_WIN_TOOLCHAIN', '0', 'Machine'); `
+    git config --global core.autocrlf false; `
+    git config --global core.filemode false; `
+    git config --global core.longpaths true; `
+    git config --global --add safe.directory C:/depot_tools
+
+# Bootstrap depot_tools from cmd.exe per Google's instructions.
+# This triggers update_depot_tools.bat which: updates depot_tools via git,
+# runs cipd_bin_setup.bat, then calls bootstrap\win_tools.bat which installs
+# Python (via CIPD cpython3) and generates the git.bat wrapper used by gclient.
+SHELL ["cmd", "/S", "/C"]
+RUN set "DEPOT_TOOLS_WIN_TOOLCHAIN=0" && gclient
+
+SHELL ["C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command"]
+
+LABEL org.opencontainers.image.description="WebRTC toolchain base image with VS Build Tools, SDK, depot_tools"
+LABEL org.opencontainers.image.source="https://github.com/General-Fault/WebRtcNet"

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <WebRtcSrcRoot Condition="'$(WEBRTC_SRC_PATH)' != ''">$(WEBRTC_SRC_PATH)</WebRtcSrcRoot>
+    <WebRtcSrcRoot Condition="'$(WEBRTC_SRC_PATH)' == ''">$(SolutionDir)third-party\google\webrtc\src</WebRtcSrcRoot>
+    <WebRtcOutRoot Condition="'$(WEBRTC_OUT_PATH)' != ''">$(WEBRTC_OUT_PATH)</WebRtcOutRoot>
+    <WebRtcOutRoot Condition="'$(WEBRTC_OUT_PATH)' == ''">$(SolutionDir)third-party\google\webrtc\out</WebRtcOutRoot>
+    <WebRtcGoogletestRoot Condition="'$(WEBRTC_SRC_PATH)' != ''">$(WebRtcSrcRoot)\third_party\googletest\src</WebRtcGoogletestRoot>
+    <WebRtcGoogletestRoot Condition="'$(WEBRTC_SRC_PATH)' == ''">$(SolutionDir)third-party\google\webrtc\src\third_party\googletest\src</WebRtcGoogletestRoot>
+  </PropertyGroup>
+</Project>
