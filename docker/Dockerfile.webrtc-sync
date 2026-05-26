@@ -1,0 +1,30 @@
+# escape=`
+
+ARG WEBRTC_TOOLCHAIN_IMAGE=webrtc-toolchain
+ARG DEPOT_TOOLS_PATH=C:\depot_tools
+ARG WEBRTC_WORK_ROOT=C:\webrtc
+ARG MSVS_VERSION=2026
+
+#Stage 2 : Sync WebRtc sources
+FROM ${WEBRTC_TOOLCHAIN_IMAGE} AS webrtc-sync
+
+ARG DEPOT_TOOLS_PATH
+ARG WEBRTC_WORK_ROOT
+ARG FAST_DEV_SYNC=false
+ARG MSVS_VERSION
+ARG WEBRTC_BRANCH
+
+ENV `
+    DEPOT_TOOLS_PATH=${DEPOT_TOOLS_PATH} `
+    DEPOT_TOOLS_WIN_TOOLCHAIN=0 `
+    DEPOT_TOOLS_UPDATE=0 `
+    MSVS_VERSION=${MSVS_VERSION} `
+    WEBRTC_WORK_ROOT=${WEBRTC_WORK_ROOT} `
+    WEBRTC_BRANCH=${WEBRTC_BRANCH} `
+    FAST_DEV_SYNC=${FAST_DEV_SYNC}
+
+RUN if "%WEBRTC_BRANCH%"=="" (echo ERROR: WEBRTC_BRANCH build arg is required. Recommended value is 7778. & exit /b 1)
+
+COPY docker\build-webrtc.ps1 C:\build\build-webrtc.ps1
+
+RUN pwsh -NoLogo -NoProfile -File C:\build\build-webrtc.ps1 -Mode sync

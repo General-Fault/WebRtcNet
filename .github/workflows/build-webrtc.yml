@@ -1,0 +1,72 @@
+name: Build WebRTC
+
+# Builds the WebRTC artifacts image and pushes it to GHCR.
+# Trigger manually when the WebRTC branch pin changes, or automatically when
+# build scripts or Dockerfiles that affect the WebRTC build are modified.
+#
+# NOTE: The WebRTC build takes several hours. A self-hosted Windows runner with
+# Docker configured for Windows containers is strongly recommended over a
+# GitHub-hosted runner.
+
+on:
+  workflow_dispatch:
+    inputs:
+      webrtc-branch:
+        description: 'WebRTC branch number (e.g. 7778)'
+        required: true
+        default: '7778'
+  push:
+    branches: [main]
+    paths:
+      - 'docker/Dockerfile.webrtc-toolchain'
+      - 'docker/Dockerfile.webrtc-sync'
+      - 'docker/Dockerfile.webrtc-build'
+      - 'docker/Dockerfile.webrtc'
+      - 'docker/build-webrtc.ps1'
+
+env:
+  REGISTRY: ghcr.io/general-fault
+  WEBRTC_BRANCH: ${{ inputs.webrtc-branch || '7778' }}
+
+jobs:
+  build:
+    runs-on: windows-2025
+    timeout-minutes: 360
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Switch to Windows containers
+        run: '& "$env:ProgramFiles\Docker\Docker\DockerCli.exe" -SwitchWindowsEngine'
+        shell: pwsh
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build webrtc-toolchain
+        run: docker build -f docker/Dockerfile.webrtc-toolchain -t webrtc-toolchain .
+        shell: pwsh
+
+      - name: Build webrtc-sync
+        run: docker build -f docker/Dockerfile.webrtc-sync -t webrtc-sync --build-arg "WEBRTC_BRANCH=$env:WEBRTC_BRANCH" .
+        shell: pwsh
+
+      - name: Build webrtc (compile stage)
+        run: docker build -f docker/Dockerfile.webrtc-build --target webrtc-build -t webrtc-build --build-arg WEBRTC_SYNC_IMAGE=webrtc-sync --build-arg "WEBRTC_BRANCH=$env:WEBRTC_BRANCH" .
+        shell: pwsh
+
+      - name: Build webrtc artifacts image
+        run: docker build -f docker/Dockerfile.webrtc --target webrtc -t "webrtc:msvc-shared-$env:WEBRTC_BRANCH" -t "$env:REGISTRY/webrtc:msvc-shared-$env:WEBRTC_BRANCH" --build-arg WEBRTC_BUILD_IMAGE=webrtc-build --build-arg "WEBRTC_BRANCH=$env:WEBRTC_BRANCH" .
+        shell: pwsh
+
+      - name: Push artifacts image
+        run: docker push "$env:REGISTRY/webrtc:msvc-shared-$env:WEBRTC_BRANCH"
+        shell: pwsh

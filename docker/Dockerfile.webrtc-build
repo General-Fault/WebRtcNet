@@ -1,0 +1,27 @@
+# escape=`
+
+ARG WEBRTC_SYNC_IMAGE=webrtc-sync
+ARG DEPOT_TOOLS_PATH=C:\depot_tools
+ARG WEBRTC_WORK_ROOT=C:\webrtc
+ARG WEBRTC_BRANCH=7778
+ARG MSVS_VERSION=2026
+
+# Stage 3: Build WebRTC
+FROM ${WEBRTC_SYNC_IMAGE} AS webrtc-build
+
+ARG DEPOT_TOOLS_PATH
+ARG WEBRTC_WORK_ROOT
+ARG WEBRTC_BRANCH
+ARG MSVS_VERSION
+
+ENV `
+    DEPOT_TOOLS_PATH=${DEPOT_TOOLS_PATH} `
+    DEPOT_TOOLS_WIN_TOOLCHAIN=0 `
+    DEPOT_TOOLS_UPDATE=0 `
+    MSVS_VERSION=${MSVS_VERSION} `
+    WEBRTC_WORK_ROOT=${WEBRTC_WORK_ROOT}
+
+COPY docker\build-webrtc.ps1 C:\build\build-webrtc.ps1
+COPY third-party\google\webrtc\*.patch C:\build\patches\
+
+RUN pwsh -NoLogo -NoProfile -File C:\build\build-webrtc.ps1 -Mode build

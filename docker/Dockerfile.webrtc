@@ -1,0 +1,42 @@
+# escape=`
+
+ARG WEBRTC_BUILD_IMAGE=webrtc-build
+ARG WEBRTC_ARTIFACTS_BASE_IMAGE=mcr.microsoft.com/windows/servercore:ltsc2025
+ARG WEBRTC_WORK_ROOT=C:\webrtc
+ARG WEBRTC_BRANCH=7778
+ARG ARTIFACTS_PATH=C:\webrtc-artifacts
+
+# Stage: collect built WebRTC binaries and source headers/includes/modules into C:\webrtc-artifacts
+FROM ${WEBRTC_BUILD_IMAGE} AS webrtc-artifacts-stage
+
+ARG WEBRTC_WORK_ROOT
+ARG ARTIFACTS_PATH
+
+# Copy the lib output.
+RUN pwsh -NoLogo -NoProfile -Command `
+    "$ErrorActionPreference = 'Stop'; `
+    $libs = Get-ChildItem -Path '%WEBRTC_WORK_ROOT%\src\out' -Recurse -Filter webrtc.lib | `
+      Where-Object { $_.FullName -match '\\(Debug|Release)\\(Win32|x64|ARM64)\\obj\\webrtc\.lib$' }; `
+    if (-not $libs) { throw 'No webrtc.lib artifacts were found under src\out.' }; `
+    foreach ($lib in $libs) { `
+      $platform = $lib.Directory.Parent.Name; `
+      $configuration = $lib.Directory.Parent.Parent.Name; `
+      $destDir = Join-Path '%ARTIFACTS_PATH%\lib' (Join-Path $configuration $platform); `
+      New-Item -ItemType Directory -Force -Path $destDir | Out-Null; `
+      Copy-Item -LiteralPath $lib.FullName -Destination (Join-Path $destDir 'webrtc.lib') -Force `
+    }"
+
+# Copy all include, inline include, and module files.
+RUN robocopy %WEBRTC_WORK_ROOT%\src %ARTIFACTS_PATH%\include /S /R:0 /NJH /NJS *.h *.inc *.ifc & if %ERRORLEVEL% LSS 8 exit /b 0
+
+# Final stage: publish artifact files without inheriting webrtc-build ancestry
+FROM ${WEBRTC_ARTIFACTS_BASE_IMAGE} AS webrtc
+
+ARG WEBRTC_BRANCH
+
+COPY --from=webrtc-artifacts-stage C:\webrtc-artifacts\include C:\webrtc-artifacts\include
+COPY --from=webrtc-artifacts-stage C:\webrtc-artifacts\lib C:\webrtc-artifacts\lib
+
+LABEL org.opencontainers.image.description="Prebuilt WebRTC branch-heads/${WEBRTC_BRANCH} artifacts for WebRtcNet"
+LABEL org.opencontainers.image.source="https://github.com/General-Fault/WebRtcNet"
+LABEL org.opencontainers.image.version="${WEBRTC_BRANCH}"

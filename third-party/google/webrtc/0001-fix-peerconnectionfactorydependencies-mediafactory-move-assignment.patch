@@ -1,0 +1,38 @@
+From 7cb2d6902a52fd6cb49d4dd9514d6953774dcf31 Mon Sep 17 00:00:00 2001
+From: WebRtcNet Maintainers <noreply@example.com>
+Date: Sun, 24 May 2026 16:00:00 -0700
+Subject: [PATCH] Fix MediaFactory incomplete type in PeerConnectionFactoryDependencies move assignment
+
+---
+ api/peer_connection_interface.cc | 3 +++
+ api/peer_connection_interface.h  | 2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/api/peer_connection_interface.h b/api/peer_connection_interface.h
+--- a/api/peer_connection_interface.h
++++ b/api/peer_connection_interface.h
+@@ -1423,7 +1423,7 @@ struct RTC_EXPORT PeerConnectionFactoryDependencies final {
+       const PeerConnectionFactoryDependencies&) = delete;
+   // This object is only moveable.
+   PeerConnectionFactoryDependencies(PeerConnectionFactoryDependencies&&);
+-  PeerConnectionFactoryDependencies& operator=(
+-      PeerConnectionFactoryDependencies&&) = default;
++  PeerConnectionFactoryDependencies& operator=(
++      PeerConnectionFactoryDependencies&&);
+   ~PeerConnectionFactoryDependencies();
+ 
+diff --git a/api/peer_connection_interface.cc b/api/peer_connection_interface.cc
+--- a/api/peer_connection_interface.cc
++++ b/api/peer_connection_interface.cc
+@@ -59,6 +59,9 @@ PeerConnectionFactoryDependencies::PeerConnectionFactoryDependencies() =
+ PeerConnectionFactoryDependencies::PeerConnectionFactoryDependencies(
+     PeerConnectionFactoryDependencies&&) = default;
+ 
++PeerConnectionFactoryDependencies& PeerConnectionFactoryDependencies::operator=(
++    PeerConnectionFactoryDependencies&&) = default;
++
+ PeerConnectionFactoryDependencies::~PeerConnectionFactoryDependencies() =
+     default;
+ 
+-- 
+2.49.0.windows.1

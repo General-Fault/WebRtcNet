@@ -1,62 +1,110 @@
 # WebRtcNet
-A .Net implementation of the WebRTC standard built using the WebRTC Project native client for Windows desktop applications. WebRtcNet is not endorsed by or affiliated with Google or the WebRTC Project in any way.
 
-## Docker quick start
+A .NET implementation of the WebRTC standard built using the WebRTC Project native client for Windows desktop applications. WebRtcNet is not endorsed by or affiliated with Google or the WebRTC Project in any way.
 
-Build the reusable toolchain image once, then build WebRTC artifacts, then WebRtcNet:
+WebRtcNet currently uses WebRTC branch-heads/7778, which corresponds to Chromium milestone 148 (see https://chromiumdash.appspot.com/branches).
+
+See [WebRTC 1.0: Real-time Communication Between Browsers](https://www.w3.org/TR/webrtc/) for API documentation.
+
+## Local development quick start
+
+The easiest way to get started is to pull the pre-built WebRTC artifacts from the GitHub Container Registry. This avoids a multi-hour native build.
+
+**Prerequisites:** Docker Desktop configured for Windows containers, and a GHCR login (`docker login ghcr.io`).
 
 ```powershell
-docker build -f Dockerfile.webrtc-toolchain -t webrtc-toolchain:ltsc2022 .
-docker build -f Dockerfile.webrtc -t webrtc-artifacts:local .
-docker build -f Dockerfile.webrtcnet --build-arg WEBRTC_IMAGE=webrtc-artifacts:local -t webrtcnet:local .
+.\docker\get-webrtc-artifacts.ps1 -WebRtcBranch 7778
 ```
 
-During iteration on Docker/script changes, you can skip destructive sync cleanup to reduce retries:
+This pulls `ghcr.io/general-fault/webrtc:msvc-shared-7778` and extracts headers, `.inc`/module files, and libraries to `third-party\google\webrtc\` inside the repository. No files are written outside the repo.
+
+If you already built the artifacts image locally, you can skip GHCR and extract directly from that local image:
 
 ```powershell
-docker build -f Dockerfile.webrtc --build-arg FAST_DEV_SYNC=true -t webrtc-artifacts:local .
+.\docker\get-webrtc-artifacts.ps1 -Local
 ```
 
-Use the default (`FAST_DEV_SYNC=false`) for final end-to-end validation to ensure a clean dependency graph.
+`WebRtcInterop.BuildPaths.props` automatically detects the artifact directory and sets the correct include and library paths. No environment variables or Visual Studio restart are required.
 
-See the WebRTC 1.0: Real-time Communication Between Browsers - W3C Recommendation 26 January 2021 for more documentation on the WebRtc interface.
-https://www.w3.org/TR/webrtc/
+## Building WebRtcNet
 
-If building WebRtcNet, you will need to fetch and build the WebRTC native client. Information on how to do that can be found here.
-https://webrtc.googlesource.com/src/+/main/docs/native-code/index.md
+```powershell
+dotnet restore WebRtcNet.slnx
+dotnet build WebRtcNet.Api\WebRtcNet.Api.csproj -c Debug
+dotnet msbuild WebRtcInterop\WebRtcInterop.Framework.vcxproj /p:Configuration=Debug /p:Platform=x64
+```
 
-WebRtcNet currently uses WebRTC branch 5112 (refs/branch-heads/5112) which corosponds to Chromium milestone 104 (see https://chromiumdash.appspot.com/branches)
-https://groups.google.com/g/discuss-webrtc/c/Zrsn2hi8FV0/m/KIbn0EZPBQAJ
+Or build the full solution:
 
+```powershell
+dotnet msbuild WebRtcNet.slnx /p:Configuration=Debug /p:Platform=x64
+```
 
-It is highly recomended that you follow the instructions provided by google - they have changed several times since this project was created. However the short version is this:
+## Running tests
 
-Install Visual Studio 2019 or later (The free Community Edition is sufficient)
-	 Install the “Desktop development with C++” component and the “MFC/ATL support” sub-components
-	 Install the 10.0.20348.0 Windows 10 SDK
+```powershell
+dotnet test WebRtcNet.Api.UnitTests\WebRtcNet.Api.UnitTests.csproj
+```
 
-Download and install Chromium deopt_tools See "https://commondatastorage.googleapis.com/chrome-infra-docs/flat/depot_tools/docs/html/depot_tools_tutorial.html" for details.
+C++/CLI interop tests (requires a built WebRTC):
 
-Set up your git client:
-Start cmd and execute:
+```powershell
+dotnet msbuild WebRtcInterop.UnitTests\WebRtcInterop.UnitTests.vcxproj /p:Configuration=Debug /p:Platform=x64
+.\WebRtcInterop.UnitTests\x64\Debug\WebRtcInterop.UnitTests.exe
+```
 
-	gclient
-	git config --global user.name "My Name"
-	git config --global user.email "name@email"
-	git config --global core.autocrlf false
-	git config --global core.filemode false
-	git config --global color.ui true
+## Docker pipeline
 
-	git config branch.autosetupmerge always
-	git config branch.autosetuprebase always
+The build pipeline uses individual-stage Dockerfiles rather than a single monolithic file. `docker buildx` is not used — Windows containers require classic `docker build`.
 
-Download the WebRtc source.
+| Dockerfile | Purpose |
+|---|---|
+| `docker\Dockerfile.webrtc-toolchain` | VS Build Tools, depot_tools, git |
+| `docker\Dockerfile.webrtc-sync` | Syncs WebRTC source for a given branch |
+| `docker\Dockerfile.webrtc-build` | Compiles WebRTC (`webrtc-build` stage) |
+| `docker\Dockerfile.webrtc` | Creates `webrtc-artifacts-stage`, `webrtc-artifacts`, and final `webrtc` image tags from prebuilt inputs |
+| `docker\Dockerfile.webrtcnet` | Builds WebRtcNet using artifacts from GHCR |
 
-	cd [WebRtcNet Working Directory]\third-party\google\WebRtc
-	fetch --nohooks webrtc
-	git checkout -b webrtcnet_104 refs/remotes/branch-heads/5112
-	gclient sync
+`docker\build-images.ps1` orchestrates the full pipeline:
 
-This may take some time to complete. The sync command downloads the WebRtc native client from https://chromium.googlesource.com/external/webrtc.git including much of the chromium tree https://chromium.googlesource.com/chromium/src.git. These add up to nearly 10 GB.
+```powershell
+.\docker\build-images.ps1 -WebRtcBranch 7778
+```
 
-Custom build steps in the WebRtcInterop projects will execute the "gn" code generation and execute ninja to build the webrtc dependencies in the required locations.
+By default this builds all images locally without publishing. Add `-Publish` to push only the artifacts image (`ghcr.io/general-fault/webrtc:msvc-shared-<branch>`) to GHCR. Skip stages you haven't changed with `-SkipToolchain` and `-SkipSync`. Speed up the sync stage during Dockerfile iteration with `-FastDevSync`.
+
+The WebRTC build takes several hours. The GitHub Actions workflow (`build-webrtc.yml`) can be triggered manually via `workflow_dispatch` and runs on `windows-2025`. It pushes only `webrtc:msvc-shared-<branch>` to GHCR. A self-hosted runner is recommended for the WebRTC build.
+
+## Building WebRTC natively (without Docker)
+
+If you intend to build the native WebRTC library outside of the Docker pipeline, follow the [Google WebRTC native build instructions](https://webrtc.googlesource.com/src/+/main/docs/native-code/index.md) — they change periodically. The short version:
+
+1. Install Visual Studio 2022 or later (Community Edition is sufficient).
+   - "Desktop development with C++" workload
+   - 10.0.26100.0 Windows 11 SDK
+
+2. Install [Chromium depot_tools](https://commondatastorage.googleapis.com/chrome-infra-docs/flat/depot_tools/docs/html/depot_tools_tutorial.html).
+
+3. Configure git:
+
+   ```
+   git config --global user.name "My Name"
+   git config --global user.email "name@email"
+   git config --global core.autocrlf false
+   git config --global core.filemode false
+   git config branch.autosetupmerge always
+   git config branch.autosetuprebase always
+   ```
+
+4. Fetch and sync the WebRTC source (~10 GB):
+
+   ```
+   fetch --nohooks webrtc
+   git checkout -b webrtcnet_148 refs/remotes/branch-heads/7778
+   gclient sync
+   ```
+
+5. Point Visual Studio at your local build by setting environment variables or by placing the source tree so that `WebRtcInterop.BuildPaths.props` can find it:
+   - `WEBRTC_SRC_PATH` — path to the WebRTC `src\` directory (overrides the repo-local default)
+   - `WEBRTC_OUT_PATH` — path where build outputs land (overrides the repo-local default)
+   - Leave `WEBRTC_PREBUILT` unset (or `0`) so the gn/ninja custom build step runs on first build.
