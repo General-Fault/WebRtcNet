@@ -9,8 +9,18 @@ namespace WebRtcNet;
 /// The RTCRtpReceiver interface allows an application to inspect the receipt of a <see cref="IMediaStreamTrack">MediaStreamTrack</see>.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcrtpreceiver-interface"/>
-public interface IRtcRtpReceiver
+public abstract class IRtcRtpReceiver
 {
+    protected IRtcRtpReceiver()
+    {
+    }
+
+    /// <summary>
+    /// Returns the native RTP receiver interface used by WebRtcInterop.
+    /// </summary>
+    /// <param name="throwOnDisposed">True to throw when the receiver has already been disposed.</param>
+    internal abstract IntPtr GetNativeRtpReceiverHandle(bool throwOnDisposed);
+
     /// <summary>
     /// The Track property is the <see cref="IMediaStreamTrack">track</see> that is associated with this RTCRtpReceiver
     /// object receiver.
@@ -19,7 +29,7 @@ public interface IRtcRtpReceiver
     /// implicitly stop receiver, Receiver Reports continue to be sent.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtpreceiver-track"/>
-    IMediaStreamTrack Track { get; }
+    public abstract IMediaStreamTrack Track { get; }
 
     /// <summary>
     /// The Transport property is the <see cref="IRtcDtlsTransport">transport</see> over which media for the receiver's
@@ -29,7 +39,7 @@ public interface IRtcRtpReceiver
     /// transport.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpreceiver-transport"/>
-    IRtcDtlsTransport Transport { get; }
+    public abstract IRtcDtlsTransport Transport { get; }
 
     /*
     /// <summary>
@@ -55,7 +65,7 @@ public interface IRtcRtpReceiver
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpreceiver-getparameters"/>
     /// <returns></returns>
     /// <returns>An object that describes the encoding and transmitting parameters.</returns>
-    RtcRtpReceiveParameters GetParameters();
+    public abstract RtcRtpReceiveParameters GetParameters();
 
     /// <summary>
     /// Returns an RtcRtpContributingSource for each unique CSRC identifier received by this RTCRtpReceiver in the last 10
@@ -63,7 +73,7 @@ public interface IRtcRtpReceiver
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpreceiver-getcontributingsources"/>
     /// <returns>A sequence of RtcRtpContributingSource's in descending timestamp order.</returns>
-    IEnumerable<RtcRtpContributingSource> GetContributingSources();
+    public abstract IEnumerable<RtcRtpContributingSource> GetContributingSources();
 
     /// <summary>
     /// Returns an RtcRtpSynchronizationSource for each unique SSRC identifier received by this RTCRtpReceiver in the last
@@ -71,14 +81,14 @@ public interface IRtcRtpReceiver
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpreceiver-getsynchronizationsources"/>
     /// <returns>A sequence of RtcRtpSynchronizationSource's in descending timestamp order.</returns>
-    IEnumerable<RtcRtpSynchronizationSource> GetSynchronizationSources();
+    public abstract IEnumerable<RtcRtpSynchronizationSource> GetSynchronizationSources();
 
     /// <summary>
     /// Gathers <see cref="IRtcStatsReport">statistics</see> for this receiver and reports the result asynchronously.
     /// </summary>
     /// <returns>A task that completes when the <see cref="IRtcStatsReport">statistics</see> for this receiver have been
     /// gathered.</returns>
-    Task<IRtcStatsReport> GetStats();
+    public abstract Task<IRtcStatsReport> GetStats();
 }
 
 /// <summary>

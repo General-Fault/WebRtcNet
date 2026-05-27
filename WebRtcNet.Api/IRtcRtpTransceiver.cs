@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace WebRtcNet;
 
@@ -14,28 +15,38 @@ namespace WebRtcNet;
 /// that <see href="https://tools.ietf.org/html/rfc4566">media description</see>.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiver"/>
-public interface IRtcRtpTransceiver
+public abstract class IRtcRtpTransceiver
 {
+    protected IRtcRtpTransceiver()
+    {
+    }
+
+    /// <summary>
+    /// Returns the native RTP transceiver interface used by WebRtcInterop.
+    /// </summary>
+    /// <param name="throwOnDisposed">True to throw when the transceiver has already been disposed.</param>
+    internal abstract IntPtr GetNativeRtpTransceiverHandle(bool throwOnDisposed);
+
     /// <summary>
     /// The mid attribute is the <see cref="IRtcIceCandidate.SdpMid">media stream "identification-tag"</see> negotiated and
     /// present in the local and remote descriptions.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtptransceiver-mid"/>
-    string Mid { get; }
+    public abstract string Mid { get; }
 
     /// <summary>
     /// The sender attribute exposes the <see cref="IRtcRtpSender">RTCRtpSender</see> corresponding to the RTP media that
     /// may be sent with mid = <see cref="Mid"/>.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiver-sender"/>
-    IRtcRtpSender Sender { get; }
+    public abstract IRtcRtpSender Sender { get; }
 
     /// <summary>
     /// The receiver attribute is the <see cref="IRtcRtpReceiver">RTCRtpReceiver</see> corresponding to the RTP media that
     /// may be received with mid = <see cref="Mid"/>.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiver-receiver"/>
-    IRtcRtpReceiver Receiver { get; }
+    public abstract IRtcRtpReceiver Receiver { get; }
 
     /// <summary>
     /// As defined in <see hgref="https://tools.ietf.org/html/rfc8829#section-4.2.4">[RFC8829] (section 4.2.4.)</see>, the
@@ -51,7 +62,7 @@ public interface IRtcRtpTransceiver
     /// <see href="https://tools.ietf.org/html/rfc8829#section-5.3.2">section 5.3.2</see>.)
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiver-direction"/>
-    RtcRtpTransceiverDirection Direction { get; set; }
+    public abstract RtcRtpTransceiverDirection Direction { get; set; }
 
     /// <summary>
     /// As defined in <see href="https://tools.ietf.org/html/rfc8829#section-4.2.5">[RFC8829] (section 4.2.5.)</see>, the
@@ -61,44 +72,21 @@ public interface IRtcRtpTransceiver
     /// null. If the transceiver is stopped, the value is "stopped".
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiver-currentdirection"/>
-    RtcRtpTransceiverDirection? CurrentDirection { get; }
+    public abstract RtcRtpTransceiverDirection? CurrentDirection { get; }
 
     /// <summary>
     /// Irreversibly marks the transceiver as stopping, unless it is already
-    /// <see cref="RtcRtpTransceiverDirection.Stopped"/>. This will immediately cause the transceiver's
-    /// <see cref="Sender">Sender</see> to no longer send, and its <see cref="Receiver">Receiver</see> to no longer
-    /// receive. Calling Stop() also updates the negotiation-needed flag for the
-    /// <see cref="IRtcRtpTransceiver">RTCRtpTransceiver's</see> associated
-    /// <see cref="IRtcPeerConnection">RTCPeerConnection</see>.
-    /// <para>A stopping transceiver will cause future calls to <see cref="IRtcPeerConnection.CreateOffer"/> to generate a
-    /// zero port in the <see href="https://tools.ietf.org/html/rfc4566">media description</see> for the corresponding
-    /// transceiver, as defined in
-    /// <see href="https://tools.ietf.org/html/rfc8829#section-4.2.1">[RFC8829] (section 4.2.1.)</see>. However, to avoid
-    /// problems with <see href="https://tools.ietf.org/html/rfc8829">[RFC8843]</see>, a transceiver that is stopping but
-    /// not <see cref="RtcRtpTransceiverDirection.Stopped"/>, will not affect
-    /// <see cref="IRtcPeerConnection.CreateAnswer"/>.</para>
-    /// <para>A <see cref="RtcRtpTransceiverDirection.Stopped"/> transceiver will cause future calls to
-    /// <see cref="IRtcPeerConnection.CreateOffer"/> or <see cref="IRtcPeerConnection.CreateAnswer"/> to generate a zero
-    /// port in the <see href="https://tools.ietf.org/html/rfc4566">media description</see> for the corresponding
-    /// transceiver, as defined in
-    /// <see href="https://tools.ietf.org/html/rfc8829#section-4.2.1">[RFC8829] (section 4.2.1.)</see>.</para>
-    /// <para>The transceiver will remain in the stopping state, unless it becomes
-    /// <see cref="RtcRtpTransceiverDirection.Stopped"/> by <see cref="IRtcPeerConnection.SetRemoteDescription"/>
-    /// processing a rejected m-line in a remote offer or answer.</para>
-    /// <para>NOTE: A transceiver that is stopping but not <see cref="RtcRtpTransceiverDirection.Stopped"/> will always
-    /// need negotiation. In practice, this means that calling Stop() on a transceiver will cause the transceiver to become
-    /// <see cref="RtcRtpTransceiverDirection.Stopped"/> eventually, provided negotiation is allowed to complete on both
-    /// ends.</para>
+    /// <see cref="RtcRtpTransceiverDirection.Stopped"/>.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiver-stop"/>
-    void Stop();
+    public abstract void Stop();
 
     /// <summary>
     /// 
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiver-setcodecpreferences"/>
     /// <param name="codecs"></param>
-    void SetCodecPreferences(IEnumerable<RtcRtpCodecCapability> codecs);
+    public abstract void SetCodecPreferences(IEnumerable<RtcRtpCodecCapability> codecs);
 }
 
 /// <summary>

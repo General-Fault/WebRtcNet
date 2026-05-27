@@ -59,35 +59,44 @@ public enum RtcDtlsTransportState
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcdtlstransport-interface"/>
 /// <seealso href="https://tools.ietf.org/html/rfc8843"/>
-public interface IRtcDtlsTransport
+public abstract class IRtcDtlsTransport
 {
+    protected IRtcDtlsTransport()
+    {
+    }
+
+    /// <summary>
+    /// Returns the native DTLS transport interface used by WebRtcInterop.
+    /// </summary>
+    /// <param name="throwOnDisposed">True to throw when the transport has already been disposed.</param>
+    internal abstract IntPtr GetNativeDtlsTransportHandle(bool throwOnDisposed);
+
     /// <summary>
     /// The IceTransport property is the underlying <see cref="IRtcIceTransport">transport</see> that is used to send and
     /// receive packets. The underlying <see cref="IRtcIceTransport">transport</see> may not be shared between multiple
     /// active RTCDtlsTransport objects.
     /// </summary>
-    IRtcIceTransport IceTransport { get; }
+    public abstract IRtcIceTransport IceTransport { get; }
 
     /// <summary>
     /// The current state of this transport.
     /// </summary>
-    RtcDtlsTransportState State { get; }
+    public abstract RtcDtlsTransportState State { get; }
 
     /// <summary>
     /// A list of certificates used by this transport.
     /// </summary>
     /// <returns></returns>
-    IEnumerator<byte[]> GetRemoteCertificates();
+    public abstract IEnumerator<byte[]> GetRemoteCertificates();
 
     /// <summary>
     /// Fired when the RTCSctpTransport <see cref="State"/> changes.
     /// </summary>
-    event EventHandler OnStateChange;
-
+    public abstract event EventHandler OnStateChange;
 
     /// <summary>
     /// Fired when an error occurred on the RTCDtlsTransport (either <see cref="RtcErrorDetailType.DtlsFailure"/> or
     /// <see cref="RtcErrorDetailType.FingerprintFailure"/>).
     /// </summary>
-    event EventHandler<RtcErrorEventArgs> OnError;
+    public abstract event EventHandler<RtcErrorEventArgs> OnError;
 };

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using WebRtcNet.Media;
 
 namespace WebRtcNet;
@@ -9,8 +10,18 @@ namespace WebRtcNet;
 /// the encoding is changed appropriately.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpsender"/>
-public interface IRtcRtpSender
+public abstract class IRtcRtpSender
 {
+    protected IRtcRtpSender()
+    {
+    }
+
+    /// <summary>
+    /// Returns the native RTP sender interface used by WebRtcInterop.
+    /// </summary>
+    /// <param name="throwOnDisposed">True to throw when the sender has already been disposed.</param>
+    internal abstract IntPtr GetNativeRtpSenderHandle(bool throwOnDisposed);
+
     /// <summary>
     /// The Track property is the track that is associated with this RTCRtpSender object. If track is ended, or if the
     /// track's output is disabled, i.e. the track is <see cref="IMediaStreamTrack.Enabled">disabled</see> and/or
@@ -19,7 +30,7 @@ public interface IRtcRtpSender
     /// RTCRtpSender does not send.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpsender-track"/>
-    IMediaStreamTrack Track { get; }
+    public abstract IMediaStreamTrack Track { get; }
 
     /// <summary>
     /// The Transport property is the transport over which media from a <see cref="IMediaStreamTrack">track</see> is sent
@@ -29,7 +40,7 @@ public interface IRtcRtpSender
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpsender-transport"/>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdtlstransport"/>
-    IRtcDtlsTransport Transport { get; }
+    public abstract IRtcDtlsTransport Transport { get; }
 
     /*
     /// <summary>
@@ -52,7 +63,7 @@ public interface IRtcRtpSender
     /// <param name="parameters">An object that describes the encoding and transmitting parameters.</param>
     /// <returns>A task that completes when the parameters have been applied.</returns>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpsender-setparameters"/>
-    Task SetParameters(RtcRtpSendParameters parameters);
+    public abstract Task SetParameters(RtcRtpSendParameters parameters);
 
     /// <summary>
     /// The GetParameters() method returns the RTCRtpSender object's current parameters for how track is encoded and
@@ -60,7 +71,7 @@ public interface IRtcRtpSender
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpsender-getparameters"/>
     /// <returns>An object that describes the encoding and transmitting parameters.</returns>
-    RtcRtpSendParameters GetParameters();
+    public abstract RtcRtpSendParameters GetParameters();
 
     /// <summary>
     /// Attempts to replace the RTCRtpSender's current <see cref="IMediaStreamTrack">track</see> with another
@@ -68,7 +79,7 @@ public interface IRtcRtpSender
     /// </summary>
     /// <param name="withTrack">The new track to be used by the sender.</param>
     /// <returns>A task that completes once the new track has been applied.</returns>
-    Task ReplaceTrack(IMediaStreamTrack withTrack);
+    public abstract Task ReplaceTrack(IMediaStreamTrack withTrack);
 
     /// <summary>
     /// Sets the <see cref="IMediaStream">MediaStreams</see> to be associated with this sender's
@@ -76,18 +87,18 @@ public interface IRtcRtpSender
     /// </summary>
     /// <param name="streams">One or more streams to be applied to this sender's
     /// <see cref="IRtcRtpSender.Track">track</see>.</param>
-    void SetStreams(params IMediaStream[] streams);
+    public abstract void SetStreams(params IMediaStream[] streams);
 
     /// <summary>
     /// Gathers <see cref="IRtcStatsReport">statistics</see> for this sender and reports the result asynchronously.
     /// </summary>
     /// <returns>A task that completes when the <see cref="IRtcStatsReport">statistics</see> for this sender have been
     /// gathered.</returns>
-    Task<IRtcStatsReport> GetStats();
+    public abstract Task<IRtcStatsReport> GetStats();
 
     /// <summary>
     /// Get an RtcDtmfSender for sending DTMF tones to a peer.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpsender-dtmf"/>
-    IRtcDtmfSender Dtmf { get; }
+    public abstract IRtcDtmfSender Dtmf { get; }
 }

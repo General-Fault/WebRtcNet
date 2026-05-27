@@ -244,78 +244,87 @@ public class RtcIceParameters
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcicetransport"/>
 /// <seealso href="https://tools.ietf.org/html/rfc8843"/>
 /// <seealso cref="IRtcDtlsTransport"/>
-public interface IRtcIceTransport
+public abstract class IRtcIceTransport
 {
+    protected IRtcIceTransport()
+    {
+    }
+
+    /// <summary>
+    /// Returns the native ICE transport interface used by WebRtcInterop.
+    /// </summary>
+    /// <param name="throwOnDisposed">True to throw when the transport has already been disposed.</param>
+    internal abstract IntPtr GetNativeIceTransportHandle(bool throwOnDisposed);
     /// <summary>
     /// The role of this transport.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-icetransport-role"/>
     /// <seealso href="https://datatracker.ietf.org/doc/html/rfc5245#section-5.2"/>
-    RtcIceRole Role { get; }
+    public abstract RtcIceRole Role { get; }
 
     /// <summary>
     /// 
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-icetransport-component"/>
-    RtcIceComponent Component { get; }
+    public abstract RtcIceComponent Component { get; }
 
     /// <summary>
     /// 
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-icetransport-state"/>
-    RtcIceTransportState State { get; }
+    public abstract RtcIceTransportState State { get; }
 
     /// <summary>
     /// 
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-icetransport-gatheringstate"/>
-    RtcIceGatheringState GatheringState { get; }
+    public abstract RtcIceGatheringState GatheringState { get; }
 
     /// <summary>
     /// 
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-getlocalcandidates"/>
-    IEnumerable<IRtcIceCandidate> GetLocalCandidates();
+    public abstract IEnumerable<IRtcIceCandidate> GetLocalCandidates();
 
     /// <summary>
     /// 
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-getremotecandidates"/>
-    IEnumerable<IRtcIceCandidate> GetRemoteCandidates();
+    public abstract IEnumerable<IRtcIceCandidate> GetRemoteCandidates();
 
     /// <summary>
     /// 
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-getselectedcandidatepair"/>
-    RtcIceCandidatePair GetSelectedCandidatePair();
+    public abstract RtcIceCandidatePair GetSelectedCandidatePair();
 
     /// <summary>
     /// 
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-getlocalparameters"/>
-    RtcIceParameters GetLocalParameters();
+    public abstract RtcIceParameters GetLocalParameters();
 
     /// <summary>
     /// 
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-getremoteparameters"/>
-    RtcIceParameters GetRemoteParameters();
+    public abstract RtcIceParameters GetRemoteParameters();
 
     /// <summary>
     /// 
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-onstatechange"/>
-    event EventHandler OnStateChange;
+    public abstract event EventHandler OnStateChange;
 
     /// <summary>
     /// 
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-ongatheringstatechange"/>
-    event EventHandler OnGatheringStateChange;
+    public abstract event EventHandler OnGatheringStateChange;
 
     /// <summary>
     /// 
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-onselectedcandidatepairchange"/>
-    event EventHandler OnSelectedCandidatePairChange;
+    public abstract event EventHandler OnSelectedCandidatePairChange;
 };
