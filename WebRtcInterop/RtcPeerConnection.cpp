@@ -63,6 +63,11 @@ namespace WebRtcInterop
 		return rp_peer_connection_->get();
 	}
 
+	System::IntPtr RtcPeerConnection::GetNativePeerConnectionHandle(bool throwOnDisposed)
+	{
+		return System::IntPtr(GetNativePeerConnection(throwOnDisposed));
+	}
+
 	Task<RtcSessionDescription>^ RtcPeerConnection::CreateOffer(RtcOfferOptions^ options)
 	{
 		auto pc = GetNativePeerConnection(true);

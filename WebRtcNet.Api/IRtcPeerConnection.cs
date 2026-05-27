@@ -171,8 +171,18 @@ public enum RtcPeerConnectionState
 /// </Summary>
 /// <seealso href="http://www.w3.org/TR/webrtc/#rtcpeerconnection-interface" />
 /// <seealso href="https://www.w3.org/TR/webrtc/#interface-definition" />
-public interface IRtcPeerConnection
+public abstract class IRtcPeerConnection
 {
+    protected IRtcPeerConnection()
+    {
+    }
+
+    /// <summary>
+    /// Returns the native peer connection interface used by WebRtcInterop.
+    /// </summary>
+    /// <param name="throwOnDisposed">True to throw when the peer connection has already been disposed.</param>
+    internal abstract IntPtr GetNativePeerConnectionHandle(bool throwOnDisposed);
+
     /// <summary>
     ///     The local <see cref="RtcSessionDescription">RTCSessionDescription</see> that was successfully set using
     ///     <see cref="SetLocalDescription" />, plus any local <see cref="IRtcIceCandidate">candidates</see> that have been
@@ -180,7 +190,7 @@ public interface IRtcPeerConnection
     ///     set.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-localdescription" />
-    RtcSessionDescription? LocalDescription { get; }
+    public abstract RtcSessionDescription? LocalDescription { get; }
 
     /// <summary>
     ///     Represents the local description that was successfully negotiated the last time the RTCPeerConnection transitioned
@@ -190,7 +200,7 @@ public interface IRtcPeerConnection
     /// <seealso cref="CreateOffer" />
     /// <seealso cref="CreateAnswer" />
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-currentlocaldesc" />
-    RtcSessionDescription? CurrentLocalDescription { get; }
+    public abstract RtcSessionDescription? CurrentLocalDescription { get; }
 
     /// <summary>
     ///     Represents a local <see cref="RtcSessionDescription">description</see> that is in the process of being negotiated
@@ -201,7 +211,7 @@ public interface IRtcPeerConnection
     /// <seealso cref="CreateOffer" />
     /// <seealso cref="CreateAnswer" />
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-pendinglocaldesc" />
-    RtcSessionDescription? PendingLocalDescription { get; }
+    public abstract RtcSessionDescription? PendingLocalDescription { get; }
 
     /// <summary>
     ///     The <see cref="RtcSessionDescription">RemoteDescription</see> that was successfully set using
@@ -211,7 +221,7 @@ public interface IRtcPeerConnection
     /// </summary>
     /// <seealso cref="SetRemoteDescription" />
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-remotedescription" />
-    RtcSessionDescription? RemoteDescription { get; }
+    public abstract RtcSessionDescription? RemoteDescription { get; }
 
     /// <summary>
     ///     It represents the last remote <see cref="RtcSessionDescription">description</see> that was successfully negotiated
@@ -221,7 +231,7 @@ public interface IRtcPeerConnection
     /// <seealso cref="CreateOffer" />
     /// <seealso cref="CreateAnswer" />
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-currentremotedesc" />
-    RtcSessionDescription? CurrentRemoteDescription { get; }
+    public abstract RtcSessionDescription? CurrentRemoteDescription { get; }
 
     /// <summary>
     ///     It represents a remote description that is in the process of being negotiated, complete with any remote
@@ -229,31 +239,31 @@ public interface IRtcPeerConnection
     ///     offer or answer was created. If the RTCPeerConnection is in the stable state, the value is null.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-pendingremotedesc" />
-    RtcSessionDescription? PendingRemoteDescription { get; }
+    public abstract RtcSessionDescription? PendingRemoteDescription { get; }
 
     /// <summary>
     ///     The signaling state of the RtcPeerConnection.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-signaling-state" />
-    RtcSignalingState SignalingState { get; }
+    public abstract RtcSignalingState SignalingState { get; }
 
     /// <summary>
     ///     The gathering state of the RtcPeerConnection ICE Agent.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-ice-gathering-state" />
-    RtcIceGatheringState IceGatheringState { get; }
+    public abstract RtcIceGatheringState IceGatheringState { get; }
 
     /// <summary>
     ///     The ICE connection state of the RtcPeerConnection ICE Agent.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-ice-connection-state" />
-    RtcIceConnectionState IceConnectionState { get; }
+    public abstract RtcIceConnectionState IceConnectionState { get; }
 
     /// <summary>
     ///     The current connection state of the RtcPeerConnection and its transports.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-connection-state" />
-    RtcPeerConnectionState ConnectionState { get; }
+    public abstract RtcPeerConnectionState ConnectionState { get; }
 
     /// <summary>
     ///     Dictates whether the remote peer is able to accept trickled ICE candidates
@@ -263,7 +273,7 @@ public interface IRtcPeerConnection
     ///     completion of setRemoteDescription, this value is null.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-cantrickleicecandidates" />
-    bool? CanTrickleIceCandidates { get; }
+    public abstract bool? CanTrickleIceCandidates { get; }
 
     /// <summary>
     ///     Gets or sets the <see cref="RtcConfiguration" /> object representing the current configuration of this
@@ -274,7 +284,7 @@ public interface IRtcPeerConnection
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-getconfiguration" />
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-setconfiguration" />
-    RtcConfiguration Configuration { get; set; }
+    public abstract RtcConfiguration Configuration { get; set; }
 
     /// <summary>
     ///     The CreateOffer method generates a <see cref="RtcSessionDescription" />
@@ -288,7 +298,7 @@ public interface IRtcPeerConnection
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-createoffer" />
     /// <exception cref="CreateSessionDescriptionFailure" />
-    Task<RtcSessionDescription> CreateOffer(RtcOfferOptions options = null);
+    public abstract Task<RtcSessionDescription> CreateOffer(RtcOfferOptions options = null);
 
     /// <summary>
     ///     Generates a <see cref="RtcSessionDescription" /> <see href="http://tools.ietf.org/html/rfc3264">[SDP]</see> answer
@@ -302,7 +312,7 @@ public interface IRtcPeerConnection
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-createanswer" />
     /// <exception cref="CreateSessionDescriptionFailure" />
-    Task<RtcSessionDescription> CreateAnswer(RtcAnswerOptions options = null);
+    public abstract Task<RtcSessionDescription> CreateAnswer(RtcAnswerOptions options = null);
 
     /// <summary>
     ///     The SetLocalDescription() method instructs the RtcPeerConnection to apply the supplied
@@ -311,7 +321,7 @@ public interface IRtcPeerConnection
     /// </summary>
     /// <param name="description">A session description containing the SDP describing the local session.</param>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-setlocaldescription" />
-    Task SetLocalDescription(RtcSessionDescription description);
+    public abstract Task SetLocalDescription(RtcSessionDescription description);
 
     /// <summary>
     ///     The SetRemoteDescription() method instructs the RTCPeerConnection to apply the supplied
@@ -323,7 +333,7 @@ public interface IRtcPeerConnection
     ///     peer.
     /// </param>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-setremotedescription" />
-    Task SetRemoteDescription(RtcSessionDescription description);
+    public abstract Task SetRemoteDescription(RtcSessionDescription description);
 
     /// <summary>
     ///     The AddIceCandidate() method provides a remote <see cref="IRtcIceCandidate">candidate</see> to the ICE Agent. In
@@ -335,7 +345,7 @@ public interface IRtcPeerConnection
     /// </summary>
     /// <param name="candidate">An ICE candidate to add.</param>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-addicecandidate" />
-    Task AddIceCandidate(IRtcIceCandidate candidate);
+    public abstract Task AddIceCandidate(IRtcIceCandidate candidate);
 
     /// <summary>
     ///     The restartIce method tells the RTCPeerConnection that ICE should be restarted. Subsequent calls to
@@ -344,7 +354,7 @@ public interface IRtcPeerConnection
     ///     <see href="https://datatracker.ietf.org/doc/html/rfc5245#section-9.1.1.1">9.1.1.1 of [RFC5245]</see>.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-restartice" />
-    void RestartIce();
+    public abstract void RestartIce();
 
     /// <summary>
     ///     Destroys the RtcPeerConnection ICE Agent, abruptly ending any active ICE processing and any active streaming, and
@@ -352,49 +362,49 @@ public interface IRtcPeerConnection
     ///     <see cref="ConnectionState " /> to Closed.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-close" />
-    void Close();
+    public abstract void Close();
 
     /// <summary>
     ///     Session negotiation needs to be done at some point in the near future.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-onnegotiationneeded" />
-    event EventHandler OnNegotiationNeeded;
+    public abstract event EventHandler OnNegotiationNeeded;
 
     /// <summary>
     ///     A new RtcIceCandidate is made available.
     /// </summary>
-    event EventHandler<RtcIceCandidateEventArgs> OnIceCandidate;
+    public abstract event EventHandler<RtcIceCandidateEventArgs> OnIceCandidate;
 
     /// <summary>
     ///     An error occurred creating an IceCandidate.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-onicecandidateerror" />
-    event EventHandler<RtcIceCandidateErrorEventArgs> OnIceCandidateError;
+    public abstract event EventHandler<RtcIceCandidateErrorEventArgs> OnIceCandidateError;
 
     /// <summary>
     ///     The RtcPeerConnection <see cref="SignalingState" /> has changed.
     ///     This state change is the result of either setLocalDescription() or setRemoteDescription() being invoked.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-onsignalingstatechange" />
-    event EventHandler OnSignalingStateChange;
+    public abstract event EventHandler OnSignalingStateChange;
 
     /// <summary>
     ///     The RtcPeerConnection <see cref="IceConnectionState" /> state has changed.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-oniceconnectionstatechange" />
-    event EventHandler OnIceConnectionStateChange;
+    public abstract event EventHandler OnIceConnectionStateChange;
 
     /// <summary>
     ///     The RtcPeerConnection <see cref="IceGatheringState" /> has changed.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-onicegatheringstatechange" />
-    event EventHandler OnGatheringStateChange;
+    public abstract event EventHandler OnGatheringStateChange;
 
     /// <summary>
     ///     The RtcPeerConnection <see cref="ConnectionState" /> has changed.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-onconnectionstatechange" />
-    event EventHandler OnConnectionStateChange;
+    public abstract event EventHandler OnConnectionStateChange;
 
     #region 8 Statistics Model
 
@@ -404,7 +414,7 @@ public interface IRtcPeerConnection
     /// <param name="selector">An <seealso cref="IMediaStreamTrack" /> for which to generate a stats report.</param>
     /// <seealso
     ///     href="https://www.w3.org/TR/webrtc/#widl-RTCPeerConnection-getStats-Promise-RTCStatsReport--MediaStreamTrack-selector" />
-    Task<IRtcStatsReport> GetStats(IMediaStreamTrack selector = null);
+    public abstract Task<IRtcStatsReport> GetStats(IMediaStreamTrack selector = null);
 
     #endregion
 
@@ -417,7 +427,7 @@ public interface IRtcPeerConnection
     ///     RTCPeerConnection object.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-getsenders" />
-    IEnumerable<IRtcRtpSender> GetSenders();
+    public abstract IEnumerable<IRtcRtpSender> GetSenders();
 
     /// <summary>
     ///     Returns a sequence of <see cref="IRtcRtpReceiver">RTCRtpReceiver</see> objects representing the RTP receivers that
@@ -425,14 +435,14 @@ public interface IRtcPeerConnection
     ///     RTCPeerConnection object.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-getreceivers" />
-    IEnumerable<IRtcRtpReceiver> GetReceivers();
+    public abstract IEnumerable<IRtcRtpReceiver> GetReceivers();
 
     /// <summary>
     ///     Returns a sequence of <see cref="IRtcRtpTransceiver">RTCRtpTransceiver</see> objects representing the RTP
     ///     transceivers that are currently attached to this RTCPeerConnection object.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-gettranseceivers" />
-    IEnumerable<IRtcRtpTransceiver> GetTransceivers();
+    public abstract IEnumerable<IRtcRtpTransceiver> GetTransceivers();
 
     /// <summary>
     ///     Adds a new <see cref="IMediaStreamTrack">track</see> to the RTCPeerConnection, and indicates that it is contained
@@ -445,7 +455,7 @@ public interface IRtcPeerConnection
     ///     <see cref="IMediaStream">streams</see>.
     /// </returns>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-addtrack" />
-    IRtcRtpSender AddTrack(IMediaStreamTrack track, params IMediaStream[] streams);
+    public abstract IRtcRtpSender AddTrack(IMediaStreamTrack track, params IMediaStream[] streams);
 
     /// <summary>
     ///     Stops sending media from sender. The <see cref="IRtcRtpSender">RTCRtpSender</see> will still appear in
@@ -457,7 +467,7 @@ public interface IRtcPeerConnection
     /// <seealso href="https://tools.ietf.org/html/rfc8829#section-5.2.2" />
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-removetrack" />
     /// <param name="track">The track to be removed</param>
-    void RemoveTrack(IMediaStreamTrack track);
+    public abstract void RemoveTrack(IMediaStreamTrack track);
 
     /// <summary>
     ///     Create a new <see cref="IRtcRtpTransceiver" /> with the specified <see cref="IMediaStreamTrack" /> and add it to
@@ -468,7 +478,7 @@ public interface IRtcPeerConnection
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-addtransceiver" />
     /// <seealso href="https://tools.ietf.org/html/rfc8829#section-5.2.2" />
-    IRtcRtpTransceiver AddTransceiver(IMediaStreamTrack track, IRtcRtpTransceiver transceiver);
+    public abstract IRtcRtpTransceiver AddTransceiver(IMediaStreamTrack track, IRtcRtpTransceiver transceiver);
 
     /// <summary>
     ///     Create a new <see cref="IRtcRtpTransceiver" /> of the specified <see cref="MediaStreamTrackKind" /> and add it to
@@ -479,14 +489,14 @@ public interface IRtcPeerConnection
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-addtransceiver" />
     /// <seealso href="https://tools.ietf.org/html/rfc8829#section-5.2.2" />
-    IRtcRtpTransceiver AddTransceiver(MediaStreamTrackKind kind, IRtcRtpTransceiver transceiver);
+    public abstract IRtcRtpTransceiver AddTransceiver(MediaStreamTrackKind kind, IRtcRtpTransceiver transceiver);
 
     /// <summary>
     ///     New incoming media has been negotiated for a specific RTCRtpReceiver, and that receiver's track has been added to
     ///     any associated remote MediaStreams.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-ontrack" />
-    event EventHandler<RtcTrackEventArgs> OnTrack;
+    public abstract event EventHandler<RtcTrackEventArgs> OnTrack;
 
     #endregion 5 RTP Media API
 
@@ -501,12 +511,12 @@ public interface IRtcPeerConnection
     /// <param name="label">The new channel's label is set to this value.</param>
     /// <param name="dataChannelInit">Optional parameters with wich to initialize the new data channel.</param>
     /// <returns></returns>
-    IRtcDataChannel CreateDataChannel(string label, RtcDataChannelInit dataChannelInit = null);
+    public abstract IRtcDataChannel CreateDataChannel(string label, RtcDataChannelInit dataChannelInit = null);
 
     /// <summary>
     ///     Fired when a data channel is created by the peer.
     /// </summary>
-    event EventHandler<RtcDataChannelEventArgs> OnDataChannel;
+    public abstract event EventHandler<RtcDataChannelEventArgs> OnDataChannel;
 
     #endregion
 }

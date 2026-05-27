@@ -58,7 +58,7 @@ public enum MediaStreamTrackKind
 /// <seealso href="http://www.w3.org/TR/mediacapture-streams/#mediastreamtrack" />
 public abstract class IMediaStreamTrack
 {
-    internal IMediaStreamTrack()
+    protected IMediaStreamTrack()
     {
     }
 

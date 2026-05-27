@@ -10,7 +10,7 @@ namespace WebRtcNet.Media;
 /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#mediastream"/>
 public abstract class IMediaStream : IDisposable
 {
-    internal IMediaStream()
+    protected IMediaStream()
     {
     }
 

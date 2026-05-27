@@ -84,59 +84,69 @@ public enum RtcDataChannelState
 /// <seealso href="https://www.w3.org/TR/webrtc/#RtcDataChannel" />
 /// <seealso href="https://tools.ietf.org/html/rfc8831" />
 /// <seealso href="https://tools.ietf.org/html/rfc8832" />
-public interface IRtcDataChannel
+public abstract class IRtcDataChannel
 {
+    protected IRtcDataChannel()
+    {
+    }
+
+    /// <summary>
+    /// Returns the native data channel interface used by WebRtcInterop.
+    /// </summary>
+    /// <param name="throwOnDisposed">True to throw when the channel has already been disposed.</param>
+    internal abstract IntPtr GetNativeDataChannelHandle(bool throwOnDisposed);
+
     /// <summary>
     ///     The Label represents a label that can be used to distinguish this RtcDataChannel object from other RtcDataChannel
     ///     objects. Applications are allowed to create multiple RtcDataChannel objects with the same label.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-datachannel-label" />
-    string Label { get; }
+    public abstract string Label { get; }
 
     /// <summary>
     ///     Ordered returns true if the RtcDataChannel is ordered, and false if other of order delivery is allowed.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-datachannel-ordered" />
-    bool Ordered { get; }
+    public abstract bool Ordered { get; }
 
     /// <summary>
     ///     MaxPacketLifeTime returns the length of the time window (in milliseconds) during which transmissions and
     ///     retransmissions may occur in unreliable mode, or null if unset.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-datachannel-maxpacketlifetime" />
-    uint? MaxPacketLifeTime { get; }
+    public abstract uint? MaxPacketLifeTime { get; }
 
     /// <summary>
     ///     MaxRetransmits returns the maximum number of retransmissions that are attempted in unreliable mode, or null if
     ///     unset.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-datachannel-maxretransmits" />
-    uint? MaxRetransmits { get; }
+    public abstract uint? MaxRetransmits { get; }
 
     /// <summary>
     ///     Protocol returns the name of the sub-protocol used with this RtcDataChannel if any, or the empty string otherwise.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-datachannel-protocol" />
-    string Protocol { get; }
+    public abstract string Protocol { get; }
 
     /// <summary>
     ///     Negotiated returns true if this RtcDataChannel was negotiated by the application, or false otherwise.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-datachannel-negotiated" />
-    bool Negotiated { get; }
+    public abstract bool Negotiated { get; }
 
     /// <summary>
     ///     The Id returns the id for this RtcDataChannel. The id was either assigned by the user agent at channel creation
     ///     time or selected by the script.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-RtcDataChannel-id" />
-    uint Id { get; }
+    public abstract uint Id { get; }
 
     /// <summary>
     ///     ReadyState represents the state of the RtcDataChannel object.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-datachannel-readystate" />
-    RtcDataChannelState ReadyState { get; }
+    public abstract RtcDataChannelState ReadyState { get; }
 
     /// <summary>
     ///     The BufferedAmount returns the number of bytes of application data (UTF-8 text and binary data) that have been
@@ -151,44 +161,44 @@ public interface IRtcDataChannel
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-datachannel-bufferedamount" />
     /// <seealso cref="Send(string)" />
     /// <seealso cref="Send(IEnumerable{byte})" />
-    ulong BufferedAmount { get; }
+    public abstract ulong BufferedAmount { get; }
 
     /// <summary>
     /// </summary>
     /// <seealso cref="BufferedAmount" />
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-RtcDataChannel-bufferedamountlowthreshold" />
-    ulong? BufferedAmountLowThreshold { get; set; }
+    public abstract ulong? BufferedAmountLowThreshold { get; set; }
 
     /// <summary>
     ///     This BinaryType controls how binary data is exposed to scripts. See the
     ///     <seealso href="http://www.w3.org/TR/websockets/">[WEBSOCKETS-API]</seealso> for more information.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-datachannel-binarytype" />
-    string BinaryType { get; set; }
+    public abstract string BinaryType { get; set; }
 
     /// <summary>
     ///     The RtcDataChannel object's underlying data transport has been established (or re-established).
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-RtcDataChannel-onopen" />
-    event EventHandler OnOpen;
+    public abstract event EventHandler OnOpen;
 
     /// <summary>
     ///     An error has occurred.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannel-onerror" />
-    event EventHandler<RtcErrorEventArgs> OnError;
+    public abstract event EventHandler<RtcErrorEventArgs> OnError;
 
     /// <summary>
     ///     The RtcDataChannel object's underlying data transport has been closed.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannel-onclose" />
-    event EventHandler OnClose;
+    public abstract event EventHandler OnClose;
 
     /// <summary>
     ///     A message was successfully received.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannel-onmessage" />
-    event EventHandler<MessageEventArgs> OnMessage;
+    public abstract event EventHandler<MessageEventArgs> OnMessage;
 
     /// <summary>
     ///     The RTCDataChannel object's <see cref="BufferedAmount" /> decreases from above its
@@ -197,35 +207,35 @@ public interface IRtcDataChannel
     /// <seealso cref="BufferedAmountLowThreshold" />
     /// <seealso cref="BufferedAmount" />
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannel-onbufferedamountlow" />
-    event EventHandler OnBufferedAmountLow;
+    public abstract event EventHandler OnBufferedAmountLow;
 
     /// <summary>
     ///     Closes the RtcDataChannel. It may be called regardless of whether the RtcDataChannel object was created by this
     ///     peer or the remote peer.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannel-close" />
-    void Close();
+    public abstract void Close();
 
     /// <summary>
     ///     Send string data through the data channel to a peer.
     /// </summary>
     /// <param name="data"></param>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannel-send" />
-    void Send(string data);
+    public abstract void Send(string data);
 
     /// <summary>
     ///     Send byte data through the data channel to a peer.
     /// </summary>
     /// <param name="data">An enumeration of bytes to send to the peer.</param>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannel-send" />
-    void Send(IEnumerable<byte> data);
+    public abstract void Send(IEnumerable<byte> data);
 
     /// <summary>
     ///     Send byte data through the data channel to a peer.
     /// </summary>
     /// <param name="data">An array of bytes to send to the peer.</param>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannel-send" />
-    void Send(byte[] data);
+    public abstract void Send(byte[] data);
 }
 
 /// <summary>

@@ -18,50 +18,76 @@ namespace WebRtcInterop
 		~RtcDataChannel();
 
 		// Inherited via IRtcDataChannel
-		virtual property String^ Label { String^ get(); }
-		virtual property bool Ordered { bool get(); }
-		virtual property Nullable<uint32_t> MaxPacketLifeTime { Nullable<uint32_t> get(); }
-		virtual property Nullable<uint32_t> MaxRetransmits { Nullable<uint32_t> get(); }
-		virtual property String^ Protocol { String^ get(); }
-		virtual property bool Negotiated { bool get(); }
-		virtual property UInt32 Id { UInt32 get(); }
-		virtual property RtcDataChannelState ReadyState { RtcDataChannelState get(); }
-		virtual property UInt64 BufferedAmount { uint64_t get(); }
+		virtual property String^ Label { String^ get() override; }
+		virtual property bool Ordered { bool get() override; }
+		virtual property Nullable<uint32_t> MaxPacketLifeTime { Nullable<uint32_t> get() override; }
+		virtual property Nullable<uint32_t> MaxRetransmits { Nullable<uint32_t> get() override; }
+		virtual property String^ Protocol { String^ get() override; }
+		virtual property bool Negotiated { bool get() override; }
+		virtual property UInt32 Id { UInt32 get() override; }
+		virtual property RtcDataChannelState ReadyState { RtcDataChannelState get() override; }
+		virtual property UInt64 BufferedAmount { uint64_t get() override; }
 		virtual property Nullable<uint64_t> BufferedAmountLowThreshold
 		{
-			Nullable<uint64_t> get(); void set(Nullable<uint64_t> value);
+			Nullable<uint64_t> get() override; void set(Nullable<uint64_t> value) override;
 		}
-		virtual property String^ BinaryType { String^ get(); void set(String^ value); }
+		virtual property String^ BinaryType { String^ get() override; void set(String^ value) override; }
 
-		virtual event EventHandler^ OnOpen;
-		virtual event EventHandler<RtcErrorEventArgs^>^ OnError;
-		virtual event EventHandler^ OnClose;
-		virtual event EventHandler<MessageEventArgs^>^ OnMessage;
-		virtual event EventHandler^ OnBufferedAmountLow;
+		virtual event EventHandler^ OnOpen
+		{
+			void add(EventHandler^ value) override { on_open_ += value; }
+			void remove(EventHandler^ value) override { on_open_ -= value; }
+		}
+		virtual event EventHandler<RtcErrorEventArgs^>^ OnError
+		{
+			void add(EventHandler<RtcErrorEventArgs^>^ value) override { on_error_ += value; }
+			void remove(EventHandler<RtcErrorEventArgs^>^ value) override { on_error_ -= value; }
+		}
+		virtual event EventHandler^ OnClose
+		{
+			void add(EventHandler^ value) override { on_close_ += value; }
+			void remove(EventHandler^ value) override { on_close_ -= value; }
+		}
+		virtual event EventHandler<MessageEventArgs^>^ OnMessage
+		{
+			void add(EventHandler<MessageEventArgs^>^ value) override { on_message_ += value; }
+			void remove(EventHandler<MessageEventArgs^>^ value) override { on_message_ -= value; }
+		}
+		virtual event EventHandler^ OnBufferedAmountLow
+		{
+			void add(EventHandler^ value) override { on_buffered_amount_low_ += value; }
+			void remove(EventHandler^ value) override { on_buffered_amount_low_ -= value; }
+		}
 
-		virtual void Close();
-		virtual void Send(String^ data);
-		virtual void Send(Collections::Generic::IEnumerable<Byte>^ data);
-		virtual void Send(array<Byte>^ data);
+		virtual void Close() override;
+		virtual void Send(String^ data) override;
+		virtual void Send(Collections::Generic::IEnumerable<Byte>^ data) override;
+		virtual void Send(array<Byte>^ data) override;
 	internal:
 		RtcDataChannel(webrtc::DataChannelInterface* data_channel_interface);
 		!RtcDataChannel();
 		webrtc::DataChannelInterface* GetNativeDataChannelInterface(bool throwOnDisposed);
+		virtual System::IntPtr GetNativeDataChannelHandle(bool throwOnDisposed);
 
 		//Event invocation 
-		void FireOnOpen() { OnOpen(this, EventArgs::Empty); }
-		void FireOnError(RtcError^ error) { OnError(this, gcnew RtcErrorEventArgs(error)); }
-		void FireOnClose() { OnClose(this, EventArgs::Empty); }
+		void FireOnOpen() { if (on_open_ != nullptr) on_open_(this, EventArgs::Empty); }
+		void FireOnError(RtcError^ error) { if (on_error_ != nullptr) on_error_(this, gcnew RtcErrorEventArgs(error)); }
+		void FireOnClose() { if (on_close_ != nullptr) on_close_(this, EventArgs::Empty); }
 
 		void FireOnMessage(Object^ data, String^ origin, String^ lastEventId)
 		{
-			OnMessage(this, gcnew MessageEventArgs(data, origin, lastEventId));
+			if (on_message_ != nullptr) on_message_(this, gcnew MessageEventArgs(data, origin, lastEventId));
 		}
 
-		void FireOnBufferAmountLow() { OnBufferedAmountLow(this, EventArgs::Empty); }
+		void FireOnBufferAmountLow() { if (on_buffered_amount_low_ != nullptr) on_buffered_amount_low_(this, EventArgs::Empty); }
 
 	private:
 		ManagedScopedRefPtr<webrtc::DataChannelInterface> rp_data_channel_interface_;
 		Nullable<uint64_t> buffered_amount_low_threshold_;
+		EventHandler^ on_open_;
+		EventHandler<RtcErrorEventArgs^>^ on_error_;
+		EventHandler^ on_close_;
+		EventHandler<MessageEventArgs^>^ on_message_;
+		EventHandler^ on_buffered_amount_low_;
 	};
 }

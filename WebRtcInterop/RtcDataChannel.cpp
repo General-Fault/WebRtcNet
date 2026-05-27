@@ -16,7 +16,12 @@ namespace WebRtcInterop
 {
 	RtcDataChannel::RtcDataChannel(webrtc::DataChannelInterface* data_channel_interface)
 		: rp_data_channel_interface_(data_channel_interface),
-		  buffered_amount_low_threshold_()
+		  buffered_amount_low_threshold_(),
+		  on_open_(nullptr),
+		  on_error_(nullptr),
+		  on_close_(nullptr),
+		  on_message_(nullptr),
+		  on_buffered_amount_low_(nullptr)
 	{
 		if (data_channel_interface == nullptr) throw gcnew ArgumentNullException(NAMEOF(data_channel_interface));
 
@@ -43,6 +48,11 @@ namespace WebRtcInterop
 		}
 
 		return result;
+	}
+
+	System::IntPtr RtcDataChannel::GetNativeDataChannelHandle(bool throwOnDisposed)
+	{
+		return System::IntPtr(GetNativeDataChannelInterface(throwOnDisposed));
 	}
 
 	String^ RtcDataChannel::Label::get()
