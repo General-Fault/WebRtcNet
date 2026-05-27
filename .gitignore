@@ -20,8 +20,10 @@ TestResults
 /third-party/shared-items/googletest/INSTALL.vcxproj.filters
 /third-party/shared-items/googletest/INSTALL.vcxproj
 /third-party/shared-items/googletest/googletest-distribution.sln
+/third-party/shared-items/googletest/googletest-distribution.slnx
 /third-party/shared-items/googletest/googletest
 /third-party/shared-items/googletest/googlemock
+/third-party/shared-items/googletest/build/
 /third-party/shared-items/googletest/CTestTestfile.cmake
 /third-party/shared-items/googletest/cmake_install.cmake
 /third-party/shared-items/googletest/CMakeCache.txt
