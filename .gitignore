@@ -30,3 +30,5 @@ TestResults
 /third-party/shared-items/googletest/ALL_BUILD.vcxproj.filters
 /third-party/shared-items/googletest/ALL_BUILD.vcxproj
 *.cache
+.env
+.env.local

@@ -10,7 +10,7 @@ See [WebRTC 1.0: Real-time Communication Between Browsers](https://www.w3.org/TR
 
 The easiest way to get started is to pull the pre-built WebRTC artifacts from the GitHub Container Registry. This avoids a multi-hour native build.
 
-**Prerequisites:** Docker Desktop configured for Windows containers, and a GHCR login (`docker login ghcr.io`).
+**Prerequisites:** Docker Desktop configured for Windows containers.
 
 ```powershell
 .\docker\get-webrtc-artifacts.ps1 -WebRtcBranch 7778
@@ -72,6 +72,19 @@ The build pipeline uses individual-stage Dockerfiles rather than a single monoli
 ```
 
 By default this builds all images locally without publishing. Add `-Publish` to push only the artifacts image (`ghcr.io/general-fault/webrtc:msvc-shared-<branch>`) to GHCR. Skip stages you haven't changed with `-SkipToolchain` and `-SkipSync`. Speed up the sync stage during Dockerfile iteration with `-FastDevSync`.
+
+For publishing, the script can automatically load credentials from a repo-local `.env` file and run `docker login` for you. Copy `.env.example` to `.env` and set:
+
+```powershell
+GHCR_USERNAME=General-Fault
+GHCR_PAT=<classic PAT with write:packages>
+```
+
+Then publish normally:
+
+```powershell
+.\docker\build-images.ps1 -WebRtcBranch 7778 -Publish
+```
 
 The WebRTC build takes several hours. The GitHub Actions workflow (`build-webrtc.yml`) can be triggered manually via `workflow_dispatch` and runs on `windows-2025`. It pushes only `webrtc:msvc-shared-<branch>` to GHCR. A self-hosted runner is recommended for the WebRTC build.
 
