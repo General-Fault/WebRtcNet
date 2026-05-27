@@ -1,9 +1,6 @@
 *.opensdf
 obj
-/x64
-/WebRtcInterop/x64
-/WebRtcInterop.UnitTests/bin
-/WebRtcNet/bin
+bin
 .vs
 Debug
 /WebRtcNet.sdf
@@ -12,7 +9,8 @@ ipch
 *.user
 TestResults
 *.opendb
-/third-party/webrtc-artifacts/
+/third-party/google/webrtc/include
+/third-party/google/webrtc/lib
 /third-party/shared-items/googletest/CMakeFiles
 /third-party/shared-items/googletest/googlemock/CMakeFiles
 /third-party/shared-items/googletest/ZERO_CHECK.vcxproj.filters
