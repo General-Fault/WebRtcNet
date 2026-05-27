@@ -22,6 +22,6 @@ ENV `
     WEBRTC_WORK_ROOT=${WEBRTC_WORK_ROOT}
 
 COPY docker\build-webrtc.ps1 C:\build\build-webrtc.ps1
-COPY third-party\google\webrtc\*.patch C:\build\patches\
+COPY docker\patches\*.patch C:\build\patches\
 
 RUN pwsh -NoLogo -NoProfile -File C:\build\build-webrtc.ps1 -Mode build
