@@ -14,7 +14,7 @@ using namespace WebRtcNet;
 
 namespace WebRtcInterop
 {
-	RtcDataChannel::RtcDataChannel(DataChannelInterface* data_channel_interface)
+	RtcDataChannel::RtcDataChannel(webrtc::DataChannelInterface* data_channel_interface)
 		: rp_data_channel_interface_(data_channel_interface),
 		  buffered_amount_low_threshold_()
 	{
@@ -33,7 +33,7 @@ namespace WebRtcInterop
 		rp_data_channel_interface_ = nullptr;
 	}
 
-	DataChannelInterface* RtcDataChannel::GetNativeDataChannelInterface(const bool throwOnDisposed)
+	webrtc::DataChannelInterface* RtcDataChannel::GetNativeDataChannelInterface(const bool throwOnDisposed)
 	{
 		const auto result = rp_data_channel_interface_.Get();
 		if (result == nullptr)
@@ -62,7 +62,7 @@ namespace WebRtcInterop
 
 	Nullable<uint32_t> RtcDataChannel::MaxRetransmits::get()
 	{
-		return GetNativeDataChannelInterface(true)->maxRetransmits();
+		return marshal_as<uint32_t>(GetNativeDataChannelInterface(true)->maxRetransmitsOpt());
 	}
 
 	String^ RtcDataChannel::Protocol::get()
@@ -77,7 +77,8 @@ namespace WebRtcInterop
 
 	unsigned int RtcDataChannel::Id::get()
 	{
-		return GetNativeDataChannelInterface(true)->id();
+		const auto id = GetNativeDataChannelInterface(true)->id();
+		return id < 0 ? 0u : static_cast<unsigned int>(id);
 	}
 
 	RtcDataChannelState RtcDataChannel::ReadyState::get()
@@ -125,7 +126,7 @@ namespace WebRtcInterop
 	void RtcDataChannel::Send(String^ data)
 	{
 		const auto native = GetNativeDataChannelInterface(true);
-		const DataBuffer buffer(marshal_as<std::string>(data));
+		const webrtc::DataBuffer buffer(marshal_as<std::string>(data));
 		native->Send(buffer);
 	}
 
@@ -135,8 +136,8 @@ namespace WebRtcInterop
 
 		const auto vector = marshal_as<std::vector, uint8_t>(data);
 
-		const CopyOnWriteBuffer buffer(vector);
-		native->Send(DataBuffer(buffer, true));
+		const webrtc::CopyOnWriteBuffer buffer(vector);
+		native->Send(webrtc::DataBuffer(buffer, true));
 	}
 
 	void RtcDataChannel::Send(array<Byte>^ data)
@@ -145,7 +146,7 @@ namespace WebRtcInterop
 
 		const pin_ptr<Byte> ptr = &data[0];
 		const Byte* np = ptr;
-		const CopyOnWriteBuffer buffer(np, data->Length);
-		native->Send(DataBuffer(buffer, true));
+		const webrtc::CopyOnWriteBuffer buffer(np, data->Length);
+		native->Send(webrtc::DataBuffer(buffer, true));
 	}
 }

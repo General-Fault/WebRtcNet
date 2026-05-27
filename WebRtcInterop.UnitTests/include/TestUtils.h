@@ -6,7 +6,7 @@
 
 using namespace msclr::interop;
 
-inline std::stringstream& operator<< (std::stringstream& output, System::String^ str)
+inline std::ostream& operator<< (std::ostream& output, System::String^ str)
 {
     output << marshal_as<std::string>(str);
     return output;
@@ -18,8 +18,8 @@ inline std::stringstream& operator<< (std::stringstream& output, System::String^
 #define ASSERT_TYPE_EQ(item, type) ASSERT_EQ(typeid(item), type) << "The expected result type is " << type.name() << ", but found " << typeid(item).name()
 #define EXPECT_TYPE_EQ(item, type) EXPECT_EQ(typeid(item), type) << "The expected result type is " << type.name() << ", but found " << typeid(item).name()
 
-#define ASSERT_MANAGED_TYPE_EQ(object, type) ASSERT_EQ((object).GetType(), type) << "The expected result type is " << ReflectionUtils::PrettyTypeName(type) << ", but found " << ReflectionUtils::PrettyTypeName((object).GetType())
-#define EXPECT_MANAGED_TYPE_EQ(object, type) EXPECT_EQ((object).GetType(), type) << "The expected result type is " << ReflectionUtils::PrettyTypeName(type) << ", but found " << ReflectionUtils::PrettyTypeName((object).GetType())
+#define ASSERT_MANAGED_TYPE_EQ(object, type) ASSERT_EQ((object).GetType(), type) << "The expected result type is " << marshal_as<std::string>(ReflectionUtils::PrettyTypeName(type)) << ", but found " << marshal_as<std::string>(ReflectionUtils::PrettyTypeName((object).GetType()))
+#define EXPECT_MANAGED_TYPE_EQ(object, type) EXPECT_EQ((object).GetType(), type) << "The expected result type is " << marshal_as<std::string>(ReflectionUtils::PrettyTypeName(type)) << ", but found " << marshal_as<std::string>(ReflectionUtils::PrettyTypeName((object).GetType()))
 
 ref class ReflectionUtils
 {

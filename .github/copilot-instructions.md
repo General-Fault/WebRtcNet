@@ -94,5 +94,5 @@ Individual-stage Dockerfiles in `docker\` — not a monolithic file:
 - Interop wrapper classes follow the same lifetime pattern: destructor/finalizer pair, and a `GetNative...(throwOnDisposed)` helper that throws `ObjectDisposedException` when the native handle is gone.
 - Some interop methods require concrete wrapper instances, not arbitrary interface implementations. Peer connection stream operations `dynamic_cast` `IMediaStream` to `WebRtcInterop::MediaStream` before unwrapping the native object.
 - `marshal_as<>` specializations in `Marshaling\` use either switch-based dispatch (simple enums) or bidirectional `std::map` helpers (`marshal_mapped_native_type` / `marshal_mapped_managed_type` in `MarshalEnums.h`) for types where both directions are needed.
-- The solution `GN` configuration builds the `Debug` configuration of the interop projects and is intended for running gn gen + ninja manually (not for general development).
+- The solution uses standard `Debug` and `Release` configurations; use these directly for normal development and CI.
 - `docker\build-webrtcnet.ps1` hardcodes `C:\BuildTools` for VS paths; `docker\Dockerfile.webrtcnet` must install VS Build Tools to that path.

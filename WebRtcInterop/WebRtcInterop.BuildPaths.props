@@ -6,7 +6,8 @@
     <WebRtcSrcRoot Condition="'$(WEBRTC_SRC_PATH)' == ''">$(MSBuildThisFileDirectory)..\third-party\google\webrtc\include</WebRtcSrcRoot>
     <WebRtcOutRoot Condition="'$(WEBRTC_OUT_PATH)' != ''">$(WEBRTC_OUT_PATH)</WebRtcOutRoot>
     <WebRtcOutRoot Condition="'$(WEBRTC_OUT_PATH)' == ''">$(MSBuildThisFileDirectory)..\third-party\google\webrtc\lib</WebRtcOutRoot>
-    <WebRtcGoogletestRoot>$(WebRtcSrcRoot)\third_party\googletest\src</WebRtcGoogletestRoot>
+    <WebRtcGoogletestRoot Condition="Exists('$(MSBuildThisFileDirectory)..\third-party\google\googletest\CMakeLists.txt')">$(MSBuildThisFileDirectory)..\third-party\google\googletest</WebRtcGoogletestRoot>
+    <WebRtcGoogletestRoot Condition="'$(WebRtcGoogletestRoot)' == ''">$(WebRtcSrcRoot)\third_party\googletest\src</WebRtcGoogletestRoot>
     <!-- Treat artifacts as prebuilt when the env var says so OR when the repo-local artifact tree exists -->
     <WebRtcPrebuilt Condition="'$(WEBRTC_PREBUILT)' == '1' Or (Exists('$(MSBuildThisFileDirectory)..\third-party\google\webrtc\include') And Exists('$(MSBuildThisFileDirectory)..\third-party\google\webrtc\lib'))">1</WebRtcPrebuilt>
     <WebRtcPrebuilt Condition="'$(WebRtcPrebuilt)' == ''">0</WebRtcPrebuilt>

@@ -63,31 +63,31 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)WebRtcInterop;$(IncludePath)</IncludePath>
+    <IncludePath>$(MSBuildProjectDirectory)\..\WebRtcInterop;$(IncludePath)</IncludePath>
     <ExternalIncludePath>$(WebRtcSrcRoot);$(WebRtcSrcRoot)\third_party\abseil-cpp;$(ExternalIncludePath)</ExternalIncludePath>
     <ManagedAssembly>true</ManagedAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)WebRtcInterop;$(IncludePath)</IncludePath>
+    <IncludePath>$(MSBuildProjectDirectory)\..\WebRtcInterop;$(IncludePath)</IncludePath>
     <ExternalIncludePath>$(WebRtcSrcRoot);$(WebRtcSrcRoot)\third_party\abseil-cpp;$(ExternalIncludePath)</ExternalIncludePath>
     <ManagedAssembly>true</ManagedAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)WebRtcInterop;$(IncludePath)</IncludePath>
+    <IncludePath>$(MSBuildProjectDirectory)\..\WebRtcInterop;$(IncludePath)</IncludePath>
     <ExternalIncludePath>$(WebRtcSrcRoot);$(WebRtcSrcRoot)\third_party\abseil-cpp;$(ExternalIncludePath)</ExternalIncludePath>
     <ManagedAssembly>true</ManagedAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)WebRtcInterop;$(IncludePath)</IncludePath>
+    <IncludePath>$(MSBuildProjectDirectory)\..\WebRtcInterop;$(IncludePath)</IncludePath>
     <ExternalIncludePath>$(WebRtcSrcRoot);$(WebRtcSrcRoot)\third_party\abseil-cpp;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
-    <IncludePath>$(SolutionDir)WebRtcInterop;$(IncludePath)</IncludePath>
+    <IncludePath>$(MSBuildProjectDirectory)\..\WebRtcInterop;$(IncludePath)</IncludePath>
     <ExternalIncludePath>$(WebRtcSrcRoot);$(WebRtcSrcRoot)\third_party\abseil-cpp;$(ExternalIncludePath)</ExternalIncludePath>
     <ManagedAssembly>true</ManagedAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <IncludePath>$(SolutionDir)WebRtcInterop;$(IncludePath)</IncludePath>
+    <IncludePath>$(MSBuildProjectDirectory)\..\WebRtcInterop;$(IncludePath)</IncludePath>
     <ExternalIncludePath>$(WebRtcSrcRoot);$(WebRtcSrcRoot)\third_party\abseil-cpp;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemGroup>
@@ -120,7 +120,7 @@
       <WarningLevel>Level3</WarningLevel>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)WebRtcInterop.Shared;$(SolutionDir)WebRtcInterop;$(SolutionDir)WebRtcInterop\Marshaling;$(MSBuildProjectDirectory);$(MSBuildProjectDirectory)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\..\WebRtcInterop.Shared;$(MSBuildProjectDirectory)\..\WebRtcInterop;$(MSBuildProjectDirectory)\..\WebRtcInterop\Marshaling;$(MSBuildProjectDirectory);$(MSBuildProjectDirectory)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -142,7 +142,7 @@
       <WarningLevel>Level3</WarningLevel>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)WebRtcInterop.Shared;$(SolutionDir)WebRtcInterop;$(SolutionDir)WebRtcInterop\Marshaling;$(MSBuildProjectDirectory);$(MSBuildProjectDirectory)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\..\WebRtcInterop.Shared;$(MSBuildProjectDirectory)\..\WebRtcInterop;$(MSBuildProjectDirectory)\..\WebRtcInterop\Marshaling;$(MSBuildProjectDirectory);$(MSBuildProjectDirectory)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -162,7 +162,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)WebRtcInterop.Shared;$(SolutionDir)WebRtcInterop;$(SolutionDir)WebRtcInterop\Marshaling;$(MSBuildProjectDirectory);$(MSBuildProjectDirectory)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\..\WebRtcInterop.Shared;$(MSBuildProjectDirectory)\..\WebRtcInterop;$(MSBuildProjectDirectory)\..\WebRtcInterop\Marshaling;$(MSBuildProjectDirectory);$(MSBuildProjectDirectory)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -185,7 +185,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)WebRtcInterop.Shared;$(SolutionDir)WebRtcInterop;$(SolutionDir)WebRtcInterop\Marshaling;$(MSBuildProjectDirectory);$(MSBuildProjectDirectory)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\..\WebRtcInterop.Shared;$(MSBuildProjectDirectory)\..\WebRtcInterop;$(MSBuildProjectDirectory)\..\WebRtcInterop\Marshaling;$(MSBuildProjectDirectory);$(MSBuildProjectDirectory)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -210,7 +210,7 @@
       <WarningLevel>Level3</WarningLevel>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)WebRtcInterop.Shared;$(SolutionDir)WebRtcInterop;$(SolutionDir)WebRtcInterop\Marshaling;$(MSBuildProjectDirectory);$(MSBuildProjectDirectory)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\..\WebRtcInterop.Shared;$(MSBuildProjectDirectory)\..\WebRtcInterop;$(MSBuildProjectDirectory)\..\WebRtcInterop\Marshaling;$(MSBuildProjectDirectory);$(MSBuildProjectDirectory)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -230,7 +230,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)WebRtcInterop.Shared;$(SolutionDir)WebRtcInterop;$(SolutionDir)WebRtcInterop\Marshaling;$(MSBuildProjectDirectory);$(MSBuildProjectDirectory)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\..\WebRtcInterop.Shared;$(MSBuildProjectDirectory)\..\WebRtcInterop;$(MSBuildProjectDirectory)\..\WebRtcInterop\Marshaling;$(MSBuildProjectDirectory);$(MSBuildProjectDirectory)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>

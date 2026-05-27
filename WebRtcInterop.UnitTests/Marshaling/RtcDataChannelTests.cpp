@@ -2,7 +2,6 @@
 
 #include "TestUtils.h"
 
-#include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
 #include "Marshaling/MarshalDataChannel.h"
@@ -12,37 +11,9 @@ using namespace msclr::interop;
 
 using namespace System;
 
-using namespace rtc;
 using namespace WebRtcNet;
 using namespace webrtc;
 using namespace testing;
-
-class MockDataChannel : public DataChannelInterface
-{
-public:
-	MOCK_METHOD(void, RegisterObserver, (webrtc::DataChannelObserver*), (override));
-	MOCK_METHOD(void, UnregisterObserver, (), (override));
-	MOCK_METHOD(std::string, label, (), (const, override));
-	MOCK_METHOD(bool, reliable, (), (const, override));
-	MOCK_METHOD(bool, ordered, (), (const, override));
-	MOCK_METHOD(uint16_t, maxRetransmitTime, (), (const, override));
-	MOCK_METHOD(uint16_t, maxRetransmits, (), (const, override));
-	MOCK_METHOD(absl::optional<int>, maxRetransmitsOpt, (), (const, override));
-	MOCK_METHOD(absl::optional<int>, maxPacketLifeTime, (), (const, override));
-	MOCK_METHOD(std::string, protocol, (), (const, override));
-	MOCK_METHOD(bool, negotiated, (), (const, override));
-	MOCK_METHOD(int, id, (), (const, override));
-	MOCK_METHOD(Priority, priority, (), (const, override));
-	MOCK_METHOD(DataState, state, (), (const, override));
-	MOCK_METHOD(RTCError, error, (), (const, override));
-	MOCK_METHOD(uint32_t, messages_sent, (), (const, override));
-	MOCK_METHOD(uint64_t, bytes_sent, (), (const, override));
-	MOCK_METHOD(uint32_t, messages_received, (), (const, override));
-	MOCK_METHOD(uint64_t, bytes_received, (), (const, override));
-	MOCK_METHOD(uint64_t, buffered_amount, (), (const, override));
-	MOCK_METHOD(void, Close, (), (override));
-	MOCK_METHOD(bool, Send, (const DataBuffer&), (override));
-};
 
 class data_channel_tests
 {

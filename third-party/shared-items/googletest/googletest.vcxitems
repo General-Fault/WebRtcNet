@@ -5,26 +5,32 @@
     <HasSharedItems>true</HasSharedItems>
     <ItemsProjectGuid>{357b6b66-ab73-41cd-9271-1b4e5c41dde1}</ItemsProjectGuid>
     <CustomBuildBeforeTargets>Link</CustomBuildBeforeTargets>
+    <WebRtcNetRepoRoot>$(MSBuildThisFileDirectory)..\..\..\</WebRtcNetRepoRoot>
+    <GTestBuildDir>$(MSBuildThisFileDirectory)build\$(Platform)</GTestBuildDir>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)WebRtcInterop\WebRtcInterop.BuildPaths.props" Condition="'$(WebRtcSrcRoot)' == '' Or '$(WebRtcGoogletestRoot)' == ''" />
+  <Import Project="$(WebRtcNetRepoRoot)WebRtcInterop\WebRtcInterop.BuildPaths.props" Condition="'$(WebRtcSrcRoot)' == '' Or '$(WebRtcGoogletestRoot)' == ''" />
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(WebRtcGoogletestRoot)\googletest\include;$(WebRtcGoogletestRoot)\googlemock\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GTEST_IS_THREADSAFE=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(SolutionDir)third-party\shared-items\googletest\lib\Debug</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(GTestBuildDir)\lib\$(Configuration);$(GTestBuildDir)\lib;$(MSBuildThisFileDirectory)lib\$(Configuration);$(MSBuildThisFileDirectory)lib\Debug</AdditionalLibraryDirectories>
       <AdditionalDependencies>gmock.lib;gtest.lib;gtest_main.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
     <CustomBuildStep>
-      <Command>cd "$(SolutionDir)third-party\shared-items\googletest"
-"$(DevEnvDir)\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -Dgtest_force_shared_crt=ON -Dgtest_disable_threadsafe=ON -Dgtest_disable_deathtest=ON $(WebRtcGoogletestRoot)
-"$(DevEnvDir)\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" --build .</Command>
+      <Command>cd "$(MSBuildThisFileDirectory)"
+set "GTEST_CMAKE=$(DevEnvDir)CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe"
+if not exist "%GTEST_CMAKE%" set "GTEST_CMAKE=$(VSINSTALLDIR)Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe"
+if not exist "%GTEST_CMAKE%" set "GTEST_CMAKE=$(VCInstallDir)..\..\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe"
+if not exist "%GTEST_CMAKE%" set "GTEST_CMAKE=cmake"
+"%GTEST_CMAKE%" -S "$(WebRtcGoogletestRoot)" -B "$(GTestBuildDir)" -A "$(Platform)" -Dgtest_force_shared_crt=ON -Dgtest_disable_threadsafe=ON -Dgtest_disable_deathtest=ON
+"%GTEST_CMAKE%" --build "$(GTestBuildDir)" --config "$(Configuration)"</Command>
       <Message>Building GoogleTest</Message>
       <Inputs>$(WebRtcGoogletestRoot)\CMakeLists.txt</Inputs>
-      <Outputs>$(SolutionDir)third-party\shared-items\googletest\CMakeFiles\generate.stamp</Outputs>
+      <Outputs>$(GTestBuildDir)\CMakeFiles\generate.stamp</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -32,8 +32,8 @@
     <Keyword>NetCoreCProj</Keyword>
     <RootNamespace>WebRtcInterop</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <TargetFramework>net6.0</TargetFramework>
-    <TargetFrameworkVersion>netcoreapp3.1</TargetFrameworkVersion>
+    <TargetFramework>net10.0</TargetFramework>
+    <TargetFrameworkVersion>net10.0</TargetFrameworkVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

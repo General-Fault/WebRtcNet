@@ -5,25 +5,36 @@
 #include "ManagedScopedRefPtr.h"
 #include "TestUtils.h"
 
-#include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
 using namespace System;
 
 using namespace WebRtcInterop;
-using namespace testing;
 
 
-public class MockRefObject : public rtc::RefCountInterface
+class MockRefObject : public webrtc::RefCountInterface
 {
 public:
-	MockRefObject() { std::cerr << "Constructor" << std::endl; };
-	~MockRefObject() override { std::cerr << "Destructor" << std::endl; };
+	MockRefObject() = default;
+	~MockRefObject() override = default;
 
-	MOCK_METHOD(void, AddRef, (), (const, override));
-	MOCK_METHOD(rtc::RefCountReleaseStatus, Release, (), (const, override));
+	void AddRef() const override
+	{
+		++add_ref_count_;
+	}
+
+	webrtc::RefCountReleaseStatus Release() const override
+	{
+		++release_count_;
+		return webrtc::RefCountReleaseStatus::kOtherRefsRemained;
+	}
+
+	int add_ref_count() const { return add_ref_count_; }
+	int release_count() const { return release_count_; }
 
 private:
+	mutable int add_ref_count_ = 0;
+	mutable int release_count_ = 0;
 	MockRefObject(const MockRefObject&) = delete;
 	MockRefObject& operator= (const MockRefObject&) = delete;
 };
@@ -44,20 +55,21 @@ class managed_scoped_refptr_tests
 
 TEST(managed_scoped_refptr_tests, ref_object_addref_on_construct)
 {
-	InSequence s;
 	MockRefObject obj;
-	EXPECT_CALL(obj, AddRef()).Times(1);
 
 	ManagedScopedRefPtr<MockRefObject> ptr{&obj};
+	EXPECT_EQ(obj.add_ref_count(), 1);
+	EXPECT_EQ(obj.release_count(), 0);
 }
 
 TEST(managed_scoped_refptr_tests, ref_object_release_on_destruct)
 {
-	InSequence s;
 	MockRefObject obj;
-	EXPECT_CALL(obj, Release()).Times(1);
 
 	{
 		ManagedScopedRefPtr<MockRefObject> ptr{ &obj };
 	}
+
+	EXPECT_EQ(obj.add_ref_count(), 1);
+	EXPECT_EQ(obj.release_count(), 1);
 }

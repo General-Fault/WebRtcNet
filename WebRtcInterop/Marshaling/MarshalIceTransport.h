@@ -13,20 +13,20 @@ namespace msclr::interop
 {
 	using namespace System;
 
-	static const std::map<const cricket::IceRole, const WebRtcNet::RtcIceRole> ice_role_map {
-		{cricket::IceRole::ICEROLE_CONTROLLED, WebRtcNet::RtcIceRole::Controlled},
-		{cricket::IceRole::ICEROLE_CONTROLLING, WebRtcNet::RtcIceRole::Controlling},
-		{cricket::IceRole::ICEROLE_UNKNOWN, WebRtcNet::RtcIceRole::Unknown},
+	static const std::map<const webrtc::IceRole, const WebRtcNet::RtcIceRole> ice_role_map {
+		{webrtc::IceRole::ICEROLE_CONTROLLED, WebRtcNet::RtcIceRole::Controlled},
+		{webrtc::IceRole::ICEROLE_CONTROLLING, WebRtcNet::RtcIceRole::Controlling},
+		{webrtc::IceRole::ICEROLE_UNKNOWN, WebRtcNet::RtcIceRole::Unknown},
 	};
 
 	template<>
-	inline WebRtcNet::RtcIceRole marshal_as(const cricket::IceRole& from)
+	inline WebRtcNet::RtcIceRole marshal_as(const webrtc::IceRole& from)
 	{
 		return marshal_mapped_native_type(ice_role_map, from);
 	}
 
 	template<>
-	inline cricket::IceRole marshal_as<cricket::IceRole>(const WebRtcNet::RtcIceRole& from)
+	inline webrtc::IceRole marshal_as<webrtc::IceRole>(const WebRtcNet::RtcIceRole& from)
 	{
 		return marshal_mapped_managed_type(ice_role_map, from);
 	}

@@ -24,6 +24,6 @@ native_type marshal_mapped_managed_type(const std::map<const native_type, const 
 	}
 
 	throw gcnew System::InvalidCastException(System::String::Format("Unable to convert {0} value '{1}' to {2}",
-	                                                managed_type::typeid->FullName, Enum::GetName(managed_type::typeid, from),
+	                                                managed_type::typeid->FullName, System::Enum::GetName(managed_type::typeid, from),
 	                                                native_type::typeid->FullName));
 }

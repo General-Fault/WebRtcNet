@@ -8,10 +8,10 @@ using namespace Runtime::InteropServices;
 
 namespace WebRtcInterop::Observers
 {
-	DataChannelObserver::DataChannelObserver(RtcDataChannel^ data_channel,
-		DataChannelInterface* native_data_channel)
+DataChannelObserver::DataChannelObserver(RtcDataChannel^ data_channel,
+		webrtc::DataChannelInterface* native_data_channel)
 		: data_channel_(data_channel)
-		, native_data_channel_(native_data_channel)
+		, native_data_channel_(webrtc::scoped_refptr<webrtc::DataChannelInterface>(native_data_channel))
 	{
 		if (data_channel == nullptr) throw gcnew ArgumentNullException("dataChannel");
 		if (native_data_channel == nullptr) throw gcnew ArgumentNullException("nativeDataChannel");
@@ -25,17 +25,17 @@ namespace WebRtcInterop::Observers
 	void DataChannelObserver::OnStateChange()
 	{
 		const auto state = native_data_channel_->state();
-		if (state == DataChannelInterface::DataState::kOpen)
+		if (state == webrtc::DataChannelInterface::DataState::kOpen)
 		{
 			data_channel_->FireOnOpen();
 		}
-		else if (state == DataChannelInterface::DataState::kClosed)
+		else if (state == webrtc::DataChannelInterface::DataState::kClosed)
 		{
 			data_channel_->FireOnClose();
 		}
 	}
 
-	void DataChannelObserver::OnMessage(const DataBuffer& buffer)
+	void DataChannelObserver::OnMessage(const webrtc::DataBuffer& buffer)
 	{
 		if (buffer.binary)
 		{
