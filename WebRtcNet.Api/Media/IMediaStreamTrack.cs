@@ -56,27 +56,37 @@ public enum MediaStreamTrackKind
 ///     chooses the same camera in the UI shown by two consecutive calls to <see cref="IMediaDevices.GetUserMedia" />.
 /// </summary>
 /// <seealso href="http://www.w3.org/TR/mediacapture-streams/#mediastreamtrack" />
-public interface IMediaStreamTrack
+public abstract class IMediaStreamTrack
 {
+    internal IMediaStreamTrack()
+    {
+    }
+
     /// <summary>
     ///     <see cref="MediaStreamTrackKind.Audio">Audio</see> if the object represents an audio track or
     ///     <see cref="MediaStreamTrackKind.Video">Video</see> if object represents a video track.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-kind" />
-    MediaStreamTrackKind Kind { get; }
+    public abstract MediaStreamTrackKind Kind { get; }
+
+    /// <summary>
+    /// Returns the native media stream track interface used by WebRtcInterop.
+    /// </summary>
+    /// <param name="throwOnDisposed">True to throw when the track has already been disposed.</param>
+    internal abstract IntPtr GetNativeMediaStreamTrackInterface(bool throwOnDisposed);
 
     /// <summary>
     ///     A generated identifier for the track.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-id" />
-    string Id { get; }
+    public abstract string Id { get; }
 
     /// <summary>
     ///     The audio or video source label if available (e.g., "Internal microphone" or "External USB Webcam").
     ///     Empty string if no label is available.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-id" />
-    string Label { get; }
+    public abstract string Label { get; }
 
     /// <summary>
     ///     Enabled controls the enabled state for the object.
@@ -86,31 +96,31 @@ public interface IMediaStreamTrack
     ///     with that new value.
     /// </remarks>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-enabled" />
-    bool Enabled { get; set; }
+    public abstract bool Enabled { get; set; }
 
     /// <summary>
     ///     Muted returns true if the track is muted, and false otherwise.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-muted" />
-    bool Muted { get; }
+    public abstract bool Muted { get; }
 
     /// <summary>
     ///     ReadyState represents the usable state of the track.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-readystate" />
-    MediaStreamTrackState ReadyState { get; }
+    public abstract MediaStreamTrackState ReadyState { get; }
 
     /// <summary>
     ///     When fired, the MediaStreamTrack object's source is temporarily unable to provide data.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-onmute" />
-    event EventHandler OnMute;
+    public abstract event EventHandler OnMute;
 
     /// <summary>
     ///     The MediaStreamTrack object's source is live again after having been temporarily unable to provide data.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-onunmute" />
-    event EventHandler OnUnMute;
+    public abstract event EventHandler OnUnMute;
 
     /// <summary>
     ///     The MediaStreamTrack object's source will no longer provide any data, either because the user
@@ -118,19 +128,19 @@ public interface IMediaStreamTrack
     ///     or because the remote peer permanently stopped sending data.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-onended" />
-    event EventHandler<MediaStreamError> OnEnded;
+    public abstract event EventHandler<MediaStreamError> OnEnded;
 
     /// <summary>
     ///     Clones the given MediaStreamTrack.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-clone" />
-    IMediaStreamTrack Clone();
+    public abstract IMediaStreamTrack Clone();
 
     /// <summary>
     ///     Stops the locally sourced track. If the track is remote, this does nothing.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-stop" />
-    void Stop();
+    public abstract void Stop();
 
     /// <summary>
     ///     Returns the <see cref="MediaTrackCapabilities">capabilites</see> of the source that this MediaStreamTrack, the
@@ -141,7 +151,7 @@ public interface IMediaStreamTrack
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-getcapabilities" />
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#constrainable-interface" />
-    MediaTrackCapabilities GetCapabilities();
+    public abstract MediaTrackCapabilities GetCapabilities();
 
     /// <summary>
     ///     Returns the Constraints that were the argument to the most recent successful call of
@@ -152,19 +162,19 @@ public interface IMediaStreamTrack
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-getconstraints" />
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#constrainable-interface" />
-    MediaTrackConstraints GetConstraints();
+    public abstract MediaTrackConstraints GetConstraints();
 
     /// <summary>
     ///     Returns the current <seealso cref="MediaTrackSettings">settings</seealso> of all the constrainable properties of
     ///     the object, whether they are platform defaults or have been set by <see cref="ApplyConstraints" />.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-getsettings" />
-    MediaTrackSettings GetSettings();
+    public abstract MediaTrackSettings GetSettings();
 
     /// <summary>
     ///     Apply the supplied <see cref="MediaTrackConstraints">constraints</see>. Use null to remove all constraints.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-applyconstraints" />
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#constrainable-interface" />
-    void ApplyConstraints(MediaTrackConstraints constraints = null);
+    public abstract void ApplyConstraints(MediaTrackConstraints constraints = null);
 }

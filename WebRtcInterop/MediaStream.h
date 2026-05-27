@@ -13,11 +13,11 @@ namespace WebRtcInterop {
 
 using namespace WebRtcNet::Media;
 
-public ref class MediaStream : IMediaStream
+public ref class MediaStream : WebRtcNet::Media::IMediaStream
 {
 public:
 	/// Composes a new stream from the tracks of an existing stream.
-	MediaStream(MediaStream ^ & stream);
+	MediaStream(WebRtcNet::Media::IMediaStream ^ stream);
 	~MediaStream();
 
 	/// Composes a new stream out of existing tracks
@@ -41,7 +41,7 @@ public:
 internal:
 	MediaStream(rtc::scoped_refptr <webrtc::MediaStreamInterface> stream);
 	!MediaStream();
-	webrtc::MediaStreamInterface * GetNativeMediaStreamInterface(bool throwOnDisposed);
+	virtual System::IntPtr GetNativeMediaStreamInterface(bool throwOnDisposed);
 
 private:
 	rtc::scoped_refptr<webrtc::MediaStreamInterface> * _rpMediaStreamInterface;

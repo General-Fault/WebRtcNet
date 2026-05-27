@@ -8,76 +8,91 @@ namespace WebRtcNet.Media;
 /// Disposable to allow management of native resources.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#mediastream"/>
-public interface IMediaStream : IDisposable
+public abstract class IMediaStream : IDisposable
 {
+    internal IMediaStream()
+    {
+    }
+
     /// <summary>
     /// The Id that the stream was initialized with.
     /// </summary>
-    string Id { get; }
+    public abstract string Id { get; }
+
+    /// <summary>
+    /// Returns the native media stream interface used by WebRtcInterop.
+    /// </summary>
+    /// <param name="throwOnDisposed">True to throw when the stream has already been disposed.</param>
+    internal abstract IntPtr GetNativeMediaStreamInterface(bool throwOnDisposed);
 
     /// <summary>
     /// Returns a sequence of IMediaStreamTrack objects representing the audio tracks in this stream.
     /// </summary>
-    IEnumerable<IMediaStreamTrack> GetAudioTracks();
+    public abstract IEnumerable<IMediaStreamTrack> GetAudioTracks();
 
     /// <summary>
     /// Returns a sequence of MediaStreamTrack objects representing the video tracks in this stream.
     /// </summary>
-    IEnumerable<IMediaStreamTrack> GetVideoTracks();
+    public abstract IEnumerable<IMediaStreamTrack> GetVideoTracks();
 
     /// <summary>
     /// Returns a sequence of IMediaStreamTrack objects representing all the tracks in this stream.
     /// </summary>
-    IEnumerable<IMediaStreamTrack> GetTracks();
+    public abstract IEnumerable<IMediaStreamTrack> GetTracks();
 
     /// <summary>
     /// Returns either an IMediaStreamTrack object from this stream's track set whose id is 
     /// equal to trackId, or null, if no such track exists.
     /// </summary>
     /// <param name="trackId">A track identifier.</param>
-    IMediaStreamTrack GetTrackById(string trackId);
+    public abstract IMediaStreamTrack GetTrackById(string trackId);
 
     /// <summary>
     /// Adds the given MediaStreamTrack to this MediaStream.
     /// </summary>
     /// <param name="track">The track to add.</param>
-    void AddTrack(IMediaStreamTrack track);
+    public abstract void AddTrack(IMediaStreamTrack track);
 
     /// <summary>
     /// Returns a sequence of MediaStreamTrack objects representing the audio tracks in this stream.
     /// </summary>
     /// <param name="track">The track to remove.</param>
-    void RemoveTrack(IMediaStreamTrack track);
+    public abstract void RemoveTrack(IMediaStreamTrack track);
 
     /// <summary>
     /// Clones the given MediaStream and all its tracks.
     /// </summary>
-    IMediaStream Clone();
+    public abstract IMediaStream Clone();
 
     /// <summary>
     /// The Returns true if this MediaStream is active and false otherwise.
     /// </summary>
-    bool Active { get; }
+    public abstract bool Active { get; }
 
     /// <summary>
     /// The MediaStream became active.
     /// </summary>
-    event EventHandler OnActive;
+    public abstract event EventHandler OnActive;
 
     /// <summary>
     /// The MediaStream became inactive.
     /// </summary>
-    event EventHandler OnInactive;
+    public abstract event EventHandler OnInactive;
 
     /// <summary>
     /// A new MediaStreamTrack has been added to this stream. 
     /// Note that this event is not fired when the application directly modifies the tracks of a MediaStream.
     /// </summary>
-    event EventHandler<IMediaStreamTrack> OnAddTrack;
+    public abstract event EventHandler<IMediaStreamTrack> OnAddTrack;
 
     /// <summary>
     /// A MediaStreamTrack has been removed from this stream.
     /// Note that this event is not fired when the script directly modifies the tracks of a MediaStream.
     /// </summary>
-    event EventHandler<IMediaStreamTrack> OnRemoveTrack;
+    public abstract event EventHandler<IMediaStreamTrack> OnRemoveTrack;
+
+    /// <summary>
+    /// Disposes the media stream and releases its native resources.
+    /// </summary>
+    public abstract void Dispose();
 }

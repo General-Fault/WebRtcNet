@@ -69,11 +69,12 @@ namespace WebRtcNet
 
 namespace WebRtcInterop {
 
-MediaStream::MediaStream(MediaStream ^ & stream)
+MediaStream::MediaStream(IMediaStream ^ stream)
 	: _rpMediaStreamInterface(nullptr)
 {
 	auto nativeStream = stream->GetNativeMediaStreamInterface(true);
-	_rpMediaStreamInterface = new rtc::scoped_refptr<webrtc::MediaStreamInterface>(nativeStream);
+	_rpMediaStreamInterface = new rtc::scoped_refptr<webrtc::MediaStreamInterface>(
+		reinterpret_cast<webrtc::MediaStreamInterface*>(nativeStream.ToPointer()));
 }
 
 MediaStream::MediaStream(rtc::scoped_refptr<webrtc::MediaStreamInterface> stream)
@@ -92,15 +93,15 @@ MediaStream::!MediaStream()
 	_rpMediaStreamInterface = nullptr;
 }
 
-webrtc::MediaStreamInterface* MediaStream::GetNativeMediaStreamInterface(bool throwOnDisposed)
+System::IntPtr MediaStream::GetNativeMediaStreamInterface(bool throwOnDisposed)
 {
 	if (_rpMediaStreamInterface == nullptr || _rpMediaStreamInterface->get() == nullptr)
 	{
 		if (throwOnDisposed) throw gcnew ObjectDisposedException("MediaStream");
-		return nullptr;
+		return System::IntPtr::Zero;
 	}
 
-	return _rpMediaStreamInterface->get();
+	return System::IntPtr(_rpMediaStreamInterface->get());
 }
 
 
