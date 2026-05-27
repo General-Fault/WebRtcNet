@@ -5,25 +5,41 @@
     <BuildType Name="Release" />
     <Platform Name="Any CPU" />
     <Platform Name="ARM" />
+    <Platform Name="ARM64" />
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
+  <Folder Name="/Build/">
+    <File Path="docker/Dockerfile.webrtc-toolchain" />
+    <File Path="docker/Dockerfile.webrtc-sync" />
+    <File Path="docker/Dockerfile.webrtc-build" />
+    <File Path="docker/Dockerfile.webrtc" />
+    <File Path="docker/Dockerfile.webrtcnet" />
+  </Folder>
+  <Folder Name="/Build/docker/">
+    <File Path="docker/build-images.ps1" />
+    <File Path="docker/build-webrtc.ps1" />
+    <File Path="docker/build-webrtcnet.ps1" />
+  </Folder>
   <Folder Name="/Interop/">
     <Project Path="WebRtcInterop.UnitTests/WebRtcInterop.UnitTests.vcxproj" Id="5cfb4d3d-2e45-4a55-91ca-e45b7db34bf7">
       <BuildType Solution="GN|*" Project="Release" />
       <Platform Solution="*|Any CPU" Project="Win32" />
       <Platform Solution="*|ARM" Project="x64" />
+      <Platform Solution="*|ARM64" Project="ARM64" />
       <Build Solution="Release|ARM" Project="false" />
     </Project>
     <Project Path="WebRtcInterop/WebRtcInterop.Core.vcxproj" Id="f259d9c3-8b07-4b62-a9b8-f0836178bc58">
       <BuildType Solution="GN|*" Project="Debug" />
       <Platform Solution="*|ARM" Project="x64" />
+      <Platform Solution="*|ARM64" Project="ARM64" />
       <Platform Solution="Debug|Any CPU" Project="Win32" />
     </Project>
     <Project Path="WebRtcInterop/WebRtcInterop.Framework.vcxproj" Id="26f36298-7f6a-4bd1-893b-2572ba180259">
       <BuildType Solution="GN|*" Project="Release" />
       <Platform Solution="*|Any CPU" Project="Win32" />
       <Platform Solution="*|ARM" Project="x64" />
+      <Platform Solution="*|ARM64" Project="ARM64" />
       <Build Solution="Release|ARM" Project="false" />
     </Project>
     <Project Path="WebRtcInterop/WebRtcInterop.Shared.vcxitems" Id="fac2e2bf-5a09-428f-a224-1ce7a160a2d1" />
@@ -37,14 +53,17 @@
   </Project>
   <Project Path="WebRtcNet.Api/WebRtcNet.Api.csproj">
     <BuildType Solution="Debug|ARM" Project="Debug - .Net Core" />
+    <BuildType Solution="Debug|ARM64" Project="Debug - .Net Core" />
     <BuildType Solution="GN|*" Project="Release" />
     <Build Solution="Release|ARM" Project="false" />
   </Project>
   <Project Path="WebRtcNet/WebRtcNet.csproj">
     <BuildType Solution="Debug|ARM" Project="Debug - .Net Core" />
+    <BuildType Solution="Debug|ARM64" Project="Debug - .Net Core" />
     <BuildType Solution="GN|*" Project="Release" />
     <Platform Solution="Debug|x64" Project="x64" />
     <Platform Solution="Debug|x86" Project="x86" />
+    <Platform Solution="Debug|ARM64" Project="ARM64" />
     <Build Solution="Release|ARM" Project="false" />
   </Project>
 </Solution>
