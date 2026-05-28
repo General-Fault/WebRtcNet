@@ -22,8 +22,8 @@ namespace WebRtcInterop
 		virtual property RtcIceComponent Component{ RtcIceComponent get() override; }
 		virtual property RtcIceTransportState State{ RtcIceTransportState get() override; }
 		virtual property RtcIceGatheringState GatheringState{ RtcIceGatheringState get() override; }
-		virtual IEnumerable<IRtcIceCandidate^>^ GetLocalCandidates() override;
-		virtual IEnumerable<IRtcIceCandidate^>^ GetRemoteCandidates() override;
+		virtual IEnumerable<RtcIceCandidate^>^ GetLocalCandidates() override;
+		virtual IEnumerable<RtcIceCandidate^>^ GetRemoteCandidates() override;
 		virtual RtcIceCandidatePair^ GetSelectedCandidatePair() override;
 		virtual RtcIceParameters^ GetLocalParameters() override;
 		virtual RtcIceParameters^ GetRemoteParameters() override;

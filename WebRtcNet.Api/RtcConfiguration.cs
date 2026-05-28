@@ -55,6 +55,9 @@ public enum RtcBundlePolicy
 /// <seealso href="http://www.w3.org/TR/webrtc/#rtcconfiguration-type"/>
 public struct RtcConfiguration(IEnumerable<RtcIceServer> servers = null)
 {
+    // Explicit parameterless constructor ensures IceServers is never null when using default construction.
+    public RtcConfiguration() : this(null) { }
+
     /// A list containing URIs of servers available to be used by ICE, such as STUN and TURN server.
     public readonly List<RtcIceServer> IceServers = servers == null ? [] : [..servers];
 

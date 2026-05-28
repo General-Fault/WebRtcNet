@@ -122,7 +122,7 @@ namespace WebRtcInterop
 	}
 
 
-	Task^ RtcPeerConnection::AddIceCandidate(RtcIceCandidate candidate)
+	Task^ RtcPeerConnection::AddIceCandidate(RtcIceCandidate^ candidate)
 	{
 		throw gcnew NotImplementedException();
 		// TODO: insert return statement here

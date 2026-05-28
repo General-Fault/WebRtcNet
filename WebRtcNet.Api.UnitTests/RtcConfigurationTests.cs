@@ -14,7 +14,7 @@ public class RtcConfigurationTests
         Assert.AreEqual(0, configuration.IceServers.Count);
         Assert.AreEqual(RtcIceTransportPolicy.All, configuration.IceTransportPolicy);
         Assert.AreEqual(RtcBundlePolicy.Balanced, configuration.BundlePolicy);
-        Assert.IsNull(configuration.PeerIdentity);
+        Assert.AreEqual(string.Empty, configuration.PeerIdentity);
     }
 
     [Test]

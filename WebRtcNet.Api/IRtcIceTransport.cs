@@ -175,30 +175,11 @@ public enum RtcIceTransportState
 }
 
 /// <summary>
-/// A class containing both the local and remote ice candidates for a transport.
+/// A pair of local and remote ICE candidates for a transport.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcicecandidatepair"/>
 /// <seealso cref="IRtcIceTransport.GetSelectedCandidatePair"/>
-public class RtcIceCandidatePair
-{
-    public RtcIceCandidatePair(IRtcIceCandidate local, IRtcIceCandidate remote)
-    {
-        Local = local;
-        Remote = remote;
-    }
-
-    /// <summary>
-    /// The local ICE candidate.
-    /// </summary>
-    /// <seealso cref="IRtcIceTransport.GetSelectedCandidatePair"/>
-    public IRtcIceCandidate Local { get; set; }
-
-    /// <summary>
-    /// The remote ICE candidate.
-    /// </summary>
-    /// <seealso cref="IRtcIceTransport.GetSelectedCandidatePair"/>
-    public IRtcIceCandidate Remote { get; set; }
-};
+public sealed record RtcIceCandidatePair(RtcIceCandidate Local, RtcIceCandidate Remote);
 
 /// <summary>
 /// Parameters used by and <see cref="IRtcIceTransport">RTCIceTransport</see>.
@@ -284,13 +265,13 @@ public abstract class IRtcIceTransport
     /// 
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-getlocalcandidates"/>
-    public abstract IEnumerable<IRtcIceCandidate> GetLocalCandidates();
+    public abstract IEnumerable<RtcIceCandidate> GetLocalCandidates();
 
     /// <summary>
     /// 
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-getremotecandidates"/>
-    public abstract IEnumerable<IRtcIceCandidate> GetRemoteCandidates();
+    public abstract IEnumerable<RtcIceCandidate> GetRemoteCandidates();
 
     /// <summary>
     /// 

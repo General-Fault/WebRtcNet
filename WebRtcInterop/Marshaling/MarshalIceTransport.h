@@ -32,8 +32,8 @@ namespace msclr::interop
 	}
 
 	static const std::map<const int, const WebRtcNet::RtcIceComponent> ice_component_map {
-		{0, WebRtcNet::RtcIceComponent::Rtp},
-		{1, WebRtcNet::RtcIceComponent::Rtcp}
+		{1, WebRtcNet::RtcIceComponent::Rtp},
+		{2, WebRtcNet::RtcIceComponent::Rtcp}
 	};
 
 	template<>
@@ -58,5 +58,4 @@ namespace msclr::interop
 		return marshal_mapped_native_type(ice_transport_state_map, from);
 	}
 }
-
 

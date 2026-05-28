@@ -29,13 +29,13 @@ public class MediaDeviceInfo
     /// The identifier of the represented device.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadeviceinfo-deviceid"/>
-    string DeviceId { get; }
+    public string DeviceId { get; }
 
     /// <summary>
     /// The <see cref="MediaDeviceKind">kind</see> of the represented device.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadeviceinfo-kind"/>
-    MediaDeviceKind Kind { get; }
+    public MediaDeviceKind Kind { get; }
 
     /// <summary>
     /// A label describing this device (for example "External USB Webcam"). This label is intended to allow the end user 
@@ -43,7 +43,7 @@ public class MediaDeviceInfo
     /// information, such as the device type or model
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadeviceinfo-label"/>
-    string Label { get; }
+    public string Label { get; }
 
     /// <summary>
     /// The group identifier of the represented device. Two devices have the same group identifier if they belong to the 
@@ -51,5 +51,5 @@ public class MediaDeviceInfo
     /// the same headset have the same groupId.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadeviceinfo-groupid"/>
-    string GroupId { get; }
+    public string GroupId { get; }
 }

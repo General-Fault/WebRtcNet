@@ -61,12 +61,12 @@ RtcIceGatheringState RtcIceTransport::GatheringState::get()
 	throw gcnew NotImplementedException();
 }
 
-IEnumerable<IRtcIceCandidate^>^ RtcIceTransport::GetLocalCandidates()
+IEnumerable<RtcIceCandidate^>^ RtcIceTransport::GetLocalCandidates()
 {
 	throw gcnew NotImplementedException();
 }
 
-IEnumerable<IRtcIceCandidate^>^ RtcIceTransport::GetRemoteCandidates()
+IEnumerable<RtcIceCandidate^>^ RtcIceTransport::GetRemoteCandidates()
 {
 	throw gcnew NotImplementedException();
 }

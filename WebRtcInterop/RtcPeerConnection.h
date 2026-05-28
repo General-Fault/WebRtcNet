@@ -88,7 +88,7 @@ namespace WebRtcInterop
 		virtual Task<RtcSessionDescription>^ CreateOffer([System::Runtime::InteropServices::Optional] RtcOfferOptions^ options) override;
 		virtual Task<RtcSessionDescription>^ CreateAnswer([System::Runtime::InteropServices::Optional] RtcAnswerOptions^ options) override;
 
-		virtual Task^ AddIceCandidate(IRtcIceCandidate^ candidate) override;
+		virtual Task^ AddIceCandidate(RtcIceCandidate^ candidate) override;
 		virtual void RestartIce() override;
 
 		virtual Task^ SetLocalDescription(RtcSessionDescription description) override;
@@ -125,7 +125,7 @@ namespace WebRtcInterop
 		void FireOnIceConnectionStateChange(RtcIceConnectionState newState) { if (on_ice_connection_state_change_ != nullptr) on_ice_connection_state_change_(this, EventArgs::Empty); }
 		void FireOnGatheringStateChange(RtcIceGatheringState newState) { if (on_gathering_state_change_ != nullptr) on_gathering_state_change_(this, EventArgs::Empty); }
 		void FireOnConnectionStateChange() { if (on_connection_state_change_ != nullptr) on_connection_state_change_(this, EventArgs::Empty); }
-		void FireOnIceCandidate(IRtcIceCandidate^ candidate) { if (on_ice_candidate_ != nullptr) on_ice_candidate_(this, gcnew RtcIceCandidateEventArgs(candidate)); }
+		void FireOnIceCandidate(RtcIceCandidate^ candidate) { if (on_ice_candidate_ != nullptr) on_ice_candidate_(this, gcnew RtcIceCandidateEventArgs(candidate)); }
 
 	private:
 		rtc::scoped_refptr<webrtc::PeerConnectionInterface>* rp_peer_connection_;

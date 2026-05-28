@@ -1,143 +1,156 @@
-﻿namespace WebRtcNet;
+namespace WebRtcNet;
 
 /// <summary>
-/// This describes an ICE candidate.
+/// Describes an ICE candidate. This is an immutable data transfer object aligned with the W3C
+/// <see href="https://www.w3.org/TR/webrtc/#rtcicecandidate-interface">RTCIceCandidate interface</see>.
 /// </summary>
+/// <remarks>
+/// Users construct <see cref="RtcIceCandidate"/> from signaling data (the <c>candidate</c>, <c>sdpMid</c>,
+/// <c>sdpMLineIndex</c>, and <c>usernameFragment</c> received from the remote peer) and pass them to
+/// <see cref="IRtcPeerConnection.AddIceCandidate"/>. The remaining parsed fields are populated only when a
+/// candidate is delivered by the runtime (e.g. via <see cref="IRtcPeerConnection.OnIceCandidate"/>).
+/// </remarks>
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcicecandidate-interface"/>
-/// <seealso href="https://www.w3.org/TR/webrtc/#dfn-candidate-attribute"/>
-public interface IRtcIceCandidate
+public sealed record RtcIceCandidate
 {
     /// <summary>
-    /// his carries the <see href="https://www.w3.org/TR/webrtc/#dfn-candidate-attribute">candidate-attribute</see> as
-    /// defined in section <see href="https://datatracker.ietf.org/doc/html/rfc5245#section-15.1">15.1 of [RFC5245]</see>.
-    /// If this RTCIceCandidate represents an end-of-candidates indication or a peer reflexive remote candidate, candidate
-    /// is an empty string.
+    /// Creates an <see cref="RtcIceCandidate"/> from the data received from a remote peer via signaling.
+    /// Corresponds to the <c>RTCIceCandidateInit</c> dictionary in the W3C spec.
+    /// </summary>
+    /// <param name="candidate">The <c>candidate-attribute</c> string, or empty for end-of-candidates.</param>
+    /// <param name="sdpMid">The media stream identification-tag, or null.</param>
+    /// <param name="sdpMLineIndex">The zero-based index of the media description in the SDP, or null.</param>
+    /// <param name="usernameFragment">The ICE username fragment (ufrag), or null.</param>
+    /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-constructor"/>
+    public RtcIceCandidate(string candidate, string? sdpMid = null, ushort? sdpMLineIndex = null, string? usernameFragment = null)
+    {
+        Candidate = candidate;
+        SdpMid = sdpMid;
+        SdpMLineIndex = sdpMLineIndex;
+        UsernameFragment = usernameFragment;
+    }
+
+    /// <summary>
+    /// Constructor used by interop layers to produce a fully-populated candidate from a native
+    /// <c>webrtc::IceCandidateInterface</c>.
+    /// </summary>
+    public RtcIceCandidate(
+        string candidate, string? sdpMid, ushort? sdpMLineIndex, string? usernameFragment,
+        string? foundation, RtcIceComponent? component, uint? priority,
+        string? address, RtcIceProtocol? protocol, ushort? port,
+        RtcIceCandidateType? type, RtcIceTcpCandidateType? tcpType,
+        string? relatedAddress, ushort? relatedPort)
+    {
+        Candidate = candidate;
+        SdpMid = sdpMid;
+        SdpMLineIndex = sdpMLineIndex;
+        UsernameFragment = usernameFragment;
+        Foundation = foundation;
+        Component = component;
+        Priority = priority;
+        Address = address;
+        Protocol = protocol;
+        Port = port;
+        Type = type;
+        TcpType = tcpType;
+        RelatedAddress = relatedAddress;
+        RelatedPort = relatedPort;
+    }
+
+    /// <summary>
+    /// The <see href="https://www.w3.org/TR/webrtc/#dfn-candidate-attribute">candidate-attribute</see> string as defined
+    /// in section <see href="https://datatracker.ietf.org/doc/html/rfc5245#section-15.1">15.1 of [RFC5245]</see>.
+    /// An empty string signals end-of-candidates or a peer reflexive remote candidate.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-candidate"/>
-    string Candidate { get; }
+    public string Candidate { get; init; }
 
     /// <summary>
-    /// If not null, this contains the media stream "identification-tag" defined in
+    /// The media stream identification-tag defined in
     /// <see href="https://tools.ietf.org/html/rfc5888">[RFC5888]</see> for the media component this candidate is
-    /// associated with.
+    /// associated with, or null.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-sdpmid"/>
-    string SdpMid { get; }
+    public string? SdpMid { get; init; }
 
     /// <summary>
-    /// If not null, this indicates the index (starting at zero) of the
-    /// <see href="https://www.w3.org/TR/webrtc/#dfn-media-description">media description</see> in the SDP this candidate
-    /// is associated with.
+    /// The zero-based index of the media description in the SDP this candidate is associated with, or null.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-sdpmlineindex"/>
-    ushort SdpMLineIndex { get; }
+    public ushort? SdpMLineIndex { get; init; }
 
     /// <summary>
     /// A unique identifier that allows ICE to correlate candidates that appear on multiple
-    /// <see cref="IRtcIceTransport">RTCIceTransports</see>.
+    /// <see cref="IRtcIceTransport">RTCIceTransports</see>, or null for user-created candidates.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-foundation"/>
-    string Foundation { get; }
+    public string? Foundation { get; init; }
 
     /// <summary>
-    /// The assigned network component of the candidate (<see cref="RtcIceComponent.Rtp">Rtp</see> or
-    /// <see cref="RtcIceComponent.Rtcp">Rtcp</see>). This corresponds to the component-id field in
-    /// <see href="https://www.w3.org/TR/webrtc/#dfn-candidate-attribute">candidate-attribute</see>, decoded to the string
-    /// representation as defined in <see cref="RtcIceComponent"/>.
+    /// The network component of the candidate (<see cref="RtcIceComponent.Rtp"/> or
+    /// <see cref="RtcIceComponent.Rtcp"/>), or null for user-created candidates.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-component"/>
-    RtcIceComponent Component { get; }
+    public RtcIceComponent? Component { get; init; }
 
     /// <summary>
-    /// The assigned priority of the candidate.
+    /// The assigned priority of the candidate, or null for user-created candidates.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-priority"/>
-    ulong? Priority { get; }
+    public uint? Priority { get; init; }
 
     /// <summary>
-    /// The address of the candidate, allowing for IPv4 addresses, IPv6 addresses, and fully qualified domain names
-    /// (FQDNs). This corresponds to the connection-address field in
-    /// <see href="https://www.w3.org/TR/webrtc/#dfn-candidate-attribute">candidate-attribute</see>.
-    /// <para>Remote candidates may be exposed, for instance via
-    /// <see cref="IRtcIceTransport.GetSelectedCandidatePair">[[SelectedCandidatePair]]</see>.
-    /// <see cref="RtcIceCandidatePair.Remote">Remote</see>. Once a <see cref="IRtcPeerConnection">RTCPeerConnection</see>
-    /// instance learns on an address by the web application using
-    /// <see cref="IRtcPeerConnection.AddIceCandidate">AddIceCandidate</see>, the address value will be exposed in in any
-    /// RTCIceCandidate of the <see cref="IRtcPeerConnection">RTCPeerConnection</see> instance representing a remote
-    /// candidate with that newly learnt address.</para>
+    /// The IP address or FQDN of the candidate, or null for user-created candidates.
     /// </summary>
     /// <remarks>
-    /// <para>NOTE The addresses exposed in candidates gathered via ICE and made visible to the application in
-    /// RTCIceCandidate instances can reveal more information about the device and the user (e.g.location, local network
-    /// topology) than the user might have expected in a non-WebRTC enabled browser.</para>
-    /// <para>These addresses are always exposed to the application, and potentially exposed to the communicating party,
-    /// and can be exposed without any specific user consent(e.g. for peer connections used with data channels, or to
-    /// receive media only).</para>
-    /// <para>These addresses can also be used as temporary or persistent cross-origin states, and thus contribute to the
-    /// fingerprinting surface of the device. (This is a fingerprinting vector.)</para>
-    /// <para>Applications can avoid exposing addresses to the communicating party, either temporarily or permanently, by
-    /// forcing the ICE Agent to report only relay candidates via the
-    /// <see cref="RtcIceTransportPolicy">IceTransportPolicy</see> member of <see cref="RtcConfiguration"/>.</para>
-    /// <para>To limit the addresses exposed to the application itself, browsers or applications can offer their users
-    /// different policies regarding sharing local addresses, as defined in
-    /// <see href="https://tools.ietf.org/html/rfc8827">[RFC8828]</see>.</para>
+    /// These addresses can reveal device location and local network topology and contribute to the device fingerprint.
+    /// See the <see href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-address">W3C privacy note</see>.
     /// </remarks>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-address"/>
-    string Address { get; }
+    public string? Address { get; init; }
 
     /// <summary>
-    /// The protocol of the candidate (<see cref="RtcIceProtocol.Udp">udp</see>/<see cref="RtcIceProtocol.Tcp">tcp</see>).
-    /// This corresponds to the <c>transport</c> field in
-    /// <see href="https://www.w3.org/TR/webrtc/#dfn-candidate-attribute">candidate-attribute</see>.
+    /// The transport protocol of the candidate, or null for user-created candidates.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-protocol"/>
-    RtcIceProtocol? Protocol { get; }
+    public RtcIceProtocol? Protocol { get; init; }
 
     /// <summary>
-    /// The port of the candidate.
+    /// The port of the candidate, or null for user-created candidates.
+    /// </summary>
+    /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-port"/>
+    public ushort? Port { get; init; }
+
+    /// <summary>
+    /// The type of the candidate as defined by the <c>candidate-types</c> field, or null for user-created candidates.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-type"/>
-    ushort? Port { get; }
+    public RtcIceCandidateType? Type { get; init; }
 
     /// <summary>
-    /// The type of the candidate. This corresponds to the <c>candidate-types</c> field in
-    /// <see href="https://www.w3.org/TR/webrtc/#dfn-candidate-attribute">candidate-attribute</see>.
-    /// </summary>
-    /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-type"/>
-    RtcIceCandidateType? Type { get; }
-
-    /// <summary>
-    /// If protocol is <see cref="RtcIceProtocol.Tcp">tcp</see>, TcpType represents the type of TCP candidate. Otherwise,
-    /// TcpType is null. This corresponds to the <c>tcp-type</c> field in
-    /// <see href="https://www.w3.org/TR/webrtc/#dfn-candidate-attribute">candidate-attribute</see>.
+    /// The TCP candidate type when <see cref="Protocol"/> is <see cref="RtcIceProtocol.Tcp"/>, otherwise null.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-tcptype"/>
-    RtcIceTcpCandidateType? TcpType { get; }
+    public RtcIceTcpCandidateType? TcpType { get; init; }
 
     /// <summary>
-    /// For a candidate that is derived from another, such as a relay or reflexive candidate, the relatedAddress is the IP
-    /// address of the candidate that it is derived from. For host candidates, the relatedAddress is null. This
-    /// corresponds to the <c>rel-address</c> field in
-    /// <see href="https://www.w3.org/TR/webrtc/#dfn-candidate-attribute">candidate-attribute</see>.
+    /// The IP address of the candidate this was derived from, or null for host candidates and user-created candidates.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-relatedaddress"/>
-    string RelatedAddress { get; }
+    public string? RelatedAddress { get; init; }
 
     /// <summary>
-    /// For a candidate that is derived from another, such as a relay or reflexive candidate, the relatedPort is the port
-    /// of the candidate that it is derived from. For host candidates, the relatedPort is null. This corresponds to the
-    /// <c>rel-port</c> field in <see href="https://www.w3.org/TR/webrtc/#dfn-candidate-attribute">candidate-attribute</see>.
+    /// The port of the candidate this was derived from, or null for host candidates and user-created candidates.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-relatedport"/>
-    ushort? RelatedPort { get; }
+    public ushort? RelatedPort { get; init; }
 
     /// <summary>
-    /// This carries the <c>ufrag</c> as defined in section
-    /// <see href="https://datatracker.ietf.org/doc/html/rfc5245#section-15.4">15.4 of [RFC5245]</see>.
+    /// The ICE username fragment (ufrag) as defined in
+    /// <see href="https://datatracker.ietf.org/doc/html/rfc5245#section-15.4">section 15.4 of [RFC5245]</see>, or null.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-usernamefragment"/>
-    /// <seealso href="https://datatracker.ietf.org/doc/html/rfc5245"/>
-    string UsernameFragment { get; }
+    public string? UsernameFragment { get; init; }
 }
 
 /// <summary>
@@ -145,7 +158,7 @@ public interface IRtcIceCandidate
 /// <see href="https://datatracker.ietf.org/doc/html/rfc6544">[RFC6544]</see>.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcicetcpcandidatetype-enum"/>
-/// <seealso cref="IRtcIceCandidate.TcpType"/>
+/// <seealso cref="RtcIceCandidate.TcpType"/>
 public enum RtcIceTcpCandidateType
 {
     /// <summary>
@@ -175,7 +188,7 @@ public enum RtcIceTcpCandidateType
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcicecandidatetype-enum"/>
 /// <seealso href="https://datatracker.ietf.org/doc/html/rfc5245#section-15.1"/>
-/// <seealso cref="IRtcIceCandidate.Type"/>
+/// <seealso cref="RtcIceCandidate.Type"/>
 public enum RtcIceCandidateType
 {
     /// <summary>
@@ -211,7 +224,7 @@ public enum RtcIceCandidateType
 /// The protocol types used for the ICE connection
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtciceprotocol-enum"/>
-/// <seealso cref="IRtcIceCandidate.Protocol"/>
+/// <seealso cref="RtcIceCandidate.Protocol"/>
 public enum RtcIceProtocol
 {
     /// <summary>
