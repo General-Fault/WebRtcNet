@@ -6,20 +6,20 @@ namespace WebRtcNet.Media;
 /// The InputDeviceInfo interface gives access to the capabilities of the input device it represents.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-inputdeviceinfo"/>
-public sealed record class InputDeviceInfo : MediaDeviceInfo
+public sealed record InputDeviceInfo : MediaDeviceInfo
 {
-    internal InputDeviceInfo(string deviceId, MediaDeviceKind kind, string label, string groupId)
-        : base(deviceId, kind, label, groupId)
-    {
-    }
+	internal InputDeviceInfo(string deviceId, MediaDeviceKind kind, string label, string groupId)
+		: base(deviceId, kind, label, groupId)
+	{
+	}
 
-    /// <summary>
-    /// Returns a MediaTrackCapabilities object describing the primary audio or video track of a device's MediaStream 
-    /// (according to its kind value), in the absence of any user-supplied constraints.
-    /// </summary>
-    /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-inputdeviceinfo-getcapabilities"/>
-    public MediaTrackCapabilities GetCapabilities()
-    {
-        throw new NotImplementedException();
-    }
+	/// <summary>
+	/// Returns a MediaTrackCapabilities object describing the primary audio or video track of a device's MediaStream 
+	/// (according to its kind value), in the absence of any user-supplied constraints.
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-inputdeviceinfo-getcapabilities"/>
+	public MediaTrackCapabilities GetCapabilities()
+	{
+		throw new NotImplementedException();
+	}
 }
