@@ -1,51 +1,136 @@
-#include "Stdafx.h"
+#include "pch.h"
 
-#include <string>
+#include "TestUtils.h"
 
-#include "../MarshalIceCandidate.h"
-#include "FakeIceCandidate.h"
+#include "gtest/gtest.h"
 
-#include "webrtc/base/bind.h"
+#include "Marshaling/MarshalIceCandidate.h"
+#include <msclr/gcroot.h>
 
 using namespace msclr::interop;
 
 using namespace System;
-using namespace System::Runtime::InteropServices;
-using namespace NUnit::Framework;
 
+using namespace WebRtcNet;
+using namespace webrtc;
+using namespace testing;
 
-namespace WebRtcInterop { namespace Marshaling { namespace UnitTests
+// Tests for marshaling webrtc::IceCandidateInterface -> RtcIceCandidate.
+//
+// Using TEST_F so the marshal_as call happens once in SetUp(), not once per TEST body.
+// MSVC C++/CLI shares state across all files in a batch cl.exe invocation; putting the conversion
+// in a single virtual method avoids the per-invocation limit on native pointer upcasts.
+class marshal_ice_candidate_tests : public Test
 {
-	[TestFixture]
-	public ref class MarshalIceCandidateTests
+protected:
+	std::unique_ptr<webrtc::IceCandidate> candidate_;
+	msclr::gcroot<WebRtcNet::RtcIceCandidate^> result_;
+
+	void SetUp() override
 	{
-	public:
-		[Test]
-		void marshal_as_native_IceCandidateInterface_to_managed_RtcIceCandidate_test()
-		{
-			FakeIceCandidate nativeCandidate(std::string("SDP"), 3);
-			
-			auto managedCandidate = marshal_as<WebRtcNet::RtcIceCandidate>(dynamic_cast<const webrtc::IceCandidateInterface *>(&nativeCandidate));
+		webrtc::Candidate cand(
+			1,                                // component (RTP per RFC 5245)
+			"udp",                            // protocol
+			webrtc::SocketAddress(),          // address (empty)
+			1,                                // priority
+			"username",                       // username fragment
+			"password",                       // password
+			webrtc::IceCandidateType::kHost,  // type
+			0,                                // generation
+			"FakeFoundation"                  // foundation
+		);
+		candidate_ = std::make_unique<webrtc::IceCandidate>("SDP", 3, cand);
+		const webrtc::IceCandidateInterface* nativeCandidate = candidate_.get();
+		result_ = marshal_as<RtcIceCandidate^>(nativeCandidate);
+	}
+};
 
-			Assert::AreEqual("SDP", managedCandidate.SdpMid);
-			Assert::AreEqual(3, managedCandidate.SdpMLineIndex);
-			Assert::AreEqual("Cand[FakeFoundation:1:Fake:1::0:FakeType::0:username:password]", managedCandidate.Candidate);
-		}
+TEST_F(marshal_ice_candidate_tests, marshal_null_throws_ArgumentNullException)
+{
+	const webrtc::IceCandidateInterface* nativeCandidate = nullptr;
 
-		[Test]
-		void marshal_as_null_native_IceCandidateInterface_to_managed_RtcIceCandidate_test()
-		{
-			auto action = gcnew TestDelegate(this, &MarshalIceCandidateTests::MarshalNullNativeIceCandidate);
+	try
+	{
+		const auto _ = marshal_as<RtcIceCandidate^>(nativeCandidate);
+		FAIL();
+	}
+	catch (ArgumentNullException^)
+	{
+	}
+}
 
-			Assert::Throws<ArgumentNullException ^>(action);
-		}
+TEST_F(marshal_ice_candidate_tests, populates_Candidate_from_ToString)
+{
+	// IceCandidate::ToString() serializes as SDP candidate-attribute; verify it round-trips through foundation.
+	ASSERT_TRUE(result_->Candidate->Contains("FakeFoundation"));
+}
 
-	private:
-		void MarshalNullNativeIceCandidate()
-		{
-			const webrtc::IceCandidateInterface* nativeCandidate = nullptr;
-			auto managedCandidate = marshal_as<WebRtcNet::RtcIceCandidate>(nativeCandidate);
-			Assert::Fail("Should not have made it here");
-		}
-	};
-}}}
+TEST_F(marshal_ice_candidate_tests, populates_SdpMid)
+{
+	ASSERT_MANAGED_STREQ(result_->SdpMid, "SDP");
+}
+
+TEST_F(marshal_ice_candidate_tests, populates_SdpMLineIndex)
+{
+	ASSERT_TRUE(result_->SdpMLineIndex.HasValue);
+	ASSERT_EQ(result_->SdpMLineIndex.Value, 3);
+}
+
+TEST_F(marshal_ice_candidate_tests, populates_Foundation)
+{
+	ASSERT_MANAGED_STREQ(result_->Foundation, "FakeFoundation");
+}
+
+TEST_F(marshal_ice_candidate_tests, populates_Component_Rtp_for_component_1)
+{
+	ASSERT_TRUE(result_->Component.HasValue);
+	ASSERT_EQ(safe_cast<int>(result_->Component.Value), safe_cast<int>(RtcIceComponent::Rtp));
+}
+
+TEST_F(marshal_ice_candidate_tests, populates_Priority)
+{
+	ASSERT_TRUE(result_->Priority.HasValue);
+	ASSERT_EQ(result_->Priority.Value, 1u);
+}
+
+TEST_F(marshal_ice_candidate_tests, populates_UsernameFragment)
+{
+	ASSERT_MANAGED_STREQ(result_->UsernameFragment, "username");
+}
+
+TEST_F(marshal_ice_candidate_tests, Protocol_is_Udp)
+{
+	ASSERT_TRUE(result_->Protocol.HasValue);
+	ASSERT_EQ(result_->Protocol.Value, RtcIceProtocol::Udp);
+}
+
+TEST_F(marshal_ice_candidate_tests, Type_is_Host_for_kHost)
+{
+	ASSERT_TRUE(result_->Type.HasValue);
+	ASSERT_EQ(result_->Type.Value, RtcIceCandidateType::Host);
+}
+
+TEST_F(marshal_ice_candidate_tests, marshal_invalid_protocol_throws_InvalidCastException)
+{
+	webrtc::Candidate cand(
+		1,
+		"invalid-proto",
+		webrtc::SocketAddress(),
+		1,
+		"username",
+		"password",
+		webrtc::IceCandidateType::kHost,
+		0,
+		"FakeFoundation");
+	webrtc::IceCandidate candidate("SDP", 3, cand);
+	const webrtc::IceCandidateInterface* nativeCandidate = &candidate;
+
+	try
+	{
+		const auto _ = marshal_as<RtcIceCandidate^>(nativeCandidate);
+		FAIL();
+	}
+	catch (InvalidCastException^)
+	{
+	}
+}

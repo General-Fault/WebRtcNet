@@ -63,6 +63,11 @@ namespace WebRtcInterop
 		return rp_peer_connection_->get();
 	}
 
+	System::IntPtr RtcPeerConnection::GetNativePeerConnectionHandle(bool throwOnDisposed)
+	{
+		return System::IntPtr(GetNativePeerConnection(throwOnDisposed));
+	}
+
 	Task<RtcSessionDescription>^ RtcPeerConnection::CreateOffer(RtcOfferOptions^ options)
 	{
 		auto pc = GetNativePeerConnection(true);
@@ -117,7 +122,7 @@ namespace WebRtcInterop
 	}
 
 
-	Task^ RtcPeerConnection::AddIceCandidate(RtcIceCandidate candidate)
+	Task^ RtcPeerConnection::AddIceCandidate(RtcIceCandidate^ candidate)
 	{
 		throw gcnew NotImplementedException();
 		// TODO: insert return statement here
@@ -155,26 +160,16 @@ namespace WebRtcInterop
 	void RtcPeerConnection::AddStream(IMediaStream^ stream)
 	{
 		auto nativePeerConnection = GetNativePeerConnection(true);
-
-		//TODO: This should be done with a marshaller. This marshaller would return the nativestream if the managed stream is a WebRtcInterop::MediaStream
-		// and would try to create a new native stream wrapper if it is not.
-		auto managedStream = dynamic_cast<MediaStream^>(stream);
-		if (managedStream == nullptr) throw gcnew ArgumentException("Invalid MediaStream");
-
-		auto nativeStream = managedStream->GetNativeMediaStreamInterface(true);
+		auto nativeStream = reinterpret_cast<webrtc::MediaStreamInterface*>(
+			stream->GetNativeMediaStreamInterface(true).ToPointer());
 		nativePeerConnection->AddStream(nativeStream);
 	}
 
 	void RtcPeerConnection::RemoveStream(IMediaStream^ stream)
 	{
 		auto nativePeerConnection = GetNativePeerConnection(true);
-
-		//TODO: This should be done with a marshaller. This marshaller would return the nativestream if the managed stream is a WebRtcInterop::MediaStream
-		// and would try to create a new native stream wrapper if it is not.
-		auto managedStream = dynamic_cast<MediaStream^>(stream);
-		if (managedStream == nullptr) throw gcnew ArgumentException("Invalid MediaStream");
-
-		auto nativeStream = managedStream->GetNativeMediaStreamInterface(true);
+		auto nativeStream = reinterpret_cast<webrtc::MediaStreamInterface*>(
+			stream->GetNativeMediaStreamInterface(true).ToPointer());
 		nativePeerConnection->RemoveStream(nativeStream);
 	}
 

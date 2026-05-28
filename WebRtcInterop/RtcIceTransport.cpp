@@ -36,6 +36,11 @@ webrtc::IceTransportInterface* RtcIceTransport::GetNativeIceTransportInterface(b
 	return result;
 }
 
+System::IntPtr RtcIceTransport::GetNativeIceTransportHandle(bool throwOnDisposed)
+{
+	return System::IntPtr(GetNativeIceTransportInterface(throwOnDisposed));
+}
+
 RtcIceRole RtcIceTransport::Role::get()
 {
 	return marshal_as<RtcIceRole>(GetNativeIceTransportInterface(true)->internal()->GetIceRole());
@@ -56,12 +61,12 @@ RtcIceGatheringState RtcIceTransport::GatheringState::get()
 	throw gcnew NotImplementedException();
 }
 
-IEnumerable<IRtcIceCandidate^>^ RtcIceTransport::GetLocalCandidates()
+IEnumerable<RtcIceCandidate^>^ RtcIceTransport::GetLocalCandidates()
 {
 	throw gcnew NotImplementedException();
 }
 
-IEnumerable<IRtcIceCandidate^>^ RtcIceTransport::GetRemoteCandidates()
+IEnumerable<RtcIceCandidate^>^ RtcIceTransport::GetRemoteCandidates()
 {
 	throw gcnew NotImplementedException();
 }

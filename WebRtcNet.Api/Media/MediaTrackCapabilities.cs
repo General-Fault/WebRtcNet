@@ -1,4 +1,6 @@
-﻿namespace WebRtcNet.Media;
+﻿using System.Collections.Generic;
+
+namespace WebRtcNet.Media;
 
 /// <summary>
 /// Describes the direction a video capture source is facing relative to the user.
@@ -13,24 +15,55 @@ public enum VideoFacingModes { user, environment, left, right }
 public enum VideResizeModes { none, crop_and_scale }
 
 /// <summary>
-/// MediaTrackCapabilities represents the Capabilities of an IMediaStreamTrack object.
+/// MediaTrackCapabilities represents the capabilities of an <see cref="IMediaStreamTrack"/> object as
+/// reported by the platform. This is an out-only snapshot returned by
+/// <see cref="IMediaStreamTrack.GetCapabilities"/>.
 /// </summary>
 /// <seealso href="http://www.w3.org/TR/mediacapture-streams/#media-track-capabilities"/>
-public struct MediaTrackCapabilities
+public sealed record MediaTrackCapabilities
 {
-    public ValueRange<int> Width;
-    public ValueRange<int> Height;
-    public ValueRange<double> AspectRatio;
-    public ValueRange<double> FrameRate;
-    public VideoFacingModes? FacingMode;
-    public VideResizeModes? ResizeMode;
-    public ValueRange<int> SampleRate;
-    public ValueRange<int> SampleSize;
-    public bool[] EchoCancellation;
-    public bool[] AutoGainControl;
-    public bool[] NoiseSupression;
-    public ValueRange<double> Latency;
-    public ValueRange<double> ChannelCount;
-    public string DeviceId;
-    public string GroupId;
-};
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-width"/>
+	public ValueRange<int>? Width { get; init; }
+
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-height"/>
+	public ValueRange<int>? Height { get; init; }
+
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-aspect"/>
+	public ValueRange<double>? AspectRatio { get; init; }
+
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-frameRate"/>
+	public ValueRange<double>? FrameRate { get; init; }
+
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-facingMode"/>
+	public VideoFacingModes? FacingMode { get; init; }
+
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-resizeMode"/>
+	public VideResizeModes? ResizeMode { get; init; }
+
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-sampleRate"/>
+	public ValueRange<int>? SampleRate { get; init; }
+
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-sampleSize"/>
+	public ValueRange<int>? SampleSize { get; init; }
+
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-echoCancellation"/>
+	public IReadOnlyList<bool> EchoCancellation { get; init; } = [];
+
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-autoGainControl"/>
+	public IReadOnlyList<bool> AutoGainControl { get; init; } = [];
+
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-noiseSuppression"/>
+	public IReadOnlyList<bool> NoiseSuppression { get; init; } = [];
+
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-latency"/>
+	public ValueRange<double>? Latency { get; init; }
+
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-channelCount"/>
+	public ValueRange<double>? ChannelCount { get; init; }
+
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-deviceId"/>
+	public string DeviceId { get; init; } = string.Empty;
+
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-groupId"/>
+	public string GroupId { get; init; } = string.Empty;
+}

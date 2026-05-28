@@ -9,7 +9,7 @@
     <Guid>98433217-c99b-4b08-a19b-3f97a1f1e633</Guid>
     <DocumentationFile>bin\$(Configuration)\WebRtcNet.Api.XML</DocumentationFile>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-	  <LangVersion>default</LangVersion>
+	  <LangVersion>latest</LangVersion>
     <RootNamespace>WebRtcNet</RootNamespace>
   </PropertyGroup>
 </Project>

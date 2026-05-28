@@ -5,65 +5,70 @@ namespace WebRtcNet;
 
 public enum RtcStatsType
 {
-    /// <summary>
-    /// Inbound RTP.
-    /// </summary>
-    InboundRtp,
+	/// <summary>
+	/// Inbound RTP.
+	/// </summary>
+	InboundRtp,
 
-    /// <summary>
-    /// Outbound RTP.
-    /// </summary>
-    OutboundRtp
+	/// <summary>
+	/// Outbound RTP.
+	/// </summary>
+	OutboundRtp
 };
 
 /// <summary>
+/// Base class for all WebRTC stats snapshot dictionaries. Stats are out-only immutable snapshots
+/// produced by the platform; they are not created by application code.
 /// </summary>
 /// <seealso href="http://www.w3.org/TR/webrtc/#rtcstats-dictionary"/>
-public abstract class RtcStats
+public abstract record RtcStats
 {
-    /// The timestamp, of type DOMHiResTimeStamp[HIGHRES - TIME], associated with this object.
-    /// The time is relative to the UNIX epoch(Jan 1, 1970, UTC).
-    public virtual TimeSpan Timestamp { get; }
+	/// <summary>
+	/// The timestamp, of type DOMHiResTimeStamp [HIGHRES-TIME], associated with this object.
+	/// The time is relative to the UNIX epoch (Jan 1, 1970, UTC).
+	/// </summary>
+	public TimeSpan Timestamp { get; init; }
 
+	/// <summary>
+	/// The type of this object.
+	/// </summary>
+	public RtcStatsType Type { get; init; }
 
-    /// The type of this object.
-    public virtual RtcStatsType Type { get; }
-
-
-    /// A unique id that is associated with the object that was inspected to produce this RTCStats object. 
-    public virtual string Id { get; }
+	/// <summary>
+	/// A unique id that is associated with the object that was inspected to produce this RTCStats object. 
+	/// </summary>
+	public string Id { get; init; } = string.Empty;
 }
 
 /// <summary>
 /// </summary>
 /// <seealso href="http://www.w3.org/TR/webrtc/#dictionary-rtcrtpstreamstats-members"/>
-public class RtcRtpStreamStats : RtcStats
+public abstract record RtcRtpStreamStats : RtcStats
 {
-    public virtual string Src { get; }
+	public string Src { get; init; } = string.Empty;
 
-    /// <summary>
-    /// The remoteId can be used to look up the corresponding RTCStats object that represents stats reported by the other peer.
-    /// </summary>
-    public virtual string RemoteId { get; }
+	/// <summary>
+	/// The remoteId can be used to look up the corresponding RTCStats object that represents stats reported by the other peer.
+	/// </summary>
+	public string RemoteId { get; init; } = string.Empty;
 }
-
 
 /// <summary>
 /// </summary>
 /// <seealso href="http://www.w3.org/TR/webrtc/#dictionary-rtcinboundrtpstreamstats-members"/>
-public class RtcInboundRtpStreamStats : RtcRtpStreamStats
+public sealed record RtcInboundRtpStreamStats : RtcRtpStreamStats
 {
-    public virtual uint PacketsSent { get; }
-    public virtual uint BytesSent { get; }
+	public uint PacketsSent { get; init; }
+	public uint BytesSent { get; init; }
 }
 
 /// <summary>
 /// </summary>
 /// <seealso href="http://www.w3.org/TR/webrtc/#dictionary-rtcoutboundrtpstreamstats-members"/>
-public class RtcOutboundRtpStreamStats : RtcRtpStreamStats
+public sealed record RtcOutboundRtpStreamStats : RtcRtpStreamStats
 {
-    public virtual int PacketsSent { get; }
-    public virtual int BytesSent { get; }
+	public int PacketsSent { get; init; }
+	public int BytesSent { get; init; }
 }
 
 /// <summary>
