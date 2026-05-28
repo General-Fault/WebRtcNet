@@ -12,37 +12,37 @@ public class RtcDataChannelInit
     /// <summary>
     ///     Overrides the default selection of id for this channel.
     /// </summary>
-    public ushort? Id;
+    public ushort? Id { get; set; }
 
     /// <summary>
     ///     Limits the time during which the channel will transmit or retransmit data if not acknowledged. This value may be
     ///     clamped if it exceeds the maximum value supported by the user agent.
     /// </summary>
-    public uint? MaxPacketLifeTime;
+    public uint? MaxPacketLifeTime { get; set; }
 
     /// <summary>
     ///     Limits the number of times a channel will retransmit data if not successfully delivered. This value may be clamped
     ///     if it exceeds the maximum value supported by the user agent..
     /// </summary>
-    public uint? MaxRetransmits;
+    public uint? MaxRetransmits { get; set; }
 
     /// <summary>
     ///     The default value of false tells the user agent to announce the channel in-band and instruct the other peer to
     ///     dispatch a corresponding RtcDataChannel object. If set to true, it is up to the application to negotiate the
     ///     channel and create a RtcDataChannel object with the same id at the other peer.
     /// </summary>
-    public bool Negotiated;
+    public bool Negotiated { get; set; }
 
     /// <summary>
     ///     If set to false, data is allowed to be delivered out of order. The default value of true, guarantees that data will
     ///     be delivered in order.
     /// </summary>
-    public bool Ordered = true;
+    public bool Ordered { get; set; } = true;
 
     /// <summary>
     ///     Subprotocol name used for this channel.
     /// </summary>
-    public string Protocol;
+    public string Protocol { get; set; } = string.Empty;
 }
 
 /// <summary>

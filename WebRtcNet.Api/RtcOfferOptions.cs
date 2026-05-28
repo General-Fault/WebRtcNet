@@ -1,7 +1,7 @@
 ﻿namespace WebRtcNet;
 
 /// <seealso href="http://www.w3.org/TR/webrtc/#offer-answer-options"/>
-public abstract class RtcOfferAnswerOptions
+public class RtcOfferAnswerOptions
 {
     public RtcOfferAnswerOptions()
     {
@@ -16,7 +16,7 @@ public abstract class RtcOfferAnswerOptions
     /// When the value of this dictionary member is false, and the localDescription attribute has valid ICE credentials, 
     /// the generated description will have the same ICE credentials as the current value from the localDescription attribute.
     /// </summary>
-    public bool IceRestart;
+    public bool IceRestart { get; set; }
 
     /// <summary>
     /// Many codecs and system are capable of detecting "silence" and changing their behavior in this case by doing things 
@@ -24,7 +24,7 @@ public abstract class RtcOfferAnswerOptions
     /// voice, it is desirable to be able to turn off this behavior.This option allows the application to provide information 
     /// about whether it wishes this type of processing enabled or disabled.
     /// </summary>
-    public bool VoiceActivityDetection;
+    public bool VoiceActivityDetection { get; set; }
 };
 
 /// <summary>
@@ -46,7 +46,7 @@ public class RtcOfferOptions : RtcOfferAnswerOptions
     /// This option allows an application to indicate its preferences for the number of video 
     /// streams to receive when creating an offer.
     /// </summary>
-    public int OfferToReceiveVideo;
+    public int OfferToReceiveVideo { get; set; }
 
     /// <summary>
     /// In some cases, an RTCPeerConnection may wish to receive audio but not send any audio. 
@@ -54,7 +54,7 @@ public class RtcOfferOptions : RtcOfferAnswerOptions
     /// This option allows an application to indicate its preferences for the number of 
     /// audio streams to receive when creating an offer.
     /// </summary>
-    public int OfferToReceiveAudio;
+    public int OfferToReceiveAudio { get; set; }
 
     public static int Undefined = -1;
     public static int MaxOfferToReceiveMedia = 1;

@@ -182,32 +182,34 @@ public enum RtcIceTransportState
 public sealed record RtcIceCandidatePair(RtcIceCandidate Local, RtcIceCandidate Remote);
 
 /// <summary>
-/// Parameters used by and <see cref="IRtcIceTransport">RTCIceTransport</see>.
+/// Parameters used by an <see cref="IRtcIceTransport">RTCIceTransport</see>. This is an out-only snapshot
+/// returned by <see cref="IRtcIceTransport.GetLocalParameters"/> and
+/// <see cref="IRtcIceTransport.GetRemoteParameters"/>.
 /// </summary>
 /// <seealso cref="IRtcIceTransport.GetLocalParameters"/>
 /// <seealso cref="IRtcIceTransport.GetRemoteParameters"/>
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtciceparameters"/>
-public class RtcIceParameters
+public sealed record class RtcIceParameters
 {
     public RtcIceParameters(string usernameFragment, string password)
     {
-        UsernameFragment = usernameFragment;
-        Password = password;
+        UsernameFragment = usernameFragment ?? string.Empty;
+        Password = password ?? string.Empty;
     }
-
 
     /// <summary>
     /// The ICE username fragment as defined in
     /// <see href="https://datatracker.ietf.org/doc/html/rfc5245#section-7.1.2.3">[RFC5245], Section 7.1.2.3</see>.
     /// </summary>
-    /// <seealso href=""/>
-    public string UsernameFragment { get; set; }
+    /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtciceparameters-usernamefragment"/>
+    public string UsernameFragment { get; init; } = string.Empty;
 
     /// <summary>
     /// The ICE password as defined in
     /// <see href="https://datatracker.ietf.org/doc/html/rfc5245#section-7.1.2.3">[RFC5245], Section 7.1.2.3</see>.
     /// </summary>
-    public string Password { get; set; }
+    /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtciceparameters-password"/>
+    public string Password { get; init; } = string.Empty;
 }
 
 

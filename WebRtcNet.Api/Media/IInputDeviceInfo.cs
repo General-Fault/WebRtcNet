@@ -6,9 +6,10 @@ namespace WebRtcNet.Media;
 /// The InputDeviceInfo interface gives access to the capabilities of the input device it represents.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-inputdeviceinfo"/>
-public class InputDeviceInfo :  MediaDeviceInfo
+public sealed record class InputDeviceInfo : MediaDeviceInfo
 {
-    internal InputDeviceInfo(string deviceId, MediaDeviceKind kind, string label, string groupId) : base(deviceId, kind, label, groupId)
+    internal InputDeviceInfo(string deviceId, MediaDeviceKind kind, string label, string groupId)
+        : base(deviceId, kind, label, groupId)
     {
     }
 

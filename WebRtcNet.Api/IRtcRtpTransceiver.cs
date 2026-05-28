@@ -98,14 +98,14 @@ public abstract class IRtcRtpTransceiver
 /// </list>
 /// </summary>
 /// <see href="https://www.w3.org/TR/webrtc/#rtcrtpcodeccapability"/>
-public class RtcRtpCodecCapability
+public sealed record class RtcRtpCodecCapability
 {
     /// <summary>
     /// The codec MIME media type/subtype. Valid media types and subtypes are listed in
     /// <see href="https://www.iana.org/assignments/rtp-parameters/rtp-parameters.xhtml#rtp-parameters-2">[IANA-RTP-2]</see>.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpcodeccapability-mimetype"/>
-    public string MimeType { get; set; }
+    public string MimeType { get; set; } = string.Empty;
 
     /// <summary>
     /// The codec clock rate expressed in Hertz.
@@ -123,12 +123,16 @@ public class RtcRtpCodecCapability
     /// The "format specific parameters" field from the <c>a=fmtp</c> line in the SDP corresponding to the codec, if one exists.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpcodeccapability-sdpfmtpline"/>
-    public string SdpFmtpLine { get; set; }
+    public string SdpFmtpLine { get; set; } = string.Empty;
 
     public RtcRtpCodecCapability(string mimeType, ulong clockRate)
     {
-        MimeType = mimeType;
+        MimeType = mimeType ?? string.Empty;
         ClockRate = clockRate;
+    }
+
+    public RtcRtpCodecCapability()
+    {
     }
 }
 

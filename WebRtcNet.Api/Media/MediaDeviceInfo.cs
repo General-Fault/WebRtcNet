@@ -13,16 +13,17 @@ public enum MediaDeviceKind
 
 /// <summary>
 /// Represents information about a single media device such as a webcam, speakers or a microphone.
+/// This is an out-only snapshot returned by <see cref="IMediaDevices.EnumerateDevices"/>.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadeviceinfo"/>
-public class MediaDeviceInfo
+public record class MediaDeviceInfo
 {
     internal MediaDeviceInfo(string deviceId, MediaDeviceKind kind, string label, string groupId)
     {
-        DeviceId = deviceId;
+        DeviceId = deviceId ?? string.Empty;
         Kind = kind;
-        Label = label;
-        GroupId = groupId;
+        Label = label ?? string.Empty;
+        GroupId = groupId ?? string.Empty;
     }
 
     /// <summary>
@@ -39,7 +40,7 @@ public class MediaDeviceInfo
 
     /// <summary>
     /// A label describing this device (for example "External USB Webcam"). This label is intended to allow the end user 
-    /// to tell the difference between devices. Applications can’t assume that the label contains any specific 
+    /// to tell the difference between devices. Applications can't assume that the label contains any specific 
     /// information, such as the device type or model
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadeviceinfo-label"/>
