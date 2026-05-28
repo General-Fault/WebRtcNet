@@ -34,32 +34,6 @@ public class RtcOfferAnswerOptions
 /// <seealso cref="IRtcPeerConnection.CreateOffer"/>
 public class RtcOfferOptions : RtcOfferAnswerOptions
 {
-	public RtcOfferOptions()
-	{
-		OfferToReceiveAudio = OfferToReceiveTrue;
-		OfferToReceiveVideo = OfferToReceiveTrue;
-	}
-
-	/// <summary>
-	/// In some cases, an RTCPeerConnection may wish to receive video but not send any video. 
-	/// The RTCPeerConnection needs to know if it should signal to the remote side whether it wishes to receive video or not. 
-	/// This option allows an application to indicate its preferences for the number of video 
-	/// streams to receive when creating an offer.
-	/// </summary>
-	public int OfferToReceiveVideo { get; set; }
-
-	/// <summary>
-	/// In some cases, an RTCPeerConnection may wish to receive audio but not send any audio. 
-	/// The RTCPeerConnection needs to know if it should signal to the remote side whether it wishes to receive audio. 
-	/// This option allows an application to indicate its preferences for the number of 
-	/// audio streams to receive when creating an offer.
-	/// </summary>
-	public int OfferToReceiveAudio { get; set; }
-
-	public static int Undefined = -1;
-	public static int MaxOfferToReceiveMedia = 1;
-	public static int OfferToReceiveTrue = 1;
-	public static int OfferToReceiveFalse = 0;
 };
 
 /// <summary>

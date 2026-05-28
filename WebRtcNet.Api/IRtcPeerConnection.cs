@@ -470,28 +470,6 @@ public abstract class IRtcPeerConnection
 	public abstract void RemoveTrack(IMediaStreamTrack track);
 
 	/// <summary>
-	///     Create a new <see cref="IRtcRtpTransceiver" /> with the specified <see cref="IMediaStreamTrack" /> and add it to
-	///     the set of transceivers. Adding a <see cref="IRtcRtpTransceiver">transceiver</see> will cause future calls to
-	///     <see cref="CreateOffer" /> to add a media description for the corresponding
-	///     <see cref="IRtcRtpReceiver">transceiver</see>, as defined in
-	///     <see href="https://tools.ietf.org/html/rfc8829#section-5.2.2">[RFC8829] (section 5.2.2.)</see>.
-	/// </summary>
-	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-addtransceiver" />
-	/// <seealso href="https://tools.ietf.org/html/rfc8829#section-5.2.2" />
-	public abstract IRtcRtpTransceiver AddTransceiver(IMediaStreamTrack track, IRtcRtpTransceiver transceiver);
-
-	/// <summary>
-	///     Create a new <see cref="IRtcRtpTransceiver" /> of the specified <see cref="MediaStreamTrackKind" /> and add it to
-	///     the set of transceivers. Adding a <see cref="IRtcRtpTransceiver">transceiver</see> will cause future calls to
-	///     <see cref="CreateOffer" /> to add a media description for the corresponding
-	///     <see cref="IRtcRtpReceiver">transceiver</see>, as defined in
-	///     <see href="https://tools.ietf.org/html/rfc8829#section-5.2.2">[RFC8829] (section 5.2.2.)</see>.
-	/// </summary>
-	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-addtransceiver" />
-	/// <seealso href="https://tools.ietf.org/html/rfc8829#section-5.2.2" />
-	public abstract IRtcRtpTransceiver AddTransceiver(MediaStreamTrackKind kind, IRtcRtpTransceiver transceiver);
-
-	/// <summary>
 	///     New incoming media has been negotiated for a specific RTCRtpReceiver, and that receiver's track has been added to
 	///     any associated remote MediaStreams.
 	/// </summary>

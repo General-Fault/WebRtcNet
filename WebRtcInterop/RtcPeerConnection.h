@@ -98,11 +98,6 @@ namespace WebRtcInterop
 			... array<WebRtcNet::Media::IMediaStream^>^ streams) override;
 		virtual void RemoveTrack(WebRtcNet::Media::IMediaStreamTrack^ track) override;
 
-		virtual IRtcRtpTransceiver^ AddTransceiver(WebRtcNet::Media::IMediaStreamTrack^ track,
-			IRtcRtpTransceiver^ transceiver) override;
-		virtual IRtcRtpTransceiver^ AddTransceiver(WebRtcNet::Media::MediaStreamTrackKind kind,
-			IRtcRtpTransceiver^ transceiver) override;
-
 		virtual IEnumerable<IRtcRtpSender^>^ GetSenders() override;
 		virtual IEnumerable<IRtcRtpReceiver^>^ GetReceivers() override;
 		virtual IEnumerable<IRtcRtpTransceiver^>^ GetTransceivers() override;

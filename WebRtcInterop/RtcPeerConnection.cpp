@@ -80,12 +80,7 @@ namespace WebRtcInterop
 		}
 		else
 		{
-			//TODO: Once the native PeerConnection proxy implements the CreateOffer that acception options, this conversion will no longer be necessary.
 			webrtc::FakeConstraints constraints;
-			constraints.AddMandatory<int>(webrtc::MediaConstraintsInterface::kOfferToReceiveAudio,
-			                              static_cast<const int>(options->OfferToReceiveAudio));
-			constraints.AddMandatory<int>(webrtc::MediaConstraintsInterface::kOfferToReceiveVideo,
-			                              static_cast<const int>(options->OfferToReceiveVideo));
 			constraints.AddMandatory<bool>(webrtc::MediaConstraintsInterface::kVoiceActivityDetection,
 			                               static_cast<const bool>(options->VoiceActivityDetection));
 			constraints.AddMandatory<bool>(webrtc::MediaConstraintsInterface::kIceRestart,
