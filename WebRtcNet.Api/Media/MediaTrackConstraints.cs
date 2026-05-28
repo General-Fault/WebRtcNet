@@ -155,6 +155,12 @@ public class MediaTrackConstraints
     public RangeConstraint<ulong>  SampleSize { get; set; }
 
     /// <summary>
+    /// Indicates whether the user agent should attempt to blur the captured background, when supported.
+    /// </summary>
+    /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-backgroundBlur"/>
+    public Constraint<bool> BackgroundBlur { get; set; }
+
+    /// <summary>
     /// When one or more audio streams is being played in the processes of various microphones, it is often desirable to
     /// attempt to remove all the sound being played from the input signals recorded by the microphones. This is referred
     /// to as echo cancellation. There are cases where it is not needed and it is desirable to turn it off so that no

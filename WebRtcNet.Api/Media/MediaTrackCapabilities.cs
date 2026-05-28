@@ -49,6 +49,12 @@ public sealed record MediaTrackCapabilities
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-echoCancellation"/>
 	public IReadOnlyList<bool> EchoCancellation { get; init; } = [];
 
+	/// <summary>
+	/// The background-blur values supported by the user agent for this track.
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-backgroundBlur"/>
+	public IReadOnlyList<bool> BackgroundBlur { get; init; } = [];
+
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-autoGainControl"/>
 	public IReadOnlyList<bool> AutoGainControl { get; init; } = [];
 

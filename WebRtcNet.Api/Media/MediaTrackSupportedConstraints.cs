@@ -35,6 +35,12 @@ public sealed record MediaTrackSupportedConstraints
 	/// <see cref="MediaTrackConstraints.EchoCancellation"/>
 	public bool EchoCancellation { get; init; }
 
+	/// <summary>
+	/// Indicates whether the user agent recognizes the background-blur constraint.
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-backgroundBlur"/>
+	public bool BackgroundBlur { get; init; }
+
 	/// <see cref="MediaTrackConstraints.AutoGainControl"/>
 	public bool AutoGainControl { get; init; }
 

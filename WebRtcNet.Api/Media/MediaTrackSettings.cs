@@ -35,6 +35,12 @@ public sealed record MediaTrackSettings
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-echoCancellation"/>
 	public bool EchoCancellation { get; init; }
 
+	/// <summary>
+	/// Indicates whether background blur is enabled for the current track settings.
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-backgroundBlur"/>
+	public bool BackgroundBlur { get; init; }
+
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-latency"/>
 	public double Latency { get; init; }
 
