@@ -82,11 +82,11 @@ public abstract class IRtcRtpTransceiver
 	public abstract void Stop();
 
 	/// <summary>
-	/// 
+	/// The SetCodecPreferences method overrides the default codec preferences used when creating offers and answers.
 	/// </summary>
+	/// <param name="codecs">The preferred codecs in descending order of preference.</param>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiver-setcodecpreferences"/>
-	/// <param name="codecs"></param>
-	public abstract void SetCodecPreferences(IEnumerable<RtcRtpCodecCapability> codecs);
+	public abstract void SetCodecPreferences(IEnumerable<RtcRtpCodec> codecs);
 }
 
 /// <summary>
@@ -98,37 +98,15 @@ public abstract class IRtcRtpTransceiver
 /// </list>
 /// </summary>
 /// <see href="https://www.w3.org/TR/webrtc/#rtcrtpcodeccapability"/>
-public sealed record RtcRtpCodecCapability
+public record RtcRtpCodecCapability : RtcRtpCodec
 {
 	/// <summary>
 	/// The codec MIME media type/subtype. Valid media types and subtypes are listed in
 	/// <see href="https://www.iana.org/assignments/rtp-parameters/rtp-parameters.xhtml#rtp-parameters-2">[IANA-RTP-2]</see>.
 	/// </summary>
-	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpcodeccapability-mimetype"/>
-	public string MimeType { get; set; } = string.Empty;
-
-	/// <summary>
-	/// The codec clock rate expressed in Hertz.
-	/// </summary>
-	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpcodeccapability-clockrate"/>
-	public ulong ClockRate { get; set; }
-
-	/// <summary>
-	/// If present, indicates the maximum number of channels (mono=1, stereo=2).
-	/// </summary>
-	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpcodeccapability-channels"/>
-	public ushort? Channels { get; set; }
-
-	/// <summary>
-	/// The "format specific parameters" field from the <c>a=fmtp</c> line in the SDP corresponding to the codec, if one exists.
-	/// </summary>
-	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpcodeccapability-sdpfmtpline"/>
-	public string SdpFmtpLine { get; set; } = string.Empty;
-
 	public RtcRtpCodecCapability(string mimeType, ulong clockRate)
+		: base(mimeType, clockRate, null, string.Empty)
 	{
-		MimeType = mimeType ?? string.Empty;
-		ClockRate = clockRate;
 	}
 
 	public RtcRtpCodecCapability()

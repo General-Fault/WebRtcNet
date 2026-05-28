@@ -66,6 +66,19 @@ public abstract class IRtcRtpSender
 	public abstract Task SetParameters(RtcRtpSendParameters parameters);
 
 	/// <summary>
+	/// The SetParameters method updates how <see cref="IMediaStreamTrack">track</see> is encoded and transmitted to a
+	/// remote peer, with optional sender-side options.
+	/// </summary>
+	/// <param name="parameters">An object that describes the encoding and transmitting parameters.</param>
+	/// <param name="options">Optional sender-side options supplied to the spec's updated SetParameters entry point.</param>
+	/// <returns>A task that completes when the parameters have been applied.</returns>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpsender-setparameters"/>
+	public Task SetParameters(RtcRtpSendParameters parameters, RtcSetParameterOptions options = null)
+	{
+		return SetParameters(parameters);
+	}
+
+	/// <summary>
 	/// The GetParameters() method returns the RTCRtpSender object's current parameters for how track is encoded and
 	/// transmitted to a remote <see cref="IRtcRtpReceiver">RTCRtpReceiver</see>.
 	/// </summary>
@@ -101,4 +114,12 @@ public abstract class IRtcRtpSender
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpsender-dtmf"/>
 	public abstract IRtcDtmfSender Dtmf { get; }
+}
+
+/// <summary>
+/// Optional parameters accepted by the updated RTCRtpSender.SetParameters overload.
+/// </summary>
+/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpsender-setparameters"/>
+public sealed record RtcSetParameterOptions
+{
 }
