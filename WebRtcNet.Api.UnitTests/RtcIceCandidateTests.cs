@@ -31,6 +31,8 @@ public class RtcIceCandidateTests
 		Assert.IsNull(candidate.TcpType);
 		Assert.IsNull(candidate.RelatedAddress);
 		Assert.IsNull(candidate.RelatedPort);
+		Assert.IsNull(candidate.RelayProtocol);
+		Assert.IsNull(candidate.Url);
 	}
 
 	[Test]
@@ -72,5 +74,15 @@ public class RtcIceCandidateTests
 		Assert.AreEqual("video", modified.SdpMid);
 		Assert.AreEqual(original.Candidate, modified.Candidate);
 		Assert.AreEqual(original.SdpMLineIndex, modified.SdpMLineIndex);
+	}
+
+	[Test]
+	public void RtcIceCandidate_PublicCtor_Can_Set_RelayProtocol_And_Url()
+	{
+		var candidate = new RtcIceCandidate(
+			"cand", relayProtocol: RtcIceServerTransportProtocol.Tls, url: "turns:turn.example.org");
+
+		Assert.AreEqual(RtcIceServerTransportProtocol.Tls, candidate.RelayProtocol);
+		Assert.AreEqual("turns:turn.example.org", candidate.Url);
 	}
 }

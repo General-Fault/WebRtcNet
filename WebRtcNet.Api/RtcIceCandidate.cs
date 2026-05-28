@@ -21,13 +21,19 @@ public sealed record RtcIceCandidate
 	/// <param name="sdpMid">The media stream identification-tag, or null.</param>
 	/// <param name="sdpMLineIndex">The zero-based index of the media description in the SDP, or null.</param>
 	/// <param name="usernameFragment">The ICE username fragment (ufrag), or null.</param>
+	/// <param name="relayProtocol">The protocol used to talk to the relay server, or null.</param>
+	/// <param name="url">The ICE server URL the candidate was gathered from, or null.</param>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-constructor"/>
-	public RtcIceCandidate(string candidate, string? sdpMid = null, ushort? sdpMLineIndex = null, string? usernameFragment = null)
+	public RtcIceCandidate(
+		string candidate, string? sdpMid = null, ushort? sdpMLineIndex = null, string? usernameFragment = null,
+		RtcIceServerTransportProtocol? relayProtocol = null, string? url = null)
 	{
 		Candidate = candidate;
 		SdpMid = sdpMid;
 		SdpMLineIndex = sdpMLineIndex;
 		UsernameFragment = usernameFragment;
+		RelayProtocol = relayProtocol;
+		Url = url;
 	}
 
 	/// <summary>
@@ -39,7 +45,8 @@ public sealed record RtcIceCandidate
 		string? foundation, RtcIceComponent? component, uint? priority,
 		string? address, RtcIceProtocol? protocol, ushort? port,
 		RtcIceCandidateType? type, RtcIceTcpCandidateType? tcpType,
-		string? relatedAddress, ushort? relatedPort)
+		string? relatedAddress, ushort? relatedPort,
+		RtcIceServerTransportProtocol? relayProtocol, string? url)
 	{
 		Candidate = candidate;
 		SdpMid = sdpMid;
@@ -55,6 +62,8 @@ public sealed record RtcIceCandidate
 		TcpType = tcpType;
 		RelatedAddress = relatedAddress;
 		RelatedPort = relatedPort;
+		RelayProtocol = relayProtocol;
+		Url = url;
 	}
 
 	/// <summary>
@@ -146,6 +155,18 @@ public sealed record RtcIceCandidate
 	public ushort? RelatedPort { get; init; }
 
 	/// <summary>
+	/// The protocol used to talk to the relay server that produced this candidate, or null.
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-relayprotocol"/>
+	public RtcIceServerTransportProtocol? RelayProtocol { get; init; }
+
+	/// <summary>
+	/// The URL of the ICE server that gathered this candidate, or null.
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-url"/>
+	public string? Url { get; init; }
+
+	/// <summary>
 	/// The ICE username fragment (ufrag) as defined in
 	/// <see href="https://datatracker.ietf.org/doc/html/rfc5245#section-15.4">section 15.4 of [RFC5245]</see>, or null.
 	/// </summary>
@@ -218,6 +239,25 @@ public enum RtcIceCandidateType
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidatetype-relay"/>
 	Relay
+}
+
+/// <summary>
+/// The protocol used by the ICE server that gathered a relay candidate.
+/// </summary>
+/// <seealso href="https://www.w3.org/TR/webrtc/#rtciceservertransportprotocol-enum"/>
+public enum RtcIceServerTransportProtocol
+{
+    /// <summary>UDP transport.</summary>
+    /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtciceservertransportprotocol-udp"/>
+    Udp,
+
+    /// <summary>TCP transport.</summary>
+    /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtciceservertransportprotocol-tcp"/>
+    Tcp,
+
+    /// <summary>TLS transport.</summary>
+    /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtciceservertransportprotocol-tls"/>
+    Tls
 }
 
 /// <summary>
