@@ -2,8 +2,6 @@
 using System.Threading.Tasks;
 using WebRtcNet.Media;
 
-#nullable enable
-
 namespace WebRtcNet;
 
 /// <summary>
@@ -47,7 +45,6 @@ public abstract class IRtcRtpSender
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdtlstransport"/>
 	public abstract IRtcDtlsTransport? Transport { get; }
 
-	/*
 	/// <summary>
 	/// The GetCapabilities() method returns the most optimistic view of the capabilities of the system for sending media
 	/// of the given <see cref="MediaStreamTrackKind">kind</see>. It does not reserve any resources, ports, or other state
@@ -56,19 +53,12 @@ public abstract class IRtcRtpSender
 	/// returns null.
 	/// </summary>
 	/// <param name="kind">The type of media device for which to request capabilities.</param>
-	/// <returns>A MediaTrackCapabilities object describing the capabilities of the requested device kind</returns>
+	/// <returns>The RTP capabilities for the requested media <paramref name="kind"/>.</returns>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpsender-getcapabilities"/>
-	static RtcRtpCapabilities getCapabilities(MediaStreamTrackKind kind);
-	*/
-
-	/// <summary>
-	/// The SetParameters method updates how <see cref="IMediaStreamTrack">track</see> is encoded and transmitted to a
-	/// remote peer.
-	/// </summary>
-	/// <param name="parameters">An object that describes the encoding and transmitting parameters.</param>
-	/// <returns>A task that completes when the parameters have been applied.</returns>
-	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpsender-setparameters"/>
-	public abstract Task SetParameters(RtcRtpSendParameters parameters);
+	public static RtcRtpCapabilities? GetCapabilities(MediaStreamTrackKind kind)
+	{
+		throw new NotSupportedException();
+	}
 
 	/// <summary>
 	/// The SetParameters method updates how <see cref="IMediaStreamTrack">track</see> is encoded and transmitted to a
@@ -78,10 +68,7 @@ public abstract class IRtcRtpSender
 	/// <param name="options">Optional sender-side options supplied to the spec's updated SetParameters entry point.</param>
 	/// <returns>A task that completes when the parameters have been applied.</returns>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpsender-setparameters"/>
-	public Task SetParameters(RtcRtpSendParameters parameters, RtcSetParameterOptions? options = null)
-	{
-		return SetParameters(parameters);
-	}
+	public abstract Task SetParameters(RtcRtpSendParameters parameters, RtcSetParameterOptions? options = null);
 
 	/// <summary>
 	/// The GetParameters() method returns the RTCRtpSender object's current parameters for how track is encoded and
@@ -119,7 +106,7 @@ public abstract class IRtcRtpSender
 	/// Get an RtcDtmfSender for sending DTMF tones to a peer.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpsender-dtmf"/>
-	public abstract IRtcDtmfSender Dtmf { get; }
+	public abstract IRtcDtmfSender? Dtmf { get; }
 }
 
 /// <summary>

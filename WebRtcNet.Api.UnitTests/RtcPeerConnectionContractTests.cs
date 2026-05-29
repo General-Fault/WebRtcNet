@@ -73,4 +73,57 @@ public class RtcPeerConnectionContractTests
 		Assert.That(eventArgs.ErrorCode, Is.EqualTo((ushort)701));
 		Assert.That(eventArgs.ErrorText, Is.EqualTo("Server unreachable"));
 	}
+
+	[Test]
+	public void IRtcPeerConnection_Exposes_Nullable_Optional_SetLocalDescription_And_AddIceCandidate()
+	{
+		var setLocalDescription = typeof(IRtcPeerConnection).GetMethod(
+			nameof(IRtcPeerConnection.SetLocalDescription),
+			new[] { typeof(RtcSessionDescription?) });
+		var addIceCandidate = typeof(IRtcPeerConnection).GetMethod(
+			nameof(IRtcPeerConnection.AddIceCandidate),
+			new[] { typeof(RtcIceCandidate) });
+
+		Assert.That(setLocalDescription, Is.Not.Null);
+		Assert.That(setLocalDescription!.GetParameters()[0].IsOptional, Is.True);
+		Assert.That(setLocalDescription.GetParameters()[0].DefaultValue, Is.Null);
+
+		Assert.That(addIceCandidate, Is.Not.Null);
+		Assert.That(addIceCandidate!.GetParameters()[0].IsOptional, Is.True);
+		Assert.That(addIceCandidate.GetParameters()[0].DefaultValue, Is.Null);
+	}
+
+	[Test]
+	public void IRtcPeerConnection_Exposes_Sctp_Property()
+	{
+		var property = typeof(IRtcPeerConnection).GetProperty(nameof(IRtcPeerConnection.Sctp));
+
+		Assert.That(property, Is.Not.Null);
+		Assert.That(property!.PropertyType, Is.EqualTo(typeof(IRtcSctpTransport)));
+	}
+
+	[Test]
+	public void RtcIceCandidateEventArgs_Exposes_Optional_Url()
+	{
+		var candidate = new RtcIceCandidate("candidate:0 1 UDP 2122252543 192.0.2.1 54400 typ host");
+		var eventArgs = new RtcIceCandidateEventArgs(candidate, "stun:stun.example.org");
+
+		Assert.That(eventArgs.Candidate, Is.SameAs(candidate));
+		Assert.That(eventArgs.Url, Is.EqualTo("stun:stun.example.org"));
+	}
+
+	[Test]
+	public void RtcSdpType_Includes_Rollback()
+	{
+		Assert.That(System.Enum.GetNames(typeof(RtcSdpType)), Does.Contain(nameof(RtcSdpType.Rollback)));
+	}
+
+	[Test]
+	public void IRtcPeerConnection_Exposes_Static_GenerateCertificate_Method()
+	{
+		var method = typeof(IRtcPeerConnection).GetMethod(nameof(IRtcPeerConnection.GenerateCertificate), new[] { typeof(object) });
+
+		Assert.That(method, Is.Not.Null);
+		Assert.That(method!.ReturnType, Is.EqualTo(typeof(System.Threading.Tasks.Task<RtcCertificate>)));
+	}
 }

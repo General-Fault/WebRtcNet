@@ -6,11 +6,11 @@ namespace WebRtcNet;
 /// <summary>
 /// The IRtcRtpTransceiver interface represents a combination of an <see cref="IRtcRtpSender">RTCRtpSender</see> and an
 /// <see cref="IRtcRtpReceiver">RTCRtpReceiver</see> that share a common
-/// <see cref="IRtcIceCandidate.SdpMid">media stream "identification-tag"</see>. As defined in
+/// <see cref="RtcIceCandidate.SdpMid">media stream "identification-tag"</see>. As defined in
 /// <see href="https://tools.ietf.org/html/rfc8829#section-3.4.1">[RFC8829] (section 3.4.1.)</see>, an RTCRtpTransceiver
 /// is said to be associated with a <see href="https://tools.ietf.org/html/rfc4566">media description</see> if its
 /// <see cref="Mid"/> property is non-null and matches a
-/// <see cref="IRtcIceCandidate.SdpMid">media stream "identification-tag"</see> in the
+/// <see cref="RtcIceCandidate.SdpMid">media stream "identification-tag"</see> in the
 /// <see href="https://tools.ietf.org/html/rfc4566">media description</see>; otherwise it is said to be disassociated with
 /// that <see href="https://tools.ietf.org/html/rfc4566">media description</see>.
 /// </summary>
@@ -31,11 +31,11 @@ public abstract class IRtcRtpTransceiver
 	internal abstract IntPtr GetNativeRtpTransceiverHandle(bool throwOnDisposed);
 
 	/// <summary>
-	/// The mid attribute is the <see cref="IRtcIceCandidate.SdpMid">media stream "identification-tag"</see> negotiated and
+	/// The mid-attribute is the <see cref="RtcIceCandidate.SdpMid">media stream "identification-tag"</see> negotiated and
 	/// present in the local and remote descriptions.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtptransceiver-mid"/>
-	public abstract string Mid { get; }
+	public abstract string? Mid { get; }
 
 	/// <summary>
 	/// The sender attribute exposes the <see cref="IRtcRtpSender">RTCRtpSender</see> corresponding to the RTP media that

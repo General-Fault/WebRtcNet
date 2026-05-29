@@ -290,6 +290,22 @@ public abstract class IRtcPeerConnection
 	public abstract RtcConfiguration Configuration { get; set; }
 
 	/// <summary>
+	/// Gets the SCTP transport used for data channels, if available.
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-sctp" />
+	public abstract IRtcSctpTransport? Sctp { get; }
+
+	/// <summary>
+	/// Creates a certificate for use with peer connections.
+	/// </summary>
+	/// <param name="keygenAlgorithm">The key generation algorithm descriptor.</param>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-generatecertificate" />
+	public static Task<RtcCertificate> GenerateCertificate(object keygenAlgorithm)
+	{
+		throw new NotSupportedException();
+	}
+
+	/// <summary>
 	///     The CreateOffer method generates a <see cref="RtcSessionDescription" />
 	///     <see href="http://tools.ietf.org/html/rfc3264">[SDP]</see> that contains an
 	///     <see href="https://tools.ietf.org/html/rfc3264">RFC 3264</see> offer with the supported configurations for the
@@ -322,9 +338,12 @@ public abstract class IRtcPeerConnection
 	///     <see cref="RtcSessionDescription">RtcSessionDescription</see> as the
 	///     <see cref="LocalDescription">local description</see>.
 	/// </summary>
-	/// <param name="description">A session description containing the SDP describing the local session.</param>
+	/// <param name="description">
+	/// A session description containing the SDP describing the local session, or null to let the implementation
+	/// infer and apply the next local description.
+	/// </param>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-setlocaldescription" />
-	public abstract Task SetLocalDescription(RtcSessionDescription description);
+	public abstract Task SetLocalDescription(RtcSessionDescription? description = null);
 
 	/// <summary>
 	///     The SetRemoteDescription() method instructs the RTCPeerConnection to apply the supplied
@@ -341,14 +360,13 @@ public abstract class IRtcPeerConnection
 	/// <summary>
 	///     The AddIceCandidate() method provides a remote <see cref="RtcIceCandidate">candidate</see> to the ICE Agent. In
 	///     addition to being added to the <see cref="RemoteDescription">remote description</see>, connectivity checks will be
-	///     sent to the new <see cref="RtcIceCandidate">candidates</see> as long as the
-	///     <see cref="RtcConfiguration.IceTransportPolicy">ICE Transports setting</see> is not set to
-	///     <see cref="RtcIceTransportPolicy.None" />. This call will result in a change to the connection state of the ICE
-	///     Agent, and may result in a change to media state if it results in different connectivity being established.
+	///     sent to the new <see cref="RtcIceCandidate">candidates</see>. This call will result in a change to the connection
+	///     state of the ICE Agent, and may result in a change to media state if it results in different connectivity being
+	///     established.
 	/// </summary>
-	/// <param name="candidate">An ICE candidate to add.</param>
+	/// <param name="candidate">An ICE candidate to add, or null to signal end-of-candidates.</param>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-addicecandidate" />
-	public abstract Task AddIceCandidate(RtcIceCandidate candidate);
+	public abstract Task AddIceCandidate(RtcIceCandidate? candidate = null);
 
 	/// <summary>
 	///     The restartIce method tells the RTCPeerConnection that ICE should be restarted. Subsequent calls to
@@ -552,15 +570,22 @@ public class RtcIceCandidateEventArgs : EventArgs
 	/// Initializes ICE candidate event data.
 	/// </summary>
 	/// <param name="candidate">The candidate associated with the event.</param>
-	public RtcIceCandidateEventArgs(RtcIceCandidate candidate)
+	/// <param name="url">The ICE server URL used to gather the candidate, if available.</param>
+	public RtcIceCandidateEventArgs(RtcIceCandidate candidate, string? url = null)
 	{
 		Candidate = candidate;
+		Url = url;
 	}
 
 	/// <summary>
 	/// Gets the ICE candidate associated with the event.
 	/// </summary>
 	public RtcIceCandidate Candidate { get; }
+
+	/// <summary>
+	/// Gets the ICE server URL used to gather the candidate, if available.
+	/// </summary>
+	public string? Url { get; }
 }
 
 /// <summary>

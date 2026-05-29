@@ -42,9 +42,8 @@ public abstract class IRtcRtpReceiver
 	/// transport.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpreceiver-transport"/>
-	public abstract IRtcDtlsTransport Transport { get; }
+	public abstract IRtcDtlsTransport? Transport { get; }
 
-	/*
 	/// <summary>
 	/// The GetCapabilities() method returns the most optimistic view of the capabilities of the system for receiving
 	/// media of the given <see cref="MediaStreamTrackKind">kind</see>. It does not reserve any resources, ports, or other
@@ -53,10 +52,12 @@ public abstract class IRtcRtpReceiver
 	/// GetCapabilities returns null.
 	/// </summary>
 	/// <param name="kind">The type of media device for which to request capabilities.</param>
-	/// <returns>A MediaTrackCapabilities object describing the capabilities of the requested device kind</returns>
-	/// <seealso cref="https://www.w3.org/TR/webrtc/#dom-rtcrtpreceiver-getcapabilities"/>
-	static RtcRtpCapabilities? getCapabilities(MediaDeviceKind kind);
-	*/
+	/// <returns>The RTP capabilities for the requested media <paramref name="kind"/>.</returns>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpreceiver-getcapabilities"/>
+	public static RtcRtpCapabilities GetCapabilities(MediaStreamTrackKind kind)
+	{
+		throw new NotSupportedException();
+	}
 
 	/// <summary>
 	/// The GetParameters() method returns the RTCRtpReceiver object's current parameters for how track is decoded.

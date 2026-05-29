@@ -14,7 +14,9 @@ public class RtcConfigurationTests
 		Assert.AreEqual(0, configuration.IceServers.Count);
 		Assert.AreEqual(RtcIceTransportPolicy.All, configuration.IceTransportPolicy);
 		Assert.AreEqual(RtcBundlePolicy.Balanced, configuration.BundlePolicy);
-		Assert.AreEqual(string.Empty, configuration.PeerIdentity);
+		Assert.AreEqual(RtcRtcpMuxPolicy.Require, configuration.RtcpMuxPolicy);
+		Assert.AreEqual(0, configuration.Certificates.Count);
+		Assert.AreEqual((byte)0, configuration.IceCandidatePoolSize);
 	}
 
 	[Test]
@@ -31,5 +33,12 @@ public class RtcConfigurationTests
 		Assert.AreEqual("turns:turn.example.net", configuration.IceServers[1].Urls.ToArray()[1]);
 		Assert.AreEqual("user", configuration.IceServers[1].UserName);
 		Assert.AreEqual("myPassword", configuration.IceServers[1].Credential);
+	}
+
+	[Test]
+	public void RtcConfiguration_Removes_Legacy_PeerIdentity_And_IceTransportPolicy_None()
+	{
+		Assert.IsNull(typeof(RtcConfiguration).GetProperty("PeerIdentity"));
+		Assert.IsFalse(System.Enum.GetNames(typeof(RtcIceTransportPolicy)).Contains("None"));
 	}
 }

@@ -8,6 +8,7 @@
 #include "Marshaling/MarshalDataChannel.h"
 #include "Marshaling/MarshalNullable.h"
 #include "Observers/DataChannelObserver.h"
+#include <limits>
 
 using namespace System;
 using namespace WebRtcNet;
@@ -16,9 +17,10 @@ namespace WebRtcInterop
 {
 	RtcDataChannel::RtcDataChannel(webrtc::DataChannelInterface* data_channel_interface)
 		: rp_data_channel_interface_(data_channel_interface),
-		  buffered_amount_low_threshold_(),
+		  buffered_amount_low_threshold_(0),
 		  on_open_(nullptr),
 		  on_error_(nullptr),
+		  on_closing_(nullptr),
 		  on_close_(nullptr),
 		  on_message_(nullptr),
 		  on_buffered_amount_low_(nullptr)
@@ -50,9 +52,9 @@ namespace WebRtcInterop
 		return result;
 	}
 
-	System::IntPtr RtcDataChannel::GetNativeDataChannelHandle(bool throwOnDisposed)
+	IntPtr RtcDataChannel::GetNativeDataChannelHandle(bool throwOnDisposed)
 	{
-		return System::IntPtr(GetNativeDataChannelInterface(throwOnDisposed));
+		return IntPtr(GetNativeDataChannelInterface(throwOnDisposed));
 	}
 
 	String^ RtcDataChannel::Label::get()
@@ -85,10 +87,15 @@ namespace WebRtcInterop
 		return GetNativeDataChannelInterface(true)->negotiated();
 	}
 
-	unsigned int RtcDataChannel::Id::get()
+	Nullable<uint16_t> RtcDataChannel::Id::get()
 	{
 		const auto id = GetNativeDataChannelInterface(true)->id();
-		return id < 0 ? 0u : static_cast<unsigned int>(id);
+		if (id < 0 || id > std::numeric_limits<uint16_t>::max())
+		{
+			return Nullable<uint16_t>();
+		}
+
+		return static_cast<uint16_t>(id);
 	}
 
 	RtcDataChannelState RtcDataChannel::ReadyState::get()
@@ -98,18 +105,18 @@ namespace WebRtcInterop
 
 	uint64_t RtcDataChannel::BufferedAmount::get()
 	{
-		return static_cast<int>(GetNativeDataChannelInterface(true)->buffered_amount());
+		return GetNativeDataChannelInterface(true)->buffered_amount();
 	}
 
-	Nullable<uint64_t> RtcDataChannel::BufferedAmountLowThreshold::get()
+	uint64_t RtcDataChannel::BufferedAmountLowThreshold::get()
 	{
 		return buffered_amount_low_threshold_;
 	}
 
-	void RtcDataChannel::BufferedAmountLowThreshold::set(Nullable<uint64_t> value)
+	void RtcDataChannel::BufferedAmountLowThreshold::set(uint64_t value)
 	{
 		buffered_amount_low_threshold_ = value;
-		if (buffered_amount_low_threshold_.HasValue && buffered_amount_low_threshold_.Value < BufferedAmount)
+		if (buffered_amount_low_threshold_ < BufferedAmount)
 		{
 			FireOnBufferAmountLow();
 		}

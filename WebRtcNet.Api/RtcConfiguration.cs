@@ -9,11 +9,6 @@ namespace WebRtcNet;
 public enum RtcIceTransportPolicy
 {
 	/// <summary>
-	///     The ICE engine must not send or receive any packets at this point.
-	/// </summary>
-	None,
-
-	/// <summary>
 	///     The ICE engine must only use media relay candidates such as candidates
 	///     passing through a TURN server. This can be used to reduce leakage of
 	///     IP addresses in certain use cases.
@@ -24,6 +19,18 @@ public enum RtcIceTransportPolicy
 	///     The ICE engine may use any type of candidates when this value is specified.
 	/// </summary>
 	All
+}
+
+/// <summary>
+/// Determines whether RTP and RTCP are multiplexed onto a single transport.
+/// </summary>
+/// <seealso href="https://www.w3.org/TR/webrtc/#rtcrtcpmuxpolicy-enum" />
+public enum RtcRtcpMuxPolicy
+{
+	/// <summary>
+	/// Require RTP/RTCP multiplexing.
+	/// </summary>
+	Require
 }
 
 /// <summary>
@@ -82,7 +89,17 @@ public sealed record RtcConfiguration
 	public RtcBundlePolicy BundlePolicy { get; set; } = RtcBundlePolicy.Balanced;
 
 	/// <summary>
-	///     Sets the target peer identity for the RTCPeerConnection.
+	/// Indicates whether RTP and RTCP are multiplexed on a single transport.
 	/// </summary>
-	public string PeerIdentity { get; set; } = string.Empty;
+	public RtcRtcpMuxPolicy RtcpMuxPolicy { get; set; } = RtcRtcpMuxPolicy.Require;
+
+	/// <summary>
+	/// Gets or sets the certificates to use for DTLS.
+	/// </summary>
+	public List<RtcCertificate> Certificates { get; set; } = [];
+
+	/// <summary>
+	/// Gets or sets the number of prefetched ICE candidates.
+	/// </summary>
+	public byte IceCandidatePoolSize { get; set; } = 0;
 }

@@ -65,7 +65,7 @@ public enum RtcIceGatheringState
 /// Describes how the the possible ways an ICE Transport is used.
 /// </summary>
 /// <seealso cref="IRtcIceTransport.Component"/>
-/// <seealso cref="IRtcIceCandidate.Component"/>
+/// <seealso cref="RtcIceCandidate.Component"/>
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcicecomponent"/>
 /// <seealso href="https://www.w3.org/TR/webrtc/#candidate-attribute-grammar"/>
 /// <seealso href="https://datatracker.ietf.org/doc/html/rfc5245#section-4.1.1.1"/>
@@ -77,7 +77,7 @@ public enum RtcIceComponent
 	/// Protocols multiplexed with RTP (e.g. data channel) share its component ID. This represents the component-id value
 	/// 1 when encoded in <see href="https://www.w3.org/TR/webrtc/#candidate-attribute-grammar">candidate-attribute</see>.
 	/// </summary>
-	/// <seealso cref="IRtcIceCandidate.Candidate"/>
+	/// <seealso cref="RtcIceCandidate.Candidate"/>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecomponent-rtp"/>
 	/// <seealso href="https://datatracker.ietf.org/doc/html/rfc5245#section-4.1.1.1"/>
 	Rtp,
@@ -88,7 +88,7 @@ public enum RtcIceComponent
 	/// represents the component-id value 2 when encoded in
 	/// <see href="https://www.w3.org/TR/webrtc/#candidate-attribute-grammar">candidate-attribute</see>.
 	/// </summary>
-	/// <seealso cref="IRtcIceCandidate.Candidate"/>
+	/// <seealso cref="RtcIceCandidate.Candidate"/>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecomponent-rtcp"/>
 	/// <seealso href="https://datatracker.ietf.org/doc/html/rfc5245#section-4.1.1.1"/>
 	Rtcp
@@ -245,7 +245,7 @@ public abstract class IRtcIceTransport
 	/// Returns the native ICE transport interface used by WebRtcInterop.
 	/// </summary>
 	/// <param name="throwOnDisposed">True to throw when the transport has already been disposed.</param>
-	internal abstract IntPtr GetNativeIceTransportHandle(bool throwOnDisposed);
+	protected abstract IntPtr GetNativeIceTransportHandle(bool throwOnDisposed);
 	/// <summary>
 	/// The role of this transport.
 	/// </summary>

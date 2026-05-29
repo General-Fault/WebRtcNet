@@ -12,7 +12,15 @@ public class RtcOfferOptionsTests
 		var options = new RtcOfferOptions();
 
 		Assert.IsFalse(options.IceRestart);
-		Assert.IsTrue(options.VoiceActivityDetection);
+		Assert.IsNull(typeof(RtcOfferOptions).GetProperty("VoiceActivityDetection", BindingFlags.Public | BindingFlags.Instance));
+	}
+
+	[Test]
+	public void RtcAnswerOptions_Does_Not_Expose_Offer_Only_IceRestart()
+	{
+		var answerType = typeof(RtcAnswerOptions);
+
+		Assert.IsNull(answerType.GetProperty(nameof(RtcOfferOptions.IceRestart), BindingFlags.Public | BindingFlags.Instance));
 	}
 
 	[Test]

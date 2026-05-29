@@ -23,6 +23,12 @@ public enum RtcSdpType
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcsdptype-answer" />
 	Answer,
+
+	/// <summary>
+	/// Indicates the description rolls back the current local or remote description.
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcsdptype-rollback" />
+	Rollback,
 }
 
 /// <summary>

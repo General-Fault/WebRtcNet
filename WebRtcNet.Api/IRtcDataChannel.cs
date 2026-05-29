@@ -97,7 +97,7 @@ public abstract class IRtcDataChannel
 	/// Returns the native data channel interface used by WebRtcInterop.
 	/// </summary>
 	/// <param name="throwOnDisposed">True to throw when the channel has already been disposed.</param>
-	internal abstract IntPtr GetNativeDataChannelHandle(bool throwOnDisposed);
+	protected abstract IntPtr GetNativeDataChannelHandle(bool throwOnDisposed);
 
 	/// <summary>
 	///     The Label represents a label that can be used to distinguish this RtcDataChannel object from other RtcDataChannel
@@ -142,8 +142,8 @@ public abstract class IRtcDataChannel
 	///     The Id returns the id for this RtcDataChannel. The id was either assigned by the user agent at channel creation
 	///     time or selected by the script.
 	/// </summary>
-	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-RtcDataChannel-id" />
-	public abstract uint Id { get; }
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannel-id" />
+	public abstract ushort? Id { get; }
 
 	/// <summary>
 	///     ReadyState represents the state of the RtcDataChannel object.
@@ -170,7 +170,7 @@ public abstract class IRtcDataChannel
 	/// </summary>
 	/// <seealso cref="BufferedAmount" />
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-RtcDataChannel-bufferedamountlowthreshold" />
-	public abstract ulong? BufferedAmountLowThreshold { get; set; }
+	public abstract ulong BufferedAmountLowThreshold { get; set; }
 
 	/// <summary>
 	///     This BinaryType controls how binary data is exposed to scripts. See the
@@ -190,6 +190,13 @@ public abstract class IRtcDataChannel
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannel-onerror" />
 	public abstract event EventHandler<RtcErrorEventArgs> OnError;
+
+	/// <summary>
+	///     The data channel is transitioning from <see cref="RtcDataChannelState.Open" /> to
+	///     <see cref="RtcDataChannelState.Closing" />.
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannel-onclosing" />
+	public abstract event EventHandler OnClosing;
 
 	/// <summary>
 	///     The RtcDataChannel object's underlying data transport has been closed.

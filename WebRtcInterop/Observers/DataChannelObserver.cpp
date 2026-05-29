@@ -29,6 +29,10 @@ DataChannelObserver::DataChannelObserver(RtcDataChannel^ data_channel,
 		{
 			data_channel_->FireOnOpen();
 		}
+		else if (state == webrtc::DataChannelInterface::DataState::kClosing)
+		{
+			data_channel_->FireOnClosing();
+		}
 		else if (state == webrtc::DataChannelInterface::DataState::kClosed)
 		{
 			data_channel_->FireOnClose();
@@ -61,9 +65,7 @@ DataChannelObserver::DataChannelObserver(RtcDataChannel^ data_channel,
 
 	void DataChannelObserver::OnBufferedAmountChange(uint64_t previous_amount)
 	{
-		if (!data_channel_->BufferedAmountLowThreshold.HasValue) return;
-
-		const auto threshold = data_channel_->BufferedAmountLowThreshold.Value;
+		const auto threshold = data_channel_->BufferedAmountLowThreshold;
 		if (previous_amount > threshold && native_data_channel_->buffered_amount() < threshold)
 		{
 			data_channel_->FireOnBufferAmountLow();

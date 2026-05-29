@@ -13,7 +13,7 @@ namespace WebRtcInterop
 	using namespace Collections::Generic;
 	using namespace WebRtcNet;
 
-	public ref class RtcIceTransport : public IRtcIceTransport
+	public ref class RtcIceTransport sealed : public IRtcIceTransport
 	{
 	public:
 		~RtcIceTransport();
@@ -22,11 +22,11 @@ namespace WebRtcInterop
 		virtual property RtcIceComponent Component{ RtcIceComponent get() override; }
 		virtual property RtcIceTransportState State{ RtcIceTransportState get() override; }
 		virtual property RtcIceGatheringState GatheringState{ RtcIceGatheringState get() override; }
-		virtual IEnumerable<RtcIceCandidate^>^ GetLocalCandidates() override;
-		virtual IEnumerable<RtcIceCandidate^>^ GetRemoteCandidates() override;
-		virtual RtcIceCandidatePair^ GetSelectedCandidatePair() override;
-		virtual RtcIceParameters^ GetLocalParameters() override;
-		virtual RtcIceParameters^ GetRemoteParameters() override;
+		IEnumerable<RtcIceCandidate^>^ GetLocalCandidates() override;
+		IEnumerable<RtcIceCandidate^>^ GetRemoteCandidates() override;
+		RtcIceCandidatePair^ GetSelectedCandidatePair() override;
+		RtcIceParameters^ GetLocalParameters() override;
+		RtcIceParameters^ GetRemoteParameters() override;
 
 		virtual event EventHandler^ OnStateChange
 		{
@@ -48,8 +48,11 @@ namespace WebRtcInterop
 		RtcIceTransport(webrtc::IceTransportInterface* ice_transport_interface);
 		!RtcIceTransport();
 		webrtc::IceTransportInterface* GetNativeIceTransportInterface(bool throwOnDisposed);
-		virtual System::IntPtr GetNativeIceTransportHandle(bool throwOnDisposed) override;
 
+	protected:
+		virtual IntPtr GetNativeIceTransportHandle(bool throwOnDisposed) override;
+
+	internal:
 		void FireOnStateChange() { if (on_state_change_ != nullptr) on_state_change_(this, EventArgs::Empty); }
 		void FireOnGatheringStateChange() { if (on_gathering_state_change_ != nullptr) on_gathering_state_change_(this, EventArgs::Empty); }
 		void FireOnSelectedCandidatePairChange() { if (on_selected_candidate_pair_change_ != nullptr) on_selected_candidate_pair_change_(this, EventArgs::Empty); }

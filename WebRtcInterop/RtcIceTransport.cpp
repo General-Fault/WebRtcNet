@@ -36,9 +36,9 @@ webrtc::IceTransportInterface* RtcIceTransport::GetNativeIceTransportInterface(b
 	return result;
 }
 
-System::IntPtr RtcIceTransport::GetNativeIceTransportHandle(bool throwOnDisposed)
+IntPtr RtcIceTransport::GetNativeIceTransportHandle(bool throwOnDisposed)
 {
-	return System::IntPtr(GetNativeIceTransportInterface(throwOnDisposed));
+	return IntPtr(GetNativeIceTransportInterface(throwOnDisposed));
 }
 
 RtcIceRole RtcIceTransport::Role::get()
