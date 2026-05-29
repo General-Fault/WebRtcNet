@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using WebRtcNet.Media;
 
+#nullable enable
+
 namespace WebRtcNet;
 
 /// <summary>
@@ -26,14 +28,14 @@ public abstract class IRtcRtpSender
 	internal abstract IntPtr GetNativeRtpSenderHandle(bool throwOnDisposed);
 
 	/// <summary>
-	/// The Track property is the track that is associated with this RTCRtpSender object. If track is ended, or if the
-	/// track's output is disabled, i.e. the track is <see cref="IMediaStreamTrack.Enabled">disabled</see> and/or
-	/// <see cref="IMediaStreamTrack.Muted">muted</see>, the RTCRtpSender will send black frames (video) and will not send
-	/// audio. In the case of video, the RTCRtpSender should send one black frame per second. If Track is null then the
-	/// RTCRtpSender does not send.
+	/// The Track property is the <see cref="IMediaStreamTrack">track</see> associated with this RTCRtpSender object. If
+	/// the track is ended, or if the track's output is disabled, i.e. the track is
+	/// <see cref="IMediaStreamTrack.Enabled">disabled</see> and/or <see cref="IMediaStreamTrack.Muted">muted</see>, the
+	/// RTCRtpSender will send black frames (video) and will not send audio. In the case of video, the RTCRtpSender should
+	/// send one black frame per second. If Track is null then the RTCRtpSender does not send.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpsender-track"/>
-	public abstract IMediaStreamTrack Track { get; }
+	public abstract IMediaStreamTrack? Track { get; }
 
 	/// <summary>
 	/// The Transport property is the transport over which media from a <see cref="IMediaStreamTrack">track</see> is sent
@@ -43,7 +45,7 @@ public abstract class IRtcRtpSender
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpsender-transport"/>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdtlstransport"/>
-	public abstract IRtcDtlsTransport Transport { get; }
+	public abstract IRtcDtlsTransport? Transport { get; }
 
 	/*
 	/// <summary>
@@ -93,9 +95,10 @@ public abstract class IRtcRtpSender
 	/// Attempts to replace the RTCRtpSender's current <see cref="IMediaStreamTrack">track</see> with another
 	/// <see cref="IMediaStreamTrack">track</see> provided (or with a null track), without renegotiation.
 	/// </summary>
-	/// <param name="withTrack">The new track to be used by the sender.</param>
+	/// <param name="withTrack">The new track to be used by the sender, or null to stop sending without renegotiation.</param>
 	/// <returns>A task that completes once the new track has been applied.</returns>
-	public abstract Task ReplaceTrack(IMediaStreamTrack withTrack);
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpsender-replacetrack"/>
+	public abstract Task ReplaceTrack(IMediaStreamTrack? withTrack);
 
 	/// <summary>
 	/// Sets the <see cref="IMediaStream">MediaStreams</see> to be associated with this sender's

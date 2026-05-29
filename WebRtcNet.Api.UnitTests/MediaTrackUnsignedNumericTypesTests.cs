@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NUnit.Framework;
 using WebRtcNet.Media;
 
@@ -37,6 +38,44 @@ public class MediaTrackUnsignedNumericTypesTests
 	}
 
 	[Test]
+	public void MediaTrackCapabilities_UsesCollectionForFacingMode()
+	{
+		Assert.That(typeof(MediaTrackCapabilities).GetProperty(nameof(MediaTrackCapabilities.FacingMode))!.PropertyType,
+			Is.EqualTo(typeof(IReadOnlyList<VideoFacingModes>)));
+	}
+
+	[Test]
+	public void MediaTrackCapabilities_UsesCollectionForResizeMode()
+	{
+		Assert.That(typeof(MediaTrackCapabilities).GetProperty(nameof(MediaTrackCapabilities.ResizeMode))!.PropertyType,
+			Is.EqualTo(typeof(IReadOnlyList<VideoResizeModes>)));
+	}
+
+	[Test]
+	public void MediaTrackCapabilities_UsesCollectionsForAllSequenceValuedMembers()
+	{
+		Assert.That(typeof(MediaTrackCapabilities).GetProperty(nameof(MediaTrackCapabilities.EchoCancellation))!.PropertyType,
+			Is.EqualTo(typeof(IReadOnlyList<EchoCancellationValue>)));
+		Assert.That(typeof(MediaTrackCapabilities).GetProperty(nameof(MediaTrackCapabilities.BackgroundBlur))!.PropertyType,
+			Is.EqualTo(typeof(IReadOnlyList<bool>)));
+		Assert.That(typeof(MediaTrackCapabilities).GetProperty(nameof(MediaTrackCapabilities.AutoGainControl))!.PropertyType,
+			Is.EqualTo(typeof(IReadOnlyList<bool>)));
+		Assert.That(typeof(MediaTrackCapabilities).GetProperty(nameof(MediaTrackCapabilities.NoiseSuppression))!.PropertyType,
+			Is.EqualTo(typeof(IReadOnlyList<bool>)));
+	}
+
+	[Test]
+	public void MediaTrackCapabilities_DoesNotExposeLegacyScalarSequenceAdapters()
+	{
+		Assert.That(typeof(MediaTrackCapabilities).GetProperty("FacingModeValue"), Is.Null);
+		Assert.That(typeof(MediaTrackCapabilities).GetProperty("ResizeModeValue"), Is.Null);
+		Assert.That(typeof(MediaTrackCapabilities).GetProperty("EchoCancellationValue"), Is.Null);
+		Assert.That(typeof(MediaTrackCapabilities).GetProperty("BackgroundBlurValue"), Is.Null);
+		Assert.That(typeof(MediaTrackCapabilities).GetProperty("AutoGainControlValue"), Is.Null);
+		Assert.That(typeof(MediaTrackCapabilities).GetProperty("NoiseSuppressionValue"), Is.Null);
+	}
+
+	[Test]
 	public void MediaTrackSettings_UsesUintForConstrainULongMembers()
 	{
 		Assert.That(typeof(MediaTrackSettings).GetProperty(nameof(MediaTrackSettings.Width))!.PropertyType,
@@ -49,5 +88,16 @@ public class MediaTrackUnsignedNumericTypesTests
 			Is.EqualTo(typeof(uint)));
 		Assert.That(typeof(MediaTrackSettings).GetProperty(nameof(MediaTrackSettings.ChannelCount))!.PropertyType,
 			Is.EqualTo(typeof(uint)));
+	}
+
+	[Test]
+	public void MediaTrackSettings_UsesNullableMembersForOptionalResizeAndAudioProcessingFlags()
+	{
+		Assert.That(typeof(MediaTrackSettings).GetProperty(nameof(MediaTrackSettings.ResizeMode))!.PropertyType,
+			Is.EqualTo(typeof(VideoResizeModes?)));
+		Assert.That(typeof(MediaTrackSettings).GetProperty(nameof(MediaTrackSettings.AutoGainControl))!.PropertyType,
+			Is.EqualTo(typeof(bool?)));
+		Assert.That(typeof(MediaTrackSettings).GetProperty(nameof(MediaTrackSettings.NoiseSuppression))!.PropertyType,
+			Is.EqualTo(typeof(bool?)));
 	}
 }

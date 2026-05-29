@@ -379,7 +379,8 @@ public abstract class IRtcPeerConnection
 	public abstract event EventHandler<RtcIceCandidateEventArgs> OnIceCandidate;
 
 	/// <summary>
-	///     An error occurred creating an IceCandidate.
+	///     An ICE candidate gathering error occurred. Event payload aligns with
+	///     <c>RTCPeerConnectionIceErrorEvent</c> via <see cref="RtcIceCandidateErrorEventArgs" />.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-onicecandidateerror" />
 	public abstract event EventHandler<RtcIceCandidateErrorEventArgs> OnIceCandidateError;
@@ -461,6 +462,26 @@ public abstract class IRtcPeerConnection
 	public abstract IRtcRtpSender AddTrack(IMediaStreamTrack track, params IMediaStream[] streams);
 
 	/// <summary>
+	///		Adds a new <see cref="IRtcRtpTransceiver">RTCRtpTransceiver</see> to this
+	///		<see cref="IRtcPeerConnection">RTCPeerConnection</see> from an existing media <paramref name="track"/>.
+	/// </summary>
+	/// <param name="track">The media track used to create the transceiver.</param>
+	/// <param name="init">Optional initialization settings for the created transceiver.</param>
+	/// <returns>The created <see cref="IRtcRtpTransceiver">RTCRtpTransceiver</see>.</returns>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-addtransceiver"/>
+	public abstract IRtcRtpTransceiver AddTransceiver(IMediaStreamTrack track, RtcRtpTransceiverInit? init = null);
+
+	/// <summary>
+	///		Adds a new <see cref="IRtcRtpTransceiver">RTCRtpTransceiver</see> to this
+	///		<see cref="IRtcPeerConnection">RTCPeerConnection</see> for the specified media <paramref name="kind"/>.
+	/// </summary>
+	/// <param name="kind">The media kind used to create the transceiver.</param>
+	/// <param name="init">Optional initialization settings for the created transceiver.</param>
+	/// <returns>The created <see cref="IRtcRtpTransceiver">RTCRtpTransceiver</see>.</returns>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-addtransceiver"/>
+	public abstract IRtcRtpTransceiver AddTransceiver(MediaStreamTrackKind kind, RtcRtpTransceiverInit? init = null);
+
+	/// <summary>
 	///     Stops sending media from sender. The <see cref="IRtcRtpSender">RTCRtpSender</see> will still appear in
 	///     <see cref="GetSenders" />. Doing so will cause future calls to <see cref="CreateOffer" /> to mark the media
 	///     description for the corresponding <see cref="IRtcRtpTransceiver">transceiver</see> as
@@ -469,8 +490,8 @@ public abstract class IRtcPeerConnection
 	/// </summary>
 	/// <seealso href="https://tools.ietf.org/html/rfc8829#section-5.2.2" />
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-removetrack" />
-	/// <param name="track">The track to be removed</param>
-	public abstract void RemoveTrack(IMediaStreamTrack track);
+	/// <param name="sender">The sender to stop sending media for.</param>
+	public abstract void RemoveTrack(IRtcRtpSender sender);
 
 	/// <summary>
 	///     New incoming media has been negotiated for a specific RTCRtpReceiver, and that receiver's track has been added to
@@ -545,21 +566,52 @@ public class RtcIceCandidateEventArgs : EventArgs
 /// <summary>
 /// Event data describing an ICE candidate error.
 /// </summary>
+/// <seealso href="https://www.w3.org/TR/webrtc/#rtcpeerconnectioniceerrorevent" />
 public class RtcIceCandidateErrorEventArgs : EventArgs
 {
 	/// <summary>
-	/// Initializes ICE candidate error event data.
+	/// Initializes ICE candidate error event data with payload fields aligned to
+	/// <c>RTCPeerConnectionIceErrorEvent</c>.
 	/// </summary>
-	/// <param name="message">The error message.</param>
-	public RtcIceCandidateErrorEventArgs(string message)
+	/// <param name="address">The local address used when attempting ICE communication, if available.</param>
+	/// <param name="port">The local port used when attempting ICE communication, if available.</param>
+	/// <param name="url">The URL of the ICE server that produced the error.</param>
+	/// <param name="errorCode">The ICE error code.</param>
+	/// <param name="errorText">The ICE error text.</param>
+	public RtcIceCandidateErrorEventArgs(string? address, ushort? port, string url, ushort errorCode, string errorText)
 	{
-		Message = message;
+		Address = address;
+		Port = port;
+		Url = url;
+		ErrorCode = errorCode;
+		ErrorText = errorText;
 	}
 
 	/// <summary>
-	/// Gets the ICE candidate error message.
+	/// Gets the local address used for ICE communication, if available.
 	/// </summary>
-	public string Message { get; }
+	public string? Address { get; }
+
+	/// <summary>
+	/// Gets the local port used for ICE communication, if available.
+	/// </summary>
+	public ushort? Port { get; }
+
+	/// <summary>
+	/// Gets the URL of the ICE server that produced the error.
+	/// </summary>
+	public string Url { get; }
+
+	/// <summary>
+	/// Gets the ICE error code.
+	/// </summary>
+	public ushort ErrorCode { get; }
+
+	/// <summary>
+	/// Gets the ICE error text.
+	/// </summary>
+	public string ErrorText { get; }
+
 }
 
 /// <summary>

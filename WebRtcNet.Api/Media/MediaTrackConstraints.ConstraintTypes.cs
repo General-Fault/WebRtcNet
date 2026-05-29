@@ -23,6 +23,11 @@ public partial class MediaTrackConstraints
 		public T? Exact;
 
 		/// <summary>
+		/// Gets whether this constraint contains a required exact value.
+		/// </summary>
+		public bool IsRequired => Exact.HasValue;
+
+		/// <summary>
 		/// Creates a constraint with an exact value.
 		/// </summary>
 		/// <param name="value">Exact value.</param>
@@ -62,12 +67,17 @@ public partial class MediaTrackConstraints
 		/// <summary>
 		/// Preferred string value.
 		/// </summary>
-		public string Ideal = string.Empty;
+		public string? Ideal;
 
 		/// <summary>
 		/// Required exact string value.
 		/// </summary>
-		public string Exact = string.Empty;
+		public string? Exact;
+
+		/// <summary>
+		/// Gets whether this constraint contains a required exact value.
+		/// </summary>
+		public bool IsRequired => Exact is not null;
 
 		/// <summary>
 		/// Creates a string constraint with an exact value.
@@ -85,7 +95,7 @@ public partial class MediaTrackConstraints
 		/// <returns>Resolved string value.</returns>
 		public static implicit operator string(StringConstraint from)
 		{
-			return from.Exact ?? from.Ideal;
+			return from.Exact ?? from.Ideal ?? string.Empty;
 		}
 
 		/// <summary>
@@ -162,6 +172,11 @@ public partial class MediaTrackConstraints
 				ValidateState();
 			}
 		}
+
+		/// <summary>
+		/// Gets whether this constraint contains required bounds or an exact value.
+		/// </summary>
+		public bool IsRequired => Exact.HasValue || Min.HasValue || Max.HasValue;
 
 		/// <summary>
 		/// Creates an empty range constraint.

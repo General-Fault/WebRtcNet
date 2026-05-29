@@ -11,22 +11,22 @@ public enum VideoFacingModes
 	/// <summary>
 	/// The source faces toward the user.
 	/// </summary>
-	user,
+	User,
 
 	/// <summary>
 	/// The source faces away from the user toward the environment.
 	/// </summary>
-	environment,
+	Environment,
 
 	/// <summary>
 	/// The source faces to the user's left.
 	/// </summary>
-	left,
+	Left,
 
 	/// <summary>
 	/// The source faces to the user's right.
 	/// </summary>
-	right
+	Right
 }
 
 /// <summary>
@@ -38,12 +38,12 @@ public enum VideoResizeModes
 	/// <summary>
 	/// No resizing is applied.
 	/// </summary>
-	none,
+	None,
 
 	/// <summary>
 	/// Cropping and down-scaling may be applied.
 	/// </summary>
-	crop_and_scale
+	CropAndScale
 }
 
 /// <summary>
@@ -51,7 +51,10 @@ public enum VideoResizeModes
 /// reported by the platform. This is an out-only snapshot returned by
 /// <see cref="IMediaStreamTrack.GetCapabilities"/>.
 /// </summary>
-/// <seealso href="http://www.w3.org/TR/mediacapture-streams/#media-track-capabilities"/>
+/// <remarks>
+/// Sequence-valued capability members are represented as collections only. Scalar compatibility aliases are not exposed.
+/// </remarks>
+/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities"/>
 public sealed record MediaTrackCapabilities
 {
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-width"/>
@@ -67,10 +70,15 @@ public sealed record MediaTrackCapabilities
 	public ValueRange<double>? FrameRate { get; init; }
 
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-facingMode"/>
-	public VideoFacingModes? FacingMode { get; init; }
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-facingmode"/>
+	public IReadOnlyList<VideoFacingModes> FacingMode { get; init; } = [];
 
+	/// <summary>
+	/// The resize modes supported by the user agent for this track.
+	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-resizeMode"/>
-	public VideoResizeModes? ResizeMode { get; init; }
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-resizemode"/>
+	public IReadOnlyList<VideoResizeModes> ResizeMode { get; init; } = [];
 
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-sampleRate"/>
 	public ValueRange<uint>? SampleRate { get; init; }
@@ -87,6 +95,7 @@ public sealed record MediaTrackCapabilities
 	/// raw mode strings for forward compatibility.
 	/// </remarks>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-echoCancellation"/>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-echocancellation"/>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-echocancellationmodeenum"/>
 	public IReadOnlyList<EchoCancellationValue> EchoCancellation { get; init; } = [];
 
@@ -94,12 +103,15 @@ public sealed record MediaTrackCapabilities
 	/// The background-blur values supported by the user agent for this track.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-backgroundBlur"/>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-backgroundblur"/>
 	public IReadOnlyList<bool> BackgroundBlur { get; init; } = [];
 
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-autoGainControl"/>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-autogaincontrol"/>
 	public IReadOnlyList<bool> AutoGainControl { get; init; } = [];
 
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-noiseSuppression"/>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-noisesuppression"/>
 	public IReadOnlyList<bool> NoiseSuppression { get; init; } = [];
 
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-latency"/>

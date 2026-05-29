@@ -1,10 +1,23 @@
 ﻿namespace WebRtcNet;
 
 /// <summary>
+/// RTP coding parameters dictionary.
+/// </summary>
+/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpcodingparameters"/>
+public record RtcRtpCodingParameters
+{
+	/// <summary>
+	/// The RID RTP stream identifier, or null when not specified.
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpcodingparameters-rid"/>
+	public string? Rid { get; set; }
+}
+
+/// <summary>
 /// RTP encoding parameters dictionary.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpencodingparameters"/>
-public sealed record RtcRtpEncodingParameters
+public sealed record RtcRtpEncodingParameters : RtcRtpCodingParameters
 {
 	/// <summary>
 	/// Initializes encoding parameters with default values.
@@ -20,7 +33,7 @@ public sealed record RtcRtpEncodingParameters
 	/// <param name="maxBitrate">The maximum bitrate in bits per second when specified.</param>
 	/// <param name="scaleResolutionDownBy">The downscale factor for encoded media resolution.</param>
 	public RtcRtpEncodingParameters(bool active, ulong? maxBitrate, double scaleResolutionDownBy)
-		: this(active, maxBitrate, scaleResolutionDownBy, null, null)
+		: this(active, maxBitrate, scaleResolutionDownBy, null, null, null)
 	{
 	}
 
@@ -32,14 +45,17 @@ public sealed record RtcRtpEncodingParameters
 	/// <param name="scaleResolutionDownBy">The downscale factor for encoded media resolution.</param>
 	/// <param name="codec">The codec selected for this encoding when specified.</param>
 	/// <param name="maxFramerate">The maximum frame rate when specified.</param>
+	/// <param name="rid">The RID RTP stream identifier when specified.</param>
 	public RtcRtpEncodingParameters(
-		bool active, ulong? maxBitrate, double scaleResolutionDownBy, RtcRtpCodec? codec, double? maxFramerate)
+		bool active, ulong? maxBitrate, double scaleResolutionDownBy, RtcRtpCodec? codec, double? maxFramerate,
+		string? rid = null)
 	{
 		Active = active;
 		MaxBitrate = maxBitrate;
 		ScaleResolutionDownBy = scaleResolutionDownBy;
 		Codec = codec;
 		MaxFramerate = maxFramerate;
+		Rid = rid;
 	}
 
 	/// <summary>

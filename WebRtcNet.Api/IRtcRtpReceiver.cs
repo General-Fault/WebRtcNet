@@ -92,6 +92,12 @@ public abstract class IRtcRtpReceiver
 	/// <returns>A task that completes when the <see cref="IRtcStatsReport">statistics</see> for this receiver have been
 	/// gathered.</returns>
 	public abstract Task<IRtcStatsReport> GetStats();
+
+	/// <summary>
+	/// The jitter buffer target for this receiver, or null to indicate implementation defaults.
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpreceiver-jitterbuffertarget"/>
+	public abstract TimeSpan? JitterBufferTarget { get; set; }
 }
 
 /// <summary>

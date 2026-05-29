@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using WebRtcNet.Media;
 
@@ -31,6 +34,22 @@ public class MediaTrackConstraintTests
 	}
 
 	[Test]
+	public void MediaTrackCapabilities_Defaults_FacingMode_To_Empty()
+	{
+		var capabilities = new MediaTrackCapabilities();
+
+		Assert.That(capabilities.FacingMode, Is.Empty);
+	}
+
+	[Test]
+	public void MediaTrackCapabilities_Defaults_ResizeMode_To_Empty()
+	{
+		var capabilities = new MediaTrackCapabilities();
+
+		Assert.That(capabilities.ResizeMode, Is.Empty);
+	}
+
+	[Test]
 	public void MediaTrackSettings_Defaults_BackgroundBlur_To_False()
 	{
 		var settings = new MediaTrackSettings();
@@ -39,11 +58,128 @@ public class MediaTrackConstraintTests
 	}
 
 	[Test]
+	public void MediaTrackSettings_Defaults_ResizeMode_To_Null()
+	{
+		var settings = new MediaTrackSettings();
+
+		Assert.IsNull(settings.ResizeMode);
+	}
+
+	[Test]
+	public void MediaTrackSettings_Defaults_AutoGainControl_To_Null()
+	{
+		var settings = new MediaTrackSettings();
+
+		Assert.IsNull(settings.AutoGainControl);
+	}
+
+	[Test]
+	public void MediaTrackSettings_Defaults_NoiseSuppression_To_Null()
+	{
+		var settings = new MediaTrackSettings();
+
+		Assert.IsNull(settings.NoiseSuppression);
+	}
+
+	[Test]
 	public void MediaTrackConstraints_Defaults_EchoCancellation_To_Null()
 	{
 		var constraints = new MediaTrackConstraints();
 
 		Assert.IsNull(constraints.EchoCancellation);
+	}
+
+	[Test]
+	public void MediaTrackConstraints_IdlParity_Advanced_Defaults_To_Null_When_Unset()
+	{
+		var constraints = new MediaTrackConstraints();
+
+		Assert.That(constraints.Advanced, Is.Null);
+	}
+
+	[Test]
+	public void MediaTrackConstraintSet_IdlParity_Does_Not_Expose_Advanced_Member()
+	{
+		var advancedProperty = typeof(MediaTrackConstraintSet).GetProperty(nameof(MediaTrackConstraints.Advanced));
+
+		Assert.That(advancedProperty, Is.Null);
+	}
+
+	[Test]
+	public void MediaTrackConstraints_IdlParity_Advanced_Sequence_Preserves_List_Order()
+	{
+		var first = new MediaTrackConstraintSet { Width = 640 };
+		var second = new MediaTrackConstraintSet { Width = 1280 };
+		var third = new MediaTrackConstraintSet { Width = 1920 };
+		var constraints = new MediaTrackConstraints
+		{
+			Advanced = [first, second, third],
+		};
+
+		Assert.That(constraints.Advanced, Has.Count.EqualTo(3));
+		Assert.That(constraints.Advanced![0], Is.SameAs(first));
+		Assert.That(constraints.Advanced[1], Is.SameAs(second));
+		Assert.That(constraints.Advanced[2], Is.SameAs(third));
+	}
+
+	[Test]
+	public void MediaTrackConstraints_IdlParity_ConstraintProcessingOrder_Is_BaseThenAdvanced()
+	{
+		var first = new MediaTrackConstraintSet { Width = 640 };
+		var second = new MediaTrackConstraintSet { Width = 1280 };
+		var constraints = new MediaTrackConstraints
+		{
+			Width = 320,
+			Advanced = [first, second],
+		};
+
+		var ordered = constraints.EnumerateConstraintSetsInProcessingOrder().ToArray();
+
+		Assert.That(ordered, Has.Length.EqualTo(3));
+		Assert.That(ordered[0], Is.SameAs(constraints));
+		Assert.That(ordered[1], Is.SameAs(first));
+		Assert.That(ordered[2], Is.SameAs(second));
+	}
+
+	[Test]
+	public void MediaTrackConstraints_IdlParity_Advanced_Rejects_Null_ConstraintSet_Entries()
+	{
+		var constraints = new MediaTrackConstraints();
+		IList<MediaTrackConstraintSet> invalidAdvanced =
+			(IList<MediaTrackConstraintSet>)(object)new List<MediaTrackConstraintSet?> { new(), null };
+
+		var exception = Assert.Throws<ArgumentException>(() => constraints.Advanced = invalidAdvanced);
+
+		Assert.That(exception!.ParamName, Is.EqualTo("value"));
+	}
+
+	[Test]
+	public void MediaTrackConstraintSet_IdlParity_HasRequiredConstraints_IsFalse_For_IdealOnly_Values()
+	{
+		var constraints = new MediaTrackConstraintSet
+		{
+			Width = new MediaTrackConstraints.PositiveUIntRangeConstraint { Ideal = 1280 },
+			FacingMode = new MediaTrackConstraints.Constraint<VideoFacingModes>(VideoFacingModes.User)
+			{
+				Exact = null,
+				Ideal = VideoFacingModes.User,
+			},
+			DeviceId = new MediaTrackConstraints.StringConstraint("placeholder") { Exact = null, Ideal = "camera-1" },
+			EchoCancellation = new EchoCancellationConstraint { Ideal = true },
+		};
+
+		Assert.That(constraints.HasRequiredConstraints, Is.False);
+	}
+
+	[Test]
+	public void MediaTrackConstraintSet_IdlParity_HasRequiredConstraints_IsTrue_For_Exact_And_Bounded_Values()
+	{
+		var constraints = new MediaTrackConstraintSet
+		{
+			Width = new MediaTrackConstraints.PositiveUIntRangeConstraint { Min = 640 },
+		};
+
+		Assert.That(constraints.HasRequiredConstraints, Is.True);
 	}
 
 	[Test]

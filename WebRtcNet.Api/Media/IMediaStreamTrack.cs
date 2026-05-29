@@ -150,12 +150,13 @@ public abstract class IMediaStreamTrack
 	public abstract MediaTrackCapabilities GetCapabilities();
 
 	/// <summary>
-	/// Returns the Constraints that were the argument to the most recent successful call of
-	/// <see cref="ApplyConstraints" />, maintaining the order in which they were specified. Note that some of the optional
-	/// <see cref="MediaStreamConstraints" />ConstraintSets returned may not be currently satisfied. To check which
-	/// ConstraintSets are
-	/// currently in effect, the application should use <see cref="GetSettings" />.
+	/// Returns the constraints supplied to the most recent successful call to
+	/// <see cref="ApplyConstraints" />.
 	/// </summary>
+	/// <remarks>
+	/// Returned <see cref="MediaTrackConstraints" /> values can include ideal or advanced entries that are not currently
+	/// active. Use <see cref="GetSettings" /> to inspect effective values.
+	/// </remarks>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-getconstraints" />
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#constrainable-interface" />
 	/// <returns>The currently applied constraints for this track.</returns>
@@ -172,6 +173,12 @@ public abstract class IMediaStreamTrack
 	/// <summary>
 	/// Apply the supplied <see cref="MediaTrackConstraints">constraints</see>. Use null to remove all constraints.
 	/// </summary>
+	/// <remarks>
+	/// Required constraints (for example <c>exact</c>, <c>min</c>, and <c>max</c>) participate in acceptance checks.
+	/// Advanced sets are evaluated in the order supplied and may be skipped when unsatisfied without failing the entire apply.
+	/// Local reference: <c>documents/specs/mediacapture/mediacapture-idl.webidl</c>
+	/// (<c>MediaStreamTrack.applyConstraints</c>, <c>MediaTrackConstraintSet</c>, and <c>MediaTrackConstraints.advanced</c>).
+	/// </remarks>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-applyconstraints" />
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#constrainable-interface" />
 	/// <param name="constraints">Constraints to apply, or <see langword="null" /> to clear constraints.</param>
