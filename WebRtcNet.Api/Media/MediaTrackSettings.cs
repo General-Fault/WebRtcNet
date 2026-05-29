@@ -9,10 +9,10 @@
 public sealed record MediaTrackSettings
 {
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-width"/>
-	public int Width { get; init; }
+	public uint Width { get; init; }
 
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-height"/>
-	public int Height { get; init; }
+	public uint Height { get; init; }
 
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-aspect"/>
 	public double AspectRatio { get; init; }
@@ -27,13 +27,18 @@ public sealed record MediaTrackSettings
 	public double Volume { get; init; }
 
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-sampleRate"/>
-	public int SampleRate { get; init; }
+	public uint SampleRate { get; init; }
 
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-sampleSize"/>
-	public int SampleSize { get; init; }
+	public uint SampleSize { get; init; }
 
+	/// <summary>
+	/// Current echo-cancellation setting for the track, represented as either a boolean value
+	/// or a mode string.
+	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-echoCancellation"/>
-	public bool EchoCancellation { get; init; }
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatracksettings-echocancellation"/>
+	public EchoCancellationValue EchoCancellation { get; init; } = new(false);
 
 	/// <summary>
 	/// Indicates whether background blur is enabled for the current track settings.
@@ -45,7 +50,7 @@ public sealed record MediaTrackSettings
 	public double Latency { get; init; }
 
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-channelCount"/>
-	public int ChannelCount { get; init; }
+	public uint ChannelCount { get; init; }
 
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-deviceId"/>
 	public string DeviceId { get; init; } = string.Empty;

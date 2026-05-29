@@ -12,7 +12,7 @@ public enum VideoFacingModes { user, environment, left, right }
 /// Describes how video from a particular video track may be resized.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-videoresizemodeenum"/>
-public enum VideResizeModes { none, crop_and_scale }
+public enum VideoResizeModes { none, crop_and_scale }
 
 /// <summary>
 /// MediaTrackCapabilities represents the capabilities of an <see cref="IMediaStreamTrack"/> object as
@@ -23,10 +23,10 @@ public enum VideResizeModes { none, crop_and_scale }
 public sealed record MediaTrackCapabilities
 {
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-width"/>
-	public ValueRange<int>? Width { get; init; }
+	public ValueRange<uint>? Width { get; init; }
 
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-height"/>
-	public ValueRange<int>? Height { get; init; }
+	public ValueRange<uint>? Height { get; init; }
 
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-aspect"/>
 	public ValueRange<double>? AspectRatio { get; init; }
@@ -38,16 +38,25 @@ public sealed record MediaTrackCapabilities
 	public VideoFacingModes? FacingMode { get; init; }
 
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-resizeMode"/>
-	public VideResizeModes? ResizeMode { get; init; }
+	public VideoResizeModes? ResizeMode { get; init; }
 
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-sampleRate"/>
-	public ValueRange<int>? SampleRate { get; init; }
+	public ValueRange<uint>? SampleRate { get; init; }
 
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-sampleSize"/>
-	public ValueRange<int>? SampleSize { get; init; }
+	public ValueRange<uint>? SampleSize { get; init; }
 
+	/// <summary>
+	/// Supported echo-cancellation values. Boolean values appear first when present, followed
+	/// by any mode values.
+	/// </summary>
+	/// <remarks>
+	/// Mode entries are represented as <see cref="EchoCancellationValue"/> values backed by
+	/// raw mode strings for forward compatibility.
+	/// </remarks>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-echoCancellation"/>
-	public IReadOnlyList<bool> EchoCancellation { get; init; } = [];
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-echocancellationmodeenum"/>
+	public IReadOnlyList<EchoCancellationValue> EchoCancellation { get; init; } = [];
 
 	/// <summary>
 	/// The background-blur values supported by the user agent for this track.
@@ -65,7 +74,7 @@ public sealed record MediaTrackCapabilities
 	public ValueRange<double>? Latency { get; init; }
 
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-channelCount"/>
-	public ValueRange<double>? ChannelCount { get; init; }
+	public ValueRange<uint>? ChannelCount { get; init; }
 
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-deviceId"/>
 	public string DeviceId { get; init; } = string.Empty;
