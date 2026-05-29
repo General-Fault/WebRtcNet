@@ -4,43 +4,57 @@ using System.Threading.Tasks;
 
 namespace WebRtcNet.Media;
 
-/// <Summary>
-/// A .Net implementation of the MediaDevices Interface (W3C Candidate Recommendation Draft 16 June 2022)
-/// </Summary>
-/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#mediadevices"/>
+/// <summary>
+/// A .NET implementation of the <c>MediaDevices</c> interface.
+/// </summary>
+/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#mediadevices" />
 public interface IMediaDevices
 {
-    /// <summary>
-    /// The set of availab emedia devices has changed. The current list devices can be retrieved with the 
-    /// EnumerateDevices() method.
-    /// </summary>
-    /// <see href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadevices-ondevicechange"/>
-    event EventHandler OnDeviceChange;
+	/// <summary>
+	/// Raised when the set of available media devices changes — for example, when a camera or
+	/// microphone is connected or disconnected. The event args carry the updated device list and
+	/// a hint about which devices were recently inserted by the user.
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadevices-ondevicechange" />
+	event EventHandler<DeviceChangeEventArgs> OnDeviceChange;
 
-    /// <summary>
-    /// Collects information about the User Agent's available media input and output devices.
-    /// </summary>
-    /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadevices-enumeratedevices"/>
-    /// <returns>A task that when completed has a list of MediaDeviceInfo objects representing available devices.</returns>
-    Task<IEnumerable<MediaDeviceInfo>> EnumerateDevices();
+	/// <summary>
+	/// Collects information about the available media input and output devices.
+	/// </summary>
+	/// <returns>
+	/// A task that, when complete, yields a list of <see cref="MediaDeviceInfo" /> objects
+	/// representing each available device.
+	/// </returns>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadevices-enumeratedevices" />
+	Task<IEnumerable<MediaDeviceInfo>> EnumerateDevices();
 
-    #region 10.2 MediaDevices Interface Extensions
-    /// <summary>
-    /// The GetSupportedConstraints method is provided to allow the application to determine which constraints are 
-    /// recognized. Applications may need this information to use required constraints reliably or get predictable 
-    /// results from combinatory logic in advanced constraints.
-    /// </summary>
-    /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadevices-getsupportedconstraints"/>
-    /// <returns>A dictionary whose members are the constrainable properties known to the User Agent.</returns>
-    MediaTrackSupportedConstraints GetSupportedConstraints();
+	#region 10.2 MediaDevices Interface Extensions
 
-    /// <summary>
-    /// The GetUserMedia method uses constraints to help select an appropriate source for a track and configure it.
-    /// </summary>
-    /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadevices-getusermedia"/>
-    /// <param name="constraints">Used to instruct the User Agent what sort of IMediaStreamTracks to include in the MediaStream</param>
-    /// <returns>an IMediaStream with tracks that conform to the contraints provided.</returns>
-    Task<IMediaStream> GetUserMedia(MediaStreamConstraints constraints);
+	/// <summary>
+	/// Returns the set of constrainable properties recognised by this implementation.
+	/// Applications can use this to determine which constraints can be applied reliably or to
+	/// build predictable logic around advanced constraint sets.
+	/// </summary>
+	/// <returns>
+	/// A <see cref="MediaTrackSupportedConstraints" /> instance whose members indicate which
+	/// constrainable properties are supported.
+	/// </returns>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadevices-getsupportedconstraints" />
+	MediaTrackSupportedConstraints GetSupportedConstraints();
 
-    #endregion //10.2 MediaDevices Interface Extensions
+	/// <summary>
+	/// Requests access to media input devices and returns a <see cref="IMediaStream" /> whose
+	/// tracks satisfy the supplied constraints.
+	/// </summary>
+	/// <param name="constraints">
+	/// Specifies the type and configuration of media tracks to include in the returned stream.
+	/// </param>
+	/// <returns>
+	/// A task that, when complete, yields an <see cref="IMediaStream" /> whose tracks conform
+	/// to <paramref name="constraints" />.
+	/// </returns>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadevices-getusermedia" />
+	Task<IMediaStream> GetUserMedia(MediaStreamConstraints constraints);
+
+	#endregion //10.2 MediaDevices Interface Extensions
 }
