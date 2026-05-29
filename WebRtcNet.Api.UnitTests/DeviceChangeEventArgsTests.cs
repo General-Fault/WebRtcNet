@@ -4,7 +4,7 @@ using System.Reflection;
 using NUnit.Framework;
 using WebRtcNet.Media;
 
-namespace WebRtcNet.UnitTests;
+namespace WebRtcNet.Api.UnitTests;
 
 [TestFixture]
 public class DeviceChangeEventArgsTests
