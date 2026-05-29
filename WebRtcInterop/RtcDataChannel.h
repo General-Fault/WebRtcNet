@@ -12,12 +12,12 @@ namespace WebRtcInterop
 	using namespace System;
 	using namespace WebRtcNet;
 
-	public ref class RtcDataChannel : public IRtcDataChannel
+	public ref class RtcDataChannel : public WebRtcNet::RtcDataChannel
 	{
 	public:
 		~RtcDataChannel();
 
-		// Inherited via IRtcDataChannel
+		// Inherited via RtcDataChannel
 		virtual property String^ Label { String^ get() override; }
 		virtual property bool Ordered { bool get() override; }
 		virtual property Nullable<uint32_t> MaxPacketLifeTime { Nullable<uint32_t> get() override; }

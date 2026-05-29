@@ -9,10 +9,10 @@ public record RtcOfferAnswerOptions
 }
 
 /// <summary>
-/// Used by <see cref="IRtcPeerConnection.CreateOffer"/>
+/// Used by <see cref="RtcPeerConnection.CreateOffer"/>
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcofferoptions" />
-/// <seealso cref="IRtcPeerConnection.CreateOffer"/>
+/// <seealso cref="RtcPeerConnection.CreateOffer"/>
 public record RtcOfferOptions : RtcOfferAnswerOptions
 {
 	/// <summary>
@@ -24,8 +24,8 @@ public record RtcOfferOptions : RtcOfferAnswerOptions
 }
 
 /// <summary>
-/// Used by <see cref="IRtcPeerConnection.CreateAnswer"/>
+/// Used by <see cref="RtcPeerConnection.CreateAnswer"/>
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcansweroptions"/>
-/// <seealso cref="IRtcPeerConnection.CreateAnswer"/>
+/// <seealso cref="RtcPeerConnection.CreateAnswer"/>
 public record RtcAnswerOptions : RtcOfferAnswerOptions;

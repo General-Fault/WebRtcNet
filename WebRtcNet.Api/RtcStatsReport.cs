@@ -100,6 +100,6 @@ public sealed record RtcOutboundRtpStreamStats : RtcRtpStreamStats
 /// as the ids of all the RTCStats-derived dictionaries that have been generated for this stats report.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc-stats/#rtcstatsreport-object" />
-public interface IRtcStatsReport : IReadOnlyDictionary<string, RtcStats>
+public interface RtcStatsReport : IReadOnlyDictionary<string, RtcStats>
 {
 };

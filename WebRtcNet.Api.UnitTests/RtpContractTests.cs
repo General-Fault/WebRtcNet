@@ -33,20 +33,20 @@ public class RtpContractTests
 	}
 
 	[Test]
-	public void IRtcRtpSender_Exposes_Updated_SetParameters_Overload()
+	public void RtcRtpSender_Exposes_Updated_SetParameters_Overload()
 	{
-		var method = typeof(IRtcRtpSender).GetMethod(
-			nameof(IRtcRtpSender.SetParameters),
+		var method = typeof(RtcRtpSender).GetMethod(
+			nameof(RtcRtpSender.SetParameters),
 			new[] { typeof(RtcRtpSendParameters), typeof(RtcSetParameterOptions) });
 
 		Assert.IsNotNull(method);
 	}
 
 	[Test]
-	public void IRtcRtpSender_Uses_Nullable_Track_And_Transport_Properties()
+	public void RtcRtpSender_Uses_Nullable_Track_And_Transport_Properties()
 	{
-		var trackProperty = typeof(IRtcRtpSender).GetProperty(nameof(IRtcRtpSender.Track));
-		var transportProperty = typeof(IRtcRtpSender).GetProperty(nameof(IRtcRtpSender.Transport));
+		var trackProperty = typeof(RtcRtpSender).GetProperty(nameof(RtcRtpSender.Track));
+		var transportProperty = typeof(RtcRtpSender).GetProperty(nameof(RtcRtpSender.Transport));
 
 		Assert.IsNotNull(trackProperty);
 		Assert.IsNotNull(transportProperty);
@@ -55,37 +55,37 @@ public class RtpContractTests
 	}
 
 	[Test]
-	public void IRtcRtpSender_Dtmf_Is_Nullable()
+	public void RtcRtpSender_Dtmf_Is_Nullable()
 	{
-		var property = typeof(IRtcRtpSender).GetProperty(nameof(IRtcRtpSender.Dtmf));
+		var property = typeof(RtcRtpSender).GetProperty(nameof(RtcRtpSender.Dtmf));
 
 		Assert.IsNotNull(property);
 		Assert.AreEqual(2, GetNullableFlag(property!.GetMethod!.ReturnParameter));
 	}
 
 	[Test]
-	public void IRtcRtpSender_ReplaceTrack_Allows_Nullable_WithTrack()
+	public void RtcRtpSender_ReplaceTrack_Allows_Nullable_WithTrack()
 	{
-		var method = typeof(IRtcRtpSender).GetMethod(nameof(IRtcRtpSender.ReplaceTrack), new[] { typeof(IMediaStreamTrack) });
+		var method = typeof(RtcRtpSender).GetMethod(nameof(RtcRtpSender.ReplaceTrack), new[] { typeof(MediaStreamTrack) });
 
 		Assert.IsNotNull(method);
 		Assert.AreEqual(2, GetNullableFlag(method!.GetParameters()[0]));
 	}
 
 	[Test]
-	public void IRtcRtpTransceiver_Uses_Shared_RtpCodec_Type_For_Codec_Preferences()
+	public void RtcRtpTransceiver_Uses_Shared_RtpCodec_Type_For_Codec_Preferences()
 	{
-		var method = typeof(IRtcRtpTransceiver).GetMethod(
-			nameof(IRtcRtpTransceiver.SetCodecPreferences),
+		var method = typeof(RtcRtpTransceiver).GetMethod(
+			nameof(RtcRtpTransceiver.SetCodecPreferences),
 			new[] { typeof(IEnumerable<RtcRtpCodec>) });
 
 		Assert.IsNotNull(method);
 	}
 
 	[Test]
-	public void IRtcRtpReceiver_Exposes_JitterBufferTarget_Property()
+	public void RtcRtpReceiver_Exposes_JitterBufferTarget_Property()
 	{
-		var property = typeof(IRtcRtpReceiver).GetProperty(nameof(IRtcRtpReceiver.JitterBufferTarget));
+		var property = typeof(RtcRtpReceiver).GetProperty(nameof(RtcRtpReceiver.JitterBufferTarget));
 
 		Assert.IsNotNull(property);
 		Assert.AreEqual(typeof(TimeSpan?), property!.PropertyType);
@@ -94,18 +94,18 @@ public class RtpContractTests
 	}
 
 	[Test]
-	public void IRtcRtpReceiver_Transport_Is_Nullable()
+	public void RtcRtpReceiver_Transport_Is_Nullable()
 	{
-		var property = typeof(IRtcRtpReceiver).GetProperty(nameof(IRtcRtpReceiver.Transport));
+		var property = typeof(RtcRtpReceiver).GetProperty(nameof(RtcRtpReceiver.Transport));
 
 		Assert.IsNotNull(property);
 		Assert.AreEqual(2, GetNullableFlag(property!.GetMethod!.ReturnParameter));
 	}
 
 	[Test]
-	public void IRtcRtpTransceiver_Mid_Is_Nullable()
+	public void RtcRtpTransceiver_Mid_Is_Nullable()
 	{
-		var property = typeof(IRtcRtpTransceiver).GetProperty(nameof(IRtcRtpTransceiver.Mid));
+		var property = typeof(RtcRtpTransceiver).GetProperty(nameof(RtcRtpTransceiver.Mid));
 
 		Assert.IsNotNull(property);
 		Assert.AreEqual(2, GetNullableFlag(property!.GetMethod!.ReturnParameter));
@@ -114,8 +114,8 @@ public class RtpContractTests
 	[Test]
 	public void RtpSender_And_Receiver_Expose_Static_GetCapabilities()
 	{
-		var senderMethod = typeof(IRtcRtpSender).GetMethod(nameof(IRtcRtpSender.GetCapabilities), new[] { typeof(MediaStreamTrackKind) });
-		var receiverMethod = typeof(IRtcRtpReceiver).GetMethod(nameof(IRtcRtpReceiver.GetCapabilities), new[] { typeof(MediaStreamTrackKind) });
+		var senderMethod = typeof(RtcRtpSender).GetMethod(nameof(RtcRtpSender.GetCapabilities), new[] { typeof(MediaStreamTrackKind) });
+		var receiverMethod = typeof(RtcRtpReceiver).GetMethod(nameof(RtcRtpReceiver.GetCapabilities), new[] { typeof(MediaStreamTrackKind) });
 
 		Assert.IsNotNull(senderMethod);
 		Assert.IsNotNull(receiverMethod);

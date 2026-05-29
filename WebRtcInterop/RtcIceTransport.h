@@ -13,7 +13,7 @@ namespace WebRtcInterop
 	using namespace Collections::Generic;
 	using namespace WebRtcNet;
 
-	public ref class RtcIceTransport sealed : public IRtcIceTransport
+	public ref class RtcIceTransport sealed : public WebRtcNet::RtcIceTransport
 	{
 	public:
 		~RtcIceTransport();

@@ -1,4 +1,4 @@
-﻿namespace WebRtcNet;
+namespace WebRtcNet;
 
 /// <summary>
 /// Describes the type of SDP payload represented by an <see cref="RtcSessionDescription" />.
@@ -32,7 +32,7 @@ public enum RtcSdpType
 }
 
 /// <summary>
-/// Represents an SDP session description used by <see cref="IRtcPeerConnection" /> operations.
+/// Represents an SDP session description used by <see cref="RtcPeerConnection" /> operations.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcsessiondescriptioninit" />
 public struct RtcSessionDescription

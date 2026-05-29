@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +10,7 @@ namespace WebRtcNet;
 ///     Describes the possible states of the PeerConnection connection. Note this is currently identical to
 ///     <see cref="RtcIceTransportState" />.
 /// </summary>
-/// <seealso cref="IRtcPeerConnection.ConnectionState" />
+/// <seealso cref="RtcPeerConnection.ConnectionState" />
 /// <seealso href="http://www.w3.org/TR/webrtc/#rtciceconnectionstate-enum" />
 public enum RtcIceConnectionState
 {
@@ -108,36 +108,36 @@ public enum RtcSignalingState
 /// <summary>
 ///     Represents the possible states of the RtcPeerConnection
 /// </summary>
-/// <see cref="IRtcPeerConnection.ConnectionState" />
+/// <see cref="RtcPeerConnection.ConnectionState" />
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcpeerconnectionstate-enum" />
 public enum RtcPeerConnectionState
 {
 	/// <summary>
-	///     The <see cref="IRtcPeerConnection">RtcPeerConnection</see> is closed.
+	///     The <see cref="RtcPeerConnection">RtcPeerConnection</see> is closed.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnectionstate-closed" />
 	Closed,
 
 	/// <summary>
-	///     The previous state doesn't apply and any <see cref="IRtcIceTransport">RTCIceTransports</see> are in the
+	///     The previous state doesn't apply and any <see cref="RtcIceTransport">RTCIceTransports</see> are in the
 	///     <see cref="RtcIceTransportState.Failed">failed</see> state or any
-	///     <see cref="IRtcDtlsTransport">RTCDtlsTransports</see> are in the
+	///     <see cref="RtcDtlsTransport">RTCDtlsTransports</see> are in the
 	///     <see cref="RtcIceTransportState.Failed">failed</see> state.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnectionstate-failed" />
 	Failed,
 
 	/// <summary>
-	///     None of the previous states apply and any <see cref="IRtcIceTransport">RTCIceTransports</see> are in the
+	///     None of the previous states apply and any <see cref="RtcIceTransport">RTCIceTransports</see> are in the
 	///     <see cref="RtcIceTransportState.Disconnected">disconnected</see> state.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnectionstate-disconnected" />
 	Disconnected,
 
 	/// <summary>
-	///     None of the previous states apply and all <see cref="IRtcIceTransport">RTCIceTransports</see> are in the
+	///     None of the previous states apply and all <see cref="RtcIceTransport">RTCIceTransports</see> are in the
 	///     <see cref="RtcIceTransportState.New">new</see> or <see cref="RtcIceTransportState.Closed">closed</see> state, and
-	///     all <seealso cref="IRtcDtlsTransport">RTCDtlsTransports</seealso> are in the
+	///     all <seealso cref="RtcDtlsTransport">RTCDtlsTransports</seealso> are in the
 	///     <see cref="RtcDtlsTransportState.New">new</see> or <see cref="RtcDtlsTransportState.Closed">closed</see> state, or
 	///     there are no transports.
 	/// </summary>
@@ -145,19 +145,19 @@ public enum RtcPeerConnectionState
 	New,
 
 	/// <summary>
-	///     None of the previous states apply and any <see cref="IRtcIceTransport">RTCIceTransports</see> is in the
+	///     None of the previous states apply and any <see cref="RtcIceTransport">RTCIceTransports</see> is in the
 	///     <see cref="RtcIceTransportState.Checking">checking</see> state or any
-	///     <see cref="IRtcDtlsTransport">RTCDtlsIceTransport</see> is in the
+	///     <see cref="RtcDtlsTransport">RTCDtlsIceTransport</see> is in the
 	///     <see cref="RtcDtlsTransportState.Connecting">connecting</see> state.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnectionstate-connecting" />
 	Connecting,
 
 	/// <summary>
-	///     None of the previous states apply and all <see cref="IRtcIceTransport">RTCIceTransports</see> are in the
+	///     None of the previous states apply and all <see cref="RtcIceTransport">RTCIceTransports</see> are in the
 	///     <see cref="RtcIceTransportState.Connected">connected</see>,
 	///     <see cref="RtcIceTransportState.Completed">completed</see> or <see cref="RtcIceTransportState.Closed">closed</see>
-	///     state, and all <see cref="IRtcIceTransport">RTCDtlsTransports</see> are in the
+	///     state, and all <see cref="RtcIceTransport">RTCDtlsTransports</see> are in the
 	///     <see cref="RtcDtlsTransportState.Connected">connected</see> or
 	///     <see cref="RtcDtlsTransportState.Closed">closed</see> state.
 	/// </summary>
@@ -171,12 +171,12 @@ public enum RtcPeerConnectionState
 /// </Summary>
 /// <seealso href="http://www.w3.org/TR/webrtc/#rtcpeerconnection-interface" />
 /// <seealso href="https://www.w3.org/TR/webrtc/#interface-definition" />
-public abstract class IRtcPeerConnection
+public abstract class RtcPeerConnection
 {
 	/// <summary>
 	/// Initializes the peer connection wrapper.
 	/// </summary>
-	protected IRtcPeerConnection()
+	protected RtcPeerConnection()
 	{
 	}
 
@@ -293,7 +293,7 @@ public abstract class IRtcPeerConnection
 	/// Gets the SCTP transport used for data channels, if available.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-sctp" />
-	public abstract IRtcSctpTransport? Sctp { get; }
+	public abstract RtcSctpTransport? Sctp { get; }
 
 	/// <summary>
 	/// Creates a certificate for use with peer connections.
@@ -310,7 +310,7 @@ public abstract class IRtcPeerConnection
 	///     <see href="http://tools.ietf.org/html/rfc3264">[SDP]</see> that contains an
 	///     <see href="https://tools.ietf.org/html/rfc3264">RFC 3264</see> offer with the supported configurations for the
 	///     session, including <see cref="RtcSessionDescription">descriptions</see> of the local
-	///     <see cref="IMediaStreamTrack">MediaStreamTracks</see> attached to this RTCPeerConnection, the codec/RTP/RTCP
+	///     <see cref="MediaStreamTrack">MediaStreamTracks</see> attached to this RTCPeerConnection, the codec/RTP/RTCP
 	///     options supported by this implementation, and any <see cref="RtcIceCandidate">candidates</see> that have been
 	///     gathered by the ICE Agent. The <see cref="RtcOfferOptions">options</see> parameter may be supplied to provide
 	///     additional control over the offer generated.
@@ -323,7 +323,7 @@ public abstract class IRtcPeerConnection
 	///     Generates a <see cref="RtcSessionDescription" /> <see href="http://tools.ietf.org/html/rfc3264">[SDP]</see> answer
 	///     with the supported configuration for the session that is compatible with the parameters in the remote
 	///     configuration. Like <see cref="CreateOffer" />, the returned <see cref="RtcSessionDescription" /> contains
-	///     <see cref="RtcSessionDescription">descriptions</see> of the local <see cref="IMediaStream">MediaStreams</see>
+	///     <see cref="RtcSessionDescription">descriptions</see> of the local <see cref="MediaStream">MediaStreams</see>
 	///     attached to this RTCPeerConnection, the codec/RTP/RTCP options negotiated for this session, and any
 	///     <see cref="RtcIceCandidate">candidates</see> that have been gathered by the ICE Agent. The
 	///     <see cref="RtcAnswerOptions">options</see> parameter may be supplied to provide additional control over the
@@ -433,10 +433,10 @@ public abstract class IRtcPeerConnection
 	/// <summary>
 	///     Gathers stats for the given selector and reports the result asynchronously.
 	/// </summary>
-	/// <param name="selector">An <seealso cref="IMediaStreamTrack" /> for which to generate a stats report.</param>
+	/// <param name="selector">An <seealso cref="MediaStreamTrack" /> for which to generate a stats report.</param>
 	/// <seealso
 	///     href="https://www.w3.org/TR/webrtc/#widl-RTCPeerConnection-getStats-Promise-RTCStatsReport--MediaStreamTrack-selector" />
-	public abstract Task<IRtcStatsReport> GetStats(IMediaStreamTrack? selector = null);
+	public abstract Task<RtcStatsReport> GetStats(MediaStreamTrack? selector = null);
 
 	#endregion
 
@@ -444,72 +444,72 @@ public abstract class IRtcPeerConnection
 	#region 5 RTP Media API
 
 	/// <summary>
-	///     Returns a sequence of <see cref="IRtcRtpSender">RTCRtpSender</see> objects representing the RTP senders that belong
-	///     to non-stopped <see cref="IRtcRtpTransceiver">RTCRtpTransceiver</see> objects currently attached to this
+	///     Returns a sequence of <see cref="RtcRtpSender">RTCRtpSender</see> objects representing the RTP senders that belong
+	///     to non-stopped <see cref="RtcRtpTransceiver">RTCRtpTransceiver</see> objects currently attached to this
 	///     RTCPeerConnection object.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-getsenders" />
-	public abstract IEnumerable<IRtcRtpSender> GetSenders();
+	public abstract IEnumerable<RtcRtpSender> GetSenders();
 
 	/// <summary>
-	///     Returns a sequence of <see cref="IRtcRtpReceiver">RTCRtpReceiver</see> objects representing the RTP receivers that
-	///     belong to non-stopped <see cref="IRtcRtpTransceiver">RTCRtpTransceiver</see> objects currently attached to this
+	///     Returns a sequence of <see cref="RtcRtpReceiver">RTCRtpReceiver</see> objects representing the RTP receivers that
+	///     belong to non-stopped <see cref="RtcRtpTransceiver">RTCRtpTransceiver</see> objects currently attached to this
 	///     RTCPeerConnection object.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-getreceivers" />
-	public abstract IEnumerable<IRtcRtpReceiver> GetReceivers();
+	public abstract IEnumerable<RtcRtpReceiver> GetReceivers();
 
 	/// <summary>
-	///     Returns a sequence of <see cref="IRtcRtpTransceiver">RTCRtpTransceiver</see> objects representing the RTP
+	///     Returns a sequence of <see cref="RtcRtpTransceiver">RTCRtpTransceiver</see> objects representing the RTP
 	///     transceivers that are currently attached to this RTCPeerConnection object.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-gettranseceivers" />
-	public abstract IEnumerable<IRtcRtpTransceiver> GetTransceivers();
+	public abstract IEnumerable<RtcRtpTransceiver> GetTransceivers();
 
 	/// <summary>
-	///     Adds a new <see cref="IMediaStreamTrack">track</see> to the RTCPeerConnection, and indicates that it is contained
-	///     in the specified <see cref="IMediaStream">MediaStreams</see>. If an <see cref="IRtcRtpSender">RTCRtpSender</see>
+	///     Adds a new <see cref="MediaStreamTrack">track</see> to the RTCPeerConnection, and indicates that it is contained
+	///     in the specified <see cref="MediaStream">MediaStreams</see>. If an <see cref="RtcRtpSender">RTCRtpSender</see>
 	///     for track already exists in <see cref="GetSenders">senders</see>, throw an <see cref="InvalidOperationException" />
 	///     .
 	/// </summary>
 	/// <returns>
-	///     A newly created <see cref="IRtcRtpSender" /> created from the <see cref="IMediaStreamTrack">track</see> and
-	///     <see cref="IMediaStream">streams</see>.
+	///     A newly created <see cref="RtcRtpSender" /> created from the <see cref="MediaStreamTrack">track</see> and
+	///     <see cref="MediaStream">streams</see>.
 	/// </returns>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-addtrack" />
-	public abstract IRtcRtpSender AddTrack(IMediaStreamTrack track, params IMediaStream[] streams);
+	public abstract RtcRtpSender AddTrack(MediaStreamTrack track, params MediaStream[] streams);
 
 	/// <summary>
-	///		Adds a new <see cref="IRtcRtpTransceiver">RTCRtpTransceiver</see> to this
-	///		<see cref="IRtcPeerConnection">RTCPeerConnection</see> from an existing media <paramref name="track"/>.
+	///		Adds a new <see cref="RtcRtpTransceiver">RTCRtpTransceiver</see> to this
+	///		<see cref="RtcPeerConnection">RTCPeerConnection</see> from an existing media <paramref name="track"/>.
 	/// </summary>
 	/// <param name="track">The media track used to create the transceiver.</param>
 	/// <param name="init">Optional initialization settings for the created transceiver.</param>
-	/// <returns>The created <see cref="IRtcRtpTransceiver">RTCRtpTransceiver</see>.</returns>
+	/// <returns>The created <see cref="RtcRtpTransceiver">RTCRtpTransceiver</see>.</returns>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-addtransceiver"/>
-	public abstract IRtcRtpTransceiver AddTransceiver(IMediaStreamTrack track, RtcRtpTransceiverInit? init = null);
+	public abstract RtcRtpTransceiver AddTransceiver(MediaStreamTrack track, RtcRtpTransceiverInit? init = null);
 
 	/// <summary>
-	///		Adds a new <see cref="IRtcRtpTransceiver">RTCRtpTransceiver</see> to this
-	///		<see cref="IRtcPeerConnection">RTCPeerConnection</see> for the specified media <paramref name="kind"/>.
+	///		Adds a new <see cref="RtcRtpTransceiver">RTCRtpTransceiver</see> to this
+	///		<see cref="RtcPeerConnection">RTCPeerConnection</see> for the specified media <paramref name="kind"/>.
 	/// </summary>
 	/// <param name="kind">The media kind used to create the transceiver.</param>
 	/// <param name="init">Optional initialization settings for the created transceiver.</param>
-	/// <returns>The created <see cref="IRtcRtpTransceiver">RTCRtpTransceiver</see>.</returns>
+	/// <returns>The created <see cref="RtcRtpTransceiver">RTCRtpTransceiver</see>.</returns>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-addtransceiver"/>
-	public abstract IRtcRtpTransceiver AddTransceiver(MediaStreamTrackKind kind, RtcRtpTransceiverInit? init = null);
+	public abstract RtcRtpTransceiver AddTransceiver(MediaStreamTrackKind kind, RtcRtpTransceiverInit? init = null);
 
 	/// <summary>
-	///     Stops sending media from sender. The <see cref="IRtcRtpSender">RTCRtpSender</see> will still appear in
+	///     Stops sending media from sender. The <see cref="RtcRtpSender">RTCRtpSender</see> will still appear in
 	///     <see cref="GetSenders" />. Doing so will cause future calls to <see cref="CreateOffer" /> to mark the media
-	///     description for the corresponding <see cref="IRtcRtpTransceiver">transceiver</see> as
+	///     description for the corresponding <see cref="RtcRtpTransceiver">transceiver</see> as
 	///     <see cref="RtcRtpTransceiverDirection.RecvOnly" /> or <see cref="RtcRtpTransceiverDirection.Inactive" />, as
 	///     defined in <see href="https://tools.ietf.org/html/rfc8829#section-5.2.2">[RFC8829] (section 5.2.2.)</see>.
 	/// </summary>
 	/// <seealso href="https://tools.ietf.org/html/rfc8829#section-5.2.2" />
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-removetrack" />
 	/// <param name="sender">The sender to stop sending media for.</param>
-	public abstract void RemoveTrack(IRtcRtpSender sender);
+	public abstract void RemoveTrack(RtcRtpSender sender);
 
 	/// <summary>
 	///     New incoming media has been negotiated for a specific RTCRtpReceiver, and that receiver's track has been added to
@@ -524,14 +524,14 @@ public abstract class IRtcPeerConnection
 	#region 6 Peer-to-peer Data API
 
 	/// <summary>
-	///     Creates a new IRtcDataChannel object with the given label.
+	///     Creates a new RtcDataChannel object with the given label.
 	///     The RtcDataChannelInit object can be used to configure properties of the underlying channel such as data
 	///     reliability.
 	/// </summary>
 	/// <param name="label">The new channel's label is set to this value.</param>
 	/// <param name="dataChannelInit">Optional parameters with wich to initialize the new data channel.</param>
 	/// <returns></returns>
-	public abstract IRtcDataChannel CreateDataChannel(string label, RtcDataChannelInit? dataChannelInit = null);
+	public abstract RtcDataChannel CreateDataChannel(string label, RtcDataChannelInit? dataChannelInit = null);
 
 	/// <summary>
 	///     Fired when a data channel is created by the peer.
@@ -550,7 +550,7 @@ public class MediaStreamEventArgs : EventArgs
 	/// Initializes media stream event data.
 	/// </summary>
 	/// <param name="stream">The associated media stream.</param>
-	public MediaStreamEventArgs(IMediaStream stream)
+	public MediaStreamEventArgs(MediaStream stream)
 	{
 		Stream = stream;
 	}
@@ -558,7 +558,7 @@ public class MediaStreamEventArgs : EventArgs
 	/// <summary>
 	/// Gets the associated media stream.
 	/// </summary>
-	public IMediaStream Stream { get; }
+	public MediaStream Stream { get; }
 }
 
 /// <summary>
@@ -648,7 +648,7 @@ public class RtcDataChannelEventArgs : EventArgs
 	/// Initializes data channel event data.
 	/// </summary>
 	/// <param name="channel">The data channel associated with the event.</param>
-	public RtcDataChannelEventArgs(IRtcDataChannel channel)
+	public RtcDataChannelEventArgs(RtcDataChannel channel)
 	{
 		Channel = channel;
 	}
@@ -656,7 +656,7 @@ public class RtcDataChannelEventArgs : EventArgs
 	/// <summary>
 	/// Gets the data channel associated with the event.
 	/// </summary>
-	public IRtcDataChannel Channel { get; }
+	public RtcDataChannel Channel { get; }
 }
 
 /// <summary>
@@ -673,8 +673,8 @@ public class RtcTrackEventArgs : EventArgs
 	/// <param name="track">The remote media track.</param>
 	/// <param name="streams">The remote media streams associated with the track.</param>
 	/// <param name="transceiver">The RTP transceiver associated with the track.</param>
-	public RtcTrackEventArgs(string type, IRtcRtpReceiver receiver, IMediaStreamTrack track,
-		IEnumerable<IMediaStream> streams, IRtcRtpTransceiver transceiver)
+	public RtcTrackEventArgs(string type, RtcRtpReceiver receiver, MediaStreamTrack track,
+		IEnumerable<MediaStream> streams, RtcRtpTransceiver transceiver)
 	{
 		Type = type;
 		Receiver = receiver;
@@ -691,22 +691,22 @@ public class RtcTrackEventArgs : EventArgs
 	/// <summary>
 	/// Gets the RTP receiver associated with the track.
 	/// </summary>
-	public IRtcRtpReceiver Receiver { get; }
+	public RtcRtpReceiver Receiver { get; }
 
 	/// <summary>
 	/// Gets the remote media track associated with the event.
 	/// </summary>
-	public IMediaStreamTrack Track { get; }
+	public MediaStreamTrack Track { get; }
 
 	/// <summary>
 	/// Gets the remote media streams associated with the track.
 	/// </summary>
-	public IReadOnlyList<IMediaStream> Streams { get; }
+	public IReadOnlyList<MediaStream> Streams { get; }
 
 	/// <summary>
 	/// Gets the transceiver associated with the event.
 	/// </summary>
-	public IRtcRtpTransceiver Transceiver { get; }
+	public RtcRtpTransceiver Transceiver { get; }
 }
 
 /// <summary>

@@ -41,7 +41,7 @@ namespace WebRtcNet
 		return capturer;
 	}
 
-	IMediaStream ^ MediaDevices::GetUserMedia(MediaStreamConstraints ^ constraints)
+	MediaStream ^ MediaDevices::GetUserMedia(MediaStreamConstraints ^ constraints)
 	{
 		auto peerConnectionFactory = RtcPeerConnectionFactory::Instance->GetNativePeerConnectionFactoryInterface(true);
 
@@ -69,7 +69,7 @@ namespace WebRtcNet
 
 namespace WebRtcInterop {
 
-MediaStream::MediaStream(IMediaStream ^ stream)
+MediaStream::MediaStream(MediaStream ^ stream)
 	: _rpMediaStreamInterface(nullptr)
 {
 	auto nativeStream = stream->GetNativeMediaStreamInterface(true);
@@ -105,41 +105,41 @@ System::IntPtr MediaStream::GetNativeMediaStreamInterface(bool throwOnDisposed)
 }
 
 
-IEnumerable<IMediaStreamTrack^>^ MediaStream::GetAudioTracks()
+IEnumerable<MediaStreamTrack^>^ MediaStream::GetAudioTracks()
 {
 	throw gcnew NotImplementedException();
 	// TODO: insert return statement here
 }
 
-IEnumerable<IMediaStreamTrack^>^ MediaStream::GetVideoTracks()
+IEnumerable<MediaStreamTrack^>^ MediaStream::GetVideoTracks()
 {
 	throw gcnew NotImplementedException();
 	// TODO: insert return statement here
 }
 
-IEnumerable<IMediaStreamTrack^>^ MediaStream::GetTracks()
+IEnumerable<MediaStreamTrack^>^ MediaStream::GetTracks()
 {
 	throw gcnew NotImplementedException();
 	// TODO: insert return statement here
 }
 
-IMediaStreamTrack ^ MediaStream::GetTrackById(String ^ trackId)
+MediaStreamTrack ^ MediaStream::GetTrackById(String ^ trackId)
 {
 	throw gcnew NotImplementedException();
 	// TODO: insert return statement here
 }
 
-void MediaStream::AddTrack(IMediaStreamTrack ^ track)
+void MediaStream::AddTrack(MediaStreamTrack ^ track)
 {
 	throw gcnew NotImplementedException();
 }
 
-void MediaStream::RemoveTrack(IMediaStreamTrack ^ track)
+void MediaStream::RemoveTrack(MediaStreamTrack ^ track)
 {
 	throw gcnew NotImplementedException();
 }
 
-IMediaStream ^ MediaStream::Clone()
+MediaStream ^ MediaStream::Clone()
 {
 	throw gcnew NotImplementedException();
 	// TODO: insert return statement here

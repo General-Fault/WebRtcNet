@@ -1,9 +1,9 @@
-﻿namespace WebRtcNet.Media;
+namespace WebRtcNet.Media;
 
 /// <summary>
 /// MediaTrackSettings represents the current settings of all constrainable properties of an
-/// <see cref="IMediaStreamTrack" /> object. This is an out-only snapshot returned by
-/// <see cref="IMediaStreamTrack.GetSettings" />.
+/// <see cref="MediaStreamTrack" /> object. This is an out-only snapshot returned by
+/// <see cref="MediaStreamTrack.GetSettings" />.
 /// </summary>
 /// <seealso href="http://www.w3.org/TR/mediacapture-streams/#media-track-settings" />
 public sealed record MediaTrackSettings

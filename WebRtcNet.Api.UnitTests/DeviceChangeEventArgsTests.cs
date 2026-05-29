@@ -77,9 +77,9 @@ public class DeviceChangeEventArgsTests
 	}
 
 	[Test]
-	public void IMediaDevices_OnDeviceChange_IsTypedEventHandler()
+	public void MediaDevices_OnDeviceChange_IsTypedEventHandler()
 	{
-		var eventInfo = typeof(IMediaDevices).GetEvent(nameof(IMediaDevices.OnDeviceChange))!;
+		var eventInfo = typeof(MediaDevices).GetEvent(nameof(MediaDevices.OnDeviceChange))!;
 
 		Assert.That(eventInfo, Is.Not.Null);
 		Assert.That(

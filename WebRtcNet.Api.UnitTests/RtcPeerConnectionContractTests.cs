@@ -8,9 +8,9 @@ namespace WebRtcNet.Api.UnitTests;
 public class RtcPeerConnectionContractTests
 {
 	[Test]
-	public void IRtcPeerConnection_Exposes_AddTransceiver_Overloads_For_Track_And_Kind()
+	public void RtcPeerConnection_Exposes_AddTransceiver_Overloads_For_Track_And_Kind()
 	{
-		var methods = typeof(IRtcPeerConnection).GetMethods()
+		var methods = typeof(RtcPeerConnection).GetMethods()
 			.Where(method => method.Name == "AddTransceiver")
 			.ToArray();
 
@@ -19,10 +19,10 @@ public class RtcPeerConnectionContractTests
 		var trackOverload = methods.Single(method =>
 		{
 			var parameters = method.GetParameters();
-			return parameters.Length == 2 && parameters[0].ParameterType == typeof(IMediaStreamTrack);
+			return parameters.Length == 2 && parameters[0].ParameterType == typeof(MediaStreamTrack);
 		});
 
-		Assert.That(trackOverload.ReturnType, Is.EqualTo(typeof(IRtcRtpTransceiver)));
+		Assert.That(trackOverload.ReturnType, Is.EqualTo(typeof(RtcRtpTransceiver)));
 		Assert.That(trackOverload.GetParameters()[1].ParameterType, Is.EqualTo(typeof(RtcRtpTransceiverInit)));
 		Assert.That(trackOverload.GetParameters()[1].IsOptional, Is.True);
 		Assert.That(trackOverload.GetParameters()[1].DefaultValue, Is.Null);
@@ -33,23 +33,23 @@ public class RtcPeerConnectionContractTests
 			return parameters.Length == 2 && parameters[0].ParameterType == typeof(MediaStreamTrackKind);
 		});
 
-		Assert.That(kindOverload.ReturnType, Is.EqualTo(typeof(IRtcRtpTransceiver)));
+		Assert.That(kindOverload.ReturnType, Is.EqualTo(typeof(RtcRtpTransceiver)));
 		Assert.That(kindOverload.GetParameters()[1].ParameterType, Is.EqualTo(typeof(RtcRtpTransceiverInit)));
 		Assert.That(kindOverload.GetParameters()[1].IsOptional, Is.True);
 		Assert.That(kindOverload.GetParameters()[1].DefaultValue, Is.Null);
 	}
 
 	[Test]
-	public void IRtcPeerConnection_RemoveTrack_Uses_RtpSender_Contract()
+	public void RtcPeerConnection_RemoveTrack_Uses_RtpSender_Contract()
 	{
-		var methods = typeof(IRtcPeerConnection).GetMethods()
+		var methods = typeof(RtcPeerConnection).GetMethods()
 			.Where(method => method.Name == "RemoveTrack")
 			.ToArray();
 
 		Assert.That(methods, Has.Length.EqualTo(1));
 		Assert.That(methods[0].ReturnType, Is.EqualTo(typeof(void)));
 		Assert.That(methods[0].GetParameters(), Has.Length.EqualTo(1));
-		Assert.That(methods[0].GetParameters()[0].ParameterType, Is.EqualTo(typeof(IRtcRtpSender)));
+		Assert.That(methods[0].GetParameters()[0].ParameterType, Is.EqualTo(typeof(RtcRtpSender)));
 	}
 
 	[Test]
@@ -75,13 +75,13 @@ public class RtcPeerConnectionContractTests
 	}
 
 	[Test]
-	public void IRtcPeerConnection_Exposes_Nullable_Optional_SetLocalDescription_And_AddIceCandidate()
+	public void RtcPeerConnection_Exposes_Nullable_Optional_SetLocalDescription_And_AddIceCandidate()
 	{
-		var setLocalDescription = typeof(IRtcPeerConnection).GetMethod(
-			nameof(IRtcPeerConnection.SetLocalDescription),
+		var setLocalDescription = typeof(RtcPeerConnection).GetMethod(
+			nameof(RtcPeerConnection.SetLocalDescription),
 			new[] { typeof(RtcSessionDescription?) });
-		var addIceCandidate = typeof(IRtcPeerConnection).GetMethod(
-			nameof(IRtcPeerConnection.AddIceCandidate),
+		var addIceCandidate = typeof(RtcPeerConnection).GetMethod(
+			nameof(RtcPeerConnection.AddIceCandidate),
 			new[] { typeof(RtcIceCandidate) });
 
 		Assert.That(setLocalDescription, Is.Not.Null);
@@ -94,12 +94,12 @@ public class RtcPeerConnectionContractTests
 	}
 
 	[Test]
-	public void IRtcPeerConnection_Exposes_Sctp_Property()
+	public void RtcPeerConnection_Exposes_Sctp_Property()
 	{
-		var property = typeof(IRtcPeerConnection).GetProperty(nameof(IRtcPeerConnection.Sctp));
+		var property = typeof(RtcPeerConnection).GetProperty(nameof(RtcPeerConnection.Sctp));
 
 		Assert.That(property, Is.Not.Null);
-		Assert.That(property!.PropertyType, Is.EqualTo(typeof(IRtcSctpTransport)));
+		Assert.That(property!.PropertyType, Is.EqualTo(typeof(RtcSctpTransport)));
 	}
 
 	[Test]
@@ -119,9 +119,9 @@ public class RtcPeerConnectionContractTests
 	}
 
 	[Test]
-	public void IRtcPeerConnection_Exposes_Static_GenerateCertificate_Method()
+	public void RtcPeerConnection_Exposes_Static_GenerateCertificate_Method()
 	{
-		var method = typeof(IRtcPeerConnection).GetMethod(nameof(IRtcPeerConnection.GenerateCertificate), new[] { typeof(object) });
+		var method = typeof(RtcPeerConnection).GetMethod(nameof(RtcPeerConnection.GenerateCertificate), new[] { typeof(object) });
 
 		Assert.That(method, Is.Not.Null);
 		Assert.That(method!.ReturnType, Is.EqualTo(typeof(System.Threading.Tasks.Task<RtcCertificate>)));

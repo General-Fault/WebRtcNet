@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 
 namespace WebRtcNet.Media;
 
 /// <summary>
 /// The usable state of the MediaStreamTrack
 /// </summary>
-/// <seealso cref="IMediaStreamTrack.ReadyState" />
+/// <seealso cref="MediaStreamTrack.ReadyState" />
 /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrackstate" />
 public enum MediaStreamTrackState
 {
@@ -30,7 +30,7 @@ public enum MediaStreamTrackState
 /// <summary>
 /// The kind of media stream track.
 /// </summary>
-/// <seealso cref="IMediaStreamTrack.Kind" />
+/// <seealso cref="MediaStreamTrack.Kind" />
 /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-kind" />
 public enum MediaStreamTrackKind
 {
@@ -46,16 +46,16 @@ public enum MediaStreamTrackKind
 }
 
 /// <summary>
-/// A <see cref="IMediaStreamTrack">MediaStreamTrack</see> object represents a media source in the application. An
+/// A <see cref="MediaStreamTrack">MediaStreamTrack</see> object represents a media source in the application. An
 /// example
 /// source is a device connected to the computer. Other specifications may define sources for
-/// <see cref="IMediaStreamTrack">MediaStreamTrack</see> that override the behavior specified here. Several
-/// <see cref="IMediaStreamTrack">MediaStreamTrack</see> objects can represent the same  media source, e.g., when the
+/// <see cref="MediaStreamTrack">MediaStreamTrack</see> that override the behavior specified here. Several
+/// <see cref="MediaStreamTrack">MediaStreamTrack</see> objects can represent the same  media source, e.g., when the
 /// user
-/// chooses the same camera in the UI shown by two consecutive calls to <see cref="IMediaDevices.GetUserMedia" />.
+/// chooses the same camera in the UI shown by two consecutive calls to <see cref="MediaDevices.GetUserMedia" />.
 /// </summary>
 /// <seealso href="http://www.w3.org/TR/mediacapture-streams/#mediastreamtrack" />
-public abstract class IMediaStreamTrack
+public abstract class MediaStreamTrack
 {
 	/// <summary>
 	/// <see cref="MediaStreamTrackKind.Audio">Audio</see> if the object represents an audio track or
@@ -129,7 +129,7 @@ public abstract class IMediaStreamTrack
 	/// Clones the given MediaStreamTrack.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-clone" />
-	public abstract IMediaStreamTrack Clone();
+	public abstract MediaStreamTrack Clone();
 
 	/// <summary>
 	/// Stops the locally sourced track. If the track is remote, this does nothing.

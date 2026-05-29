@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace WebRtcNet.Media;
 
@@ -47,9 +47,9 @@ public enum VideoResizeModes
 }
 
 /// <summary>
-/// MediaTrackCapabilities represents the capabilities of an <see cref="IMediaStreamTrack"/> object as
+/// MediaTrackCapabilities represents the capabilities of an <see cref="MediaStreamTrack"/> object as
 /// reported by the platform. This is an out-only snapshot returned by
-/// <see cref="IMediaStreamTrack.GetCapabilities"/>.
+/// <see cref="MediaStreamTrack.GetCapabilities"/>.
 /// </summary>
 /// <remarks>
 /// Sequence-valued capability members are represented as collections only. Scalar compatibility aliases are not exposed.

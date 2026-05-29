@@ -1,4 +1,4 @@
-﻿namespace WebRtcNet;
+namespace WebRtcNet;
 
 /// <summary>
 /// Describes an ICE candidate. This is an immutable data transfer object aligned with the W3C
@@ -7,8 +7,8 @@
 /// <remarks>
 /// Users construct <see cref="RtcIceCandidate"/> from signaling data (the <c>candidate</c>, <c>sdpMid</c>,
 /// <c>sdpMLineIndex</c>, and <c>usernameFragment</c> received from the remote peer) and pass them to
-/// <see cref="IRtcPeerConnection.AddIceCandidate"/>. The remaining parsed fields are populated only when a
-/// candidate is delivered by the runtime (e.g. via <see cref="IRtcPeerConnection.OnIceCandidate"/>).
+/// <see cref="RtcPeerConnection.AddIceCandidate"/>. The remaining parsed fields are populated only when a
+/// candidate is delivered by the runtime (e.g. via <see cref="RtcPeerConnection.OnIceCandidate"/>).
 /// </remarks>
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcicecandidate-interface"/>
 public sealed record RtcIceCandidate
@@ -90,7 +90,7 @@ public sealed record RtcIceCandidate
 
 	/// <summary>
 	/// A unique identifier that allows ICE to correlate candidates that appear on multiple
-	/// <see cref="IRtcIceTransport">RTCIceTransports</see>, or null for user-created candidates.
+	/// <see cref="RtcIceTransport">RTCIceTransports</see>, or null for user-created candidates.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicecandidate-foundation"/>
 	public string? Foundation { get; init; }

@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using WebRtcNet.Media;
 
 namespace WebRtcNet;
 
 /// <summary>
-/// Optional initialization dictionary for <see cref="IRtcPeerConnection.AddTransceiver(IMediaStreamTrack, RtcRtpTransceiverInit?)"/>
-/// and <see cref="IRtcPeerConnection.AddTransceiver(MediaStreamTrackKind, RtcRtpTransceiverInit?)"/>.
+/// Optional initialization dictionary for <see cref="RtcPeerConnection.AddTransceiver(MediaStreamTrack, RtcRtpTransceiverInit?)"/>
+/// and <see cref="RtcPeerConnection.AddTransceiver(MediaStreamTrackKind, RtcRtpTransceiverInit?)"/>.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiverinit"/>
 public sealed record RtcRtpTransceiverInit
@@ -19,7 +19,7 @@ public sealed record RtcRtpTransceiverInit
 	/// <param name="sendEncodings">The preferred sender encodings for the transceiver.</param>
 	public RtcRtpTransceiverInit(
 		RtcRtpTransceiverDirection direction = RtcRtpTransceiverDirection.SendRecv,
-		IEnumerable<IMediaStream>? streams = null,
+		IEnumerable<MediaStream>? streams = null,
 		IEnumerable<RtcRtpEncodingParameters>? sendEncodings = null)
 	{
 		Direction = direction;
@@ -37,7 +37,7 @@ public sealed record RtcRtpTransceiverInit
 	/// The streams associated with the sender side of the transceiver.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiverinit-streams"/>
-	public List<IMediaStream> Streams { get; set; } = [];
+	public List<MediaStream> Streams { get; set; } = [];
 
 	/// <summary>
 	/// Sender encodings to apply to the transceiver's sender when supported.

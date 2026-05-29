@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace WebRtcNet;
 
 /// <summary>
-/// The IRtcRtpTransceiver interface represents a combination of an <see cref="IRtcRtpSender">RTCRtpSender</see> and an
-/// <see cref="IRtcRtpReceiver">RTCRtpReceiver</see> that share a common
+/// The RtcRtpTransceiver interface represents a combination of an <see cref="RtcRtpSender">RTCRtpSender</see> and an
+/// <see cref="RtcRtpReceiver">RTCRtpReceiver</see> that share a common
 /// <see cref="RtcIceCandidate.SdpMid">media stream "identification-tag"</see>. As defined in
 /// <see href="https://tools.ietf.org/html/rfc8829#section-3.4.1">[RFC8829] (section 3.4.1.)</see>, an RTCRtpTransceiver
 /// is said to be associated with a <see href="https://tools.ietf.org/html/rfc4566">media description</see> if its
@@ -15,12 +15,12 @@ namespace WebRtcNet;
 /// that <see href="https://tools.ietf.org/html/rfc4566">media description</see>.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiver"/>
-public abstract class IRtcRtpTransceiver
+public abstract class RtcRtpTransceiver
 {
 	/// <summary>
 	/// Initializes the RTP transceiver wrapper.
 	/// </summary>
-	protected IRtcRtpTransceiver()
+	protected RtcRtpTransceiver()
 	{
 	}
 
@@ -38,25 +38,25 @@ public abstract class IRtcRtpTransceiver
 	public abstract string? Mid { get; }
 
 	/// <summary>
-	/// The sender attribute exposes the <see cref="IRtcRtpSender">RTCRtpSender</see> corresponding to the RTP media that
+	/// The sender attribute exposes the <see cref="RtcRtpSender">RTCRtpSender</see> corresponding to the RTP media that
 	/// may be sent with mid = <see cref="Mid"/>.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiver-sender"/>
-	public abstract IRtcRtpSender Sender { get; }
+	public abstract RtcRtpSender Sender { get; }
 
 	/// <summary>
-	/// The receiver attribute is the <see cref="IRtcRtpReceiver">RTCRtpReceiver</see> corresponding to the RTP media that
+	/// The receiver attribute is the <see cref="RtcRtpReceiver">RTCRtpReceiver</see> corresponding to the RTP media that
 	/// may be received with mid = <see cref="Mid"/>.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiver-receiver"/>
-	public abstract IRtcRtpReceiver Receiver { get; }
+	public abstract RtcRtpReceiver Receiver { get; }
 
 	/// <summary>
 	/// As defined in <see hgref="https://tools.ietf.org/html/rfc8829#section-4.2.4">[RFC8829] (section 4.2.4.)</see>, the
 	/// direction attribute indicates the preferred direction of this transceiver, which will be used in calls to
-	/// <see cref="IRtcPeerConnection.CreateOffer"/> and <see cref="IRtcPeerConnection.CreateAnswer"/>. An update of
+	/// <see cref="RtcPeerConnection.CreateOffer"/> and <see cref="RtcPeerConnection.CreateAnswer"/>. An update of
 	/// directionality does not take effect immediately. Instead, future calls to
-	/// <see cref="IRtcPeerConnection.CreateOffer"/> and <see cref="IRtcPeerConnection.CreateAnswer"/> mark the
+	/// <see cref="RtcPeerConnection.CreateOffer"/> and <see cref="RtcPeerConnection.CreateAnswer"/> mark the
 	/// corresponding <see href="https://tools.ietf.org/html/rfc4566">media description</see> as
 	/// <seealso cref="RtcRtpTransceiverDirection.SendRecv"/>, <seealso cref="RtcRtpTransceiverDirection.SendOnly"/>,
 	/// <seealso cref="RtcRtpTransceiverDirection.RecvOnly"/> or <seealso cref="RtcRtpTransceiverDirection.Inactive"/> as
@@ -125,57 +125,57 @@ public record RtcRtpCodecCapability : RtcRtpCodec
 /// The direction of an RTCRtpTransceiver
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiverdirection"/>
-/// <seealso cref="IRtcRtpTransceiver.Direction"/>
-/// <seealso cref="IRtcRtpTransceiver.CurrentDirection"/>
+/// <seealso cref="RtcRtpTransceiver.Direction"/>
+/// <seealso cref="RtcRtpTransceiver.CurrentDirection"/>
 public enum RtcRtpTransceiverDirection
 {
 	/// <summary>
-	/// The <see cref="IRtcRtpTransceiver">RTCRtpTransceiver's</see> <see cref="IRtcRtpSender">RTCRtpSender</see>
-	/// <see cref="IRtcRtpTransceiver.Sender">Sender</see> will offer to send RTP, and will send RTP if the remote peer
-	/// accepts and <see cref="IRtcRtpTransceiver.Sender">Sender</see>.
-	/// <see cref="IRtcRtpSender.GetParameters">GetParameters()</see>.
+	/// The <see cref="RtcRtpTransceiver">RTCRtpTransceiver's</see> <see cref="RtcRtpSender">RTCRtpSender</see>
+	/// <see cref="RtcRtpTransceiver.Sender">Sender</see> will offer to send RTP, and will send RTP if the remote peer
+	/// accepts and <see cref="RtcRtpTransceiver.Sender">Sender</see>.
+	/// <see cref="RtcRtpSender.GetParameters">GetParameters()</see>.
 	/// <see cref="RtcRtpSendParameters.Encodings">Encodings[i]</see>.
 	/// <see cref="RtcRtpEncodingParameters.Active">Active</see> is true for any value of i. The
-	/// <see cref="IRtcRtpTransceiver">RTCRtpTransceiver's</see> <see cref="IRtcRtpSender">RTCRtpSender</see> will offer
+	/// <see cref="RtcRtpTransceiver">RTCRtpTransceiver's</see> <see cref="RtcRtpSender">RTCRtpSender</see> will offer
 	/// to receive RTP, and will receive RTP if the remote peer accepts.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiverdirection-sendrecv"/>
 	SendRecv,
 
 	/// <summary>
-	/// The <see cref="IRtcRtpTransceiver">RTCRtpTransceiver's</see> <see cref="IRtcRtpSender">RTCRtpSender</see>
-	/// <see cref="IRtcRtpTransceiver.Sender">Sender</see> will offer to send RTP, and will send RTP if the remote peer
-	/// accepts and <see cref="IRtcRtpTransceiver.Sender">Sender</see>.
-	/// <see cref="IRtcRtpSender.GetParameters">GetParameters()</see>.
+	/// The <see cref="RtcRtpTransceiver">RTCRtpTransceiver's</see> <see cref="RtcRtpSender">RTCRtpSender</see>
+	/// <see cref="RtcRtpTransceiver.Sender">Sender</see> will offer to send RTP, and will send RTP if the remote peer
+	/// accepts and <see cref="RtcRtpTransceiver.Sender">Sender</see>.
+	/// <see cref="RtcRtpSender.GetParameters">GetParameters()</see>.
 	/// <see cref="RtcRtpSendParameters.Encodings">Encodings[i]</see>.
 	/// <see cref="RtcRtpEncodingParameters.Active">Active</see> is true for any value of i. The
-	/// <see cref="IRtcRtpTransceiver">RTCRtpTransceiver's</see> <see cref="IRtcRtpReceiver">RTCRtpReceiver</see> will
+	/// <see cref="RtcRtpTransceiver">RTCRtpTransceiver's</see> <see cref="RtcRtpReceiver">RTCRtpReceiver</see> will
 	/// not offer to receive RTP, and will not receive RTP
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiverdirection-sendonly"/>
 	SendOnly,
 
 	/// <summary>
-	/// The <see cref="IRtcRtpTransceiver">RTCRtpTransceiver's</see> <see cref="IRtcRtpSender">RTCRtpSender</see> will
-	/// not offer to send RTP, and will not send RTP. The  <see cref="IRtcRtpTransceiver">RTCRtpTransceiver's</see>
-	/// <see cref="IRtcRtpReceiver">RTCRtpReceiver</see> will offer to receive RTP, and will receive RTP if the remote
+	/// The <see cref="RtcRtpTransceiver">RTCRtpTransceiver's</see> <see cref="RtcRtpSender">RTCRtpSender</see> will
+	/// not offer to send RTP, and will not send RTP. The  <see cref="RtcRtpTransceiver">RTCRtpTransceiver's</see>
+	/// <see cref="RtcRtpReceiver">RTCRtpReceiver</see> will offer to receive RTP, and will receive RTP if the remote
 	/// peer accepts.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiverdirection-recvonly"/>
 	RecvOnly,
 
 	/// <summary>
-	/// The <see cref="IRtcRtpTransceiver">RTCRtpTransceiver's</see> <see cref="IRtcRtpSender">RTCRtpSender</see> will not
-	/// offer to send RTP, and will not send RTP. The <see cref="IRtcRtpTransceiver">RTCRtpTransceiver's</see>
-	/// <see cref="IRtcRtpReceiver">RTCRtpReceiver</see> will not offer to receive RTP, and will not receive RTP.
+	/// The <see cref="RtcRtpTransceiver">RTCRtpTransceiver's</see> <see cref="RtcRtpSender">RTCRtpSender</see> will not
+	/// offer to send RTP, and will not send RTP. The <see cref="RtcRtpTransceiver">RTCRtpTransceiver's</see>
+	/// <see cref="RtcRtpReceiver">RTCRtpReceiver</see> will not offer to receive RTP, and will not receive RTP.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiverdirection-inactive"/>
 	Inactive,
 
 	/// <summary>
-	/// The <see cref="IRtcRtpTransceiver">RTCRtpTransceiver</see> will neither send nor receive RTP. It will generate a
-	/// zero port in the offer. In answers, its <see cref="IRtcRtpSender">RTCRtpSender</see> will not offer to send RTP,
-	/// and its <see cref="IRtcRtpReceiver">RTCRtpReceiver</see> will not offer to receive RTP. This is a terminal state.
+	/// The <see cref="RtcRtpTransceiver">RTCRtpTransceiver</see> will neither send nor receive RTP. It will generate a
+	/// zero port in the offer. In answers, its <see cref="RtcRtpSender">RTCRtpSender</see> will not offer to send RTP,
+	/// and its <see cref="RtcRtpReceiver">RTCRtpReceiver</see> will not offer to receive RTP. This is a terminal state.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiverdirection-stopped"/>
 	Stopped

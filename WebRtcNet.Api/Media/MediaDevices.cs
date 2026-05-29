@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,7 +8,7 @@ namespace WebRtcNet.Media;
 /// A .NET implementation of the <c>MediaDevices</c> interface.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#mediadevices" />
-public interface IMediaDevices
+public interface MediaDevices
 {
 	/// <summary>
 	/// Raised when the set of available media devices changes — for example, when a camera or
@@ -43,18 +43,18 @@ public interface IMediaDevices
 	MediaTrackSupportedConstraints GetSupportedConstraints();
 
 	/// <summary>
-	/// Requests access to media input devices and returns a <see cref="IMediaStream" /> whose
+	/// Requests access to media input devices and returns a <see cref="MediaStream" /> whose
 	/// tracks satisfy the supplied constraints.
 	/// </summary>
 	/// <param name="constraints">
 	/// Specifies the type and configuration of media tracks to include in the returned stream.
 	/// </param>
 	/// <returns>
-	/// A task that, when complete, yields an <see cref="IMediaStream" /> whose tracks conform
+	/// A task that, when complete, yields an <see cref="MediaStream" /> whose tracks conform
 	/// to <paramref name="constraints" />.
 	/// </returns>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadevices-getusermedia" />
-	Task<IMediaStream> GetUserMedia(MediaStreamConstraints constraints);
+	Task<MediaStream> GetUserMedia(MediaStreamConstraints constraints);
 
 	#endregion //10.2 MediaDevices Interface Extensions
 }

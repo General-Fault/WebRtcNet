@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace WebRtcNet.Media;
 
 /// <summary>
-/// Provides data for the <see cref="IMediaDevices.OnDeviceChange" /> event.
+/// Provides data for the <see cref="MediaDevices.OnDeviceChange" /> event.
 /// Carries the updated list of available devices and a hint about which devices were
 /// recently physically inserted or activated by the user.
 /// </summary>

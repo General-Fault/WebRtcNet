@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace WebRtcNet;
@@ -76,20 +76,20 @@ public enum RtcDataChannelState
 
 /// <summary>
 ///     The RtcDataChannel interface represents a bi-directional data channel between two peers. An RtcDataChannel is
-///     created via a <see cref="IRtcPeerConnection.CreateDataChannel">factory method</see> on an
-///     <see cref="IRtcPeerConnection">RtcPeerConnection</see> object. The messages sent between the browsers are described
+///     created via a <see cref="RtcPeerConnection.CreateDataChannel">factory method</see> on an
+///     <see cref="RtcPeerConnection">RtcPeerConnection</see> object. The messages sent between the browsers are described
 ///     in <see href="https://tools.ietf.org/html/rfc8831">[RFC8831]</see> and
 ///     <see href="https://tools.ietf.org/html/rfc8832">[RFC8832]</see>.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#RtcDataChannel" />
 /// <seealso href="https://tools.ietf.org/html/rfc8831" />
 /// <seealso href="https://tools.ietf.org/html/rfc8832" />
-public abstract class IRtcDataChannel
+public abstract class RtcDataChannel
 {
 	/// <summary>
 	/// Initializes the data channel wrapper.
 	/// </summary>
-	protected IRtcDataChannel()
+	protected RtcDataChannel()
 	{
 	}
 
@@ -249,13 +249,13 @@ public abstract class IRtcDataChannel
 }
 
 /// <summary>
-/// Arguments for the <see cref="IRtcDataChannel.OnMessage"/> event. 
+/// Arguments for the <see cref="RtcDataChannel.OnMessage"/> event. 
 /// </summary>
-/// <seealso cref="IRtcDataChannel.OnMessage"/>
+/// <seealso cref="RtcDataChannel.OnMessage"/>
 public class MessageEventArgs : EventArgs
 {
 	/// <summary>
-	/// Initializes message event arguments raised by <see cref="IRtcDataChannel.OnMessage" />.
+	/// Initializes message event arguments raised by <see cref="RtcDataChannel.OnMessage" />.
 	/// </summary>
 	/// <param name="data">The received message payload.</param>
 	/// <param name="origin">The origin associated with the message.</param>

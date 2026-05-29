@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace WebRtcNet;
 
@@ -24,7 +24,7 @@ public enum RtcErrorDetailType
     DtlsFailure,
 
     /// <summary>
-    /// The <see cref="IRtcDtlsTransport">RTCDtlsTransport's</see> remote certificate did not match any of the
+    /// The <see cref="RtcDtlsTransport">RTCDtlsTransport's</see> remote certificate did not match any of the
     /// fingerprints provided in the SDP. If the remote peer cannot match the local certificate against the provided
     /// fingerprints, this error is not generated. Instead a "bad_certificate" (42) DTLS alert might be received from the
     /// remote peer, resulting in a <see cref="DtlsFailure"/>.

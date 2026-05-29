@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using WebRtcNet.Media;
 
 namespace WebRtcNet;
@@ -7,12 +7,12 @@ namespace WebRtcNet;
 /// Sends DTMF tones for an RTP sender associated with an audio track.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcdtmfsender-interface" />
-public abstract class IRtcDtmfSender
+public abstract class RtcDtmfSender
 {
 	/// <summary>
 	/// Initializes the DTMF sender wrapper.
 	/// </summary>
-	protected IRtcDtmfSender()
+	protected RtcDtmfSender()
 	{
 	}
 
@@ -28,7 +28,7 @@ public abstract class IRtcDtmfSender
 	public abstract bool CanInsertDtmf { get; }
 
 	/// <summary>
-	/// An IRtcDtmfSender object's InsertDtmf method is used to send DTMF tones.
+	/// An RtcDtmfSender object's InsertDtmf method is used to send DTMF tones.
 	/// The tones parameter is treated as a series of characters. The characters 0 through 9, A through D, #, and * generate the 
 	/// associated DTMF tones. The characters a to d are equivalent to A to D. The character ',' indicates a delay of 2 seconds 
 	/// before processing the next character in the tones parameter. All other characters must be considered unrecognized.
@@ -44,9 +44,9 @@ public abstract class IRtcDtmfSender
 	public abstract void InsertDtmf(string tones, long duration = 100, long interToneGap = 70);
 
 	/// <summary>
-	/// The IMediaStreamTrack given as argument to the IRtcPeerConnection.CreateDtmfSender() method.
+	/// The MediaStreamTrack given as argument to the RtcPeerConnection.CreateDtmfSender() method.
 	/// </summary>
-	public abstract IMediaStreamTrack Track { get; }
+	public abstract MediaStreamTrack Track { get; }
 
 	/// <summary>
 	/// Fired for each tone as it is played out.
@@ -73,7 +73,7 @@ public abstract class IRtcDtmfSender
 }
 
 /// <summary>
-/// Event data for <see cref="IRtcDtmfSender.OnToneChange" />.
+/// Event data for <see cref="RtcDtmfSender.OnToneChange" />.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#event-dtmfsender-tonechange" />
 public class RtcDtmfToneChangedEventArgs : EventArgs

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebRtcNet.Media;
@@ -6,15 +6,15 @@ using WebRtcNet.Media;
 namespace WebRtcNet;
 
 /// <summary>
-/// The RTCRtpReceiver interface allows an application to inspect the receipt of a <see cref="IMediaStreamTrack">MediaStreamTrack</see>.
+/// The RTCRtpReceiver interface allows an application to inspect the receipt of a <see cref="MediaStreamTrack">MediaStreamTrack</see>.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcrtpreceiver-interface"/>
-public abstract class IRtcRtpReceiver
+public abstract class RtcRtpReceiver
 {
 	/// <summary>
 	/// Initializes the RTP receiver wrapper.
 	/// </summary>
-	protected IRtcRtpReceiver()
+	protected RtcRtpReceiver()
 	{
 	}
 
@@ -25,24 +25,24 @@ public abstract class IRtcRtpReceiver
 	internal abstract IntPtr GetNativeRtpReceiverHandle(bool throwOnDisposed);
 
 	/// <summary>
-	/// The Track property is the <see cref="IMediaStreamTrack">track</see> that is associated with this RTCRtpReceiver
+	/// The Track property is the <see cref="MediaStreamTrack">track</see> that is associated with this RTCRtpReceiver
 	/// object receiver.
-	/// Note that <see cref="IMediaStreamTrack.Stop">track.stop()</see> is final, although clones are not affected. Since
-	/// <see cref="IRtcRtpReceiver.Track">Receiver.Track</see>.<see cref="IMediaStreamTrack.Stop">Stop()</see> does not
+	/// Note that <see cref="MediaStreamTrack.Stop">track.stop()</see> is final, although clones are not affected. Since
+	/// <see cref="RtcRtpReceiver.Track">Receiver.Track</see>.<see cref="MediaStreamTrack.Stop">Stop()</see> does not
 	/// implicitly stop receiver, Receiver Reports continue to be sent.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtpreceiver-track"/>
-	public abstract IMediaStreamTrack Track { get; }
+	public abstract MediaStreamTrack Track { get; }
 
 	/// <summary>
-	/// The Transport property is the <see cref="IRtcDtlsTransport">transport</see> over which media for the receiver's
-	/// <see cref="IMediaStreamTrack">track</see> is received in the form of RTP packets. Prior to construction of the
-	/// <see cref="IRtcDtlsTransport">RTCDtlsTransport</see> object, the Transport property will be null. When bundling
+	/// The Transport property is the <see cref="RtcDtlsTransport">transport</see> over which media for the receiver's
+	/// <see cref="MediaStreamTrack">track</see> is received in the form of RTP packets. Prior to construction of the
+	/// <see cref="RtcDtlsTransport">RTCDtlsTransport</see> object, the Transport property will be null. When bundling
 	/// is used, multiple RTCRtpReceiver objects will share one transport and will all receive RTP and RTCP over the same
 	/// transport.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpreceiver-transport"/>
-	public abstract IRtcDtlsTransport? Transport { get; }
+	public abstract RtcDtlsTransport? Transport { get; }
 
 	/// <summary>
 	/// The GetCapabilities() method returns the most optimistic view of the capabilities of the system for receiving
@@ -88,11 +88,11 @@ public abstract class IRtcRtpReceiver
 	public abstract IEnumerable<RtcRtpSynchronizationSource> GetSynchronizationSources();
 
 	/// <summary>
-	/// Gathers <see cref="IRtcStatsReport">statistics</see> for this receiver and reports the result asynchronously.
+	/// Gathers <see cref="RtcStatsReport">statistics</see> for this receiver and reports the result asynchronously.
 	/// </summary>
-	/// <returns>A task that completes when the <see cref="IRtcStatsReport">statistics</see> for this receiver have been
+	/// <returns>A task that completes when the <see cref="RtcStatsReport">statistics</see> for this receiver have been
 	/// gathered.</returns>
-	public abstract Task<IRtcStatsReport> GetStats();
+	public abstract Task<RtcStatsReport> GetStats();
 
 	/// <summary>
 	/// The jitter buffer target for this receiver, or null to indicate implementation defaults.
@@ -104,14 +104,14 @@ public abstract class IRtcRtpReceiver
 /// <summary>
 /// The <see cref="RtcRtpContributingSource"/> and <see cref="RtcRtpSynchronizationSource"/> contain information about a
 /// given contributing source (CSRC) or synchronization source (SSRC) respectively. When an audio or video frame from one
-/// or more RTP packets is delivered to the <see cref="IRtcRtpReceiver">RtcRtpReceiver's</see>
-/// <see cref="IMediaStream">MediaStreamTrack</see>. The information relevant to the RtcRtpSynchronizationSource
+/// or more RTP packets is delivered to the <see cref="RtcRtpReceiver">RtcRtpReceiver's</see>
+/// <see cref="MediaStream">MediaStreamTrack</see>. The information relevant to the RtcRtpSynchronizationSource
 /// corresponding to the SSRC identifier, is updated each time, and if an RTP packet contains CSRC identifiers, then the
 /// information relevant to the RTCRtpContributingSource dictionaries corresponding to those CSRC identifiers is also
 /// updated.
 /// <para>NOTE Even if the MediaStreamTrack is not attached to any sink for playout,
-/// <see cref="IRtcRtpReceiver.GetSynchronizationSources"/> and /// <see cref="IRtcRtpReceiver.GetContributingSources"/>
-/// returns up-to-date information as long as the <see cref="IMediaStreamTrack">track</see> is not ended; sinks are not a
+/// <see cref="RtcRtpReceiver.GetSynchronizationSources"/> and /// <see cref="RtcRtpReceiver.GetContributingSources"/>
+/// returns up-to-date information as long as the <see cref="MediaStreamTrack">track</see> is not ended; sinks are not a
 /// prerequisite for decoding RTP packets.</para>
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpcontributingsource"/>
@@ -134,7 +134,7 @@ public class RtcRtpContributingSource
 
 	/// <summary>
 	/// The timestamp indicating the most recent time a frame from an RTP packet, originating from this source, was
-	/// delivered to the <see cref="IRtcRtpReceiver">RTCRtpReceiver's</see> <see cref="IMediaStreamTrack">MediaStreamTrack</see>.
+	/// delivered to the <see cref="RtcRtpReceiver">RTCRtpReceiver's</see> <see cref="MediaStreamTrack">MediaStreamTrack</see>.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpcontributingsource-timestamp"/>
 	public DateTime Timestamp { get; }

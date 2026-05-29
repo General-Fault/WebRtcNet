@@ -13,7 +13,7 @@ namespace WebRtcInterop {
 
 using namespace WebRtcNet::Media;
 
-public ref class MediaStreamTrack : IMediaStreamTrack
+public ref class MediaStreamTrack : WebRtcNet::Media::MediaStreamTrack
 {
 public:
 	MediaStreamTrack();
@@ -21,7 +21,7 @@ public:
 	virtual ~MediaStreamTrack();
 	!MediaStreamTrack();
 
-	// Inherited via IMediaStreamTrack
+	// Inherited via MediaStreamTrack
 	virtual property MediaStreamTrackKind Kind;
 	virtual property System::String ^ Id;
 	virtual property System::String ^ Label;
@@ -33,7 +33,7 @@ public:
 	virtual event System::EventHandler ^ OnMute;
 	virtual event System::EventHandler ^ OnUnMute;
 	virtual event System::EventHandler<MediaStreamError ^> ^ OnEnded;
-	virtual IMediaStreamTrack ^ Clone();
+	virtual MediaStreamTrack ^ Clone();
 	virtual void Stop();
 	virtual MediaTrackCapabilities GetCapabilities();
 	virtual MediaTrackConstraints ^ GetConstraints();

@@ -42,7 +42,7 @@ IntPtr MediaStreamTrack::GetNativeMediaStreamTrackInterface(bool throwOnDisposed
 	return IntPtr(_rpMediaStreamTrackInterface->get());
 }
 
-IMediaStreamTrack ^ MediaStreamTrack::Clone()
+MediaStreamTrack ^ MediaStreamTrack::Clone()
 {
 	throw gcnew NotImplementedException();
 }

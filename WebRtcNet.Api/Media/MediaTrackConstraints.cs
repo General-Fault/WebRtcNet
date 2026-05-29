@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace WebRtcNet.Media;
@@ -117,16 +117,16 @@ public class MediaTrackConstraintSet
 	public MediaTrackConstraints.PositiveUIntRangeConstraint? ChannelCount { get; set; }
 
 	/// <summary>
-	/// The identifier of the device generating the content of the <see cref="IMediaStreamTrack">MediaStreamTrack</see>.
+	/// The identifier of the device generating the content of the <see cref="MediaStreamTrack">MediaStreamTrack</see>.
 	/// It conforms with the definition of <see cref="MediaDeviceInfo.DeviceId">MediaDeviceInfo.DeviceId</see>. Note that
 	/// the setting of this property is uniquely determined by the source that is attached to the
-	/// <see cref="IMediaStreamTrack">MediaStreamTrack</see>. In particular,
-	/// <see cref="IMediaStreamTrack.GetCapabilities">GetCapabilities()</see> will return only a single value for
+	/// <see cref="MediaStreamTrack">MediaStreamTrack</see>. In particular,
+	/// <see cref="MediaStreamTrack.GetCapabilities">GetCapabilities()</see> will return only a single value for
 	/// DeviceId. This property can therefore be used for initial media selection with
-	/// <see cref="IMediaDevices.GetUserMedia">GetUserMedia()</see>. However, it is not useful for subsequent media
-	/// control with <see cref="IMediaStreamTrack.ApplyConstraints">ApplyConstraints()</see>, since any attempt to set a
+	/// <see cref="MediaDevices.GetUserMedia">GetUserMedia()</see>. However, it is not useful for subsequent media
+	/// control with <see cref="MediaStreamTrack.ApplyConstraints">ApplyConstraints()</see>, since any attempt to set a
 	/// different value will result in an unsatisfiable ConstraintSet. If a string of length 0 is used as a DeviceId value
-	/// constraint with <see cref="IMediaDevices.GetUserMedia">GetUserMedia()</see>, it MAY be interpreted as if the
+	/// constraint with <see cref="MediaDevices.GetUserMedia">GetUserMedia()</see>, it MAY be interpreted as if the
 	/// constraint is not specified.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-deviceId" />
@@ -134,13 +134,13 @@ public class MediaTrackConstraintSet
 
 	/// <summary>
 	/// The application-unique group identifier for the device generating the content of the
-	/// <see cref="IMediaStreamTrack">MediaStreamTrack</see>. It conforms with the definition of
+	/// <see cref="MediaStreamTrack">MediaStreamTrack</see>. It conforms with the definition of
 	/// <see cref="MediaDeviceInfo.GroupId">MediaDeviceInfo.GroupId</see>. Note that the setting of this property is
-	/// uniquely determined by the source that is attached to the <see cref="IMediaStreamTrack">MediaStreamTrack</see>.
-	/// In particular, <see cref="IMediaStreamTrack.GetCapabilities">GetCapabilities()</see> will return only a single
+	/// uniquely determined by the source that is attached to the <see cref="MediaStreamTrack">MediaStreamTrack</see>.
+	/// In particular, <see cref="MediaStreamTrack.GetCapabilities">GetCapabilities()</see> will return only a single
 	/// value for groupId. Since this property is not stable between browsing sessions, its usefulness for initial media
-	/// selection with <see cref="IMediaDevices.GetUserMedia">GetUserMedia()</see> is limited. It is not useful for
-	/// subsequent media control with <see cref="IMediaStreamTrack.ApplyConstraints">ApplyConstraints()</see>, since any
+	/// selection with <see cref="MediaDevices.GetUserMedia">GetUserMedia()</see> is limited. It is not useful for
+	/// subsequent media control with <see cref="MediaStreamTrack.ApplyConstraints">ApplyConstraints()</see>, since any
 	/// attempt to set a different value will result in an unsatisfiable ConstraintSet.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-groupId" />

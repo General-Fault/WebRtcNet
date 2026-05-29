@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace WebRtcNet;
@@ -6,7 +6,7 @@ namespace WebRtcNet;
 /// <summary>
 /// Describes the role of the ICE agent.
 /// </summary>
-/// <seealso cref="IRtcIceTransport.Role"/>
+/// <seealso cref="RtcIceTransport.Role"/>
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcicerole"/>
 /// <seealso href="https://datatracker.ietf.org/doc/html/rfc5245#section-5.2"/>
 public enum RtcIceRole
@@ -37,8 +37,8 @@ public enum RtcIceRole
 /// <summary>
 /// Represents the different states that the ICE gathering process goes through.
 /// </summary>
-/// <seealso cref="IRtcPeerConnection.IceGatheringState"/>
-/// <seealso cref="IRtcIceTransport.GatheringState"/>
+/// <seealso cref="RtcPeerConnection.IceGatheringState"/>
+/// <seealso cref="RtcIceTransport.GatheringState"/>
 /// <seealso href="http://www.w3.org/TR/webrtc/#rtcicegatheringstate-enum"/>
 public enum RtcIceGatheringState
 {
@@ -64,7 +64,7 @@ public enum RtcIceGatheringState
 /// <summary>
 /// Describes how the the possible ways an ICE Transport is used.
 /// </summary>
-/// <seealso cref="IRtcIceTransport.Component"/>
+/// <seealso cref="RtcIceTransport.Component"/>
 /// <seealso cref="RtcIceCandidate.Component"/>
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcicecomponent"/>
 /// <seealso href="https://www.w3.org/TR/webrtc/#candidate-attribute-grammar"/>
@@ -98,22 +98,22 @@ public enum RtcIceComponent
 /// <summary>
 /// Describes the possible states of an Ice transport.
 /// Note this is currently identical to the <see cref="RtcIceConnectionState"/> enum used by
-/// <see cref="IRtcPeerConnection.ConnectionState"/> and the <see cref="RtcDtlsTransportState"/> used by
-/// <see cref="IRtcDtlsTransport.State"/>.
+/// <see cref="RtcPeerConnection.ConnectionState"/> and the <see cref="RtcDtlsTransportState"/> used by
+/// <see cref="RtcDtlsTransport.State"/>.
 /// </summary>
-/// <seealso cref="IRtcIceTransport.State"/>
+/// <seealso cref="RtcIceTransport.State"/>
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcicetransportstate"/>
 public enum RtcIceTransportState
 {
 	/// <summary>
-	/// The <see cref="IRtcIceTransport">RTCIceTransport</see> is gathering candidates and/or waiting for remote candidates to
+	/// The <see cref="RtcIceTransport">RTCIceTransport</see> is gathering candidates and/or waiting for remote candidates to
 	/// be supplied, and has not yet started checking.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransportstate-new"/>
 	New,
 
 	/// <summary>
-	/// The <see cref="IRtcIceTransport">RTCIceTransport</see> has received at least one remote candidate and is checking
+	/// The <see cref="RtcIceTransport">RTCIceTransport</see> has received at least one remote candidate and is checking
 	/// candidate pairs and has either not yet found a connection or consent checks
 	/// <see href="https://tools.ietf.org/html/rfc7675">[RFC7675]</see> have failed on all previously successful candidate
 	/// pairs. In addition to checking, it may also still be gathering.
@@ -122,7 +122,7 @@ public enum RtcIceTransportState
 	Checking,
 
 	/// <summary>
-	/// The <see cref="IRtcIceTransport">RTCIceTransport</see> has found a usable connection, but is still checking other
+	/// The <see cref="RtcIceTransport">RTCIceTransport</see> has found a usable connection, but is still checking other
 	/// candidate pairs to see if there is a better connection. It may also still be gathering and/or waiting for
 	/// additional remote candidates. If consent checks <see href="https://tools.ietf.org/html/rfc7675">[RFC7675]</see>
 	/// fail on the connection in use, and there are no other successful candidate pairs available, then the state transitions to
@@ -133,7 +133,7 @@ public enum RtcIceTransportState
 	Connected,
 
 	/// <summary>
-	/// The <see cref="IRtcIceTransport">RTCIceTransport</see> has finished gathering, received an indication that there
+	/// The <see cref="RtcIceTransport">RTCIceTransport</see> has finished gathering, received an indication that there
 	/// are no more remote candidates, finished checking all candidate pairs and found a connection. If consent checks
 	/// <see href="https://tools.ietf.org/html/rfc7675">[RFC7675]</see> subsequently fail on all successful candidate
 	/// pairs, the state transitions to <see cref="Failed"/>.
@@ -142,7 +142,7 @@ public enum RtcIceTransportState
 	Completed,
 
 	/// <summary>
-	/// The <see cref="IRtcIceTransport">RTCIceTransport</see> has finished gathering, received an indication that there
+	/// The <see cref="RtcIceTransport">RTCIceTransport</see> has finished gathering, received an indication that there
 	/// are no more remote candidates, finished checking all candidate pairs, and all pairs have either failed
 	/// connectivity checks or have lost consent. This is a terminal state until ICE is restarted. Since an ICE restart
 	/// may cause connectivity to resume, entering the "failed" state does not cause DTLS transports, SCTP associations or
@@ -153,7 +153,7 @@ public enum RtcIceTransportState
 
 	/// <summary>
 	/// The ICE Agent has determined that connectivity is currently lost for this
-	/// <see cref="IRtcIceTransport">RTCIceTransport</see>. This is a transient state that may trigger intermittently (and
+	/// <see cref="RtcIceTransport">RTCIceTransport</see>. This is a transient state that may trigger intermittently (and
 	/// resolve itself without action) on a flaky network. The way this state is determined is implementation dependent.
 	/// Examples include:
 	/// <list type="bullet">
@@ -168,7 +168,7 @@ public enum RtcIceTransportState
 	Disconnected,
 
 	/// <summary>
-	/// The <see cref="IRtcIceTransport">RTCIceTransport</see>has shut down and is no longer responding to STUN requests.
+	/// The <see cref="RtcIceTransport">RTCIceTransport</see>has shut down and is no longer responding to STUN requests.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransportstate-closed"/>
 	Closed
@@ -178,16 +178,16 @@ public enum RtcIceTransportState
 /// A pair of local and remote ICE candidates for a transport.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcicecandidatepair"/>
-/// <seealso cref="IRtcIceTransport.GetSelectedCandidatePair"/>
+/// <seealso cref="RtcIceTransport.GetSelectedCandidatePair"/>
 public sealed record RtcIceCandidatePair(RtcIceCandidate Local, RtcIceCandidate Remote);
 
 /// <summary>
-/// Parameters used by an <see cref="IRtcIceTransport">RTCIceTransport</see>. This is an out-only snapshot
-/// returned by <see cref="IRtcIceTransport.GetLocalParameters"/> and
-/// <see cref="IRtcIceTransport.GetRemoteParameters"/>.
+/// Parameters used by an <see cref="RtcIceTransport">RTCIceTransport</see>. This is an out-only snapshot
+/// returned by <see cref="RtcIceTransport.GetLocalParameters"/> and
+/// <see cref="RtcIceTransport.GetRemoteParameters"/>.
 /// </summary>
-/// <seealso cref="IRtcIceTransport.GetLocalParameters"/>
-/// <seealso cref="IRtcIceTransport.GetRemoteParameters"/>
+/// <seealso cref="RtcIceTransport.GetLocalParameters"/>
+/// <seealso cref="RtcIceTransport.GetRemoteParameters"/>
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtciceparameters"/>
 public sealed record RtcIceParameters
 {
@@ -219,25 +219,25 @@ public sealed record RtcIceParameters
 
 
 /// <summary>
-/// The IRtcIceTransport interface allows an application access to information about the ICE transport over which packets
+/// The RtcIceTransport interface allows an application access to information about the ICE transport over which packets
 /// are sent and received. In particular, ICE manages peer-to-peer connections which involve state which the application
 /// may want to access. RTCIceTransport objects are constructed as a result of calls to
-/// <see cref="IRtcPeerConnection.SetLocalDescription"/> and <see cref="IRtcPeerConnection.SetRemoteDescription"/>. The
+/// <see cref="RtcPeerConnection.SetLocalDescription"/> and <see cref="RtcPeerConnection.SetRemoteDescription"/>. The
 /// underlying ICE state is managed by the ICE agent; as such, the state of an RTCIceTransport changes when the ICE Agent
 /// provides indications to the user agent as described below. Each RTCIceTransport object represents the ICE transport
-/// layer for the RTP or RTCP component of a specific <see cref="IRtcRtpTransceiver">RTCRtpTransceiver</see>, or a group
-/// of <see cref="IRtcRtpTransceiver">RTCRtpTransceivers</see> if such a group has been negotiated via
+/// layer for the RTP or RTCP component of a specific <see cref="RtcRtpTransceiver">RTCRtpTransceiver</see>, or a group
+/// of <see cref="RtcRtpTransceiver">RTCRtpTransceivers</see> if such a group has been negotiated via
 /// <see href="https://tools.ietf.org/html/rfc8843">[RFC8843]</see>.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcicetransport"/>
 /// <seealso href="https://tools.ietf.org/html/rfc8843"/>
-/// <seealso cref="IRtcDtlsTransport"/>
-public abstract class IRtcIceTransport
+/// <seealso cref="RtcDtlsTransport"/>
+public abstract class RtcIceTransport
 {
 	/// <summary>
 	/// Initializes the ICE transport wrapper.
 	/// </summary>
-	protected IRtcIceTransport()
+	protected RtcIceTransport()
 	{
 	}
 

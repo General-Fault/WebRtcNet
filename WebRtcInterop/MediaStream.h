@@ -13,30 +13,30 @@ namespace WebRtcInterop {
 
 using namespace WebRtcNet::Media;
 
-public ref class MediaStream : WebRtcNet::Media::IMediaStream
+public ref class MediaStream : WebRtcNet::Media::MediaStream
 {
 public:
 	/// Composes a new stream from the tracks of an existing stream.
-	MediaStream(WebRtcNet::Media::IMediaStream ^ stream);
+	MediaStream(WebRtcNet::Media::MediaStream ^ stream);
 	~MediaStream();
 
 	/// Composes a new stream out of existing tracks
-	//MediaStream(IEnumerable<IMediaStreamTrack^>^ tracks);
+	//MediaStream(IEnumerable<MediaStreamTrack^>^ tracks);
 
-	// Inherited via IMediaStream
+	// Inherited via MediaStream
 	virtual property String^ Id;
-	virtual IEnumerable<IMediaStreamTrack^>^ GetAudioTracks();
-	virtual IEnumerable<IMediaStreamTrack^>^ GetVideoTracks();
-	virtual IEnumerable<IMediaStreamTrack^>^ GetTracks();
-	virtual IMediaStreamTrack ^ GetTrackById(String^ trackId);
-	virtual void AddTrack(IMediaStreamTrack ^ track);
-	virtual void RemoveTrack(IMediaStreamTrack ^ track);
-	virtual IMediaStream ^ Clone();
+	virtual IEnumerable<MediaStreamTrack^>^ GetAudioTracks();
+	virtual IEnumerable<MediaStreamTrack^>^ GetVideoTracks();
+	virtual IEnumerable<MediaStreamTrack^>^ GetTracks();
+	virtual MediaStreamTrack ^ GetTrackById(String^ trackId);
+	virtual void AddTrack(MediaStreamTrack ^ track);
+	virtual void RemoveTrack(MediaStreamTrack ^ track);
+	virtual MediaStream ^ Clone();
 	virtual property Boolean Active;
 	virtual event EventHandler^ OnActive;
 	virtual event EventHandler^ OnInactive;
-	virtual event EventHandler<IMediaStreamTrack^>^ OnAddTrack;
-	virtual event EventHandler<IMediaStreamTrack^>^ OnRemoveTrack;
+	virtual event EventHandler<MediaStreamTrack^>^ OnAddTrack;
+	virtual event EventHandler<MediaStreamTrack^>^ OnRemoveTrack;
 
 internal:
 	MediaStream(rtc::scoped_refptr <webrtc::MediaStreamInterface> stream);
@@ -53,10 +53,10 @@ namespace WebRtcNet {
 
 using namespace Media;
 
-public ref class MediaDevices : IMediaDevices
+public ref class MediaDevices : WebRtcNet::Media::MediaDevices
 {
 public:
-	static IMediaStream ^ GetUserMedia(MediaStreamConstraints ^ constraints);
+	static MediaStream ^ GetUserMedia(MediaStreamConstraints ^ constraints);
 private:
 	MediaDevices() {};
 };
@@ -65,14 +65,14 @@ private:
 public ref class MediaStreamException : Exception
 {
 public:
-	MediaStreamException(IMediaStream ^ stream) : _stream(stream) {};
-	MediaStreamException(IMediaStream ^ stream, String^ msg) : Exception(msg), _stream(stream) {};
+	MediaStreamException(MediaStream ^ stream) : _stream(stream) {};
+	MediaStreamException(MediaStream ^ stream, String^ msg) : Exception(msg), _stream(stream) {};
 	MediaStreamException(String^ msg) : Exception(msg), _stream(nullptr) {};
 
-	property IMediaStream ^ Stream { IMediaStream ^ get() { return _stream; } };
+	property MediaStream ^ Stream { MediaStream ^ get() { return _stream; } };
 
 private:
-	IMediaStream ^ _stream;
+	MediaStream ^ _stream;
 };
 
 }

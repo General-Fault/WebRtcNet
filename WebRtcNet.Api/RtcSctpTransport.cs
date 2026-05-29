@@ -28,12 +28,12 @@ public enum RtcSctpTransportState
 /// Represents the SCTP transport used for data channels.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcsctptransport-interface"/>
-public abstract class IRtcSctpTransport
+public abstract class RtcSctpTransport
 {
 	/// <summary>
 	/// Initializes the SCTP transport wrapper.
 	/// </summary>
-	protected IRtcSctpTransport()
+	protected RtcSctpTransport()
 	{
 	}
 
@@ -47,7 +47,7 @@ public abstract class IRtcSctpTransport
 	/// Gets the underlying DTLS transport, if available.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcsctptransport-transport"/>
-	public abstract IRtcDtlsTransport? Transport { get; }
+	public abstract RtcDtlsTransport? Transport { get; }
 
 	/// <summary>
 	/// Gets the current SCTP transport state.

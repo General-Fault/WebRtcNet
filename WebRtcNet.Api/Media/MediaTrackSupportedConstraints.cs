@@ -1,9 +1,9 @@
-﻿namespace WebRtcNet.Media;
+namespace WebRtcNet.Media;
 
 /// <summary>
-/// MediaTrackSupportedConstraints represents the set of constraints supported by a <see cref="IMediaStreamTrack"/> object.
+/// MediaTrackSupportedConstraints represents the set of constraints supported by a <see cref="MediaStreamTrack"/> object.
 /// This is an out-only snapshot
-/// returned by <see cref="IMediaDevices.GetSupportedConstraints"/>.
+/// returned by <see cref="MediaDevices.GetSupportedConstraints"/>.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatracksupportedconstraints"/>
 public sealed record MediaTrackSupportedConstraints

@@ -1,4 +1,4 @@
-﻿namespace WebRtcNet.Media;
+namespace WebRtcNet.Media;
 
 /// <summary>
 ///     Represents a media device's basic usage.
@@ -24,7 +24,7 @@ public enum MediaDeviceKind
 
 /// <summary>
 ///     Represents information about a single media device such as a webcam, speakers or a microphone.
-///     This is an out-only snapshot returned by <see cref="IMediaDevices.EnumerateDevices" />.
+///     This is an out-only snapshot returned by <see cref="MediaDevices.EnumerateDevices" />.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadeviceinfo" />
 public record MediaDeviceInfo

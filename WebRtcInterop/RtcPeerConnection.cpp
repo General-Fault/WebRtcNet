@@ -133,26 +133,26 @@ namespace WebRtcInterop
 		throw gcnew NotImplementedException();
 	}
 
-	IEnumerable<IMediaStream^>^ RtcPeerConnection::LocalStreams::get()
+	IEnumerable<MediaStream^>^ RtcPeerConnection::LocalStreams::get()
 	{
 		throw gcnew NotImplementedException();
 		// TODO: insert return statement here
 	}
 
 
-	IEnumerable<IMediaStream^>^ RtcPeerConnection::RemoteStreams::get()
+	IEnumerable<MediaStream^>^ RtcPeerConnection::RemoteStreams::get()
 	{
 		throw gcnew NotImplementedException();
 		// TODO: insert return statement here
 	}
 
-	IMediaStream^ RtcPeerConnection::GetStreamById(String^ streamId)
+	MediaStream^ RtcPeerConnection::GetStreamById(String^ streamId)
 	{
 		throw gcnew NotImplementedException();
 		// TODO: insert return statement here
 	}
 
-	void RtcPeerConnection::AddStream(IMediaStream^ stream)
+	void RtcPeerConnection::AddStream(MediaStream^ stream)
 	{
 		auto nativePeerConnection = GetNativePeerConnection(true);
 		auto nativeStream = reinterpret_cast<webrtc::MediaStreamInterface*>(
@@ -160,7 +160,7 @@ namespace WebRtcInterop
 		nativePeerConnection->AddStream(nativeStream);
 	}
 
-	void RtcPeerConnection::RemoveStream(IMediaStream^ stream)
+	void RtcPeerConnection::RemoveStream(MediaStream^ stream)
 	{
 		auto nativePeerConnection = GetNativePeerConnection(true);
 		auto nativeStream = reinterpret_cast<webrtc::MediaStreamInterface*>(
@@ -173,19 +173,19 @@ namespace WebRtcInterop
 		throw gcnew NotImplementedException();
 	}
 
-	IRtcDataChannel^ RtcPeerConnection::CreateDataChannel(String^ label, RtcDataChannelInit^ dataChannelInit)
+	RtcDataChannel^ RtcPeerConnection::CreateDataChannel(String^ label, RtcDataChannelInit^ dataChannelInit)
 	{
 		throw gcnew NotImplementedException();
 		// TODO: insert return statement here
 	}
 
-	IRtcDtmfSender^ RtcPeerConnection::CreateRtcDtmfSender(IMediaStreamTrack^ track)
+	RtcDtmfSender^ RtcPeerConnection::CreateRtcDtmfSender(MediaStreamTrack^ track)
 	{
 		throw gcnew NotImplementedException();
 		// TODO: insert return statement here
 	}
 
-	Task<IRtcStatsReport^>^ RtcPeerConnection::GetStats(IMediaStreamTrack^ selector)
+	Task<RtcStatsReport^>^ RtcPeerConnection::GetStats(MediaStreamTrack^ selector)
 	{
 		throw gcnew NotImplementedException();
 		// TODO: insert return statement here
