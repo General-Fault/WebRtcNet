@@ -1,0 +1,126 @@
+{
+	"version": 1,
+	"generatedOn": "2026-05-28",
+	"entries": [
+		{
+			"apiSymbol": "IRtcPeerConnection",
+			"apiFile": "WebRtcNet.Api/IRtcPeerConnection.cs",
+			"spec": "webrtc",
+			"anchor": "https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection",
+			"status": "seeded",
+			"notes": "Primary peer connection contract surface."
+		},
+		{
+			"apiSymbol": "IRtcDataChannel",
+			"apiFile": "WebRtcNet.Api/IRtcDataChannel.cs",
+			"spec": "webrtc",
+			"anchor": "https://www.w3.org/TR/webrtc/#dom-rtcdatachannel",
+			"status": "seeded",
+			"notes": "Data channel state and messaging."
+		},
+		{
+			"apiSymbol": "RtcIceCandidate",
+			"apiFile": "WebRtcNet.Api/RtcIceCandidate.cs",
+			"spec": "webrtc",
+			"anchor": "https://www.w3.org/TR/webrtc/#dom-rtcicecandidate",
+			"status": "seeded",
+			"notes": "ICE candidate model and parsed properties."
+		},
+		{
+			"apiSymbol": "IRtcRtpSender",
+			"apiFile": "WebRtcNet.Api/IRtcRtpSender.cs",
+			"spec": "webrtc",
+			"anchor": "https://www.w3.org/TR/webrtc/#dom-rtcrtpsender",
+			"status": "seeded",
+			"notes": "RTP sender behavior and parameter control."
+		},
+		{
+			"apiSymbol": "IRtcRtpTransceiver",
+			"apiFile": "WebRtcNet.Api/IRtcRtpTransceiver.cs",
+			"spec": "webrtc",
+			"anchor": "https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiver",
+			"status": "seeded",
+			"notes": "Bidirectional RTP transceiver contract."
+		},
+		{
+			"apiSymbol": "RtcRtpParameters",
+			"apiFile": "WebRtcNet.Api/RtcRtpParameters.cs",
+			"spec": "webrtc",
+			"anchor": "https://www.w3.org/TR/webrtc/#rtcrtpinterface",
+			"status": "seeded",
+			"notes": "Dictionary alignment requires deeper section mapping."
+		},
+		{
+			"apiSymbol": "IMediaDevices",
+			"apiFile": "WebRtcNet.Api/Media/IMediaDevices.cs",
+			"spec": "mediacapture",
+			"anchor": "https://www.w3.org/TR/mediacapture-streams/#dom-mediadevices-getusermedia",
+			"status": "seeded",
+			"notes": "Device acquisition and permissions flow."
+		},
+		{
+			"apiSymbol": "IMediaStream",
+			"apiFile": "WebRtcNet.Api/Media/IMediaStream.cs",
+			"spec": "mediacapture",
+			"anchor": "https://www.w3.org/TR/mediacapture-streams/#mediastream",
+			"status": "seeded",
+			"notes": "Media stream container model."
+		},
+		{
+			"apiSymbol": "IMediaStreamTrack",
+			"apiFile": "WebRtcNet.Api/Media/IMediaStreamTrack.cs",
+			"spec": "mediacapture",
+			"anchor": "https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-applyconstraints",
+			"status": "seeded",
+			"notes": "Track lifecycle and constraints application."
+		},
+		{
+			"apiSymbol": "MediaTrackConstraints",
+			"apiFile": "WebRtcNet.Api/Media/MediaTrackConstraints.cs",
+			"spec": "mediacapture",
+			"anchor": "https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackconstraints",
+			"status": "seeded",
+			"notes": "Main constraints object shape."
+		},
+		{
+			"apiSymbol": "MediaTrackCapabilities",
+			"apiFile": "WebRtcNet.Api/Media/MediaTrackCapabilities.cs",
+			"spec": "mediacapture",
+			"anchor": "https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities",
+			"status": "seeded",
+			"notes": "Capabilities dictionary alignment."
+		},
+		{
+			"apiSymbol": "MediaTrackSettings",
+			"apiFile": "WebRtcNet.Api/Media/MediaTrackSettings.cs",
+			"spec": "mediacapture",
+			"anchor": "https://www.w3.org/TR/mediacapture-streams/#dom-mediatracksettings",
+			"status": "seeded",
+			"notes": "Current applied settings dictionary."
+		},
+		{
+			"apiSymbol": "MediaStreamConstraints",
+			"apiFile": "WebRtcNet.Api/Media/MediaStreamConstraints.cs",
+			"spec": "mediacapture",
+			"anchor": "https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamconstraints",
+			"status": "seeded",
+			"notes": "Top-level audio/video request constraints."
+		},
+		{
+			"apiSymbol": "IRtcStatsReport",
+			"apiFile": "WebRtcNet.Api/IRtcStatsReport.cs",
+			"spec": "webrtc-stats",
+			"anchor": "https://www.w3.org/TR/webrtc-stats/#rtcstatsreport-object",
+			"status": "seeded",
+			"notes": "Stats report graph and lookup."
+		},
+		{
+			"apiSymbol": "RtcStatsReport",
+			"apiFile": "WebRtcNet.Api/RtcStatsReport.cs",
+			"spec": "webrtc-stats",
+			"anchor": "https://www.w3.org/TR/webrtc-stats/#dom-rtcstatsreport",
+			"status": "seeded",
+			"notes": "Concrete report model wrapper."
+		}
+	]
+}

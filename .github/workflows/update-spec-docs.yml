@@ -1,0 +1,50 @@
+name: Update Local Spec Docs
+
+on:
+  workflow_dispatch:
+    inputs:
+      includeEditorsDraft:
+        description: Include Editor's Draft snapshots
+        required: false
+        default: false
+        type: boolean
+  schedule:
+    - cron: "0 8 1 * *"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PowerShell
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Run spec refresh script
+        shell: pwsh
+        run: |
+          $includeEd = "${{ inputs.includeEditorsDraft }}"
+          if ($includeEd -eq "true") {
+            ./scripts/update-spec-docs.ps1 -IncludeEditorsDraft
+          } else {
+            ./scripts/update-spec-docs.ps1
+          }
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "docs(specs): refresh local W3C spec corpus"
+          title: "docs(specs): refresh local W3C spec corpus"
+          body: |
+            Automated refresh of local W3C specification snapshots and metadata.
+          branch: "automation/update-spec-docs"
+          labels: |
+            documentation
+            automated
