@@ -7,42 +7,48 @@ namespace WebRtcNet;
 /// Used to set the initial state of an RtcDataChannel on construction.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannelinit" />
-public class RtcDataChannelInit
+public record RtcDataChannelInit
 {
 	/// <summary>
 	/// Overrides the default selection of id for this channel.
 	/// </summary>
-	public ushort? Id { get; set; }
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannelinit-id" />
+	public ushort? Id { get; init; } = null;
 
 	/// <summary>
 	/// Limits the time during which the channel will transmit or retransmit data if not acknowledged. This value may be
 	/// clamped if it exceeds the maximum value supported by the platform.
 	/// </summary>
-	public uint? MaxPacketLifeTime { get; set; }
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannelinit-maxpacketlifetime" />
+	public uint? MaxPacketLifeTime { get; init; } = null;
 
 	/// <summary>
 	/// Limits the number of times a channel will retransmit data if not successfully delivered. This value may be clamped
 	/// if it exceeds the maximum value supported by the platform.
 	/// </summary>
-	public uint? MaxRetransmits { get; set; }
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannelinit-maxretransmits" />
+	public uint? MaxRetransmits { get; init; } = null;
 
 	/// <summary>
 	/// The default value of false tells the platform to announce the channel in-band and instruct the other peer to
 	/// dispatch a corresponding RtcDataChannel object. If set to true, it is up to the application to negotiate the
 	/// channel and create a RtcDataChannel object with the same id at the other peer.
 	/// </summary>
-	public bool Negotiated { get; set; }
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannelinit-negotiated" />
+	public bool Negotiated { get; init; } = false;
 
 	/// <summary>
 	/// If set to false, data is allowed to be delivered out of order. The default value of true, guarantees that data will
 	/// be delivered in order.
 	/// </summary>
-	public bool Ordered { get; set; } = true;
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannelinit-ordered" />
+	public bool Ordered { get; init; } = true;
 
 	/// <summary>
 	/// Subprotocol name used for this channel.
 	/// </summary>
-	public string Protocol { get; set; } = string.Empty;
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannelinit-protocol" />
+	public string Protocol { get; init; } = string.Empty;
 }
 
 /// <summary>
