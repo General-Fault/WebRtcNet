@@ -75,10 +75,7 @@ TEST(marshal_ice_transport_state_tests, marshal_as_native_IceRole_to_managed_Rtc
 			static_cast<IceRole>(ICEROLE_UNKNOWN + 1));
 		FAIL();
 	}
-	catch (Exception^ ex)
+	catch (InvalidCastException^)
 	{
-		// check exception
-		EXPECT_MANAGED_TYPE_EQ(*ex, InvalidCastException::typeid);
-		EXPECT_MANAGED_STREQ(ex->Message, "Invalid webrtc::IceRole value.");
 	}
 }

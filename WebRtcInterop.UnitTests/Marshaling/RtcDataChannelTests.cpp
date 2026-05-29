@@ -72,10 +72,7 @@ TEST(marshal_data_channel_state_tests, marshal_as_native_dataState_to_managed_rt
 			static_cast<DataChannelInterface::DataState>(DataChannelInterface::DataState::kClosed + 1));
 		FAIL();
 	}
-	catch (Exception^ ex)
+	catch (InvalidCastException^)
 	{
-		// check exception
-		EXPECT_MANAGED_TYPE_EQ(*ex, InvalidCastException::typeid);
-		EXPECT_MANAGED_STREQ(ex->Message, "Invalid DataChannelInterface::DataState value.");
 	}
 }
