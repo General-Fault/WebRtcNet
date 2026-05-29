@@ -62,12 +62,12 @@ public partial class MediaTrackConstraints
 		/// <summary>
 		/// Preferred string value.
 		/// </summary>
-		public string Ideal;
+		public string Ideal = string.Empty;
 
 		/// <summary>
 		/// Required exact string value.
 		/// </summary>
-		public string Exact;
+		public string Exact = string.Empty;
 
 		/// <summary>
 		/// Creates a string constraint with an exact value.

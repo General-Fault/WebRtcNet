@@ -11,6 +11,9 @@ namespace WebRtcNet;
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcrtpreceiver-interface"/>
 public abstract class IRtcRtpReceiver
 {
+	/// <summary>
+	/// Initializes the RTP receiver wrapper.
+	/// </summary>
 	protected IRtcRtpReceiver()
 	{
 	}
@@ -107,6 +110,13 @@ public abstract class IRtcRtpReceiver
 /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpcontributingsource"/>
 public class RtcRtpContributingSource
 {
+	/// <summary>
+	/// Initializes a contributing source snapshot.
+	/// </summary>
+	/// <param name="timestamp">The observation timestamp.</param>
+	/// <param name="source">The CSRC/SSRC source identifier.</param>
+	/// <param name="audioLevel">The linear audio level in the range [0, 1].</param>
+	/// <param name="rtpTimestamp">The RTP timestamp for the observed frame.</param>
 	public RtcRtpContributingSource(DateTime timestamp, ulong source, double audioLevel, ulong rtpTimestamp)
 	{
 		Timestamp = timestamp;
@@ -146,6 +156,13 @@ public class RtcRtpContributingSource
 /// <inheritdoc cref="RtcRtpContributingSource"/>
 public class RtcRtpSynchronizationSource : RtcRtpContributingSource
 {
+	/// <summary>
+	/// Initializes a synchronization source snapshot.
+	/// </summary>
+	/// <param name="timestamp">The observation timestamp.</param>
+	/// <param name="source">The SSRC source identifier.</param>
+	/// <param name="audioLevel">The linear audio level in the range [0, 1].</param>
+	/// <param name="rtpTimestamp">The RTP timestamp for the observed frame.</param>
 	public RtcRtpSynchronizationSource(DateTime timestamp, ulong source, double audioLevel, ulong rtpTimestamp) 
 		: base(timestamp, source, audioLevel, rtpTimestamp)
 	{

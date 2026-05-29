@@ -191,6 +191,11 @@ public sealed record RtcIceCandidatePair(RtcIceCandidate Local, RtcIceCandidate 
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtciceparameters"/>
 public sealed record RtcIceParameters
 {
+	/// <summary>
+	/// Initializes ICE parameters with a username fragment and password.
+	/// </summary>
+	/// <param name="usernameFragment">The ICE username fragment.</param>
+	/// <param name="password">The ICE password.</param>
 	public RtcIceParameters(string usernameFragment, string password)
 	{
 		UsernameFragment = usernameFragment ?? string.Empty;
@@ -229,6 +234,9 @@ public sealed record RtcIceParameters
 /// <seealso cref="IRtcDtlsTransport"/>
 public abstract class IRtcIceTransport
 {
+	/// <summary>
+	/// Initializes the ICE transport wrapper.
+	/// </summary>
 	protected IRtcIceTransport()
 	{
 	}

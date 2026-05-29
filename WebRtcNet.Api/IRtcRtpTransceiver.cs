@@ -17,6 +17,9 @@ namespace WebRtcNet;
 /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiver"/>
 public abstract class IRtcRtpTransceiver
 {
+	/// <summary>
+	/// Initializes the RTP transceiver wrapper.
+	/// </summary>
 	protected IRtcRtpTransceiver()
 	{
 	}
@@ -109,6 +112,9 @@ public record RtcRtpCodecCapability : RtcRtpCodec
 	{
 	}
 
+	/// <summary>
+	/// Initializes a codec capability with default values.
+	/// </summary>
 	public RtcRtpCodecCapability()
 	{
 	}

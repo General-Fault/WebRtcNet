@@ -68,21 +68,23 @@ public class MediaTrackConstraintTests
 	public void EchoCancellationConstraint_ImplicitBool_SetsExactBoolean()
 	{
 		EchoCancellationConstraint constraint = true;
+		var exact = constraint.Exact;
 
-		Assert.That(constraint.Exact.HasValue, Is.True);
-		Assert.That(constraint.Exact.Value.IsBoolean, Is.True);
-		Assert.That(constraint.Exact.Value.BooleanValue, Is.True);
+		Assert.That(exact.HasValue, Is.True);
+		Assert.That(exact.GetValueOrDefault().IsBoolean, Is.True);
+		Assert.That(exact.GetValueOrDefault().BooleanValue, Is.True);
 	}
 
 	[Test]
 	public void EchoCancellationConstraint_ImplicitEnum_SetsExactMode()
 	{
 		EchoCancellationConstraint constraint = EchoCancellationMode.RemoteOnly;
+		var exact = constraint.Exact;
 
-		Assert.That(constraint.Exact.HasValue, Is.True);
-		Assert.That(constraint.Exact.Value.IsMode, Is.True);
-		Assert.That(constraint.Exact.Value.Mode, Is.EqualTo(EchoCancellationMode.RemoteOnly));
-		Assert.That(constraint.Exact.Value.ModeValue, Is.EqualTo("remote-only"));
+		Assert.That(exact.HasValue, Is.True);
+		Assert.That(exact.GetValueOrDefault().IsMode, Is.True);
+		Assert.That(exact.GetValueOrDefault().Mode, Is.EqualTo(EchoCancellationMode.RemoteOnly));
+		Assert.That(exact.GetValueOrDefault().ModeValue, Is.EqualTo("remote-only"));
 	}
 
 	[Test]

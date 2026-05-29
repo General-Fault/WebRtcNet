@@ -12,6 +12,9 @@ namespace WebRtcNet;
 /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpsender"/>
 public abstract class IRtcRtpSender
 {
+	/// <summary>
+	/// Initializes the RTP sender wrapper.
+	/// </summary>
 	protected IRtcRtpSender()
 	{
 	}
@@ -73,7 +76,7 @@ public abstract class IRtcRtpSender
 	/// <param name="options">Optional sender-side options supplied to the spec's updated SetParameters entry point.</param>
 	/// <returns>A task that completes when the parameters have been applied.</returns>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpsender-setparameters"/>
-	public Task SetParameters(RtcRtpSendParameters parameters, RtcSetParameterOptions options = null)
+	public Task SetParameters(RtcRtpSendParameters parameters, RtcSetParameterOptions? options = null)
 	{
 		return SetParameters(parameters);
 	}

@@ -61,6 +61,9 @@ public enum RtcDtlsTransportState
 /// <seealso href="https://tools.ietf.org/html/rfc8843"/>
 public abstract class IRtcDtlsTransport
 {
+	/// <summary>
+	/// Initializes the DTLS transport wrapper.
+	/// </summary>
 	protected IRtcDtlsTransport()
 	{
 	}

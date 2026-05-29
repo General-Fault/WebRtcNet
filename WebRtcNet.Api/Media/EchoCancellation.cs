@@ -126,6 +126,8 @@ public readonly record struct EchoCancellationValue
 	/// <summary>
 	/// Converts a boolean to an <see cref="EchoCancellationValue" />.
 	/// </summary>
+	/// <param name="from">Boolean echo-cancellation value.</param>
+	/// <returns>An <see cref="EchoCancellationValue" /> with boolean representation.</returns>
 	public static implicit operator EchoCancellationValue(bool from)
 	{
 		return new EchoCancellationValue(from);
@@ -134,6 +136,8 @@ public readonly record struct EchoCancellationValue
 	/// <summary>
 	/// Converts a known mode enum value to an <see cref="EchoCancellationValue" />.
 	/// </summary>
+	/// <param name="from">Known echo-cancellation mode.</param>
+	/// <returns>An <see cref="EchoCancellationValue" /> with mode representation.</returns>
 	public static implicit operator EchoCancellationValue(EchoCancellationMode from)
 	{
 		return new EchoCancellationValue(from);
@@ -142,6 +146,8 @@ public readonly record struct EchoCancellationValue
 	/// <summary>
 	/// Converts a raw mode string to an <see cref="EchoCancellationValue" />.
 	/// </summary>
+	/// <param name="from">Mode string value.</param>
+	/// <returns>An <see cref="EchoCancellationValue" /> with mode representation.</returns>
 	public static implicit operator EchoCancellationValue(string from)
 	{
 		return new EchoCancellationValue(from);
@@ -187,6 +193,8 @@ public sealed class EchoCancellationConstraint
 	/// <summary>
 	/// Converts a value into a constraint with <see cref="Exact" /> set.
 	/// </summary>
+	/// <param name="from">Echo-cancellation value.</param>
+	/// <returns>An <see cref="EchoCancellationConstraint" /> with <see cref="Exact" /> populated.</returns>
 	public static implicit operator EchoCancellationConstraint(EchoCancellationValue from)
 	{
 		return new EchoCancellationConstraint(from);
@@ -195,6 +203,8 @@ public sealed class EchoCancellationConstraint
 	/// <summary>
 	/// Converts a boolean into a constraint with <see cref="Exact" /> set.
 	/// </summary>
+	/// <param name="from">Boolean echo-cancellation value.</param>
+	/// <returns>An <see cref="EchoCancellationConstraint" /> with <see cref="Exact" /> populated.</returns>
 	public static implicit operator EchoCancellationConstraint(bool from)
 	{
 		return new EchoCancellationConstraint(from);
@@ -203,6 +213,8 @@ public sealed class EchoCancellationConstraint
 	/// <summary>
 	/// Converts a known mode into a constraint with <see cref="Exact" /> set.
 	/// </summary>
+	/// <param name="from">Known echo-cancellation mode.</param>
+	/// <returns>An <see cref="EchoCancellationConstraint" /> with <see cref="Exact" /> populated.</returns>
 	public static implicit operator EchoCancellationConstraint(EchoCancellationMode from)
 	{
 		return new EchoCancellationConstraint(from);
@@ -211,6 +223,8 @@ public sealed class EchoCancellationConstraint
 	/// <summary>
 	/// Converts a raw mode string into a constraint with <see cref="Exact" /> set.
 	/// </summary>
+	/// <param name="from">Mode string value.</param>
+	/// <returns>An <see cref="EchoCancellationConstraint" /> with <see cref="Exact" /> populated.</returns>
 	public static implicit operator EchoCancellationConstraint(string from)
 	{
 		return new EchoCancellationConstraint(from);

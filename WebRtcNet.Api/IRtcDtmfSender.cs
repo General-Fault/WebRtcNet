@@ -3,8 +3,15 @@ using WebRtcNet.Media;
 
 namespace WebRtcNet;
 
+/// <summary>
+/// Sends DTMF tones for an RTP sender associated with an audio track.
+/// </summary>
+/// <seealso href="https://www.w3.org/TR/webrtc/#rtcdtmfsender-interface" />
 public abstract class IRtcDtmfSender
 {
+	/// <summary>
+	/// Initializes the DTMF sender wrapper.
+	/// </summary>
 	protected IRtcDtmfSender()
 	{
 	}
@@ -65,12 +72,23 @@ public abstract class IRtcDtmfSender
 	public abstract int InterToneGap { get; }
 }
 
+/// <summary>
+/// Event data for <see cref="IRtcDtmfSender.OnToneChange" />.
+/// </summary>
+/// <seealso href="https://www.w3.org/TR/webrtc/#event-dtmfsender-tonechange" />
 public class RtcDtmfToneChangedEventArgs : EventArgs
 {
+	/// <summary>
+	/// Initializes tone change event arguments.
+	/// </summary>
+	/// <param name="tone">The tone value that changed.</param>
 	public RtcDtmfToneChangedEventArgs(string tone)
 	{
 		Tone = tone;
 	}
 
+	/// <summary>
+	/// Gets the tone value for the event.
+	/// </summary>
 	public string Tone { get; }
 }

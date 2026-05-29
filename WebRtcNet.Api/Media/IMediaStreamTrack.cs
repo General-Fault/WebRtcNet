@@ -146,6 +146,7 @@ public abstract class IMediaStreamTrack
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-getcapabilities" />
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#constrainable-interface" />
+	/// <returns>The source capabilities for this track.</returns>
 	public abstract MediaTrackCapabilities GetCapabilities();
 
 	/// <summary>
@@ -157,6 +158,7 @@ public abstract class IMediaStreamTrack
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-getconstraints" />
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#constrainable-interface" />
+	/// <returns>The currently applied constraints for this track.</returns>
 	public abstract MediaTrackConstraints GetConstraints();
 
 	/// <summary>
@@ -164,13 +166,14 @@ public abstract class IMediaStreamTrack
 	/// the object, whether they are platform defaults or have been set by <see cref="ApplyConstraints" />.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-getsettings" />
+	/// <returns>The current settings snapshot for this track.</returns>
 	public abstract MediaTrackSettings GetSettings();
 
 	/// <summary>
 	/// Apply the supplied <see cref="MediaTrackConstraints">constraints</see>. Use null to remove all constraints.
 	/// </summary>
-	/// `
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-applyconstraints" />
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#constrainable-interface" />
-	public abstract void ApplyConstraints(MediaTrackConstraints constraints = null);
+	/// <param name="constraints">Constraints to apply, or <see langword="null" /> to clear constraints.</param>
+	public abstract void ApplyConstraints(MediaTrackConstraints? constraints = null);
 }

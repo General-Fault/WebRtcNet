@@ -1,0 +1,13 @@
+<Project>
+	<PropertyGroup>
+		<AssemblyCompany></AssemblyCompany>
+		<AssemblyProduct>WebRtcNet</AssemblyProduct>
+		<Copyright>Copyright ©  2022</Copyright>
+		<AssemblyTrademark></AssemblyTrademark>
+		<AssemblyCulture></AssemblyCulture>
+		<ComVisible>false</ComVisible>
+		<Nullable>enable</Nullable>
+		<AssemblyVersion>0.104.1.0</AssemblyVersion>
+		<FileVersion>0.104.1.0</FileVersion>
+	</PropertyGroup>
+</Project>

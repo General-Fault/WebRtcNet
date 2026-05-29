@@ -67,6 +67,14 @@ public enum RtcErrorDetailType
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcerror-interface"/>
 public class RtcError : Exception
 {
+	/// <summary>
+	/// Initializes an RTC error with WebRTC-specific details.
+	/// </summary>
+	/// <param name="errorDetail">The high-level error detail classification.</param>
+	/// <param name="sdpLineNumber">The SDP line number when <paramref name="errorDetail" /> is SDP syntax related.</param>
+	/// <param name="sctpCauseCode">The SCTP cause code when <paramref name="errorDetail" /> is SCTP related.</param>
+	/// <param name="receivedAlert">The DTLS alert received from the remote peer, when applicable.</param>
+	/// <param name="sentAlert">The DTLS alert sent locally, when applicable.</param>
     public RtcError(RtcErrorDetailType errorDetail, long? sdpLineNumber, long? sctpCauseCode, ulong? receivedAlert, ulong? sentAlert)
     {
         ErrorDetail = errorDetail;
@@ -117,10 +125,17 @@ public class RtcError : Exception
 /// <seealso href="https://www.w3.org/TR/webrtc/#rtcerrorevent-interface"/>
 public class RtcErrorEventArgs : EventArgs
 {
+	/// <summary>
+	/// Initializes error event arguments.
+	/// </summary>
+	/// <param name="error">The RTC error raised by the operation.</param>
     public RtcErrorEventArgs(RtcError error)
     {
         Error = error;
     }
 
+	/// <summary>
+	/// Gets the RTC error raised by the operation.
+	/// </summary>
     public RtcError Error { get; }
 }

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace WebRtcNet;
 
+/// <summary>
+/// Identifies the concrete stats dictionary type represented by an <see cref="RtcStats" /> instance.
+/// </summary>
+/// <seealso href="https://www.w3.org/TR/webrtc-stats/#dom-rtcstats-type" />
 public enum RtcStatsType
 {
 	/// <summary>
@@ -20,7 +24,7 @@ public enum RtcStatsType
 /// Base class for all WebRTC stats snapshot dictionaries. Stats are out-only immutable snapshots
 /// produced by the platform; they are not created by application code.
 /// </summary>
-/// <seealso href="http://www.w3.org/TR/webrtc/#rtcstats-dictionary"/>
+/// <seealso href="https://www.w3.org/TR/webrtc-stats/#rtcstats-dictionary" />
 public abstract record RtcStats
 {
 	/// <summary>
@@ -41,10 +45,14 @@ public abstract record RtcStats
 }
 
 /// <summary>
+/// Base dictionary for RTP stream statistics objects.
 /// </summary>
-/// <seealso href="http://www.w3.org/TR/webrtc/#dictionary-rtcrtpstreamstats-members"/>
+/// <seealso href="https://www.w3.org/TR/webrtc-stats/#dom-rtcrtpstreamstats" />
 public abstract record RtcRtpStreamStats : RtcStats
 {
+	/// <summary>
+	/// Gets the synchronization source identifier (SSRC) for the RTP stream.
+	/// </summary>
 	public string Src { get; init; } = string.Empty;
 
 	/// <summary>
@@ -54,20 +62,36 @@ public abstract record RtcRtpStreamStats : RtcStats
 }
 
 /// <summary>
+/// Statistics for an inbound RTP stream.
 /// </summary>
-/// <seealso href="http://www.w3.org/TR/webrtc/#dictionary-rtcinboundrtpstreamstats-members"/>
+/// <seealso href="https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats" />
 public sealed record RtcInboundRtpStreamStats : RtcRtpStreamStats
 {
+	/// <summary>
+	/// Gets the number of packets sent for this stream.
+	/// </summary>
 	public uint PacketsSent { get; init; }
+
+	/// <summary>
+	/// Gets the number of bytes sent for this stream.
+	/// </summary>
 	public uint BytesSent { get; init; }
 }
 
 /// <summary>
+/// Statistics for an outbound RTP stream.
 /// </summary>
-/// <seealso href="http://www.w3.org/TR/webrtc/#dictionary-rtcoutboundrtpstreamstats-members"/>
+/// <seealso href="https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats" />
 public sealed record RtcOutboundRtpStreamStats : RtcRtpStreamStats
 {
+	/// <summary>
+	/// Gets the number of packets sent for this stream.
+	/// </summary>
 	public int PacketsSent { get; init; }
+
+	/// <summary>
+	/// Gets the number of bytes sent for this stream.
+	/// </summary>
 	public int BytesSent { get; init; }
 }
 
@@ -75,7 +99,7 @@ public sealed record RtcOutboundRtpStreamStats : RtcRtpStreamStats
 /// The set of supported property names <see href="http://www.w3.org/TR/WebIDL-1/">[WEBIDL]</see> is defined 
 /// as the ids of all the RTCStats-derived dictionaries that have been generated for this stats report.
 /// </summary>
-/// <seealso href="http://www.w3.org/TR/webrtc/#idl-def-RTCStatsReport"/>
+/// <seealso href="https://www.w3.org/TR/webrtc-stats/#rtcstatsreport-object" />
 public interface IRtcStatsReport : IReadOnlyDictionary<string, RtcStats>
 {
 };

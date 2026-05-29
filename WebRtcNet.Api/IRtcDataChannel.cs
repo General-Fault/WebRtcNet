@@ -86,6 +86,9 @@ public enum RtcDataChannelState
 /// <seealso href="https://tools.ietf.org/html/rfc8832" />
 public abstract class IRtcDataChannel
 {
+	/// <summary>
+	/// Initializes the data channel wrapper.
+	/// </summary>
 	protected IRtcDataChannel()
 	{
 	}
@@ -244,6 +247,12 @@ public abstract class IRtcDataChannel
 /// <seealso cref="IRtcDataChannel.OnMessage"/>
 public class MessageEventArgs : EventArgs
 {
+	/// <summary>
+	/// Initializes message event arguments raised by <see cref="IRtcDataChannel.OnMessage" />.
+	/// </summary>
+	/// <param name="data">The received message payload.</param>
+	/// <param name="origin">The origin associated with the message.</param>
+	/// <param name="lastEventId">The last event identifier associated with the message.</param>
 	public MessageEventArgs(object data, string origin, string lastEventId)
 	{
 		Data = data;
@@ -251,10 +260,19 @@ public class MessageEventArgs : EventArgs
 		LastEventId = lastEventId;
 	}
 
+	/// <summary>
+	/// Gets the received message payload.
+	/// </summary>
 	public object Data { get; }
 
+	/// <summary>
+	/// Gets the origin associated with the message.
+	/// </summary>
 	public string Origin { get; }
 
+	/// <summary>
+	/// Gets the last event identifier associated with the message.
+	/// </summary>
 	public string LastEventId { get; }
 
 	//public IEnumerable<MessagePort> Ports;

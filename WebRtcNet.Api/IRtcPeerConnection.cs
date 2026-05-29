@@ -173,6 +173,9 @@ public enum RtcPeerConnectionState
 /// <seealso href="https://www.w3.org/TR/webrtc/#interface-definition" />
 public abstract class IRtcPeerConnection
 {
+	/// <summary>
+	/// Initializes the peer connection wrapper.
+	/// </summary>
 	protected IRtcPeerConnection()
 	{
 	}
@@ -298,7 +301,7 @@ public abstract class IRtcPeerConnection
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-createoffer" />
 	/// <exception cref="CreateSessionDescriptionFailure" />
-	public abstract Task<RtcSessionDescription> CreateOffer(RtcOfferOptions options = null);
+	public abstract Task<RtcSessionDescription> CreateOffer(RtcOfferOptions? options = null);
 
 	/// <summary>
 	///     Generates a <see cref="RtcSessionDescription" /> <see href="http://tools.ietf.org/html/rfc3264">[SDP]</see> answer
@@ -312,7 +315,7 @@ public abstract class IRtcPeerConnection
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection-createanswer" />
 	/// <exception cref="CreateSessionDescriptionFailure" />
-	public abstract Task<RtcSessionDescription> CreateAnswer(RtcAnswerOptions options = null);
+	public abstract Task<RtcSessionDescription> CreateAnswer(RtcAnswerOptions? options = null);
 
 	/// <summary>
 	///     The SetLocalDescription() method instructs the RtcPeerConnection to apply the supplied
@@ -414,7 +417,7 @@ public abstract class IRtcPeerConnection
 	/// <param name="selector">An <seealso cref="IMediaStreamTrack" /> for which to generate a stats report.</param>
 	/// <seealso
 	///     href="https://www.w3.org/TR/webrtc/#widl-RTCPeerConnection-getStats-Promise-RTCStatsReport--MediaStreamTrack-selector" />
-	public abstract Task<IRtcStatsReport> GetStats(IMediaStreamTrack selector = null);
+	public abstract Task<IRtcStatsReport> GetStats(IMediaStreamTrack? selector = null);
 
 	#endregion
 
@@ -489,7 +492,7 @@ public abstract class IRtcPeerConnection
 	/// <param name="label">The new channel's label is set to this value.</param>
 	/// <param name="dataChannelInit">Optional parameters with wich to initialize the new data channel.</param>
 	/// <returns></returns>
-	public abstract IRtcDataChannel CreateDataChannel(string label, RtcDataChannelInit dataChannelInit = null);
+	public abstract IRtcDataChannel CreateDataChannel(string label, RtcDataChannelInit? dataChannelInit = null);
 
 	/// <summary>
 	///     Fired when a data channel is created by the peer.
@@ -499,48 +502,100 @@ public abstract class IRtcPeerConnection
 	#endregion
 }
 
+/// <summary>
+/// Event data containing a media stream.
+/// </summary>
 public class MediaStreamEventArgs : EventArgs
 {
+	/// <summary>
+	/// Initializes media stream event data.
+	/// </summary>
+	/// <param name="stream">The associated media stream.</param>
 	public MediaStreamEventArgs(IMediaStream stream)
 	{
 		Stream = stream;
 	}
 
+	/// <summary>
+	/// Gets the associated media stream.
+	/// </summary>
 	public IMediaStream Stream { get; }
 }
 
+/// <summary>
+/// Event data containing an ICE candidate.
+/// </summary>
 public class RtcIceCandidateEventArgs : EventArgs
 {
+	/// <summary>
+	/// Initializes ICE candidate event data.
+	/// </summary>
+	/// <param name="candidate">The candidate associated with the event.</param>
 	public RtcIceCandidateEventArgs(RtcIceCandidate candidate)
 	{
 		Candidate = candidate;
 	}
 
+	/// <summary>
+	/// Gets the ICE candidate associated with the event.
+	/// </summary>
 	public RtcIceCandidate Candidate { get; }
 }
 
+/// <summary>
+/// Event data describing an ICE candidate error.
+/// </summary>
 public class RtcIceCandidateErrorEventArgs : EventArgs
 {
+	/// <summary>
+	/// Initializes ICE candidate error event data.
+	/// </summary>
+	/// <param name="message">The error message.</param>
 	public RtcIceCandidateErrorEventArgs(string message)
 	{
 		Message = message;
 	}
 
+	/// <summary>
+	/// Gets the ICE candidate error message.
+	/// </summary>
 	public string Message { get; }
 }
 
+/// <summary>
+/// Event data containing a data channel.
+/// </summary>
 public class RtcDataChannelEventArgs : EventArgs
 {
+	/// <summary>
+	/// Initializes data channel event data.
+	/// </summary>
+	/// <param name="channel">The data channel associated with the event.</param>
 	public RtcDataChannelEventArgs(IRtcDataChannel channel)
 	{
 		Channel = channel;
 	}
 
+	/// <summary>
+	/// Gets the data channel associated with the event.
+	/// </summary>
 	public IRtcDataChannel Channel { get; }
 }
 
+/// <summary>
+/// Event data for incoming remote track events.
+/// </summary>
+/// <seealso href="https://www.w3.org/TR/webrtc/#event-track" />
 public class RtcTrackEventArgs : EventArgs
 {
+	/// <summary>
+	/// Initializes track event data.
+	/// </summary>
+	/// <param name="type">The media type associated with the event.</param>
+	/// <param name="receiver">The receiver for the remote track.</param>
+	/// <param name="track">The remote media track.</param>
+	/// <param name="streams">The remote media streams associated with the track.</param>
+	/// <param name="transceiver">The RTP transceiver associated with the track.</param>
 	public RtcTrackEventArgs(string type, IRtcRtpReceiver receiver, IMediaStreamTrack track,
 		IEnumerable<IMediaStream> streams, IRtcRtpTransceiver transceiver)
 	{
@@ -551,18 +606,41 @@ public class RtcTrackEventArgs : EventArgs
 		Transceiver = transceiver;
 	}
 
+	/// <summary>
+	/// Gets the media type associated with the event.
+	/// </summary>
 	public string Type { get; }
 
+	/// <summary>
+	/// Gets the RTP receiver associated with the track.
+	/// </summary>
 	public IRtcRtpReceiver Receiver { get; }
 
+	/// <summary>
+	/// Gets the remote media track associated with the event.
+	/// </summary>
 	public IMediaStreamTrack Track { get; }
+
+	/// <summary>
+	/// Gets the remote media streams associated with the track.
+	/// </summary>
 	public IReadOnlyList<IMediaStream> Streams { get; }
 
+	/// <summary>
+	/// Gets the transceiver associated with the event.
+	/// </summary>
 	public IRtcRtpTransceiver Transceiver { get; }
 }
 
+/// <summary>
+/// Represents a failure to create an SDP offer or answer.
+/// </summary>
 public class CreateSessionDescriptionFailure : Exception
 {
+	/// <summary>
+	/// Initializes a new instance of the exception with an error message.
+	/// </summary>
+	/// <param name="message">The failure message.</param>
 	public CreateSessionDescriptionFailure(string message)
 		: base(message)
 	{

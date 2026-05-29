@@ -18,7 +18,7 @@ public sealed record RtcIceServer
 	/// <see href="https://tools.ietf.org/html/rfc7065">[RFC7065]</see> or other URI types.</param>
 	/// <param name="userName">If this RtcIceServer object represents a TURN server, then this attribute specifies the username to use with that TURN server.</param>
 	/// <param name="credential">If this RtcIceServer object represents a TURN server, then this attribute specifies the credential to use with that TURN server.</param>
-	public RtcIceServer(IEnumerable<string> urls, string userName = null, string credential = null)
+	public RtcIceServer(IEnumerable<string> urls, string? userName = null, string? credential = null)
 	{
 		Urls = urls?.ToArray() ?? [];
 		UserName = userName ?? string.Empty;
@@ -32,7 +32,7 @@ public sealed record RtcIceServer
 	/// <see href="https://tools.ietf.org/html/rfc7065">[RFC7065]</see> or other URI types.</param>
 	/// <param name="username">If this RtcIceServer object represents a TURN server, then this attribute specifies the username to use with that TURN server.</param>
 	/// <param name="credential">If this RtcIceServer object represents a TURN server, then this attribute specifies the credential to use with that TURN server.</param>
-	public RtcIceServer(string url, string username = null, string credential = null)
+	public RtcIceServer(string url, string? username = null, string? credential = null)
 	{
 		Urls = [url];
 		UserName = username ?? string.Empty;

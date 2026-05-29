@@ -57,7 +57,11 @@ public enum RtcBundlePolicy
 /// <seealso href="http://www.w3.org/TR/webrtc/#rtcconfiguration-type" />
 public sealed record RtcConfiguration
 {
-	public RtcConfiguration(IEnumerable<RtcIceServer> servers = null)
+	/// <summary>
+	/// Initializes a new RTC configuration.
+	/// </summary>
+	/// <param name="servers">Optional ICE servers to seed into <see cref="IceServers" />.</param>
+	public RtcConfiguration(IEnumerable<RtcIceServer>? servers = null)
 	{
 		IceServers = servers?.ToList() ?? [];
 	}

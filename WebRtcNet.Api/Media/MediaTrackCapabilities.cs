@@ -6,13 +6,45 @@ namespace WebRtcNet.Media;
 /// Describes the direction a video capture source is facing relative to the user.
 /// </summary>
 /// <seealso href="http://www.w3.org/TR/mediacapture-streams/#idl-def-VideoFacingModeEnum"/>
-public enum VideoFacingModes { user, environment, left, right }
+public enum VideoFacingModes
+{
+	/// <summary>
+	/// The source faces toward the user.
+	/// </summary>
+	user,
+
+	/// <summary>
+	/// The source faces away from the user toward the environment.
+	/// </summary>
+	environment,
+
+	/// <summary>
+	/// The source faces to the user's left.
+	/// </summary>
+	left,
+
+	/// <summary>
+	/// The source faces to the user's right.
+	/// </summary>
+	right
+}
 
 /// <summary>
 /// Describes how video from a particular video track may be resized.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-videoresizemodeenum"/>
-public enum VideoResizeModes { none, crop_and_scale }
+public enum VideoResizeModes
+{
+	/// <summary>
+	/// No resizing is applied.
+	/// </summary>
+	none,
+
+	/// <summary>
+	/// Cropping and down-scaling may be applied.
+	/// </summary>
+	crop_and_scale
+}
 
 /// <summary>
 /// MediaTrackCapabilities represents the capabilities of an <see cref="IMediaStreamTrack"/> object as

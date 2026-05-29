@@ -6,17 +6,34 @@
 /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpencodingparameters"/>
 public sealed record RtcRtpEncodingParameters
 {
+	/// <summary>
+	/// Initializes encoding parameters with default values.
+	/// </summary>
 	public RtcRtpEncodingParameters()
 	{
 	}
 
+	/// <summary>
+	/// Initializes encoding parameters without explicitly selecting a codec or max frame rate.
+	/// </summary>
+	/// <param name="active">Whether the encoding is active.</param>
+	/// <param name="maxBitrate">The maximum bitrate in bits per second when specified.</param>
+	/// <param name="scaleResolutionDownBy">The downscale factor for encoded media resolution.</param>
 	public RtcRtpEncodingParameters(bool active, ulong? maxBitrate, double scaleResolutionDownBy)
 		: this(active, maxBitrate, scaleResolutionDownBy, null, null)
 	{
 	}
 
+	/// <summary>
+	/// Initializes encoding parameters.
+	/// </summary>
+	/// <param name="active">Whether the encoding is active.</param>
+	/// <param name="maxBitrate">The maximum bitrate in bits per second when specified.</param>
+	/// <param name="scaleResolutionDownBy">The downscale factor for encoded media resolution.</param>
+	/// <param name="codec">The codec selected for this encoding when specified.</param>
+	/// <param name="maxFramerate">The maximum frame rate when specified.</param>
 	public RtcRtpEncodingParameters(
-		bool active, ulong? maxBitrate, double scaleResolutionDownBy, RtcRtpCodec codec, double? maxFramerate)
+		bool active, ulong? maxBitrate, double scaleResolutionDownBy, RtcRtpCodec? codec, double? maxFramerate)
 	{
 		Active = active;
 		MaxBitrate = maxBitrate;
@@ -41,7 +58,7 @@ public sealed record RtcRtpEncodingParameters
 	/// The codec selected for this encoding, or null when not specified.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpencodingparameters-codec"/>
-	public RtcRtpCodec Codec { get; set; } = null;
+	public RtcRtpCodec? Codec { get; set; }
 
 	/// <summary>
 	/// The maximum framerate for this encoding, or null when unspecified.

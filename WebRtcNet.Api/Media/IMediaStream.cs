@@ -10,6 +10,9 @@ namespace WebRtcNet.Media;
 /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#mediastream"/>
 public abstract class IMediaStream : IDisposable
 {
+	/// <summary>
+	/// Initializes the media stream wrapper.
+	/// </summary>
 	protected IMediaStream()
 	{
 	}
