@@ -40,7 +40,7 @@ public sealed record MediaTrackSettings
 	public VideoFacingModes? FacingMode { get; init; }
 
 	/// <summary>
-	/// Current resize mode for the track, when exposed by the user agent.
+	/// Current resize mode for the track, when exposed by the platform.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-resizeMode" />
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatracksettings-resizemode" />

@@ -48,7 +48,7 @@ public abstract class RtcRtpSender
 	/// <summary>
 	/// The GetCapabilities() method returns the most optimistic view of the capabilities of the system for sending media
 	/// of the given <see cref="MediaStreamTrackKind">kind</see>. It does not reserve any resources, ports, or other state
-	/// but is meant to provide a way to discover the types of capabilities of the browser including which codecs may be
+	/// but is meant to provide a way to discover the types of capabilities of the host including which codecs may be
 	/// supported. If the system has no capabilities corresponding to the value of the kind argument, GetCapabilities
 	/// returns null.
 	/// </summary>

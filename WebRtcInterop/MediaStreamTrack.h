@@ -32,7 +32,7 @@ public:
 	virtual property MediaStreamTrackState ReadyState;
 	virtual event System::EventHandler ^ OnMute;
 	virtual event System::EventHandler ^ OnUnMute;
-	virtual event System::EventHandler<MediaStreamError ^> ^ OnEnded;
+	virtual event System::EventHandler ^ OnEnded;
 	virtual MediaStreamTrack ^ Clone();
 	virtual void Stop();
 	virtual MediaTrackCapabilities GetCapabilities();

@@ -14,7 +14,7 @@ public enum MediaStreamTrackState
 	/// time).
 	/// The output of a track in the live state can be switched on and off with the enabled attribute.
 	/// </summary>
-	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#idl-def-MediaStreamTrackState.live" />
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrackstate" />
 	Live,
 
 	/// <summary>
@@ -23,7 +23,7 @@ public enum MediaStreamTrackState
 	/// For example, a video track in a MediaStream ends when the user unplugs the USB web camera that acts as the track's
 	/// media source.
 	/// </summary>
-	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#idl-def-MediaStreamTrackState.ended" />
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrackstate" />
 	Ended
 }
 
@@ -54,7 +54,7 @@ public enum MediaStreamTrackKind
 /// user
 /// chooses the same camera in the UI shown by two consecutive calls to <see cref="MediaDevices.GetUserMedia" />.
 /// </summary>
-/// <seealso href="http://www.w3.org/TR/mediacapture-streams/#mediastreamtrack" />
+/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack" />
 public abstract class MediaStreamTrack
 {
 	/// <summary>
@@ -123,7 +123,7 @@ public abstract class MediaStreamTrack
 	/// or because the remote peer permanently stopped sending data.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-onended" />
-	public abstract event EventHandler<MediaStreamError> OnEnded;
+	public abstract event EventHandler OnEnded;
 
 	/// <summary>
 	/// Clones the given MediaStreamTrack.
