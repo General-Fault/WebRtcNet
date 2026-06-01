@@ -4,35 +4,64 @@
     <Filter Include="Marshaling">
       <UniqueIdentifier>{0c0e95fa-ad47-4c7f-a95b-b4ada7c818de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Media">
+      <UniqueIdentifier>{5f68efd4-c4f7-4f22-96ae-aa07e1189705}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Media\Marshaling">
+      <UniqueIdentifier>{4f64924a-c8b0-4e9a-a0f5-4f5f0622744a}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Observers">
       <UniqueIdentifier>{9ba0ba64-d5f2-4e0f-9f00-5a827edbb003}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)RtcDataChannel.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaStream.cpp">
+      <Filter>Media</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaStreamTrack.cpp">
+      <Filter>Media</Filter>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Observers\DataChannelObserver.cpp">
       <Filter>Observers</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)RtcDataChannel.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RtcIceTransport.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ManagedScopedRefPtr.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Resource.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)RtcDataChannel.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Observers\DataChannelObserver.h">
-      <Filter>Observers</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalCollections.h">
       <Filter>Marshaling</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalDataChannel.h">
       <Filter>Marshaling</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalEnums.h">
+      <Filter>Marshaling</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalIceTransport.h">
+      <Filter>Marshaling</Filter>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalNullable.h">
       <Filter>Marshaling</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Media\Marshaling\MarshalMedia.h">
+      <Filter>Media\Marshaling</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaStream.h">
+      <Filter>Media</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaStreamTrack.h">
+      <Filter>Media</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)NativeWrapper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Observers\DataChannelObserver.h">
+      <Filter>Observers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Resource.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RtcDataChannel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RtcIceTransport.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalIceTransport.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalEnums.h" />
   </ItemGroup>
 </Project>
