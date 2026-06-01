@@ -53,6 +53,7 @@
   <ItemGroup>
     <ClCompile Include="ManagedScopedRefPtrTests.cpp" />
     <ClCompile Include="Marshaling\MarshalCollectionsTests.cpp" />
+    <ClCompile Include="Marshaling\MarshalMediaTests.cpp" />
     <ClCompile Include="Marshaling\MarshalIceCandidateTests.cpp" />
     <ClCompile Include="Marshaling\RtcDataChannelTests.cpp" />
     <ClCompile Include="Marshaling\MarshalNullableTests.cpp" />

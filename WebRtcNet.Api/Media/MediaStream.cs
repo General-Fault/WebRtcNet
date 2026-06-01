@@ -26,7 +26,7 @@ public abstract class MediaStream : IDisposable
 	/// Returns the native media stream interface used by WebRtcInterop.
 	/// </summary>
 	/// <param name="throwOnDisposed">True to throw when the stream has already been disposed.</param>
-	internal abstract IntPtr GetNativeMediaStreamInterface(bool throwOnDisposed);
+	protected internal abstract IntPtr GetNativeMediaStreamInterface(bool throwOnDisposed);
 
 	/// <summary>
 	/// Returns a sequence of MediaStreamTrack objects representing the audio tracks in this stream.
