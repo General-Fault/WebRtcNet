@@ -2,7 +2,7 @@
 
 #include "RtcDataChannel.h"
 
-#include "api/data_channel_interface.h"
+#include <api/data_channel_interface.h>
 #include "Marshaling/MarshalCollections.h"
 
 #include "Marshaling/MarshalDataChannel.h"

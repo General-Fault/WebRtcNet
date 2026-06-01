@@ -1,6 +1,6 @@
 #pragma once
 
-#include "absl/types/optional.h"
+#include <absl/types/optional.h>
 
 namespace msclr::interop
 {

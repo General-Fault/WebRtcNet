@@ -1,7 +1,7 @@
 #pragma once
 
-#include "p2p/base/transport_description.h"
-#include "api/transport/enums.h"
+#include <p2p/base/transport_description.h>
+#include <api/transport/enums.h>
 
 #include <msclr/marshal.h>
 #include <msclr/marshal_cppstd.h>

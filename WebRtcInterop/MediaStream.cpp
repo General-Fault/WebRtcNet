@@ -1,8 +1,8 @@
 #include "stdafx.h"
 
-#include "api/scoped_refptr.h"
-#include "api/media_stream_interface.h"
-#include "api/peer_connection_interface.h"
+#include <api/scoped_refptr.h>
+#include <api/media_stream_interface.h>
+#include <api/peer_connection_interface.h>
 
 using namespace System;
 using namespace System::Collections::Generic;

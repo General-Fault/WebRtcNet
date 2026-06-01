@@ -3,8 +3,8 @@
 #include <msclr/auto_gcroot.h>
 
 #include "../RtcDataChannel.h"
-#include "api/data_channel_interface.h"
-#include "api/scoped_refptr.h"
+#include <api/data_channel_interface.h>
+#include <api/scoped_refptr.h>
 
 using namespace msclr;
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "api/data_channel_interface.h"
+#include <api/data_channel_interface.h>
 
 #include <msclr/marshal.h>
 #include <msclr/marshal_cppstd.h>

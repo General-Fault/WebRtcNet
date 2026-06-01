@@ -2,8 +2,8 @@
 
 #include "RtcIceTransport.h"
 
-#include "api/ice_transport_interface.h"
-#include "p2p/base/ice_transport_internal.h" // see bugs.webrtc.org/9308
+#include <api/ice_transport_interface.h>
+#include <p2p/base/ice_transport_internal.h> // see bugs.webrtc.org/9308
 #include "Marshaling/MarshalIceTransport.h"
 
 using namespace WebRtcNet;
