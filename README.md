@@ -6,6 +6,25 @@ WebRtcNet currently uses WebRTC branch-heads/7778, which corresponds to Chromium
 
 See [WebRTC 1.0: Real-time Communication Between Browsers](https://www.w3.org/TR/webrtc/) for API documentation.
 
+## Local W3C spec corpus
+
+This repository keeps a local standards corpus in `documents\specs\` to support standards-alignment work in `WebRtcNet.Api` without repeated web fetching.
+
+- Canonical snapshots: `TR-*.html`
+- Copilot-friendly artifacts: `*-summary.md`, `*-idl.webidl`, and `specs\index\spec-map.*`
+- API mapping: `documents\crosswalk\webrtcnet-api-to-spec.md`
+
+Refresh with:
+
+```powershell
+.\scripts\update-spec-docs.ps1
+```
+
+Recommended refresh triggers:
+
+1. Monthly (scheduled automation is available in `.github\workflows\update-spec-docs.yml`).
+2. After public API changes in `WebRtcNet.Api` that affect spec alignment.
+
 ## Local development quick start
 
 The easiest way to get started is to pull the pre-built WebRTC artifacts from the GitHub Container Registry. This avoids a multi-hour native build.

@@ -1,69 +1,182 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace WebRtcNet.Media;
 
 /// <summary>
 /// Describes the direction a video capture source is facing relative to the user.
 /// </summary>
-/// <seealso href="http://www.w3.org/TR/mediacapture-streams/#idl-def-VideoFacingModeEnum"/>
-public enum VideoFacingModes { user, environment, left, right }
+/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-videofacingmodeenum"/>
+public enum VideoFacingModes
+{
+	/// <summary>
+	/// The source faces toward the user.
+	/// </summary>
+	User,
+
+	/// <summary>
+	/// The source faces away from the user toward the environment.
+	/// </summary>
+	Environment,
+
+	/// <summary>
+	/// The source faces to the user's left.
+	/// </summary>
+	Left,
+
+	/// <summary>
+	/// The source faces to the user's right.
+	/// </summary>
+	Right
+}
 
 /// <summary>
 /// Describes how video from a particular video track may be resized.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-videoresizemodeenum"/>
-public enum VideResizeModes { none, crop_and_scale }
+public enum VideoResizeModes
+{
+	/// <summary>
+	/// No resizing is applied.
+	/// </summary>
+	None,
+
+	/// <summary>
+	/// Cropping and down-scaling may be applied.
+	/// </summary>
+	CropAndScale
+}
 
 /// <summary>
-/// MediaTrackCapabilities represents the capabilities of an <see cref="IMediaStreamTrack"/> object as
+/// MediaTrackCapabilities represents the capabilities of an <see cref="MediaStreamTrack"/> object as
 /// reported by the platform. This is an out-only snapshot returned by
-/// <see cref="IMediaStreamTrack.GetCapabilities"/>.
+/// <see cref="MediaStreamTrack.GetCapabilities"/>.
 /// </summary>
-/// <seealso href="http://www.w3.org/TR/mediacapture-streams/#media-track-capabilities"/>
+/// <remarks>
+/// Sequence-valued capability members are represented as collections only. Scalar compatibility aliases are not exposed.
+/// </remarks>
+/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities"/>
 public sealed record MediaTrackCapabilities
 {
+	/// <summary>
+	/// The range of video frame widths (in pixels) supported by this track's source.
+	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-width"/>
-	public ValueRange<int>? Width { get; init; }
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-width"/>
+	public ValueRange<uint>? Width { get; init; }
 
+	/// <summary>
+	/// The range of video frame heights (in pixels) supported by this track's source.
+	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-height"/>
-	public ValueRange<int>? Height { get; init; }
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-height"/>
+	public ValueRange<uint>? Height { get; init; }
 
+	/// <summary>
+	/// The range of video frame aspect ratios (width divided by height) supported by this track's source.
+	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-aspect"/>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-aspectratio"/>
 	public ValueRange<double>? AspectRatio { get; init; }
 
+	/// <summary>
+	/// The range of frame rates (in frames per second) supported by this track's source.
+	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-frameRate"/>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-framerate"/>
 	public ValueRange<double>? FrameRate { get; init; }
 
+	/// <summary>
+	/// The facing modes supported by this track's video capture source.
+	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-facingMode"/>
-	public VideoFacingModes? FacingMode { get; init; }
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-facingmode"/>
+	public IReadOnlyList<VideoFacingModes> FacingMode { get; init; } = [];
 
+	/// <summary>
+	/// The resize modes supported by the application for this track.
+	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-resizeMode"/>
-	public VideResizeModes? ResizeMode { get; init; }
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-resizemode"/>
+	public IReadOnlyList<VideoResizeModes> ResizeMode { get; init; } = [];
 
+	/// <summary>
+	/// The range of sample rates (in samples per second) supported by this track's audio source.
+	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-sampleRate"/>
-	public ValueRange<int>? SampleRate { get; init; }
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-samplerate"/>
+	public ValueRange<uint>? SampleRate { get; init; }
 
+	/// <summary>
+	/// The range of linear sample sizes (in bits per sample) supported by this track's audio source.
+	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-sampleSize"/>
-	public ValueRange<int>? SampleSize { get; init; }
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-samplesize"/>
+	public ValueRange<uint>? SampleSize { get; init; }
 
+	/// <summary>
+	/// Supported echo-cancellation values. Boolean values appear first when present, followed
+	/// by any mode values.
+	/// </summary>
+	/// <remarks>
+	/// Mode entries are represented as <see cref="EchoCancellationValue"/> values backed by
+	/// raw mode strings for forward compatibility.
+	/// </remarks>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-echoCancellation"/>
-	public IReadOnlyList<bool> EchoCancellation { get; init; } = [];
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-echocancellation"/>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-echocancellationmodeenum"/>
+	public IReadOnlyList<EchoCancellationValue> EchoCancellation { get; init; } = [];
 
+	/// <summary>
+	/// The background-blur values supported by the platform for this track.
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-backgroundBlur"/>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-backgroundblur"/>
+	public IReadOnlyList<bool> BackgroundBlur { get; init; } = [];
+
+	/// <summary>
+	/// Whether automatic gain control is supported by this track's audio source. A sequence of
+	/// <see langword="true"/> and/or <see langword="false"/> values indicating the supported states.
+	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-autoGainControl"/>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-autogaincontrol"/>
 	public IReadOnlyList<bool> AutoGainControl { get; init; } = [];
 
+	/// <summary>
+	/// Whether noise suppression is supported by this track's audio source. A sequence of
+	/// <see langword="true"/> and/or <see langword="false"/> values indicating the supported states.
+	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-noiseSuppression"/>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-noisesuppression"/>
 	public IReadOnlyList<bool> NoiseSuppression { get; init; } = [];
 
+	/// <summary>
+	/// The range of latencies (in seconds) supported by this track's audio source.
+	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-latency"/>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-latency"/>
 	public ValueRange<double>? Latency { get; init; }
 
+	/// <summary>
+	/// The range of audio channel counts supported by this track's audio source.
+	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-channelCount"/>
-	public ValueRange<double>? ChannelCount { get; init; }
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-channelcount"/>
+	public ValueRange<uint>? ChannelCount { get; init; }
 
+	/// <summary>
+	/// The unique identifier for the capture device that is the source of this track.
+	/// Two <see cref="MediaStreamTrack"/> objects sharing the same source will have the same <see cref="DeviceId"/>.
+	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-deviceId"/>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-deviceid"/>
 	public string DeviceId { get; init; } = string.Empty;
 
+	/// <summary>
+	/// The group identifier of the device that is the source of this track. Two devices share a group
+	/// identifier if they belong to the same physical hardware unit (for example, the built-in camera and
+	/// microphone on the same laptop).
+	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-groupId"/>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-groupid"/>
 	public string GroupId { get; init; } = string.Empty;
 }

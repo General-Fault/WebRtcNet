@@ -1,7 +1,7 @@
 #include "Stdafx.h"
 
 #include "../MarshalPeerConnection.h"
-#include "api/jsep_session_description.h"
+#include <api/jsep_session_description.h>
 
 using namespace msclr::interop;
 
@@ -31,69 +31,14 @@ namespace WebRtcInterop { namespace Marshaling { namespace UnitTests
 		}
 
 		[Test]
-		void marshal_as_native_RTCOfferAnswerOptions_to_managed_RtcOfferOptions_receive_audio_undefined_test()
+		void marshal_as_native_RTCOfferAnswerOptions_to_managed_RtcOfferOptions_ice_restart_test()
 		{
 			PeerConnectionInterface::RTCOfferAnswerOptions nativeOptions;
-			nativeOptions.offer_to_receive_audio = PeerConnectionInterface::RTCOfferAnswerOptions::kUndefined;
+			nativeOptions.ice_restart = true;
 
 			auto managedOptions = marshal_as<RtcOfferOptions ^>(nativeOptions);
 
-			Assert::AreEqual(RtcOfferOptions::Undefined, managedOptions->OfferToReceiveAudio);
-		}
-
-		[Test]
-		void marshal_as_native_RTCOfferAnswerOptions_to_managed_RtcOfferOptions_recieve_audio_true_test()
-		{
-			PeerConnectionInterface::RTCOfferAnswerOptions nativeOptions;
-			nativeOptions.offer_to_receive_audio = PeerConnectionInterface::RTCOfferAnswerOptions::kOfferToReceiveMediaTrue;
-
-			auto managedOptions = marshal_as<RtcOfferOptions ^>(nativeOptions);
-
-			Assert::AreEqual(RtcOfferOptions::OfferToReceiveTrue, managedOptions->OfferToReceiveAudio);
-		}
-
-		[Test]
-		void marshal_as_native_RTCOfferAnswerOptions_to_managed_RtcOfferOptions_recieve_audio_max_test()
-		{
-			PeerConnectionInterface::RTCOfferAnswerOptions nativeOptions;
-			nativeOptions.offer_to_receive_audio = PeerConnectionInterface::RTCOfferAnswerOptions::kMaxOfferToReceiveMedia;
-
-			auto managedOptions = marshal_as<RtcOfferOptions ^>(nativeOptions);
-
-			Assert::AreEqual(RtcOfferOptions::MaxOfferToReceiveMedia, managedOptions->OfferToReceiveAudio);
-		}
-
-		[Test]
-		void marshal_as_native_RTCOfferAnswerOptions_to_managed_RtcOfferOptions_receive_video_undefined_test()
-		{
-			PeerConnectionInterface::RTCOfferAnswerOptions nativeOptions;
-			nativeOptions.offer_to_receive_video = PeerConnectionInterface::RTCOfferAnswerOptions::kUndefined;
-
-			auto managedOptions = marshal_as<RtcOfferOptions ^>(nativeOptions);
-
-			Assert::AreEqual(RtcOfferOptions::Undefined, managedOptions->OfferToReceiveVideo);
-		}
-
-		[Test]
-		void marshal_as_native_RTCOfferAnswerOptions_to_managed_RtcOfferOptions_recieve_video_true_test()
-		{
-			PeerConnectionInterface::RTCOfferAnswerOptions nativeOptions;
-			nativeOptions.offer_to_receive_video = PeerConnectionInterface::RTCOfferAnswerOptions::kOfferToReceiveMediaTrue;
-
-			auto managedOptions = marshal_as<RtcOfferOptions ^>(nativeOptions);
-
-			Assert::AreEqual(RtcOfferOptions::OfferToReceiveTrue, managedOptions->OfferToReceiveVideo);
-		}
-
-		[Test]
-		void marshal_as_native_RTCOfferAnswerOptions_to_managed_RtcOfferOptions_recieve_video_max_test()
-		{
-			PeerConnectionInterface::RTCOfferAnswerOptions nativeOptions;
-			nativeOptions.offer_to_receive_video = PeerConnectionInterface::RTCOfferAnswerOptions::kMaxOfferToReceiveMedia;
-
-			auto managedOptions = marshal_as<RtcOfferOptions ^>(nativeOptions);
-
-			Assert::AreEqual(RtcOfferOptions::MaxOfferToReceiveMedia, managedOptions->OfferToReceiveVideo);
+			Assert::IsTrue(managedOptions->IceRestart);
 		}
 
 		[Test, TestCase(true), TestCase(false)]

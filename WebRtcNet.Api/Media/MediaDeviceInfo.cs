@@ -1,4 +1,4 @@
-﻿namespace WebRtcNet.Media;
+namespace WebRtcNet.Media;
 
 /// <summary>
 ///     Represents a media device's basic usage.
@@ -6,14 +6,25 @@
 /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadevicekind" />
 public enum MediaDeviceKind
 {
-	AudioInput, // Represents an audio input device; for example a microphone.
-	AudioOutput, // Represents an audio output device; for example a pair of headphones.
-	VideoInput // Represents a video input device; for example a webcam.
+	/// <summary>
+	/// Represents an audio input device, such as a microphone.
+	/// </summary>
+	AudioInput,
+
+	/// <summary>
+	/// Represents an audio output device, such as speakers or headphones.
+	/// </summary>
+	AudioOutput,
+
+	/// <summary>
+	/// Represents a video input device, such as a camera.
+	/// </summary>
+	VideoInput
 }
 
 /// <summary>
 ///     Represents information about a single media device such as a webcam, speakers or a microphone.
-///     This is an out-only snapshot returned by <see cref="IMediaDevices.EnumerateDevices" />.
+///     This is an out-only snapshot returned by <see cref="MediaDevices.EnumerateDevices" />.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadeviceinfo" />
 public record MediaDeviceInfo

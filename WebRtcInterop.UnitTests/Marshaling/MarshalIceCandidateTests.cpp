@@ -39,6 +39,8 @@ protected:
 			0,                                // generation
 			"FakeFoundation"                  // foundation
 		);
+		cand.set_relay_protocol("tls");
+		cand.set_url("turns:turn.example.org");
 		candidate_ = std::make_unique<webrtc::IceCandidate>("SDP", 3, cand);
 		const webrtc::IceCandidateInterface* nativeCandidate = candidate_.get();
 		result_ = marshal_as<RtcIceCandidate^>(nativeCandidate);
@@ -108,6 +110,17 @@ TEST_F(marshal_ice_candidate_tests, Type_is_Host_for_kHost)
 {
 	ASSERT_TRUE(result_->Type.HasValue);
 	ASSERT_EQ(result_->Type.Value, RtcIceCandidateType::Host);
+}
+
+TEST_F(marshal_ice_candidate_tests, populates_RelayProtocol)
+{
+	ASSERT_TRUE(result_->RelayProtocol.HasValue);
+	ASSERT_EQ(result_->RelayProtocol.Value, RtcIceServerTransportProtocol::Tls);
+}
+
+TEST_F(marshal_ice_candidate_tests, populates_Url)
+{
+	ASSERT_MANAGED_STREQ(result_->Url, "turns:turn.example.org");
 }
 
 TEST_F(marshal_ice_candidate_tests, marshal_invalid_protocol_throws_InvalidCastException)

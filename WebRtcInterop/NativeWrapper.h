@@ -1,19 +1,22 @@
 #pragma once
 
-namespace webrtc {
-	#include "api/scoped_refptr.h"
+namespace WebRtcInterop
+{
+#include <api/scoped_refptr.h>
 
 	template <typename T>
 	public ref class NativeWrapper abstract
 	{
 	public:
 		NativeWrapper(T* native)
-			: rp_native_(new rtc::scoped_refptr<T>(native))
-		{}
+			: rp_native_(new webrtc::scoped_refptr<T>(native))
+		{
+		}
 
-		NativeWrapper(rtc::scoped_refptr<T> rp_native)
+		NativeWrapper(webrtc::scoped_refptr<T> rp_native)
 			: rp_native_(rp_native)
-		{}
+		{
+		}
 
 		~NativeWrapper() { this->!NativeWrapper(); }
 
@@ -33,7 +36,6 @@ namespace webrtc {
 		}
 
 	private:
-		rtc::scoped_refptr<T>* rp_native_;
-
+		webrtc::scoped_refptr<T>* rp_native_;
 	};
 }

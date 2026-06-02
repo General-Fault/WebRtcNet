@@ -1,8 +1,8 @@
 #pragma once
 
-#include "api/jsep.h"
-#include "api/candidate.h"
-#include "rtc_base/socket_address.h"
+#include <api/jsep.h>
+#include <api/candidate.h>
+#include <rtc_base/socket_address.h>
 
 #include <msclr/marshal.h>
 #include <msclr/marshal_cppstd.h>
@@ -18,6 +18,12 @@ namespace msclr { namespace interop
 	static const std::map<const std::string, const WebRtcNet::RtcIceProtocol> ice_protocol_map {
 		{"udp", WebRtcNet::RtcIceProtocol::Udp},
 		{"tcp", WebRtcNet::RtcIceProtocol::Tcp},
+	};
+
+	static const std::map<const std::string, const WebRtcNet::RtcIceServerTransportProtocol> ice_server_transport_protocol_map {
+		{"udp", WebRtcNet::RtcIceServerTransportProtocol::Udp},
+		{"tcp", WebRtcNet::RtcIceServerTransportProtocol::Tcp},
+		{"tls", WebRtcNet::RtcIceServerTransportProtocol::Tls},
 	};
 
 	static const std::map<const webrtc::IceCandidateType, const WebRtcNet::RtcIceCandidateType> ice_candidate_type_map {
@@ -76,6 +82,23 @@ namespace msclr { namespace interop
 			return Nullable<WebRtcNet::RtcIceTcpCandidateType>(mapped->second);
 		}
 
+		inline Nullable<WebRtcNet::RtcIceServerTransportProtocol> marshal_ice_server_transport_protocol(
+			const std::string& protocol)
+		{
+			if (protocol.empty()) return Nullable<WebRtcNet::RtcIceServerTransportProtocol>();
+
+			const auto mapped = ice_server_transport_protocol_map.find(protocol);
+			if (mapped == ice_server_transport_protocol_map.end())
+			{
+				throw gcnew InvalidCastException(String::Format(
+					"Unable to convert native ICE relay protocol value '{0}' to {1}",
+					marshal_as<String^>(protocol),
+					WebRtcNet::RtcIceServerTransportProtocol::typeid->FullName));
+			}
+
+			return Nullable<WebRtcNet::RtcIceServerTransportProtocol>(mapped->second);
+		}
+
 		// Per RFC 5245: ICE component IDs are 1 (RTP) and 2 (RTCP).
 		inline Nullable<WebRtcNet::RtcIceComponent> marshal_ice_component(int component)
 		{
@@ -123,7 +146,9 @@ namespace msclr { namespace interop
 			marshal_ice_candidate_type(cand.type()),
 			marshal_ice_tcp_candidate_type(cand.tcptype()),
 			marshal_socket_address_host(related_addr),
-			marshal_socket_address_port(related_addr)
+			marshal_socket_address_port(related_addr),
+			marshal_ice_server_transport_protocol(cand.relay_protocol()),
+			marshal_as<String^>(cand.url())
 		);
 	}
-}}
+}} 

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "api/peer_connection_interface.h"
+#include <api/peer_connection_interface.h>
 
 
 using namespace System;
@@ -80,12 +80,7 @@ namespace WebRtcInterop
 		}
 		else
 		{
-			//TODO: Once the native PeerConnection proxy implements the CreateOffer that acception options, this conversion will no longer be necessary.
 			webrtc::FakeConstraints constraints;
-			constraints.AddMandatory<int>(webrtc::MediaConstraintsInterface::kOfferToReceiveAudio,
-			                              static_cast<const int>(options->OfferToReceiveAudio));
-			constraints.AddMandatory<int>(webrtc::MediaConstraintsInterface::kOfferToReceiveVideo,
-			                              static_cast<const int>(options->OfferToReceiveVideo));
 			constraints.AddMandatory<bool>(webrtc::MediaConstraintsInterface::kVoiceActivityDetection,
 			                               static_cast<const bool>(options->VoiceActivityDetection));
 			constraints.AddMandatory<bool>(webrtc::MediaConstraintsInterface::kIceRestart,
@@ -138,26 +133,26 @@ namespace WebRtcInterop
 		throw gcnew NotImplementedException();
 	}
 
-	IEnumerable<IMediaStream^>^ RtcPeerConnection::LocalStreams::get()
+	IEnumerable<MediaStream^>^ RtcPeerConnection::LocalStreams::get()
 	{
 		throw gcnew NotImplementedException();
 		// TODO: insert return statement here
 	}
 
 
-	IEnumerable<IMediaStream^>^ RtcPeerConnection::RemoteStreams::get()
+	IEnumerable<MediaStream^>^ RtcPeerConnection::RemoteStreams::get()
 	{
 		throw gcnew NotImplementedException();
 		// TODO: insert return statement here
 	}
 
-	IMediaStream^ RtcPeerConnection::GetStreamById(String^ streamId)
+	MediaStream^ RtcPeerConnection::GetStreamById(String^ streamId)
 	{
 		throw gcnew NotImplementedException();
 		// TODO: insert return statement here
 	}
 
-	void RtcPeerConnection::AddStream(IMediaStream^ stream)
+	void RtcPeerConnection::AddStream(MediaStream^ stream)
 	{
 		auto nativePeerConnection = GetNativePeerConnection(true);
 		auto nativeStream = reinterpret_cast<webrtc::MediaStreamInterface*>(
@@ -165,7 +160,7 @@ namespace WebRtcInterop
 		nativePeerConnection->AddStream(nativeStream);
 	}
 
-	void RtcPeerConnection::RemoveStream(IMediaStream^ stream)
+	void RtcPeerConnection::RemoveStream(MediaStream^ stream)
 	{
 		auto nativePeerConnection = GetNativePeerConnection(true);
 		auto nativeStream = reinterpret_cast<webrtc::MediaStreamInterface*>(
@@ -178,19 +173,19 @@ namespace WebRtcInterop
 		throw gcnew NotImplementedException();
 	}
 
-	IRtcDataChannel^ RtcPeerConnection::CreateDataChannel(String^ label, RtcDataChannelInit^ dataChannelInit)
+	RtcDataChannel^ RtcPeerConnection::CreateDataChannel(String^ label, RtcDataChannelInit^ dataChannelInit)
 	{
 		throw gcnew NotImplementedException();
 		// TODO: insert return statement here
 	}
 
-	IRtcDtmfSender^ RtcPeerConnection::CreateRtcDtmfSender(IMediaStreamTrack^ track)
+	RtcDtmfSender^ RtcPeerConnection::CreateRtcDtmfSender(MediaStreamTrack^ track)
 	{
 		throw gcnew NotImplementedException();
 		// TODO: insert return statement here
 	}
 
-	Task<IRtcStatsReport^>^ RtcPeerConnection::GetStats(IMediaStreamTrack^ selector)
+	Task<RtcStatsReport^>^ RtcPeerConnection::GetStats(MediaStreamTrack^ selector)
 	{
 		throw gcnew NotImplementedException();
 		// TODO: insert return statement here

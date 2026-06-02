@@ -16,8 +16,44 @@ ninja -C "$(WebRtcOutRoot)\$(Configuration)\$(Platform)"
 </WebRtcGnCommandSuffix>
     <WebRtcGnCommonArgs>use_custom_libcxx=false libcxx_is_shared=true use_lld=false is_component_build=false clang_use_chrome_plugins=false rtc_include_tests=false rtc_build_tools=false rtc_build_examples=false rtc_enable_symbol_export=true rtc_enable_protobuf=false enable_libaom=false</WebRtcGnCommonArgs>
   </PropertyGroup>
+  <PropertyGroup>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
+    <CustomBuildBeforeTargets>PreBuildEvent</CustomBuildBeforeTargets>
+  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Debug'">
+    <ClCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Platform)'=='Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Platform)'=='ARM64'">
+    <ClCompile>
+      <PreprocessorDefinitions>ARM64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <ExternalIncludePath>%(ExternalIncludePath);$(WebRtcSrcRoot);$(WebRtcSrcRoot)\system_wrappers;$(WebRtcSrcRoot)\third_party\abseil-cpp;$(WebRtcSrcRoot)\buildtools\third_party\libc++;$(WebRtcSrcRoot)\third_party\libyuv\include;$(WebRtcSrcRoot)\third_party\jsoncpp\source\include</ExternalIncludePath>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(WebRtcSrcRoot);$(WebRtcSrcRoot)\system_wrappers;$(WebRtcSrcRoot)\third_party\abseil-cpp;$(WebRtcSrcRoot)\buildtools\third_party\libc++;$(WebRtcSrcRoot)\third_party\libyuv\include;$(WebRtcSrcRoot)\third_party\jsoncpp\source\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);_HAS_EXCEPTIONS=0;__STD_C;_CRT_RAND_S;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;_ATL_NO_OPENGL;_WINDOWS;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;PSAPI_VERSION=2;WIN32;_SECURE_ATL;__WRL_NO_DEFAULT_LIB__;WINAPI_FAMILY=WINAPI_FAMILY_DESKTOP_APP;WIN10=_WIN32_WINNT_WIN10;WIN32_LEAN_AND_MEAN;NOMINMAX;_UNICODE;UNICODE;NTDDI_VERSION=NTDDI_WIN10_RS2;_WIN32_WINNT=0x0A00;WINVER=0x0A00;NVALGRIND;DYNAMIC_ANNOTATIONS_ENABLED=0;WEBRTC_ENABLE_PROTOBUF=0;WEBRTC_INCLUDE_INTERNAL_AUDIO_DEVICE;RTC_ENABLE_VP9;HAVE_SCTP;WEBRTC_LIBRARY_IMPL;WEBRTC_NON_STATIC_TRACE_EVENT_HANDLERS=0;WEBRTC_WIN;ABSL_ALLOCATOR_NOTHROW=1;HAVE_SCTP</PreprocessorDefinitions>
     </ClCompile>
@@ -79,20 +115,38 @@ ninja -C "$(WebRtcOutRoot)\$(Configuration)\$(Platform)"
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\WebRtcNet.Api\WebRtcNet.Api.csproj">
+      <Project>{98433217-c99b-4b08-a19b-3f97a1f1e633}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)ManagedScopedRefPtr.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalCollections.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalDataChannel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalEnums.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalIceTransport.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalNullable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Media\Marshaling\MarshalMedia.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaStream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaStreamTrack.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)NativeWrapper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Observers\DataChannelObserver.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Resource.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RtcDataChannel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RtcIceTransport.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaStream.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaStreamTrack.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Observers\DataChannelObserver.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RtcDataChannel.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RtcIceTransport.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
   </ItemGroup>
 </Project>

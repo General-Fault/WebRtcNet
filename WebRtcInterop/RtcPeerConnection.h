@@ -17,13 +17,13 @@ WebRtcObservers_End
 
 namespace WebRtcInterop
 {
-	public ref class RtcPeerConnection : IRtcPeerConnection
+	public ref class RtcPeerConnection : WebRtcNet::RtcPeerConnection
 	{
 	public:
 		RtcPeerConnection(RtcConfiguration^ configuration);
 		~RtcPeerConnection();
 
-		// Inherited via IRtcPeerConnection
+		// Inherited via RtcPeerConnection
 		virtual property Nullable<RtcSessionDescription> LocalDescription { Nullable<RtcSessionDescription> get() override; }
 		virtual property Nullable<RtcSessionDescription> CurrentLocalDescription { Nullable<RtcSessionDescription> get() override; }
 		virtual property Nullable<RtcSessionDescription> PendingLocalDescription { Nullable<RtcSessionDescription> get() override; }
@@ -94,24 +94,19 @@ namespace WebRtcInterop
 		virtual Task^ SetLocalDescription(RtcSessionDescription description) override;
 		virtual Task^ SetRemoteDescription(RtcSessionDescription description) override;
 
-		virtual IRtcRtpSender^ AddTrack(WebRtcNet::Media::IMediaStreamTrack^ track,
-			... array<WebRtcNet::Media::IMediaStream^>^ streams) override;
-		virtual void RemoveTrack(WebRtcNet::Media::IMediaStreamTrack^ track) override;
+		virtual RtcRtpSender^ AddTrack(WebRtcNet::Media::MediaStreamTrack^ track,
+			... array<WebRtcNet::Media::MediaStream^>^ streams) override;
+		virtual void RemoveTrack(WebRtcNet::Media::MediaStreamTrack^ track) override;
 
-		virtual IRtcRtpTransceiver^ AddTransceiver(WebRtcNet::Media::IMediaStreamTrack^ track,
-			IRtcRtpTransceiver^ transceiver) override;
-		virtual IRtcRtpTransceiver^ AddTransceiver(WebRtcNet::Media::MediaStreamTrackKind kind,
-			IRtcRtpTransceiver^ transceiver) override;
+		virtual IEnumerable<RtcRtpSender^>^ GetSenders() override;
+		virtual IEnumerable<RtcRtpReceiver^>^ GetReceivers() override;
+		virtual IEnumerable<RtcRtpTransceiver^>^ GetTransceivers() override;
 
-		virtual IEnumerable<IRtcRtpSender^>^ GetSenders() override;
-		virtual IEnumerable<IRtcRtpReceiver^>^ GetReceivers() override;
-		virtual IEnumerable<IRtcRtpTransceiver^>^ GetTransceivers() override;
-
-		virtual IRtcDataChannel^ CreateDataChannel(String^ label, RtcDataChannelInit^ dataChannelInit) override;
+		virtual RtcDataChannel^ CreateDataChannel(String^ label, RtcDataChannelInit^ dataChannelInit) override;
 
 		virtual void Close() override;
 
-		virtual Task<IRtcStatsReport^>^ GetStats([System::Runtime::InteropServices::Optional] WebRtcNet::Media::IMediaStreamTrack^ selector) override;
+		virtual Task<RtcStatsReport^>^ GetStats([System::Runtime::InteropServices::Optional] WebRtcNet::Media::MediaStreamTrack^ selector) override;
 
 	internal:
 		!RtcPeerConnection();
@@ -120,7 +115,7 @@ namespace WebRtcInterop
 
 		//Event invocation 
 		void FireOnSignalingStateChange(RtcSignalingState newState) { if (on_signaling_state_change_ != nullptr) on_signaling_state_change_(this, EventArgs::Empty); }
-		void FireOnDataChannel(IRtcDataChannel^ channel) { if (on_data_channel_ != nullptr) on_data_channel_(this, gcnew RtcDataChannelEventArgs(channel)); }
+		void FireOnDataChannel(RtcDataChannel^ channel) { if (on_data_channel_ != nullptr) on_data_channel_(this, gcnew RtcDataChannelEventArgs(channel)); }
 		void FireOnNegotiationNeeded() { if (on_negotiation_needed_ != nullptr) on_negotiation_needed_(this, EventArgs::Empty); }
 		void FireOnIceConnectionStateChange(RtcIceConnectionState newState) { if (on_ice_connection_state_change_ != nullptr) on_ice_connection_state_change_(this, EventArgs::Empty); }
 		void FireOnGatheringStateChange(RtcIceGatheringState newState) { if (on_gathering_state_change_ != nullptr) on_gathering_state_change_(this, EventArgs::Empty); }

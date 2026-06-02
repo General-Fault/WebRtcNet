@@ -3,7 +3,7 @@
 #include <msclr/marshal.h>
 
 #include "MarshalCollections.h"
-#include "api/peer_connection_interface.h"
+#include <api/peer_connection_interface.h>
 
 namespace msclr::interop
 {
@@ -11,8 +11,6 @@ namespace msclr::interop
 	inline webrtc::PeerConnectionInterface::RTCOfferAnswerOptions marshal_as(WebRtcNet::RtcOfferOptions^ const & from)
 	{
 		webrtc::PeerConnectionInterface::RTCOfferAnswerOptions to;
-		to.offer_to_receive_video = from->OfferToReceiveVideo;
-		to.offer_to_receive_audio = from->OfferToReceiveAudio;
 		to.voice_activity_detection = from->VoiceActivityDetection;
 		to.ice_restart = from->IceRestart;
 		return to;
@@ -22,8 +20,6 @@ namespace msclr::interop
 	inline WebRtcNet::RtcOfferOptions^ marshal_as(const webrtc::PeerConnectionInterface::RTCOfferAnswerOptions& from)
 	{
 		auto to = gcnew WebRtcNet::RtcOfferOptions();
-		to->OfferToReceiveVideo = from.offer_to_receive_video;
-		to->OfferToReceiveAudio = from.offer_to_receive_audio;
 		to->VoiceActivityDetection = from.voice_activity_detection;
 		to->IceRestart = from.ice_restart;
 		return to;

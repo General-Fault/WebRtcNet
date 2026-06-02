@@ -2,88 +2,90 @@
 
 #include "RtcIceTransport.h"
 
-#include "api/ice_transport_interface.h"
-#include "p2p/base/ice_transport_internal.h" // see bugs.webrtc.org/9308
+#include <api/ice_transport_interface.h>
+#include <p2p/base/ice_transport_internal.h> // see bugs.webrtc.org/9308
 #include "Marshaling/MarshalIceTransport.h"
 
 using namespace WebRtcNet;
-using namespace WebRtcInterop;
 
-RtcIceTransport::RtcIceTransport(webrtc::IceTransportInterface* ice_transport_interface)
-	: rp_ice_transport_interface_(ice_transport_interface)
+namespace WebRtcInterop
 {
-}
-
-RtcIceTransport::~RtcIceTransport()
-{
-	this->!RtcIceTransport();
-}
-
-RtcIceTransport::!RtcIceTransport()
-{
-	rp_ice_transport_interface_ = nullptr;
-}
-
-webrtc::IceTransportInterface* RtcIceTransport::GetNativeIceTransportInterface(bool throwOnDisposed)
-{
-	const auto result = rp_ice_transport_interface_.Get();
-	if (result == nullptr)
+	RtcIceTransport::RtcIceTransport(webrtc::IceTransportInterface* ice_transport_interface)
+		: rp_ice_transport_interface_(ice_transport_interface)
 	{
-		if (throwOnDisposed) throw gcnew ObjectDisposedException(NAMEOF(RtcIceTransport));
-		return nullptr;
 	}
 
-	return result;
-}
+	RtcIceTransport::~RtcIceTransport()
+	{
+		this->!RtcIceTransport();
+	}
 
-System::IntPtr RtcIceTransport::GetNativeIceTransportHandle(bool throwOnDisposed)
-{
-	return System::IntPtr(GetNativeIceTransportInterface(throwOnDisposed));
-}
+	RtcIceTransport::!RtcIceTransport()
+	{
+		rp_ice_transport_interface_ = nullptr;
+	}
 
-RtcIceRole RtcIceTransport::Role::get()
-{
-	return marshal_as<RtcIceRole>(GetNativeIceTransportInterface(true)->internal()->GetIceRole());
-}
+	webrtc::IceTransportInterface* RtcIceTransport::GetNativeIceTransportInterface(bool throwOnDisposed)
+	{
+		const auto result = rp_ice_transport_interface_.Get();
+		if (result == nullptr)
+		{
+			if (throwOnDisposed) throw gcnew ObjectDisposedException(NAMEOF(RtcIceTransport));
+			return nullptr;
+		}
 
-RtcIceComponent RtcIceTransport::Component::get()
-{
-	return marshal_as<RtcIceComponent>(GetNativeIceTransportInterface(true)->internal()->component());
-}
+		return result;
+	}
 
-RtcIceTransportState RtcIceTransport::State::get()
-{
-	return marshal_as<RtcIceTransportState>(GetNativeIceTransportInterface(true)->internal()->GetIceTransportState());
-}
+	IntPtr RtcIceTransport::GetNativeIceTransportHandle(bool throwOnDisposed)
+	{
+		return IntPtr(GetNativeIceTransportInterface(throwOnDisposed));
+	}
 
-RtcIceGatheringState RtcIceTransport::GatheringState::get()
-{
-	throw gcnew NotImplementedException();
-}
+	RtcIceRole RtcIceTransport::Role::get()
+	{
+		return marshal_as<RtcIceRole>(GetNativeIceTransportInterface(true)->internal()->GetIceRole());
+	}
 
-IEnumerable<RtcIceCandidate^>^ RtcIceTransport::GetLocalCandidates()
-{
-	throw gcnew NotImplementedException();
-}
+	RtcIceComponent RtcIceTransport::Component::get()
+	{
+		return marshal_as<RtcIceComponent>(GetNativeIceTransportInterface(true)->internal()->component());
+	}
 
-IEnumerable<RtcIceCandidate^>^ RtcIceTransport::GetRemoteCandidates()
-{
-	throw gcnew NotImplementedException();
-}
+	RtcIceTransportState RtcIceTransport::State::get()
+	{
+		return marshal_as<RtcIceTransportState>(GetNativeIceTransportInterface(true)->internal()->GetIceTransportState());
+	}
 
-RtcIceCandidatePair^ RtcIceTransport::GetSelectedCandidatePair()
-{
-	throw gcnew NotImplementedException();
-}
+	RtcIceGatheringState RtcIceTransport::GatheringState::get()
+	{
+		throw gcnew NotImplementedException();
+	}
 
-RtcIceParameters^ RtcIceTransport::GetLocalParameters()
-{
-	throw gcnew NotImplementedException();
-}
+	IEnumerable<RtcIceCandidate^>^ RtcIceTransport::GetLocalCandidates()
+	{
+		throw gcnew NotImplementedException();
+	}
 
-RtcIceParameters^ RtcIceTransport::GetRemoteParameters()
-{
-	throw gcnew NotImplementedException();
+	IEnumerable<RtcIceCandidate^>^ RtcIceTransport::GetRemoteCandidates()
+	{
+		throw gcnew NotImplementedException();
+	}
+
+	RtcIceCandidatePair^ RtcIceTransport::GetSelectedCandidatePair()
+	{
+		throw gcnew NotImplementedException();
+	}
+
+	RtcIceParameters^ RtcIceTransport::GetLocalParameters()
+	{
+		throw gcnew NotImplementedException();
+	}
+
+	RtcIceParameters^ RtcIceTransport::GetRemoteParameters()
+	{
+		throw gcnew NotImplementedException();
+	}
 }
 
 

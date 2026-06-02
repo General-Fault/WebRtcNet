@@ -7,10 +7,18 @@
 /// <seealso cref="RtcRtpParameters"/>
 public sealed record RtcRtcpParameters
 {
+	/// <summary>
+	/// Initializes RTCP parameters with default values.
+	/// </summary>
 	public RtcRtcpParameters()
 	{
 	}
 
+	/// <summary>
+	/// Initializes RTCP parameters.
+	/// </summary>
+	/// <param name="cName">The RTCP canonical name.</param>
+	/// <param name="reducedSize">Whether reduced-size RTCP is enabled.</param>
 	public RtcRtcpParameters(string cName, bool reducedSize)
 	{
 		CName = cName ?? string.Empty;

@@ -12,6 +12,8 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory);$(WebRtcGoogletestRoot)\googletest\include;$(WebRtcGoogletestRoot)\googlemock\include</AdditionalIncludeDirectories>
+      <ExternalIncludePath>%(ExternalIncludePath);$(WebRtcGoogletestRoot)\googletest\include;$(WebRtcGoogletestRoot)\googlemock\include</ExternalIncludePath>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <PreprocessorDefinitions>GTEST_IS_THREADSAFE=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>

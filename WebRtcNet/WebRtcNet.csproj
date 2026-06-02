@@ -8,6 +8,7 @@
     <AssemblyDescription>A WebRtc implementation for .Net</AssemblyDescription>
     <Guid>3CA16CE5-8124-4D86-8E37-2171B15BE276</Guid>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>

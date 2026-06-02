@@ -1,55 +1,76 @@
-﻿namespace WebRtcNet.Media;
+namespace WebRtcNet.Media;
 
 /// <summary>
-/// MediaTrackSupportedConstraints represents the set of constraints recognized by the user agent for
-/// controlling the capabilities of a <see cref="IMediaStreamTrack"/> object. This is an out-only snapshot
-/// returned by <see cref="IMediaDevices.GetSupportedConstraints"/>.
+/// MediaTrackSupportedConstraints represents the set of constraints supported by a <see cref="MediaStreamTrack"/> object.
+/// This is an out-only snapshot
+/// returned by <see cref="MediaDevices.GetSupportedConstraints"/>.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatracksupportedconstraints"/>
 public sealed record MediaTrackSupportedConstraints
 {
-	/// <see cref="MediaTrackConstraints.Width"/>
+	/// <summary>Indicates whether the media track supports the width constraint.</summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-width"/>
 	public bool Width { get; init; }
 
-	/// <see cref="MediaTrackConstraints.Height"/>
+	/// <summary>Indicates whether the media track supports the height constraint.</summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-height"/>
 	public bool Height { get; init; }
 
-	/// <see cref="MediaTrackConstraints.AspectRatio"/>
+	/// <summary>Indicates whether the media track supports the aspect-ratio constraint.</summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-aspect"/>
 	public bool AspectRatio { get; init; }
 
-	/// <see cref="MediaTrackConstraints.FrameRate"/>
+	/// <summary>Indicates whether the media track supports the frame-rate constraint.</summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-frameRate"/>
 	public bool FrameRate { get; init; }
 
-	/// <see cref="MediaTrackConstraints.FacingMode"/>
+	/// <summary>Indicates whether the media track supports the facing-mode constraint.</summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-facingMode"/>
 	public bool FacingMode { get; init; }
 
-	/// <see cref="MediaTrackConstraints.ResizeMode"/>
+	/// <summary>Indicates whether the media track supports the resize-mode constraint.</summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-resizeMode"/>
 	public bool ResizeMode { get; init; }
 
-	/// <see cref="MediaTrackConstraints.SampleRate"/>
+	/// <summary>Indicates whether the media track supports the sample-rate constraint.</summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-sampleRate"/>
 	public bool SampleRate { get; init; }
 
-	/// <see cref="MediaTrackConstraints.SampleSize"/>
+	/// <summary>Indicates whether the media track supports the sample-size constraint.</summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-sampleSize"/>
 	public bool SampleSize { get; init; }
 
-	/// <see cref="MediaTrackConstraints.EchoCancellation"/>
+	/// <summary>Indicates whether the media track supports the echo-cancellation constraint.</summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-echoCancellation"/>
 	public bool EchoCancellation { get; init; }
 
-	/// <see cref="MediaTrackConstraints.AutoGainControl"/>
+	/// <summary>
+	/// Indicates whether the media track supports the background-blur constraint.
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-backgroundBlur"/>
+	public bool BackgroundBlur { get; init; }
+
+	/// <summary>Indicates whether the media track supports the auto-gain-control constraint.</summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-autoGainControl"/>
 	public bool AutoGainControl { get; init; }
 
-	/// <see cref="MediaTrackConstraints.NoiseSuppression"/>
+	/// <summary>Indicates whether the media track supports the noise-suppression constraint.</summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-noiseSuppression"/>
 	public bool NoiseSuppression { get; init; }
 
-	/// <see cref="MediaTrackConstraints.Latency"/>
+	/// <summary>Indicates whether the media track supports the latency constraint.</summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-latency"/>
 	public bool Latency { get; init; }
 
-	/// <see cref="MediaTrackConstraints.ChannelCount"/>
+	/// <summary>Indicates whether the media track supports the channel-count constraint.</summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-channelCount"/>
 	public bool ChannelCount { get; init; }
 
-	/// <see cref="MediaTrackConstraints.DeviceId"/>
+	/// <summary>Indicates whether the media track supports the device-id constraint.</summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-deviceId"/>
 	public bool DeviceId { get; init; }
 
-	/// <see cref="MediaTrackConstraints.GroupId"/>
+	/// <summary>Indicates whether the media track supports the group-id constraint.</summary>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-groupId"/>
 	public bool GroupId { get; init; }
 }
