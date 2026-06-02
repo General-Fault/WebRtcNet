@@ -79,14 +79,20 @@ public class RtcPeerConnectionContractTests
 	{
 		var setLocalDescription = typeof(RtcPeerConnection).GetMethod(
 			nameof(RtcPeerConnection.SetLocalDescription),
-			new[] { typeof(RtcSessionDescription?) });
+			new[] { typeof(RtcLocalSessionDescriptionInit?) });
 		var addIceCandidate = typeof(RtcPeerConnection).GetMethod(
 			nameof(RtcPeerConnection.AddIceCandidate),
 			new[] { typeof(RtcIceCandidate) });
 
-		Assert.That(setLocalDescription, Is.Not.Null);
+		Assert.That(setLocalDescription, Is.Not.Null,
+			"SetLocalDescription must accept RtcLocalSessionDescriptionInit? (spec: RTCLocalSessionDescriptionInit, type optional)");
 		Assert.That(setLocalDescription!.GetParameters()[0].IsOptional, Is.True);
 		Assert.That(setLocalDescription.GetParameters()[0].DefaultValue, Is.Null);
+
+		// Verify the parameter is NOT the old RtcSessionDescription? type — type distinction is spec-required.
+		Assert.That(setLocalDescription.GetParameters()[0].ParameterType,
+			Is.Not.EqualTo(typeof(RtcSessionDescription?)),
+			"SetLocalDescription must use RtcLocalSessionDescriptionInit (RTCLocalSessionDescriptionInit), not RtcSessionDescription (RTCSessionDescriptionInit)");
 
 		Assert.That(addIceCandidate, Is.Not.Null);
 		Assert.That(addIceCandidate!.GetParameters()[0].IsOptional, Is.True);

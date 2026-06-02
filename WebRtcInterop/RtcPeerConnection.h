@@ -91,7 +91,7 @@ namespace WebRtcInterop
 		virtual Task^ AddIceCandidate(RtcIceCandidate^ candidate) override;
 		virtual void RestartIce() override;
 
-		virtual Task^ SetLocalDescription(RtcSessionDescription description) override;
+		virtual Task^ SetLocalDescription(Nullable<RtcLocalSessionDescriptionInit> description) override;
 		virtual Task^ SetRemoteDescription(RtcSessionDescription description) override;
 
 		virtual RtcRtpSender^ AddTrack(WebRtcNet::Media::MediaStreamTrack^ track,

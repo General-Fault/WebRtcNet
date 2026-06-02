@@ -334,15 +334,16 @@ public abstract class RtcPeerConnection
 
 	/// <summary>
 	/// The SetLocalDescription() method instructs the RtcPeerConnection to apply the supplied
-	/// <see cref="RtcSessionDescription">RtcSessionDescription</see> as the
+	/// <see cref="RtcLocalSessionDescriptionInit">description</see> as the
 	/// <see cref="LocalDescription">local description</see>.
 	/// </summary>
 	/// <param name="description">
-	/// A session description containing the SDP describing the local session, or null to let the implementation
-	/// infer and apply the next local description.
+	/// A local session description init whose <c>type</c> may be omitted to let the implementation
+	/// infer it from the current signaling state, or <see langword="null"/> to use the implementation's
+	/// default (equivalent to passing an empty <c>RTCLocalSessionDescriptionInit</c>).
 	/// </param>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-peerconnection-setlocaldescription" />
-	public abstract Task SetLocalDescription(RtcSessionDescription? description = null);
+	public abstract Task SetLocalDescription(RtcLocalSessionDescriptionInit? description = null);
 
 	/// <summary>
 	/// The SetRemoteDescription() method instructs the RTCPeerConnection to apply the supplied

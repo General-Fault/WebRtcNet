@@ -104,7 +104,7 @@ namespace WebRtcInterop
 		return task;
 	}
 
-	Task^ RtcPeerConnection::SetLocalDescription(RtcSessionDescription description)
+	Task^ RtcPeerConnection::SetLocalDescription(Nullable<RtcLocalSessionDescriptionInit> description)
 	{
 		throw gcnew NotImplementedException();
 		// TODO: insert return statement here
