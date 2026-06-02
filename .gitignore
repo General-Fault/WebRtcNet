@@ -1,6 +1,9 @@
 *.opensdf
 obj
 bin
+x64
+x86
+ARM64
 .vs
 Debug
 /WebRtcNet.sdf
