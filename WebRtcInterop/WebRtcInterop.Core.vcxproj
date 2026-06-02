@@ -31,7 +31,6 @@
     <ProjectGuid>{F259D9C3-8B07-4B62-A9B8-F0836178BC58}</ProjectGuid>
     <Keyword>NetCoreCProj</Keyword>
     <TargetFramework>net10.0</TargetFramework>
-    <TargetFrameworkVersion>net10.0</TargetFrameworkVersion>
     <CLRSupport>NetCore</CLRSupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
