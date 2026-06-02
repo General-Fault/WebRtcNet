@@ -1,3 +1,5 @@
+using System;
+
 namespace WebRtcNet;
 
 /// <summary>
@@ -36,8 +38,8 @@ public enum RtcSdpType
 /// <see cref="RtcPeerConnection.CreateAnswer"/>, or received from a remote peer via signaling.
 /// Models <c>RTCSessionDescriptionInit</c> where <c>type</c> is required.
 /// </summary>
-/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcsessiondescriptioninit" />
-public struct RtcSessionDescription
+/// <seealso href="https://www.w3.org/TR/webrtc/#rtcsessiondescription-class" />
+public record struct RtcSessionDescription
 {
 	/// <summary>
 	/// Initializes a session description with a type and SDP payload.
@@ -53,12 +55,27 @@ public struct RtcSessionDescription
 	/// <summary>
 	/// Gets the SDP description type.
 	/// </summary>
-	public readonly RtcSdpType Type;
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcsessiondescriptioninit-type" />
+	public RtcSdpType Type { get; init; }
 
 	/// <summary>
 	/// Gets the SDP payload string.
 	/// </summary>
-	public readonly string Sdp;
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcsessiondescriptioninit-sdp" />
+	public string Sdp { get; init; }
+
+	/// <summary>
+	/// Implicitly converts an <see cref="RtcLocalSessionDescriptionInit"/> to an
+	/// <see cref="RtcSessionDescription"/>. Throws if <see cref="RtcLocalSessionDescriptionInit.Type"/>
+	/// is <see langword="null"/>, as <see cref="Type"/> is required.
+	/// </summary>
+	/// <exception cref="InvalidOperationException">
+	/// Thrown when <see cref="RtcLocalSessionDescriptionInit.Type"/> is <see langword="null"/>.
+	/// </exception>
+	public static implicit operator RtcSessionDescription(RtcLocalSessionDescriptionInit description) =>
+		new(description.Type ?? throw new InvalidOperationException(
+				"Cannot convert RtcLocalSessionDescriptionInit to RtcSessionDescription: Type is null."),
+			description.Sdp);
 }
 
 /// <summary>
@@ -72,7 +89,7 @@ public struct RtcSessionDescription
 /// can be passed directly to <see cref="RtcPeerConnection.SetLocalDescription"/> without a cast.
 /// </remarks>
 /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtclocalsessiondescriptioninit" />
-public struct RtcLocalSessionDescriptionInit
+public record struct RtcLocalSessionDescriptionInit
 {
 	/// <summary>
 	/// Initializes a local session description init with an optional type and SDP payload.
@@ -91,12 +108,14 @@ public struct RtcLocalSessionDescriptionInit
 	/// <summary>
 	/// Gets the SDP description type, or <see langword="null"/> if the implementation should infer it.
 	/// </summary>
-	public readonly RtcSdpType? Type;
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtclocalsessiondescriptioninit-type" />
+	public RtcSdpType? Type { get; init; }
 
 	/// <summary>
 	/// Gets the SDP payload string.
 	/// </summary>
-	public readonly string Sdp;
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtclocalsessiondescriptioninit-sdp" />
+	public string Sdp { get; init; } = string.Empty;
 
 	/// <summary>
 	/// Implicitly converts an <see cref="RtcSessionDescription"/> (required type) to an
