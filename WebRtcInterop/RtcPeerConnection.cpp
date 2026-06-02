@@ -106,8 +106,14 @@ namespace WebRtcInterop
 
 	Task^ RtcPeerConnection::SetLocalDescription(Nullable<RtcLocalSessionDescriptionInit> description)
 	{
+		// TODO: Implement using two native overloads on PeerConnectionInterface:
+		//   - description is null, or description.Value.Type is null:
+		//       -> SetLocalDescription(observer)  [native creates offer/answer from signaling state]
+		//   - description.Value.Type has a value:
+		//       -> SetLocalDescription(unique_ptr<SessionDescriptionInterface>, observer)
+		// Add marshal_as<webrtc::SessionDescriptionInterface*>(RtcLocalSessionDescriptionInit) in
+		// MarshalPeerConnection.h to support the second path.
 		throw gcnew NotImplementedException();
-		// TODO: insert return statement here
 	}
 
 	Task^ RtcPeerConnection::SetRemoteDescription(RtcSessionDescription description)

@@ -168,8 +168,4 @@ namespace msclr::interop
 
 		return WebRtcNet::RtcSessionDescription(from_type, sdp);
 	}
-
-	// TODO: Add marshal_as<webrtc::SessionDescriptionInterface*>(RtcLocalSessionDescriptionInit) for
-	// SetLocalDescription. A null Type maps to the implicit-type native path — call the no-arg
-	// SetLocalDescription() overload on the native PeerConnection in that case.
 }
