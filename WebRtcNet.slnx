@@ -25,6 +25,9 @@
   <Folder Name="/third_party/">
     <Project Path="third-party/shared-items/googletest/googletest.vcxitems" Id="357b6b66-ab73-41cd-9271-1b4e5c41dde1" />
   </Folder>
+  <Folder Name="/Examples/">
+    <Project Path="examples/BasicVideoChat/BasicVideoChat.csproj" Id="ce07d5b9-b81d-4834-a99b-6917ae0b5982" />
+  </Folder>
   <Project Path="WebRtcNet.Api.UnitTests/WebRtcNet.Api.UnitTests.csproj" />
   <Project Path="WebRtcNet.Api/WebRtcNet.Api.csproj" />
   <Project Path="WebRtcNet/WebRtcNet.csproj" />

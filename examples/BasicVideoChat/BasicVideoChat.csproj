@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFrameworks>net10.0-windows;net48</TargetFrameworks>
+		<UseWPF>true</UseWPF>
+		<Configurations>Debug;Release</Configurations>
+		<Platforms>x64;x86;ARM64</Platforms>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
+		<AssemblyTitle>BasicVideoChat</AssemblyTitle>
+		<AssemblyDescription>A basic WebRTC peer-to-peer video chat example using WebRtcNet</AssemblyDescription>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\WebRtcNet\WebRtcNet.csproj" />
+	</ItemGroup>
+
+	<!-- System.Text.Json is inbox on net10.0; add the NuGet package for net48 only. -->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+		<PackageReference Include="System.Text.Json" Version="9.0.5" />
+	</ItemGroup>
+</Project>
