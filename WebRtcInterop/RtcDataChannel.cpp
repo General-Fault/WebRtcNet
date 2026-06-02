@@ -67,14 +67,14 @@ namespace WebRtcInterop
 		return GetNativeDataChannelInterface(true)->ordered();
 	}
 
-	Nullable<uint32_t> RtcDataChannel::MaxPacketLifeTime::get()
+	Nullable<uint16_t> RtcDataChannel::MaxPacketLifeTime::get()
 	{
-		return marshal_as<uint32_t>(GetNativeDataChannelInterface(true)->maxPacketLifeTime());
+		return marshal_as<uint16_t>(GetNativeDataChannelInterface(true)->maxPacketLifeTime());
 	}
 
-	Nullable<uint32_t> RtcDataChannel::MaxRetransmits::get()
+	Nullable<uint16_t> RtcDataChannel::MaxRetransmits::get()
 	{
-		return marshal_as<uint32_t>(GetNativeDataChannelInterface(true)->maxRetransmitsOpt());
+		return marshal_as<uint16_t>(GetNativeDataChannelInterface(true)->maxRetransmitsOpt());
 	}
 
 	String^ RtcDataChannel::Protocol::get()

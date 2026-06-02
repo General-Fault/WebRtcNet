@@ -20,8 +20,8 @@ namespace WebRtcInterop
 		// Inherited via RtcDataChannel
 		virtual property String^ Label { String^ get() override; }
 		virtual property bool Ordered { bool get() override; }
-		virtual property Nullable<uint32_t> MaxPacketLifeTime { Nullable<uint32_t> get() override; }
-		virtual property Nullable<uint32_t> MaxRetransmits { Nullable<uint32_t> get() override; }
+		virtual property Nullable<uint16_t> MaxPacketLifeTime { Nullable<uint16_t> get() override; }
+		virtual property Nullable<uint16_t> MaxRetransmits { Nullable<uint16_t> get() override; }
 		virtual property String^ Protocol { String^ get() override; }
 		virtual property bool Negotiated { bool get() override; }
 		virtual property Nullable<uint16_t> Id { Nullable<uint16_t> get() override; }
