@@ -14,7 +14,7 @@
   <PropertyGroup>
     <PackageLicenseFile>..\LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <DocumentationFile>bin\$(Configuration)\WebRtcNet.XML</DocumentationFile>
+    <DocumentationFile>$(OutputPath)$(TargetFramework)\WebRtcNet.XML</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

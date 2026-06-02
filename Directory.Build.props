@@ -10,4 +10,12 @@
 		<AssemblyVersion>0.104.1.0</AssemblyVersion>
 		<FileVersion>0.104.1.0</FileVersion>
 	</PropertyGroup>
+	<PropertyGroup Condition="'$(UsingMicrosoftNETSdk)' == 'true'">
+		<_WebRtcNetManagedPlatform Condition="'$(Platform)' == ''">AnyCPU</_WebRtcNetManagedPlatform>
+		<_WebRtcNetManagedPlatform Condition="'$(Platform)' != ''">$(Platform)</_WebRtcNetManagedPlatform>
+		<OutputPath>bin\$(_WebRtcNetManagedPlatform)\$(Configuration)\</OutputPath>
+		<IntermediateOutputPath>obj\$(_WebRtcNetManagedPlatform)\$(Configuration)\</IntermediateOutputPath>
+		<AppendPlatformToOutputPath>false</AppendPlatformToOutputPath>
+		<AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+	</PropertyGroup>
 </Project>

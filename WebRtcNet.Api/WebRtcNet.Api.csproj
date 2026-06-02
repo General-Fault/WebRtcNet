@@ -7,7 +7,7 @@
 		<AssemblyTitle>WebRtcNet.Api</AssemblyTitle>
 		<AssemblyDescription>The public WebRtc interfaces and classes for the WebRtcNet library</AssemblyDescription>
 		<Guid>98433217-c99b-4b08-a19b-3f97a1f1e633</Guid>
-		<DocumentationFile>bin\$(Configuration)\WebRtcNet.Api.XML</DocumentationFile>
+		<DocumentationFile>$(OutputPath)$(TargetFramework)\WebRtcNet.Api.XML</DocumentationFile>
 		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
 		<LangVersion>latest</LangVersion>
 		<RootNamespace>WebRtcNet</RootNamespace>
