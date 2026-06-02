@@ -6,8 +6,6 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <OutDir>bin\$(Platform)\$(Configuration)\$(TargetFrameworkVersion)\</OutDir>
-    <IntDir>obj\$(Platform)\$(Configuration)\$(TargetFrameworkVersion)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
     <UseDebugLibraries>true</UseDebugLibraries>

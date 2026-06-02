@@ -50,6 +50,12 @@ ninja -C "$(WebRtcOutRoot)\$(Configuration)\$(Platform)"
       <PreprocessorDefinitions>ARM64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
+  <!-- ARM64 webrtc.lib is built with iterator debugging disabled. -->
+  <ItemDefinitionGroup Condition="'$(Platform)'=='ARM64'">
+    <ClCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);_ITERATOR_DEBUG_LEVEL=0</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <ExternalIncludePath>%(ExternalIncludePath);$(WebRtcSrcRoot);$(WebRtcSrcRoot)\system_wrappers;$(WebRtcSrcRoot)\third_party\abseil-cpp;$(WebRtcSrcRoot)\buildtools\third_party\libc++;$(WebRtcSrcRoot)\third_party\libyuv\include;$(WebRtcSrcRoot)\third_party\jsoncpp\source\include</ExternalIncludePath>

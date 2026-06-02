@@ -11,5 +11,7 @@
     <!-- Treat artifacts as prebuilt when the env var says so OR when the repo-local artifact tree exists -->
     <WebRtcPrebuilt Condition="'$(WEBRTC_PREBUILT)' == '1' Or (Exists('$(MSBuildThisFileDirectory)..\third-party\google\webrtc\include') And Exists('$(MSBuildThisFileDirectory)..\third-party\google\webrtc\lib'))">1</WebRtcPrebuilt>
     <WebRtcPrebuilt Condition="'$(WebRtcPrebuilt)' == ''">0</WebRtcPrebuilt>
+    <OutDir>bin\$(Platform)\$(Configuration)\$(TargetFrameworkVersion)\</OutDir>
+    <IntDir>obj\$(Platform)\$(Configuration)\$(TargetFrameworkVersion)\</IntDir>
   </PropertyGroup>
 </Project>
