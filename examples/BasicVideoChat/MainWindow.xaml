@@ -1,0 +1,68 @@
+<Window x:Class="BasicVideoChat.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="BasicVideoChat" Height="600" Width="900" MinWidth="640" MinHeight="420">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
+		<!-- Connection controls -->
+		<WrapPanel Grid.Row="0" Margin="8,6" Orientation="Horizontal">
+			<RadioButton x:Name="HostRadio" Content="Host" GroupName="Mode"
+			             IsChecked="True" VerticalAlignment="Center" Margin="0,0,8,0"
+			             Checked="HostRadio_Checked"/>
+			<RadioButton x:Name="GuestRadio" Content="Guest" GroupName="Mode"
+			             VerticalAlignment="Center" Margin="0,0,14,0"
+			             Checked="GuestRadio_Checked"/>
+			<TextBlock Text="IP:" VerticalAlignment="Center" Margin="0,0,4,0"/>
+			<TextBox x:Name="IpBox" Width="130" Text="127.0.0.1" IsEnabled="False"
+			         VerticalAlignment="Center" Margin="0,0,8,0"/>
+			<TextBlock Text="Port:" VerticalAlignment="Center" Margin="0,0,4,0"/>
+			<TextBox x:Name="PortBox" Width="55" Text="7777"
+			         VerticalAlignment="Center" Margin="0,0,14,0"/>
+			<Button x:Name="ConnectBtn" Content="Connect" Width="80"
+			        Margin="0,0,6,0" Click="ConnectBtn_Click"/>
+			<Button x:Name="HangUpBtn" Content="Hang Up" Width="80"
+			        Margin="0,0,14,0" IsEnabled="False" Click="HangUpBtn_Click"/>
+			<TextBlock Text="Status: " VerticalAlignment="Center"/>
+			<TextBlock x:Name="StatusText" Text="Ready" VerticalAlignment="Center"
+			           FontWeight="SemiBold"/>
+		</WrapPanel>
+
+		<!-- Video panels -->
+		<Grid Grid.Row="1">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+
+			<Border Grid.Column="0" Background="#FF1A1A1A" Margin="4,2,2,2">
+				<Grid>
+					<Image x:Name="LocalVideo" Stretch="Uniform"/>
+					<TextBlock Text="Local" Foreground="White" Opacity="0.5"
+					           HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="6"/>
+				</Grid>
+			</Border>
+
+			<Border Grid.Column="1" Background="#FF1A1A1A" Margin="2,2,4,2">
+				<Grid>
+					<Image x:Name="RemoteVideo" Stretch="Uniform"/>
+					<TextBlock Text="Remote" Foreground="White" Opacity="0.5"
+					           HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="6"/>
+				</Grid>
+			</Border>
+		</Grid>
+
+		<!-- Media toggle controls -->
+		<StackPanel Grid.Row="2" Orientation="Horizontal" Margin="8,6"
+		            HorizontalAlignment="Center">
+			<ToggleButton x:Name="MuteBtn" Content="Mute Audio" Width="100"
+			              Margin="0,0,8,0" IsEnabled="False" Click="MuteBtn_Click"/>
+			<ToggleButton x:Name="CameraBtn" Content="Camera Off" Width="100"
+			              IsEnabled="False" Click="CameraBtn_Click"/>
+		</StackPanel>
+	</Grid>
+</Window>
