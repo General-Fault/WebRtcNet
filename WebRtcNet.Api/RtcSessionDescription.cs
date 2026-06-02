@@ -62,7 +62,7 @@ public record struct RtcSessionDescription
 	/// Gets the SDP payload string.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcsessiondescriptioninit-sdp" />
-	public string Sdp { get; init; }
+	public string Sdp { get; init; } = string.Empty;
 
 	/// <summary>
 	/// Implicitly converts an <see cref="RtcLocalSessionDescriptionInit"/> to an
