@@ -81,7 +81,7 @@ ninja -C "$(WebRtcOutRoot)\$(Configuration)\$(Platform)"
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64' and '$(WebRtcPrebuilt)' != '1'">
     <CustomBuildStep>
-      <Command>$(WebRtcGnCommandPrefix)target_cpu="arm64" is_debug=false enable_iterator_debugging=false $(WebRtcGnCommonArgs)$(WebRtcGnCommandSuffix)
+      <Command>$(WebRtcGnCommandPrefix)target_cpu="arm64" is_debug=false enable_iterator_debugging=false rtc_enable_win_wgc=false $(WebRtcGnCommonArgs)$(WebRtcGnCommandSuffix)
 </Command>
       <Message>Building Google WebRtc Library</Message>
       <Outputs>$(WebRtcOutRoot)\$(Configuration)\$(Platform)\webrtc.lib</Outputs>
@@ -89,7 +89,7 @@ ninja -C "$(WebRtcOutRoot)\$(Configuration)\$(Platform)"
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64' and '$(WebRtcPrebuilt)' != '1'">
     <CustomBuildStep>
-      <Command>$(WebRtcGnCommandPrefix)target_cpu="arm64" is_debug=true enable_iterator_debugging=false $(WebRtcGnCommonArgs)$(WebRtcGnCommandSuffix)
+      <Command>$(WebRtcGnCommandPrefix)target_cpu="arm64" is_debug=true enable_iterator_debugging=false rtc_enable_win_wgc=false $(WebRtcGnCommonArgs)$(WebRtcGnCommandSuffix)
 </Command>
       <Message>Building Google WebRtc Library</Message>
       <Outputs>$(WebRtcOutRoot)\$(Configuration)\$(Platform)\webrtc.lib</Outputs>
