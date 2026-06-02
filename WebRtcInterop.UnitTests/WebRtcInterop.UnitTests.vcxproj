@@ -33,14 +33,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>4.8</TargetFrameworkVersion>
     <CLRSupport>true</CLRSupport>
     <IncludePath>$(MSBuildProjectDirectory)\..\WebRtcInterop;$(IncludePath)</IncludePath>
     <ManagedAssembly>true</ManagedAssembly>
   </PropertyGroup>
-  <Import Project="..\WebRtcInterop\WebRtcInterop.BuildPaths.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="..\WebRtcInterop\WebRtcInterop.BuildPaths.props" />
   <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Label="Shared">
     <Import Project="..\third-party\shared-items\googletest\googletest.vcxitems" Label="Shared" />
