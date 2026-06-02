@@ -105,8 +105,8 @@ public class RtcError : Exception
     public long? SctpCauseCode { get; }
 
     /// <summary>
-    /// If <see cref="ErrorDetail"/> is <see cref="RtcErrorDetailType.DtlsFailure"/> his is the SCTP cause code of the failed SCTP
-    /// negotiation.
+    /// If <see cref="ErrorDetail"/> is <see cref="RtcErrorDetailType.DtlsFailure"/> and a fatal DTLS alert was received,
+    /// this is the value of that alert.
     /// </summary>
     /// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcerror-receivedalert"/>
     public ulong? ReceivedAlert { get; }

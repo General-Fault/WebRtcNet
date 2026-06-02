@@ -24,15 +24,32 @@ public class RtcOfferOptionsTests
 	}
 
 	[Test]
-	public void RtcOfferOptions_Does_Not_Expose_Legacy_Offer_To_Receive_Members()
+	public void RtcOfferOptions_Exposes_OfferToReceiveAudio_And_Video()
 	{
 		var type = typeof(RtcOfferOptions);
 
-		Assert.IsNull(type.GetProperty("OfferToReceiveAudio", BindingFlags.Public | BindingFlags.Instance));
-		Assert.IsNull(type.GetProperty("OfferToReceiveVideo", BindingFlags.Public | BindingFlags.Instance));
-		Assert.IsNull(type.GetField("Undefined", BindingFlags.Public | BindingFlags.Static));
-		Assert.IsNull(type.GetField("MaxOfferToReceiveMedia", BindingFlags.Public | BindingFlags.Static));
-		Assert.IsNull(type.GetField("OfferToReceiveTrue", BindingFlags.Public | BindingFlags.Static));
-		Assert.IsNull(type.GetField("OfferToReceiveFalse", BindingFlags.Public | BindingFlags.Static));
+		var audioProperty = type.GetProperty("OfferToReceiveAudio", BindingFlags.Public | BindingFlags.Instance);
+		var videoProperty = type.GetProperty("OfferToReceiveVideo", BindingFlags.Public | BindingFlags.Instance);
+
+		Assert.IsNotNull(audioProperty);
+		Assert.IsNotNull(videoProperty);
+	}
+
+	[Test]
+	public void RtcOfferOptions_OfferToReceive_Properties_Default_To_False()
+	{
+		var options = new RtcOfferOptions();
+
+		Assert.IsFalse(options.OfferToReceiveAudio);
+		Assert.IsFalse(options.OfferToReceiveVideo);
+	}
+
+	[Test]
+	public void RtcOfferOptions_OfferToReceive_Properties_Can_Be_Set()
+	{
+		var options = new RtcOfferOptions { OfferToReceiveAudio = true, OfferToReceiveVideo = true };
+
+		Assert.IsTrue(options.OfferToReceiveAudio);
+		Assert.IsTrue(options.OfferToReceiveVideo);
 	}
 }

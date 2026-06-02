@@ -254,67 +254,67 @@ public abstract class RtcIceTransport
 	public abstract RtcIceRole Role { get; }
 
 	/// <summary>
-	/// 
+	/// Gets the ICE component associated with this transport.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-icetransport-component"/>
 	public abstract RtcIceComponent Component { get; }
 
 	/// <summary>
-	/// 
+	/// Gets the current ICE state for this transport.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-icetransport-state"/>
 	public abstract RtcIceTransportState State { get; }
 
 	/// <summary>
-	/// 
+	/// Gets the current candidate gathering state for this transport.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-icetransport-gatheringstate"/>
 	public abstract RtcIceGatheringState GatheringState { get; }
 
 	/// <summary>
-	/// 
+	/// Gets the list of local ICE candidates known by this transport.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-getlocalcandidates"/>
 	public abstract IEnumerable<RtcIceCandidate> GetLocalCandidates();
 
 	/// <summary>
-	/// 
+	/// Gets the list of remote ICE candidates known by this transport.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-getremotecandidates"/>
 	public abstract IEnumerable<RtcIceCandidate> GetRemoteCandidates();
 
 	/// <summary>
-	/// 
+	/// Gets the selected candidate pair currently used by this transport.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-getselectedcandidatepair"/>
 	public abstract RtcIceCandidatePair GetSelectedCandidatePair();
 
 	/// <summary>
-	/// 
+	/// Gets the local ICE parameters negotiated for this transport.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-getlocalparameters"/>
 	public abstract RtcIceParameters GetLocalParameters();
 
 	/// <summary>
-	/// 
+	/// Gets the remote ICE parameters negotiated for this transport.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-getremoteparameters"/>
 	public abstract RtcIceParameters GetRemoteParameters();
 
 	/// <summary>
-	/// 
+	/// Raised when <see cref="State"/> changes.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-onstatechange"/>
 	public abstract event EventHandler OnStateChange;
 
 	/// <summary>
-	/// 
+	/// Raised when <see cref="GatheringState"/> changes.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-ongatheringstatechange"/>
 	public abstract event EventHandler OnGatheringStateChange;
 
 	/// <summary>
-	/// 
+	/// Raised when the selected ICE candidate pair changes.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcicetransport-onselectedcandidatepairchange"/>
 	public abstract event EventHandler OnSelectedCandidatePairChange;

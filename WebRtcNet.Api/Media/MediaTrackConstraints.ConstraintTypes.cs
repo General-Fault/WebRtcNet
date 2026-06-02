@@ -114,12 +114,10 @@ public partial class MediaTrackConstraints
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-constrainulongrange" />
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-constrainedoublerange" />
-	public class RangeConstraint<T> where T : struct, IComparable<T>
+	public class RangeConstraint<T> : ValueRange<T> where T : struct, IComparable<T>
 	{
 		private T? _ideal;
 		private T? _exact;
-		private T? _min;
-		private T? _max;
 
 		/// <summary>
 		/// Preferred value.
@@ -150,12 +148,12 @@ public partial class MediaTrackConstraints
 		/// <summary>
 		/// Inclusive minimum bound.
 		/// </summary>
-		public T? Min
+		public new T? Min
 		{
-			get => _min;
+			get => base.Min;
 			set
 			{
-				_min = value;
+				base.Min = value;
 				ValidateState();
 			}
 		}
@@ -163,12 +161,12 @@ public partial class MediaTrackConstraints
 		/// <summary>
 		/// Inclusive maximum bound.
 		/// </summary>
-		public T? Max
+		public new T? Max
 		{
-			get => _max;
+			get => base.Max;
 			set
 			{
-				_max = value;
+				base.Max = value;
 				ValidateState();
 			}
 		}
@@ -190,6 +188,7 @@ public partial class MediaTrackConstraints
 		/// </summary>
 		/// <param name="value">Exact value.</param>
 		public RangeConstraint(T value)
+			: this()
 		{
 			Exact = value;
 		}
@@ -199,6 +198,7 @@ public partial class MediaTrackConstraints
 		/// </summary>
 		/// <param name="value">Source constraint.</param>
 		public RangeConstraint(Constraint<T> value)
+			: this()
 		{
 			Exact = value.Exact;
 			Ideal = value.Ideal;
@@ -211,6 +211,7 @@ public partial class MediaTrackConstraints
 		/// <param name="max">Inclusive maximum bound.</param>
 		/// <param name="ideal">Preferred value.</param>
 		public RangeConstraint(T min, T max, T ideal)
+			: this()
 		{
 			Min = min;
 			Max = max;
@@ -222,10 +223,11 @@ public partial class MediaTrackConstraints
 		/// </summary>
 		/// <param name="valueRange">Value range source.</param>
 		public RangeConstraint(ValueRange<T> valueRange)
+			: this()
 		{
 			Min = valueRange.Min;
 			Max = valueRange.Max;
-			if (Max.Equals(Min))
+			if (Max.HasValue && Min.HasValue && Max.Value.Equals(Min.Value))
 				Exact = Max;
 		}
 

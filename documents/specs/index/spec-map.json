@@ -3,16 +3,16 @@
 	"generatedOn": "2026-05-28",
 	"entries": [
 		{
-			"apiSymbol": "IRtcPeerConnection",
-			"apiFile": "WebRtcNet.Api/IRtcPeerConnection.cs",
+			"apiSymbol": "RtcPeerConnection",
+			"apiFile": "WebRtcNet.Api/RtcPeerConnection.cs",
 			"spec": "webrtc",
 			"anchor": "https://www.w3.org/TR/webrtc/#dom-rtcpeerconnection",
 			"status": "seeded",
 			"notes": "Primary peer connection contract surface."
 		},
 		{
-			"apiSymbol": "IRtcDataChannel",
-			"apiFile": "WebRtcNet.Api/IRtcDataChannel.cs",
+			"apiSymbol": "RtcDataChannel",
+			"apiFile": "WebRtcNet.Api/RtcDataChannel.cs",
 			"spec": "webrtc",
 			"anchor": "https://www.w3.org/TR/webrtc/#dom-rtcdatachannel",
 			"status": "seeded",
@@ -27,16 +27,16 @@
 			"notes": "ICE candidate model and parsed properties."
 		},
 		{
-			"apiSymbol": "IRtcRtpSender",
-			"apiFile": "WebRtcNet.Api/IRtcRtpSender.cs",
+			"apiSymbol": "RtcRtpSender",
+			"apiFile": "WebRtcNet.Api/RtcRtpSender.cs",
 			"spec": "webrtc",
 			"anchor": "https://www.w3.org/TR/webrtc/#dom-rtcrtpsender",
 			"status": "seeded",
 			"notes": "RTP sender behavior and parameter control."
 		},
 		{
-			"apiSymbol": "IRtcRtpTransceiver",
-			"apiFile": "WebRtcNet.Api/IRtcRtpTransceiver.cs",
+			"apiSymbol": "RtcRtpTransceiver",
+			"apiFile": "WebRtcNet.Api/RtcRtpTransceiver.cs",
 			"spec": "webrtc",
 			"anchor": "https://www.w3.org/TR/webrtc/#dom-rtcrtptransceiver",
 			"status": "seeded",
@@ -51,24 +51,24 @@
 			"notes": "Dictionary alignment requires deeper section mapping."
 		},
 		{
-			"apiSymbol": "IMediaDevices",
-			"apiFile": "WebRtcNet.Api/Media/IMediaDevices.cs",
+			"apiSymbol": "MediaDevices",
+			"apiFile": "WebRtcNet.Api/Media/MediaDevices.cs",
 			"spec": "mediacapture",
 			"anchor": "https://www.w3.org/TR/mediacapture-streams/#dom-mediadevices-getusermedia",
 			"status": "seeded",
 			"notes": "Device acquisition and permissions flow."
 		},
 		{
-			"apiSymbol": "IMediaStream",
-			"apiFile": "WebRtcNet.Api/Media/IMediaStream.cs",
+			"apiSymbol": "MediaStream",
+			"apiFile": "WebRtcNet.Api/Media/MediaStream.cs",
 			"spec": "mediacapture",
 			"anchor": "https://www.w3.org/TR/mediacapture-streams/#mediastream",
 			"status": "seeded",
 			"notes": "Media stream container model."
 		},
 		{
-			"apiSymbol": "IMediaStreamTrack",
-			"apiFile": "WebRtcNet.Api/Media/IMediaStreamTrack.cs",
+			"apiSymbol": "MediaStreamTrack",
+			"apiFile": "WebRtcNet.Api/Media/MediaStreamTrack.cs",
 			"spec": "mediacapture",
 			"anchor": "https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-applyconstraints",
 			"status": "seeded",
@@ -107,8 +107,8 @@
 			"notes": "Top-level audio/video request constraints."
 		},
 		{
-			"apiSymbol": "IRtcStatsReport",
-			"apiFile": "WebRtcNet.Api/IRtcStatsReport.cs",
+			"apiSymbol": "RtcStats",
+			"apiFile": "WebRtcNet.Api/RtcStatsReport.cs",
 			"spec": "webrtc-stats",
 			"anchor": "https://www.w3.org/TR/webrtc-stats/#rtcstatsreport-object",
 			"status": "seeded",

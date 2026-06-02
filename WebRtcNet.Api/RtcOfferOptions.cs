@@ -21,6 +21,18 @@ public record RtcOfferOptions : RtcOfferAnswerOptions
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcofferoptions-icerestart" />
 	public bool IceRestart { get; init; } = false;
+
+	/// <summary>
+	/// When true, indicates the offer should include audio media.
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcofferoptions-offertoreceiveaudio" />
+	public bool OfferToReceiveAudio { get; init; }
+
+	/// <summary>
+	/// When true, indicates the offer should include video media.
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcofferoptions-offertoreceivevideo" />
+	public bool OfferToReceiveVideo { get; init; }
 }
 
 /// <summary>

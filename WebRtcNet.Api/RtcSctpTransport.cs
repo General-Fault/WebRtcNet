@@ -62,6 +62,12 @@ public abstract class RtcSctpTransport
 	public abstract double MaxMessageSize { get; }
 
 	/// <summary>
+	/// Gets the maximum number of data channels that can be created, or null if unspecified.
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcsctptransport-maxchannels"/>
+	public abstract ushort? MaxChannels { get; }
+
+	/// <summary>
 	/// Raised when <see cref="State"/> changes.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#event-rtcsctptransport-statechange"/>

@@ -5,7 +5,7 @@ namespace WebRtcNet.Media;
 /// <see cref="MediaStreamTrack" /> object. This is an out-only snapshot returned by
 /// <see cref="MediaStreamTrack.GetSettings" />.
 /// </summary>
-/// <seealso href="http://www.w3.org/TR/mediacapture-streams/#media-track-settings" />
+/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#media-track-settings" />
 public sealed record MediaTrackSettings
 {
 	/// <summary>
@@ -45,12 +45,6 @@ public sealed record MediaTrackSettings
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-resizeMode" />
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatracksettings-resizemode" />
 	public VideoResizeModes? ResizeMode { get; init; }
-
-	/// <summary>
-	/// Current volume setting for the track.
-	/// </summary>
-	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-volume" />
-	public double Volume { get; init; }
 
 	/// <summary>
 	/// Current audio sample rate setting for the track.

@@ -38,7 +38,7 @@ public enum RtcDtlsTransportState
 	Closed,
 
 	/// <summary>
-	/// 
+	/// DTLS negotiation failed and the transport can no longer be used.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdtlstransportstate-failed"/>
 	Failed
@@ -93,7 +93,7 @@ public abstract class RtcDtlsTransport
 	public abstract IEnumerator<byte[]> GetRemoteCertificates();
 
 	/// <summary>
-	/// Fired when the RTCSctpTransport <see cref="State"/> changes.
+	/// Fired when the RTCDtlsTransport <see cref="State"/> changes.
 	/// </summary>
 	public abstract event EventHandler OnStateChange;
 

@@ -66,6 +66,14 @@ public class MediaTrackConstraintTests
 	}
 
 	[Test]
+	public void MediaTrackSettings_Does_Not_Expose_Volume()
+	{
+		var property = typeof(MediaTrackSettings).GetProperty("Volume");
+
+		Assert.That(property, Is.Null);
+	}
+
+	[Test]
 	public void MediaTrackSettings_Defaults_AutoGainControl_To_Null()
 	{
 		var settings = new MediaTrackSettings();
