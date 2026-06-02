@@ -4,23 +4,32 @@
 /// Represents a minimum/maximum range for values of type <typeparamref name="T" />.
 /// </summary>
 /// <typeparam name="T">The value type represented by the range.</typeparam>
+/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-doublerange" />
+/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-ulongrange" />
 public class ValueRange<T> where T : struct
 {
 	/// <summary>
+	/// Initializes an empty range with no bounds set.
+	/// </summary>
+	public ValueRange()
+	{
+	}
+
+	/// <summary>
 	/// The upper bound of the range.
 	/// </summary>
-	public T Max;
+	public T? Max;
 
 	/// <summary>
 	/// The lower bound of the range.
 	/// </summary>
-	public T Min;
+	public T? Min;
 
 	/// <summary>
 	/// Initializes a range where <see cref="Min" /> and <see cref="Max" /> are equal to <paramref name="value" />.
 	/// </summary>
 	/// <param name="value">The single value for both bounds.</param>
-	public ValueRange(T value)
+	public ValueRange(T? value)
 	{
 		Min = Max = value;
 	}
@@ -30,7 +39,7 @@ public class ValueRange<T> where T : struct
 	/// </summary>
 	/// <param name="min">The lower bound.</param>
 	/// <param name="max">The upper bound.</param>
-	public ValueRange(T min, T max)
+	public ValueRange(T? min, T? max)
 	{
 		Min = min;
 		Max = max;
@@ -43,7 +52,7 @@ public class ValueRange<T> where T : struct
 	/// <returns>The range's upper bound.</returns>
 	public static implicit operator T(ValueRange<T> from)
 	{
-		return from.Max;
+		return from.Max ?? from.Min ?? default(T);
 	}
 
 	/// <summary>

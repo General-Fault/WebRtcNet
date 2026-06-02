@@ -87,4 +87,5 @@ public sealed record RtcRtpEncodingParameters : RtcRtpCodingParameters
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpencodingparameters-scaleresolutiondownby"/>
 	public double ScaleResolutionDownBy { get; set; }
+
 }

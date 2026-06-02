@@ -53,7 +53,26 @@ public abstract record RtcRtpStreamStats : RtcStats
 	/// <summary>
 	/// Gets the synchronization source identifier (SSRC) for the RTP stream.
 	/// </summary>
-	public string Src { get; init; } = string.Empty;
+	/// <seealso href="https://www.w3.org/TR/webrtc-stats/#dom-rtcrtpstreamstats-ssrc" />
+	public string Ssrc { get; init; } = string.Empty;
+
+	/// <summary>
+	/// The kind of the RTP stream, one of "audio" or "video".
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/webrtc-stats/#dom-rtcrtpstreamstats-kind" />
+	public string Kind { get; init; } = string.Empty;
+
+	/// <summary>
+	/// The TransportId identifies the transport used to send or receive this RTP stream.
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/webrtc-stats/#dom-rtcrtpstreamstats-transportid" />
+	public string TransportId { get; init; } = string.Empty;
+
+	/// <summary>
+	/// The CodecId identifies the RTP codec used by the RTP stream.
+	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/webrtc-stats/#dom-rtcrtpstreamstats-codecid" />
+	public string CodecId { get; init; } = string.Empty;
 
 	/// <summary>
 	/// The remoteId can be used to look up the corresponding RTCStats object that represents stats reported by the other peer.
@@ -68,14 +87,16 @@ public abstract record RtcRtpStreamStats : RtcStats
 public sealed record RtcInboundRtpStreamStats : RtcRtpStreamStats
 {
 	/// <summary>
-	/// Gets the number of packets sent for this stream.
+	/// Gets the number of packets received for this stream.
 	/// </summary>
-	public uint PacketsSent { get; init; }
+	/// <seealso href="https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-packetsreceived" />
+	public ulong PacketsReceived { get; init; }
 
 	/// <summary>
-	/// Gets the number of bytes sent for this stream.
+	/// Gets the number of bytes received for this stream.
 	/// </summary>
-	public uint BytesSent { get; init; }
+	/// <seealso href="https://www.w3.org/TR/webrtc-stats/#dom-rtcinboundrtpstreamstats-bytesreceived" />
+	public ulong BytesReceived { get; init; }
 }
 
 /// <summary>
@@ -87,12 +108,14 @@ public sealed record RtcOutboundRtpStreamStats : RtcRtpStreamStats
 	/// <summary>
 	/// Gets the number of packets sent for this stream.
 	/// </summary>
-	public int PacketsSent { get; init; }
+	/// <seealso href="https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-packetssent" />
+	public ulong PacketsSent { get; init; }
 
 	/// <summary>
 	/// Gets the number of bytes sent for this stream.
 	/// </summary>
-	public int BytesSent { get; init; }
+	/// <seealso href="https://www.w3.org/TR/webrtc-stats/#dom-rtcoutboundrtpstreamstats-bytessent" />
+	public ulong BytesSent { get; init; }
 }
 
 /// <summary>

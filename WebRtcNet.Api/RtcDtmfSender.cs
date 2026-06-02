@@ -1,5 +1,4 @@
 using System;
-using WebRtcNet.Media;
 
 namespace WebRtcNet;
 
@@ -25,6 +24,7 @@ public abstract class RtcDtmfSender
 	/// <summary>
 	/// Indicates if the RTCDTMFSender is capable of sending DTMF.
 	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdtmfsender-caninsertdtmf"/>
 	public abstract bool CanInsertDtmf { get; }
 
 	/// <summary>
@@ -39,43 +39,30 @@ public abstract class RtcDtmfSender
 	/// boundaries of RTP packets but it will not increase either of them by more than the duration of a single RTP audio packet.
 	/// </summary>
 	/// <param name="tones">A series of characters that represent DTMF tones to be sent.</param>
-	/// <param name="duration">The duration in ms to use for each character passed in the tones parameters.</param>
-	/// <param name="interToneGap">The duration in ms for the gap between tones</param>
-	public abstract void InsertDtmf(string tones, long duration = 100, long interToneGap = 70);
-
-	/// <summary>
-	/// The MediaStreamTrack given as argument to the RtcPeerConnection.CreateDtmfSender() method.
-	/// </summary>
-	public abstract MediaStreamTrack Track { get; }
+	/// <param name="duration">The duration in milliseconds to use for each character passed in the tones parameters.</param>
+	/// <param name="interToneGap">The duration in milliseconds for the gap between tones.</param>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdtmfsender-insertdtmf"/>
+	public abstract void InsertDtmf(string tones, uint duration = 100, uint interToneGap = 70);
 
 	/// <summary>
 	/// Fired for each tone as it is played out.
 	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdtmfsender-ontonechange"/>
 	public abstract event EventHandler<RtcDtmfToneChangedEventArgs> OnToneChange;
 
 	/// <summary>
 	/// A list of the tones remaining to be played out. For the syntax, content, and interpretation of this list, see 
 	/// <see cref="InsertDtmf"/>
 	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-RTCDTMFSender-tonebuffer"/>
 	public abstract string ToneBuffer { get; }
-
-	/// <summary>
-	/// The current tone duration value. This value will be the value last set via the InsertDtmf() method, 
-	/// or the default value of 100 ms if InsertDtmf() was called without specifying the duration.
-	/// </summary>
-	public abstract int Duration { get; }
-
-	/// <summary>
-	/// the current value of the between-tone gap. This value will be the value last set via the InsertDtmf() method, or the 
-	/// default value of 70 ms if InsertDtmf() was called without specifying the interToneGap.
-	/// </summary>
-	public abstract int InterToneGap { get; }
 }
 
 /// <summary>
 /// Event data for <see cref="RtcDtmfSender.OnToneChange" />.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/webrtc/#event-dtmfsender-tonechange" />
+/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdtmftonechangeevent-tone" />
 public class RtcDtmfToneChangedEventArgs : EventArgs
 {
 	/// <summary>
@@ -90,5 +77,6 @@ public class RtcDtmfToneChangedEventArgs : EventArgs
 	/// <summary>
 	/// Gets the tone value for the event.
 	/// </summary>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdtmftonechangeevent-tone" />
 	public string Tone { get; }
 }

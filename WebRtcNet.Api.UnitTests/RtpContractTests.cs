@@ -121,6 +121,7 @@ public class RtpContractTests
 		Assert.IsNotNull(receiverMethod);
 		Assert.AreEqual(typeof(RtcRtpCapabilities), senderMethod!.ReturnType);
 		Assert.AreEqual(typeof(RtcRtpCapabilities), receiverMethod!.ReturnType);
+		Assert.AreEqual(2, GetNullableFlag(receiverMethod.ReturnParameter));
 	}
 
 	[Test]

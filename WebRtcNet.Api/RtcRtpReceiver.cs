@@ -52,9 +52,9 @@ public abstract class RtcRtpReceiver
 	/// GetCapabilities returns null.
 	/// </summary>
 	/// <param name="kind">The type of media device for which to request capabilities.</param>
-	/// <returns>The RTP capabilities for the requested media <paramref name="kind"/>.</returns>
+	/// <returns>The RTP capabilities for the requested media <paramref name="kind"/>, or null if not supported.</returns>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcrtpreceiver-getcapabilities"/>
-	public static RtcRtpCapabilities GetCapabilities(MediaStreamTrackKind kind)
+	public static RtcRtpCapabilities? GetCapabilities(MediaStreamTrackKind kind)
 	{
 		throw new NotSupportedException();
 	}

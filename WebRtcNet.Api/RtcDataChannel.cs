@@ -16,18 +16,18 @@ public record RtcDataChannelInit
 	public ushort? Id { get; init; } = null;
 
 	/// <summary>
-	/// Limits the time during which the channel will transmit or retransmit data if not acknowledged. This value may be
+	/// Limits the time during which the channel will transmit or retransmit data if not acknowledged, in milliseconds. This value may be
 	/// clamped if it exceeds the maximum value supported by the platform.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannelinit-maxpacketlifetime" />
-	public uint? MaxPacketLifeTime { get; init; } = null;
+	public ushort? MaxPacketLifeTime { get; init; } = null;
 
 	/// <summary>
 	/// Limits the number of times a channel will retransmit data if not successfully delivered. This value may be clamped
 	/// if it exceeds the maximum value supported by the platform.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannelinit-maxretransmits" />
-	public uint? MaxRetransmits { get; init; } = null;
+	public ushort? MaxRetransmits { get; init; } = null;
 
 	/// <summary>
 	/// The default value of false tells the platform to announce the channel in-band and instruct the other peer to
@@ -123,14 +123,14 @@ public abstract class RtcDataChannel
 	/// retransmissions may occur in unreliable mode, or null if unset.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-datachannel-maxpacketlifetime" />
-	public abstract uint? MaxPacketLifeTime { get; }
+	public abstract ushort? MaxPacketLifeTime { get; }
 
 	/// <summary>
 	/// MaxRetransmits returns the maximum number of retransmissions that are attempted in unreliable mode, or null if
 	/// unset.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-datachannel-maxretransmits" />
-	public abstract uint? MaxRetransmits { get; }
+	public abstract ushort? MaxRetransmits { get; }
 
 	/// <summary>
 	/// Protocol returns the name of the sub-protocol used with this RtcDataChannel if any, or the empty string otherwise.
@@ -252,6 +252,50 @@ public abstract class RtcDataChannel
 	/// <param name="data">An array of bytes to send to the peer.</param>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannel-send" />
 	public abstract void Send(byte[] data);
+
+	/// <summary>
+	/// Send byte data through the data channel to a peer.
+	/// </summary>
+	/// <param name="data">A segment of bytes to send to the peer.</param>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannel-send" />
+	public virtual void Send(ArraySegment<byte> data)
+	{
+		if (data.Array is null)
+			throw new ArgumentException("ArraySegment must reference a backing array.", nameof(data));
+
+		if (data.Offset == 0 && data.Count == data.Array.Length)
+		{
+			Send(data.Array);
+			return;
+		}
+
+		var payload = new byte[data.Count];
+		Array.Copy(data.Array, data.Offset, payload, 0, data.Count);
+		Send(payload);
+	}
+
+	/// <summary>
+	/// Send byte data through the data channel to a peer.
+	/// </summary>
+	/// <param name="data">A read-only collection of bytes to send to the peer.</param>
+	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdatachannel-send" />
+	public virtual void Send(IReadOnlyList<byte> data)
+	{
+		if (data is null)
+			throw new ArgumentNullException(nameof(data));
+
+		if (data is byte[] bytes)
+		{
+			Send(bytes);
+			return;
+		}
+
+		var payload = new byte[data.Count];
+		for (var i = 0; i < data.Count; i++)
+			payload[i] = data[i];
+
+		Send(payload);
+	}
 }
 
 /// <summary>
