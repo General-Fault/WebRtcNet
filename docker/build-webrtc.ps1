@@ -186,8 +186,10 @@ if ($Mode -in @('full', 'build')) {
       @{ Config = 'Release'; Platform = 'Win32'; Cpu = 'x86'; IsDebug = 'false'; EnableIteratorDebugging = 'false'; ExtraArgs = @() },
       @{ Config = 'Debug';   Platform = 'x64';   Cpu = 'x64'; IsDebug = 'true';  EnableIteratorDebugging = 'true';  ExtraArgs = @() },
       @{ Config = 'Release'; Platform = 'x64';   Cpu = 'x64'; IsDebug = 'false'; EnableIteratorDebugging = 'false'; ExtraArgs = @() },
-      @{ Config = 'Debug';   Platform = 'ARM64'; Cpu = 'arm64'; IsDebug = 'true';  EnableIteratorDebugging = 'false';  ExtraArgs = @() }, #iterator debugging fails for ARM64 builds.
-      @{ Config = 'Release'; Platform = 'ARM64'; Cpu = 'arm64'; IsDebug = 'false'; EnableIteratorDebugging = 'false'; ExtraArgs = @() }
+      # ARM64 disables WGC because it can pull desktop-capture paths that reference
+      # SharedXDisplay::~SharedXDisplay and fail interop linking with packaged webrtc.lib.
+      @{ Config = 'Debug';   Platform = 'ARM64'; Cpu = 'arm64'; IsDebug = 'true';  EnableIteratorDebugging = 'false';  ExtraArgs = @('rtc_enable_win_wgc=false') }, #iterator debugging fails for ARM64 builds.
+      @{ Config = 'Release'; Platform = 'ARM64'; Cpu = 'arm64'; IsDebug = 'false'; EnableIteratorDebugging = 'false'; ExtraArgs = @('rtc_enable_win_wgc=false') }
     )
 
     foreach ($config in $configs) {
