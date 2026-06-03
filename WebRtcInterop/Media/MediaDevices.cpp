@@ -17,9 +17,109 @@
 
 using namespace System::Collections::Generic;
 using namespace System::Threading::Tasks;
+using namespace System::Timers;
 
 namespace WebRtcInterop::Media
 {
+	namespace
+	{
+		String^ GetDeviceMapKey(WebRtcNet::Media::MediaDeviceInfo^ device)
+		{
+			return String::Format("{0}|{1}", (int)device->Kind, device->DeviceId);
+		}
+	}
+
+	MediaDevices::MediaDevices()
+		: known_devices_(gcnew Dictionary<String^, WebRtcNet::Media::MediaDeviceInfo^>()),
+		  device_poll_timer_(gcnew Timer(2000.0)),
+		  device_poll_gate_(gcnew Object()),
+		  on_device_change_(nullptr)
+	{
+		RefreshKnownDevices(false);
+		device_poll_timer_->AutoReset = true;
+		device_poll_timer_->Elapsed += gcnew ElapsedEventHandler(this, &MediaDevices::OnDevicePoll);
+		device_poll_timer_->Start();
+	}
+
+	MediaDevices::~MediaDevices()
+	{
+		this->!MediaDevices();
+	}
+
+	MediaDevices::!MediaDevices()
+	{
+		StopDevicePolling();
+	}
+
+	void MediaDevices::StopDevicePolling()
+	{
+		if (device_poll_timer_ == nullptr)
+			return;
+
+		device_poll_timer_->Stop();
+		device_poll_timer_->Close();
+		device_poll_timer_ = nullptr;
+	}
+
+	void MediaDevices::OnDevicePoll(Object^ sender, ElapsedEventArgs^ args)
+	{
+		RefreshKnownDevices(true);
+	}
+
+	void MediaDevices::RefreshKnownDevices(bool raiseEvent)
+	{
+		System::Threading::Monitor::Enter(device_poll_gate_);
+		try
+		{
+			auto enumerateTask = EnumerateDevices();
+			if (enumerateTask == nullptr)
+				return;
+
+			auto devices = enumerateTask->GetAwaiter().GetResult();
+			auto current = gcnew Dictionary<String^, WebRtcNet::Media::MediaDeviceInfo^>();
+			auto inserted = gcnew List<WebRtcNet::Media::MediaDeviceInfo^>();
+			auto all = gcnew List<WebRtcNet::Media::MediaDeviceInfo^>();
+
+			for each (auto device in devices)
+			{
+				auto key = GetDeviceMapKey(device);
+				current[key] = device;
+				all->Add(device);
+
+				if (!known_devices_->ContainsKey(key))
+					inserted->Add(device);
+			}
+
+			bool changed = current->Count != known_devices_->Count;
+			if (!changed)
+			{
+				for each (auto key in current->Keys)
+				{
+					if (!known_devices_->ContainsKey(key))
+					{
+						changed = true;
+						break;
+					}
+				}
+			}
+
+			known_devices_->Clear();
+			for each (auto kvp in current)
+				known_devices_->Add(kvp.Key, kvp.Value);
+
+			if (raiseEvent && changed && on_device_change_ != nullptr)
+				on_device_change_(this, gcnew WebRtcNet::Media::DeviceChangeEventArgs(all, inserted));
+		}
+		catch (System::Exception^)
+		{
+			// Device polling must not crash the process. Failures are retried on next poll.
+		}
+		finally
+		{
+			System::Threading::Monitor::Exit(device_poll_gate_);
+		}
+	}
+
 	// Helper to enumerate Windows audio devices
 	static List<WebRtcNet::Media::MediaDeviceInfo^>^ EnumerateAudioDevices()
 	{
@@ -249,6 +349,28 @@ namespace WebRtcInterop::Media
 						"At least one of audio or video must be requested."));
 			}
 
+			if (constraints->Audio)
+			{
+				auto audioDevices = EnumerateAudioDevices();
+				if (audioDevices == nullptr || audioDevices->Count == 0)
+				{
+					return Task::FromException<WebRtcNet::Media::MediaStream^>(
+						gcnew WebRtcNet::Media::MediaStreamException(
+							"No audio input devices are currently available."));
+				}
+			}
+
+			if (constraints->Video)
+			{
+				auto videoDevices = EnumerateVideoDevices();
+				if (videoDevices == nullptr || videoDevices->Count == 0)
+				{
+					return Task::FromException<WebRtcNet::Media::MediaStream^>(
+						gcnew WebRtcNet::Media::MediaStreamException(
+							"No video input devices are currently available."));
+				}
+			}
+
 			// Get the native peer connection factory
 			auto factory = RtcPeerConnectionFactory::Instance->GetNativePeerConnectionFactoryInterface(true);
 			if (factory == nullptr)
@@ -277,9 +399,18 @@ namespace WebRtcInterop::Media
 				std::string audioLabel = marshal_as<std::string>(managedAudioLabel);
 				
 				auto nativeAudioTrack = factory->CreateAudioTrack(audioLabel, nullptr);
-				if (nativeAudioTrack)
+				if (!nativeAudioTrack)
 				{
-					nativeStream->AddTrack(nativeAudioTrack);
+					return Task::FromException<WebRtcNet::Media::MediaStream^>(
+						gcnew WebRtcNet::Media::MediaStreamException(
+							"Failed to create the requested audio track."));
+				}
+
+				if (!nativeStream->AddTrack(nativeAudioTrack))
+				{
+					return Task::FromException<WebRtcNet::Media::MediaStream^>(
+						gcnew WebRtcNet::Media::MediaStreamException(
+							"Failed to add the audio track to the media stream."));
 				}
 			}
 
@@ -292,9 +423,18 @@ namespace WebRtcInterop::Media
 				std::string videoLabel = marshal_as<std::string>(managedVideoLabel);
 				
 				auto nativeVideoTrack = factory->CreateVideoTrack(videoSource, videoLabel);
-				if (nativeVideoTrack)
+				if (!nativeVideoTrack)
 				{
-					nativeStream->AddTrack(nativeVideoTrack);
+					return Task::FromException<WebRtcNet::Media::MediaStream^>(
+						gcnew WebRtcNet::Media::MediaStreamException(
+							"Failed to create the requested video track."));
+				}
+
+				if (!nativeStream->AddTrack(nativeVideoTrack))
+				{
+					return Task::FromException<WebRtcNet::Media::MediaStream^>(
+						gcnew WebRtcNet::Media::MediaStreamException(
+							"Failed to add the video track to the media stream."));
 				}
 			}
 
