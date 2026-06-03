@@ -19,7 +19,7 @@ public partial class MainWindow : Window
 	private static readonly RtcConfiguration DefaultConfiguration = new(
 		new[] { new RtcIceServer("stun:stun.l.google.com:19302") });
 
-	private WebRtcInterop.RtcPeerConnection? _peerConnection;
+	private RtcPeerConnection? _peerConnection;
 	private TcpSignalingChannel? _signaling;
 	private MediaStream? _localStream;
 	private MediaStreamTrack? _audioTrack;
@@ -76,7 +76,7 @@ public partial class MainWindow : Window
 	{
 		SetStatus("Acquiring media...");
 
-		var mediaDevices = new WebRtcInterop.Media.MediaDevices();
+		var mediaDevices = CreateInteropInstance<MediaDevices>("WebRtcInterop.Media.MediaDevices");
 		_localStream = await mediaDevices.GetUserMedia(new MediaStreamConstraints(true, true));
 
 		_audioTrack = _localStream.GetAudioTracks().FirstOrDefault();
@@ -89,7 +89,7 @@ public partial class MainWindow : Window
 		// NOTE: Many WebRtcInterop methods currently throw NotImplementedException — this example
 		// will not run end-to-end until they are implemented.  SetLocalDescription and
 		// AddIceCandidate are the minimum required for a basic call flow.
-		_peerConnection = new WebRtcInterop.RtcPeerConnection(DefaultConfiguration);
+		_peerConnection = CreateInteropInstance<RtcPeerConnection>("WebRtcInterop.RtcPeerConnection", DefaultConfiguration);
 		_peerConnection.OnIceCandidate += OnIceCandidate;
 		_peerConnection.OnTrack += OnTrack;
 		_peerConnection.OnConnectionStateChange += OnConnectionStateChange;
@@ -223,4 +223,19 @@ public partial class MainWindow : Window
 
 	private void SetStatus(string message) =>
 		Dispatcher.Invoke(() => StatusText.Text = message);
+
+	private static T CreateInteropInstance<T>(string fullTypeName, params object[] args) where T : class
+	{
+		var type =
+			Type.GetType($"{fullTypeName}, WebRtcInterop.Core") ??
+			Type.GetType($"{fullTypeName}, WebRtcInterop.Framework") ??
+			Type.GetType($"{fullTypeName}, WebRtcInterop");
+		if (type == null)
+			throw new NotSupportedException($"{fullTypeName} is not available. Ensure WebRtcInterop is built for the active target framework.");
+
+		if (Activator.CreateInstance(type, args) is T instance)
+			return instance;
+
+		throw new InvalidOperationException($"{fullTypeName} does not implement {typeof(T).FullName}.");
+	}
 }
