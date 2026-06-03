@@ -35,10 +35,10 @@ public partial class MainWindow : Window
 	private bool IsCaller => CallerRadio.IsChecked == true;
 
 	private void CallerRadio_Checked(object sender, RoutedEventArgs e) =>
-		IpBox.IsEnabled = false;
+		IpBox.IsEnabled = true;
 
 	private void CalleeRadio_Checked(object sender, RoutedEventArgs e) =>
-		IpBox.IsEnabled = true;
+		IpBox.IsEnabled = false;
 
 	private async void ConnectBtn_Click(object sender, RoutedEventArgs e)
 	{
@@ -102,10 +102,11 @@ public partial class MainWindow : Window
 
 		if (IsCaller)
 		{
+			var callerIp = IpBox.Text.Trim();
 			var port = int.TryParse(PortBox.Text, out var p) ? p : DefaultPort;
-			SetStatus($"Listening on port {port}...");
-			await _signaling.ListenAsync(port);
-			SetStatus("Callee connected. Creating offer...");
+			SetStatus($"Connecting to {callerIp}:{port}...");
+			await _signaling.ConnectAsync(callerIp, port);
+			SetStatus("Connected. Creating offer...");
 
 			// Drive the offer explicitly here rather than relying on OnNegotiationNeeded,
 			// since we control when the signaling channel is ready.
@@ -116,11 +117,10 @@ public partial class MainWindow : Window
 		}
 		else
 		{
-			var callerIp = IpBox.Text.Trim();
 			var port = int.TryParse(PortBox.Text, out var p) ? p : DefaultPort;
-			SetStatus($"Connecting to {callerIp}:{port}...");
-			await _signaling.ConnectAsync(callerIp, port);
-			SetStatus("Connected. Waiting for offer...");
+			SetStatus($"Listening on port {port}...");
+			await _signaling.ListenAsync(port);
+			SetStatus("Caller connected. Waiting for offer...");
 		}
 	}
 

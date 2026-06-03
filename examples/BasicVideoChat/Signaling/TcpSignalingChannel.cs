@@ -13,8 +13,8 @@ namespace BasicVideoChat.Signaling;
 /// Minimal TCP signaling channel for peer-to-peer connection setup.
 /// </summary>
 /// <remarks>
-/// One peer calls <see cref="ListenAsync"/> (Host) and the other calls
-/// <see cref="ConnectAsync"/> (Guest). Messages are newline-delimited JSON.
+/// The Caller calls <see cref="ConnectAsync"/> (TCP client) and the Callee calls
+/// <see cref="ListenAsync"/> (TCP server). Messages are newline-delimited JSON.
 /// <para>
 /// The read loop awaits <see cref="MessageHandler"/> before processing the next message,
 /// ensuring that <c>SetRemoteDescription</c> always completes before any
