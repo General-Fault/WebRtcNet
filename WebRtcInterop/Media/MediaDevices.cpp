@@ -8,6 +8,7 @@
 #include "RtcPeerConnectionFactory.h"
 
 #include <api/peer_connection_interface.h>
+#include <modules/video_capture/video_capture_factory.h>
 #include <mmdeviceapi.h>
 #include <Functiondiscoverykeys_devpkey.h>
 
@@ -155,17 +156,43 @@ namespace WebRtcInterop::Media
 
 		try
 		{
-			// Initialize COM
-			HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
-			if (FAILED(hr) && hr != S_FALSE)
+			std::unique_ptr<webrtc::VideoCaptureModule::DeviceInfo> deviceInfo(
+				webrtc::VideoCaptureFactory::CreateDeviceInfo());
+			if (!deviceInfo)
 				return devices;
 
+			const uint32_t count = deviceInfo->NumberOfDevices();
+			for (uint32_t i = 0; i < count; ++i)
 			{
-				// TODO: Implement video device enumeration using DirectShow or WinRT
-				// For now, return empty list - will be expanded in next iteration
-			}
+				char deviceName[512] = {};
+				char deviceUniqueId[512] = {};
+				char productUniqueId[512] = {};
 
-			CoUninitialize();
+				const int32_t result = deviceInfo->GetDeviceName(
+					i,
+					deviceName,
+					sizeof(deviceName),
+					deviceUniqueId,
+					sizeof(deviceUniqueId),
+					productUniqueId,
+					sizeof(productUniqueId));
+
+				if (result != 0)
+					continue;
+
+				String^ id = marshal_as<String^>(std::string(deviceUniqueId));
+				String^ label = marshal_as<String^>(std::string(deviceName));
+				String^ groupId =
+					productUniqueId[0] != '\0'
+						? marshal_as<String^>(std::string(productUniqueId))
+						: String::Empty;
+
+				devices->Add(WebRtcNet::Media::MediaDeviceInfo::Create(
+					id,
+					WebRtcNet::Media::MediaDeviceKind::VideoInput,
+					label,
+					groupId));
+			}
 		}
 		catch (...)
 		{
@@ -233,8 +260,7 @@ namespace WebRtcInterop::Media
 
 			// Create a native MediaStream with a unique ID
 			String^ managedStreamId = System::Guid::NewGuid().ToString();
-			pin_ptr<const wchar_t> pwzStreamId = PtrToStringChars(managedStreamId);
-			std::string streamId(reinterpret_cast<const char*>(pwzStreamId), managedStreamId->Length);
+			std::string streamId = marshal_as<std::string>(managedStreamId);
 			
 			auto nativeStream = factory->CreateLocalMediaStream(streamId);
 			if (!nativeStream)
@@ -248,8 +274,7 @@ namespace WebRtcInterop::Media
 			if (constraints->Audio)
 			{
 				String^ managedAudioLabel = "audio_" + System::Guid::NewGuid().ToString();
-				pin_ptr<const wchar_t> pwzAudioLabel = PtrToStringChars(managedAudioLabel);
-				std::string audioLabel(reinterpret_cast<const char*>(pwzAudioLabel), managedAudioLabel->Length);
+				std::string audioLabel = marshal_as<std::string>(managedAudioLabel);
 				
 				auto nativeAudioTrack = factory->CreateAudioTrack(audioLabel, nullptr);
 				if (nativeAudioTrack)
@@ -264,8 +289,7 @@ namespace WebRtcInterop::Media
 				// Create a minimal video source
 				auto videoSource = webrtc::make_ref_counted<SimpleVideoSource>(false);
 				String^ managedVideoLabel = "video_" + System::Guid::NewGuid().ToString();
-				pin_ptr<const wchar_t> pwzVideoLabel = PtrToStringChars(managedVideoLabel);
-				std::string videoLabel(reinterpret_cast<const char*>(pwzVideoLabel), managedVideoLabel->Length);
+				std::string videoLabel = marshal_as<std::string>(managedVideoLabel);
 				
 				auto nativeVideoTrack = factory->CreateVideoTrack(videoSource, videoLabel);
 				if (nativeVideoTrack)

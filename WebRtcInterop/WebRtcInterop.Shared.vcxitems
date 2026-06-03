@@ -66,7 +66,7 @@ ninja -C "$(WebRtcOutRoot)\$(Configuration)\$(Platform)"
 		</ClCompile>
 		<Link>
 			<AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(WebRtcOutRoot)\$(Configuration)\$(Platform)</AdditionalLibraryDirectories>
-			<AdditionalDependencies>webrtc.lib;Ws2_32.lib;iphlpapi.lib;Winmm.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+			<AdditionalDependencies>webrtc.lib;Ws2_32.lib;iphlpapi.lib;Winmm.lib;strmiids.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
 			<IgnoreSpecificDefaultLibraries>libcmtd;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
 		</Link>
 	</ItemDefinitionGroup>
