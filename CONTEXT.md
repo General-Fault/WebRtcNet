@@ -40,7 +40,10 @@ assembly is created (see issue #36).
 - **Host** exposes **MediaDevices** as the API entry point for capture access.
 - A **Caller** sends an SDP offer and a **Callee** returns an SDP answer.
 
-## Flagged ambiguities
+## Notes
 
-- "Host" previously meant the signaling initiator peer; resolved to the API root
-  object. Signaling roles are now **Caller** and **Callee**.
+- **Host** is a static API entry point (like Navigator in browsers), not a signaling
+  role. Do not confuse with **Caller** and **Callee**, which are peer roles.
+- **Caller** and **Callee** roles are bound to TCP roles: Caller is the TCP client
+  (connects first, sends offer); Callee is the TCP server (listens first, answers
+  offer). This alignment is documented in ADR-0002.
