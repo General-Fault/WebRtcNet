@@ -32,12 +32,12 @@ public partial class MainWindow : Window
 		InitializeComponent();
 	}
 
-	private bool IsHost => HostRadio.IsChecked == true;
+	private bool IsCaller => CallerRadio.IsChecked == true;
 
-	private void HostRadio_Checked(object sender, RoutedEventArgs e) =>
+	private void CallerRadio_Checked(object sender, RoutedEventArgs e) =>
 		IpBox.IsEnabled = false;
 
-	private void GuestRadio_Checked(object sender, RoutedEventArgs e) =>
+	private void CalleeRadio_Checked(object sender, RoutedEventArgs e) =>
 		IpBox.IsEnabled = true;
 
 	private async void ConnectBtn_Click(object sender, RoutedEventArgs e)
@@ -76,8 +76,7 @@ public partial class MainWindow : Window
 	{
 		SetStatus("Acquiring media...");
 
-		var mediaDevices = CreateInteropInstance<MediaDevices>("WebRtcInterop.Media.MediaDevices");
-		_localStream = await mediaDevices.GetUserMedia(new MediaStreamConstraints(true, true));
+		_localStream = await Host.MediaDevices.GetUserMedia(new MediaStreamConstraints(true, true));
 
 		_audioTrack = _localStream.GetAudioTracks().FirstOrDefault();
 		_videoTrack = _localStream.GetVideoTracks().FirstOrDefault();
@@ -89,7 +88,7 @@ public partial class MainWindow : Window
 		// NOTE: Many WebRtcInterop methods currently throw NotImplementedException — this example
 		// will not run end-to-end until they are implemented.  SetLocalDescription and
 		// AddIceCandidate are the minimum required for a basic call flow.
-		_peerConnection = CreateInteropInstance<RtcPeerConnection>("WebRtcInterop.RtcPeerConnection", DefaultConfiguration);
+		_peerConnection = Host.CreatePeerConnection(DefaultConfiguration);
 		_peerConnection.OnIceCandidate += OnIceCandidate;
 		_peerConnection.OnTrack += OnTrack;
 		_peerConnection.OnConnectionStateChange += OnConnectionStateChange;
@@ -101,12 +100,12 @@ public partial class MainWindow : Window
 		_signaling.MessageHandler = OnSignalingMessageAsync;
 		_signaling.Disconnected += () => Dispatcher.BeginInvoke(async () => await HangUpAsync());
 
-		if (IsHost)
+		if (IsCaller)
 		{
 			var port = int.TryParse(PortBox.Text, out var p) ? p : DefaultPort;
 			SetStatus($"Listening on port {port}...");
 			await _signaling.ListenAsync(port);
-			SetStatus("Guest connected. Creating offer...");
+			SetStatus("Callee connected. Creating offer...");
 
 			// Drive the offer explicitly here rather than relying on OnNegotiationNeeded,
 			// since we control when the signaling channel is ready.
@@ -117,10 +116,10 @@ public partial class MainWindow : Window
 		}
 		else
 		{
-			var host = IpBox.Text.Trim();
+			var callerIp = IpBox.Text.Trim();
 			var port = int.TryParse(PortBox.Text, out var p) ? p : DefaultPort;
-			SetStatus($"Connecting to {host}:{port}...");
-			await _signaling.ConnectAsync(host, port);
+			SetStatus($"Connecting to {callerIp}:{port}...");
+			await _signaling.ConnectAsync(callerIp, port);
 			SetStatus("Connected. Waiting for offer...");
 		}
 	}
@@ -223,19 +222,4 @@ public partial class MainWindow : Window
 
 	private void SetStatus(string message) =>
 		Dispatcher.Invoke(() => StatusText.Text = message);
-
-	private static T CreateInteropInstance<T>(string fullTypeName, params object[] args) where T : class
-	{
-		var type =
-			Type.GetType($"{fullTypeName}, WebRtcInterop.Core") ??
-			Type.GetType($"{fullTypeName}, WebRtcInterop.Framework") ??
-			Type.GetType($"{fullTypeName}, WebRtcInterop");
-		if (type == null)
-			throw new NotSupportedException($"{fullTypeName} is not available. Ensure WebRtcInterop is built for the active target framework.");
-
-		if (Activator.CreateInstance(type, args) is T instance)
-			return instance;
-
-		throw new InvalidOperationException($"{fullTypeName} does not implement {typeof(T).FullName}.");
-	}
 }

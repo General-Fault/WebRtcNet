@@ -66,20 +66,4 @@ namespace WebRtcInterop::Media
 		EventHandler<WebRtcNet::Media::MediaStreamTrack^>^ on_remove_track_;
 	};
 
-	public ref class MediaDevices : WebRtcNet::Media::MediaDevices
-	{
-	public:
-		virtual event EventHandler<WebRtcNet::Media::DeviceChangeEventArgs^>^ OnDeviceChange
-		{
-			void add(EventHandler<WebRtcNet::Media::DeviceChangeEventArgs^>^ value) { on_device_change_ += value; }
-			void remove(EventHandler<WebRtcNet::Media::DeviceChangeEventArgs^>^ value) { on_device_change_ -= value; }
-		}
-
-		virtual Task<IEnumerable<WebRtcNet::Media::MediaDeviceInfo^>^>^ EnumerateDevices();
-		virtual WebRtcNet::Media::MediaTrackSupportedConstraints^ GetSupportedConstraints();
-		virtual Task<WebRtcNet::Media::MediaStream^>^ GetUserMedia(WebRtcNet::Media::MediaStreamConstraints^ constraints);
-
-	private:
-		EventHandler<WebRtcNet::Media::DeviceChangeEventArgs^>^ on_device_change_;
-	};
 }

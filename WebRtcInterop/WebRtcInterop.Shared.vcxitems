@@ -134,6 +134,8 @@ ninja -C "$(WebRtcOutRoot)\$(Configuration)\$(Platform)"
 		<ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalIceTransport.h"/>
 		<ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalNullable.h"/>
 		<ClInclude Include="$(MSBuildThisFileDirectory)Media\Marshaling\MarshalMedia.h"/>
+		<ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaDevices.h"/>
+		<ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaDevicesFactory.h"/>
 		<ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaStream.h"/>
 		<ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaStreamTrack.h"/>
 		<ClInclude Include="$(MSBuildThisFileDirectory)NativeWrapper.h"/>
@@ -141,13 +143,19 @@ ninja -C "$(WebRtcOutRoot)\$(Configuration)\$(Platform)"
 		<ClInclude Include="$(MSBuildThisFileDirectory)Resource.h"/>
 		<ClInclude Include="$(MSBuildThisFileDirectory)RtcDataChannel.h"/>
 		<ClInclude Include="$(MSBuildThisFileDirectory)RtcIceTransport.h"/>
+		<ClInclude Include="$(MSBuildThisFileDirectory)RtcPeerConnection.h"/>
+		<ClInclude Include="$(MSBuildThisFileDirectory)RtcPeerConnectionFactory.h"/>
 	</ItemGroup>
 	<ItemGroup>
+		<ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaDevices.cpp"/>
+		<ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaDevicesFactory.cpp"/>
 		<ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaStream.cpp"/>
 		<ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaStreamTrack.cpp"/>
 		<ClCompile Include="$(MSBuildThisFileDirectory)Observers\DataChannelObserver.cpp"/>
 		<ClCompile Include="$(MSBuildThisFileDirectory)RtcDataChannel.cpp"/>
 		<ClCompile Include="$(MSBuildThisFileDirectory)RtcIceTransport.cpp"/>
+		<ClCompile Include="$(MSBuildThisFileDirectory)RtcPeerConnection.cpp"/>
+		<ClCompile Include="$(MSBuildThisFileDirectory)RtcPeerConnectionFactory.cpp"/>
 	</ItemGroup>
 	<ItemGroup>
 		<ClCompile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cpp"/>

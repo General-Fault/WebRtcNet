@@ -8,12 +8,14 @@ It contains **no implementation details** — only term definitions.
 ## Terms
 
 ### Host
-A peer that initiates a WebRTC session by opening a TCP listener and waiting for
-an incoming connection before creating an SDP offer.
+The API root object used as the non-browser equivalent of `Navigator`, including
+access to `MediaDevices`.
 
-### Guest
-A peer that joins a WebRTC session by dialling the Host's IP address and port,
-then responding to the Host's SDP offer with an SDP answer.
+### Caller
+A peer that initiates a WebRTC session by creating and sending the SDP offer.
+
+### Callee
+A peer that receives the SDP offer and responds with an SDP answer.
 
 ### Signaling
 The out-of-band exchange of SDP offers/answers and ICE candidates between two
@@ -32,3 +34,13 @@ a direct TCP signaling channel, targeting both .NET 10 and .NET Framework 4.8.
 A prototype `VideoRenderer` implementation backed by a WPF `WriteableBitmap`.
 Lives in `examples/BasicVideoChat` until a proper `WebRtcNet.Wpf` renderer
 assembly is created (see issue #36).
+
+## Relationships
+
+- **Host** exposes **MediaDevices** as the API entry point for capture access.
+- A **Caller** sends an SDP offer and a **Callee** returns an SDP answer.
+
+## Flagged ambiguities
+
+- "Host" previously meant the signaling initiator peer; resolved to the API root
+  object. Signaling roles are now **Caller** and **Callee**.

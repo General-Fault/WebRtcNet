@@ -12,23 +12,6 @@ using namespace WebRtcNet;
 
 namespace WebRtcInterop::Media
 {
-	Task<IEnumerable<MediaDeviceInfo^>^>^ MediaDevices::EnumerateDevices()
-	{
-		auto devices = gcnew List<MediaDeviceInfo^>();
-		return Task::FromResult<IEnumerable<MediaDeviceInfo^>^>(devices);
-	}
-
-	MediaTrackSupportedConstraints^ MediaDevices::GetSupportedConstraints()
-	{
-		return gcnew MediaTrackSupportedConstraints();
-	}
-
-	Task<WebRtcNet::Media::MediaStream^>^ MediaDevices::GetUserMedia(MediaStreamConstraints^ constraints)
-	{
-		return Task::FromException<WebRtcNet::Media::MediaStream^>(
-			gcnew MediaStreamException("GetUserMedia is not currently implemented."));
-	}
-
 	MediaStream::MediaStream(WebRtcNet::Media::MediaStream^ stream)
 		: _rpMediaStreamInterface(nullptr),
 		  on_active_(nullptr),

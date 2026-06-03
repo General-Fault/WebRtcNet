@@ -11,12 +11,12 @@
 
 		<!-- Connection controls -->
 		<WrapPanel Grid.Row="0" Margin="8,6" Orientation="Horizontal">
-			<RadioButton x:Name="HostRadio" Content="Host" GroupName="Mode"
+			<RadioButton x:Name="CallerRadio" Content="Caller" GroupName="Mode"
 			             IsChecked="True" VerticalAlignment="Center" Margin="0,0,8,0"
-			             Checked="HostRadio_Checked"/>
-			<RadioButton x:Name="GuestRadio" Content="Guest" GroupName="Mode"
+			             Checked="CallerRadio_Checked"/>
+			<RadioButton x:Name="CalleeRadio" Content="Callee" GroupName="Mode"
 			             VerticalAlignment="Center" Margin="0,0,14,0"
-			             Checked="GuestRadio_Checked"/>
+			             Checked="CalleeRadio_Checked"/>
 			<TextBlock Text="IP:" VerticalAlignment="Center" Margin="0,0,4,0"/>
 			<TextBox x:Name="IpBox" Width="130" Text="127.0.0.1" IsEnabled="False"
 			         VerticalAlignment="Center" Margin="0,0,8,0"/>
