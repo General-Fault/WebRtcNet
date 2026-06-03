@@ -1,209 +1,153 @@
-#include "stdafx.h"
-
-#include <api/peer_connection_interface.h>
-
-
-using namespace System;
-using namespace Collections::Generic;
-using namespace Threading::Tasks;
-using namespace Runtime::InteropServices;
-
-using namespace WebRtcNet;
+#include "pch.h"
 
 #include "RtcPeerConnection.h"
-#include "RtcPeerConnectionFactory.h"
-#include "MediaStream.h"
-#include "Observers/PeerConnectionObserver.h"
-#include "Observers/CreateSessionDescriptionObserver.h"
-#include "Marshaling/MarshalPeerConnection.h"
-#include "Marshaling/MarshalRtcConfiguration.h"
-#include "Marshaling/MarshalMediaConstraints.h"
+
+using namespace System;
+using namespace System::Collections::Generic;
+using namespace System::Threading::Tasks;
 
 namespace WebRtcInterop
 {
 	RtcPeerConnection::RtcPeerConnection(RtcConfiguration^ configuration)
-		: observer_(new webrtc_observers::PeerConnectionObserver(this))
-		  , configuration_(configuration)
+		: configuration_(configuration),
+		  is_closed_(false),
+		  on_negotiation_needed_(nullptr),
+		  on_ice_candidate_(nullptr),
+		  on_ice_candidate_error_(nullptr),
+		  on_signaling_state_change_(nullptr),
+		  on_ice_connection_state_change_(nullptr),
+		  on_gathering_state_change_(nullptr),
+		  on_connection_state_change_(nullptr),
+		  on_track_(nullptr),
+		  on_data_channel_(nullptr)
 	{
-		auto nativePeerConnectionFactory = RtcPeerConnectionFactory::Instance->
-			GetNativePeerConnectionFactoryInterface(true);
-
-		auto nativeConfig = marshal_as<webrtc::PeerConnectionInterface::RTCConfiguration>(configuration);
-		auto nativePeerConnection = nativePeerConnectionFactory->CreatePeerConnection(
-			nativeConfig, nullptr, nullptr, observer_);
-		if (nativePeerConnection == nullptr) throw gcnew
-			NotSupportedException("Failed to create native PeerConnection");
-
-		rp_peer_connection_ = new rtc::scoped_refptr(nativePeerConnection);
+		if (configuration == nullptr)
+			throw gcnew ArgumentNullException("configuration");
 	}
 
-	RtcPeerConnection::~RtcPeerConnection()
+	void RtcPeerConnection::ThrowShimNotImplemented(String^ memberName)
 	{
-		this->!RtcPeerConnection();
+		throw gcnew NotImplementedException(String::Format(
+			"{0} is a compile-only shim in WebRtcInterop and is not implemented yet.",
+			memberName));
 	}
 
-	RtcPeerConnection::!RtcPeerConnection()
+	IntPtr RtcPeerConnection::GetNativePeerConnectionHandle(bool throwOnDisposed)
 	{
-		delete rp_peer_connection_;
-		rp_peer_connection_ = nullptr;
+		if (throwOnDisposed && is_closed_)
+			throw gcnew ObjectDisposedException(NAMEOF(RtcPeerConnection));
 
-
-		delete observer_;
-		observer_ = nullptr;
+		return IntPtr::Zero;
 	}
 
-	webrtc::PeerConnectionInterface* RtcPeerConnection::GetNativePeerConnection(bool throwOnDisposed)
+	Nullable<RtcSessionDescription> RtcPeerConnection::LocalDescription::get() { return Nullable<RtcSessionDescription>(); }
+	Nullable<RtcSessionDescription> RtcPeerConnection::CurrentLocalDescription::get() { return Nullable<RtcSessionDescription>(); }
+	Nullable<RtcSessionDescription> RtcPeerConnection::PendingLocalDescription::get() { return Nullable<RtcSessionDescription>(); }
+	Nullable<RtcSessionDescription> RtcPeerConnection::RemoteDescription::get() { return Nullable<RtcSessionDescription>(); }
+	Nullable<RtcSessionDescription> RtcPeerConnection::CurrentRemoteDescription::get() { return Nullable<RtcSessionDescription>(); }
+	Nullable<RtcSessionDescription> RtcPeerConnection::PendingRemoteDescription::get() { return Nullable<RtcSessionDescription>(); }
+	RtcSignalingState RtcPeerConnection::SignalingState::get() { return is_closed_ ? RtcSignalingState::Closed : RtcSignalingState::Stable; }
+	RtcIceGatheringState RtcPeerConnection::IceGatheringState::get() { return is_closed_ ? RtcIceGatheringState::Complete : RtcIceGatheringState::New; }
+	RtcIceConnectionState RtcPeerConnection::IceConnectionState::get() { return is_closed_ ? RtcIceConnectionState::Closed : RtcIceConnectionState::New; }
+	RtcPeerConnectionState RtcPeerConnection::ConnectionState::get() { return is_closed_ ? RtcPeerConnectionState::Closed : RtcPeerConnectionState::New; }
+	Nullable<bool> RtcPeerConnection::CanTrickleIceCandidates::get() { return Nullable<bool>(); }
+	RtcConfiguration^ RtcPeerConnection::Configuration::get() { return configuration_; }
+	void RtcPeerConnection::Configuration::set(RtcConfiguration^ configuration)
 	{
-		if (rp_peer_connection_ == nullptr || rp_peer_connection_->get() == nullptr)
-		{
-			if (throwOnDisposed) throw gcnew ObjectDisposedException("RtcPeerConnection");
-			return nullptr;
-		}
-
-		return rp_peer_connection_->get();
+		if (configuration == nullptr)
+			throw gcnew ArgumentNullException("configuration");
+		configuration_ = configuration;
 	}
 
-	System::IntPtr RtcPeerConnection::GetNativePeerConnectionHandle(bool throwOnDisposed)
-	{
-		return System::IntPtr(GetNativePeerConnection(throwOnDisposed));
-	}
+	RtcSctpTransport^ RtcPeerConnection::Sctp::get() { return nullptr; }
 
 	Task<RtcSessionDescription>^ RtcPeerConnection::CreateOffer(RtcOfferOptions^ options)
 	{
-		auto pc = GetNativePeerConnection(true);
-		auto observer = new rtc::RefCountedObject<webrtc_observers::CreateSessionDescriptionObserver>();
-		auto task = observer->CreateSessionTask();
-
-		if (options == nullptr)
-		{
-			pc->CreateOffer(observer, NULL);
-		}
-		else
-		{
-			webrtc::FakeConstraints constraints;
-			constraints.AddMandatory<bool>(webrtc::MediaConstraintsInterface::kVoiceActivityDetection,
-			                               static_cast<const bool>(options->VoiceActivityDetection));
-			constraints.AddMandatory<bool>(webrtc::MediaConstraintsInterface::kIceRestart,
-			                               static_cast<const bool>(options->IceRestart));
-
-			pc->CreateOffer(observer, &constraints);
-		}
-
-		return task;
+		ThrowShimNotImplemented("RtcPeerConnection.CreateOffer");
+		return nullptr;
 	}
 
-
-	Task<RtcSessionDescription>^ RtcPeerConnection::CreateAnswer()
+	Task<RtcSessionDescription>^ RtcPeerConnection::CreateAnswer(RtcAnswerOptions^ options)
 	{
-		auto pc = GetNativePeerConnection(true);
-		auto observer = new rtc::RefCountedObject<webrtc_observers::CreateSessionDescriptionObserver>();
-		auto task = observer->CreateSessionTask();
-
-		pc->CreateAnswer(observer, NULL);
-
-		return task;
+		ThrowShimNotImplemented("RtcPeerConnection.CreateAnswer");
+		return nullptr;
 	}
 
 	Task^ RtcPeerConnection::SetLocalDescription(Nullable<RtcLocalSessionDescriptionInit> description)
 	{
-		// TODO: Implement using two native overloads on PeerConnectionInterface:
-		//   - description is null, or description.Value.Type is null:
-		//       -> SetLocalDescription(observer)  [native creates offer/answer from signaling state]
-		//   - description.Value.Type has a value:
-		//       -> SetLocalDescription(unique_ptr<SessionDescriptionInterface>, observer)
-		// Add marshal_as<webrtc::SessionDescriptionInterface*>(RtcLocalSessionDescriptionInit) in
-		// MarshalPeerConnection.h to support the second path.
-		throw gcnew NotImplementedException();
+		ThrowShimNotImplemented("RtcPeerConnection.SetLocalDescription");
+		return nullptr;
 	}
 
 	Task^ RtcPeerConnection::SetRemoteDescription(RtcSessionDescription description)
 	{
-		throw gcnew NotImplementedException();
-		// TODO: insert return statement here
+		ThrowShimNotImplemented("RtcPeerConnection.SetRemoteDescription");
+		return nullptr;
 	}
-
 
 	Task^ RtcPeerConnection::AddIceCandidate(RtcIceCandidate^ candidate)
 	{
-		throw gcnew NotImplementedException();
-		// TODO: insert return statement here
+		ThrowShimNotImplemented("RtcPeerConnection.AddIceCandidate");
+		return nullptr;
 	}
 
-	RtcConfiguration^ RtcPeerConnection::Configuration::get()
+	void RtcPeerConnection::RestartIce()
 	{
-		return configuration_;
-	}
-
-	void RtcPeerConnection::Configuration::set(RtcConfiguration^ configuration)
-	{
-		throw gcnew NotImplementedException();
-	}
-
-	IEnumerable<MediaStream^>^ RtcPeerConnection::LocalStreams::get()
-	{
-		throw gcnew NotImplementedException();
-		// TODO: insert return statement here
-	}
-
-
-	IEnumerable<MediaStream^>^ RtcPeerConnection::RemoteStreams::get()
-	{
-		throw gcnew NotImplementedException();
-		// TODO: insert return statement here
-	}
-
-	MediaStream^ RtcPeerConnection::GetStreamById(String^ streamId)
-	{
-		throw gcnew NotImplementedException();
-		// TODO: insert return statement here
-	}
-
-	void RtcPeerConnection::AddStream(MediaStream^ stream)
-	{
-		auto nativePeerConnection = GetNativePeerConnection(true);
-		auto nativeStream = reinterpret_cast<webrtc::MediaStreamInterface*>(
-			stream->GetNativeMediaStreamInterface(true).ToPointer());
-		nativePeerConnection->AddStream(nativeStream);
-	}
-
-	void RtcPeerConnection::RemoveStream(MediaStream^ stream)
-	{
-		auto nativePeerConnection = GetNativePeerConnection(true);
-		auto nativeStream = reinterpret_cast<webrtc::MediaStreamInterface*>(
-			stream->GetNativeMediaStreamInterface(true).ToPointer());
-		nativePeerConnection->RemoveStream(nativeStream);
+		ThrowShimNotImplemented("RtcPeerConnection.RestartIce");
 	}
 
 	void RtcPeerConnection::Close()
 	{
-		throw gcnew NotImplementedException();
+		is_closed_ = true;
+	}
+
+	Task<RtcStatsReport^>^ RtcPeerConnection::GetStats(WebRtcNet::Media::MediaStreamTrack^ selector)
+	{
+		ThrowShimNotImplemented("RtcPeerConnection.GetStats");
+		return nullptr;
+	}
+
+	IEnumerable<RtcRtpSender^>^ RtcPeerConnection::GetSenders()
+	{
+		return gcnew List<RtcRtpSender^>();
+	}
+
+	IEnumerable<RtcRtpReceiver^>^ RtcPeerConnection::GetReceivers()
+	{
+		return gcnew List<RtcRtpReceiver^>();
+	}
+
+	IEnumerable<RtcRtpTransceiver^>^ RtcPeerConnection::GetTransceivers()
+	{
+		return gcnew List<RtcRtpTransceiver^>();
+	}
+
+	RtcRtpSender^ RtcPeerConnection::AddTrack(WebRtcNet::Media::MediaStreamTrack^ track, ... array<WebRtcNet::Media::MediaStream^>^ streams)
+	{
+		ThrowShimNotImplemented("RtcPeerConnection.AddTrack");
+		return nullptr;
+	}
+
+	RtcRtpTransceiver^ RtcPeerConnection::AddTransceiver(WebRtcNet::Media::MediaStreamTrack^ track, RtcRtpTransceiverInit^ init)
+	{
+		ThrowShimNotImplemented("RtcPeerConnection.AddTransceiver(track)");
+		return nullptr;
+	}
+
+	RtcRtpTransceiver^ RtcPeerConnection::AddTransceiver(WebRtcNet::Media::MediaStreamTrackKind kind, RtcRtpTransceiverInit^ init)
+	{
+		ThrowShimNotImplemented("RtcPeerConnection.AddTransceiver(kind)");
+		return nullptr;
+	}
+
+	void RtcPeerConnection::RemoveTrack(RtcRtpSender^ sender)
+	{
+		ThrowShimNotImplemented("RtcPeerConnection.RemoveTrack");
 	}
 
 	RtcDataChannel^ RtcPeerConnection::CreateDataChannel(String^ label, RtcDataChannelInit^ dataChannelInit)
 	{
-		throw gcnew NotImplementedException();
-		// TODO: insert return statement here
-	}
-
-	RtcDtmfSender^ RtcPeerConnection::CreateRtcDtmfSender(MediaStreamTrack^ track)
-	{
-		throw gcnew NotImplementedException();
-		// TODO: insert return statement here
-	}
-
-	Task<RtcStatsReport^>^ RtcPeerConnection::GetStats(MediaStreamTrack^ selector)
-	{
-		throw gcnew NotImplementedException();
-		// TODO: insert return statement here
-	}
-
-	void RtcPeerConnection::SetIdentityProvider(String^ provider, String^ protocol, String^ username)
-	{
-		throw gcnew NotImplementedException();
-	}
-
-	void RtcPeerConnection::GetIdentityAssertion()
-	{
-		throw gcnew NotImplementedException();
+		ThrowShimNotImplemented("RtcPeerConnection.CreateDataChannel");
+		return nullptr;
 	}
 }

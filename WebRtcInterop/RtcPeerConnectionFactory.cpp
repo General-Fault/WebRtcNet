@@ -1,107 +1,128 @@
-#include "stdafx.h"
+#include "pch.h"
+
 #include "RtcPeerConnectionFactory.h"
+#include "RtcPeerConnection.h"
 
-#include <rtc_base/win32_socket_init.h>
-#include <rtc_base/openssl_adapter.h>
+#include <api/create_modular_peer_connection_factory.h>
 #include <rtc_base/thread.h>
-
-#include <api/audio_codecs/builtin_audio_decoder_factory.h>
-#include <api/audio_codecs/builtin_audio_encoder_factory.h>
-#include <api/video_codecs/builtin_video_decoder_factory.h>
-#include <api/video_codecs/builtin_video_encoder_factory.h>
-#include <api/create_peerconnection_factory.h>
+#include <rtc_base/win32_socket_init.h>
 
 using namespace System;
-using namespace System::Threading;
-using namespace System::Threading::Tasks;
-using namespace System::Runtime::InteropServices;
 
-RtcPeerConnectionFactory::RtcPeerConnectionFactory()
-	: _main_thread(&_ss)
+namespace WebRtcInterop
 {
-	if (_signalThread == nullptr)
+	namespace
 	{
-		_signalThread = rtc::Thread::CreateWithSocketServer();
-		_signalThread->SetName("WebRtc Signal Thread", NULL);
-		_signalThread->Start();
+		std::unique_ptr<webrtc::Thread> network_thread_;
+		std::unique_ptr<webrtc::Thread> worker_thread_;
+		std::unique_ptr<webrtc::Thread> signaling_thread_;
 	}
 
-	auto action = gcnew Action(this, &RtcPeerConnectionFactory::CreateNativePeerConnectionFactory);
-	_signalThread->Invoke<void>(rtc::Bind((void (*)())Marshal::GetFunctionPointerForDelegate(action).ToPointer()));
-}
-
-
-void RtcPeerConnectionFactory::CreateNativePeerConnectionFactory()
-{
-	rtc::InitializeSSL();
-
-	auto nativePeerConnectionFactory = webrtc::CreatePeerConnectionFactory(
-		nullptr /* network_thread */, 
-		nullptr /* worker_thread */,
-		_signalThread.get(), 
-		nullptr /* default_adm */,
-		webrtc::CreateBuiltinAudioEncoderFactory(),
-		webrtc::CreateBuiltinAudioDecoderFactory(),
-		webrtc::CreateBuiltinVideoEncoderFactory(),
-		webrtc::CreateBuiltinVideoDecoderFactory(), 
-		nullptr /* audio_mixer */,
-		nullptr /* audio_processing */);
-
-	if (nativePeerConnectionFactory == nullptr) throw gcnew System::NotSupportedException("Failed to create native PeerConnectionFactory");
-	_rpPeerConnectionFactory = new rtc::scoped_refptr<webrtc::PeerConnectionFactoryInterface>(nativePeerConnectionFactory);
-}
-
-void RtcPeerConnectionFactory::DestroyNativePeerConnectionFactory()
-{
-	delete _rpPeerConnectionFactory;
-	_rpPeerConnectionFactory = nullptr;
-
-	rtc::CleanupSSL();
-}
-
-
-RtcPeerConnectionFactory::~RtcPeerConnectionFactory()
-{
-	this->!RtcPeerConnectionFactory();
-}
-
-RtcPeerConnectionFactory::!RtcPeerConnectionFactory()
-{
-	auto action = gcnew Action(this, &RtcPeerConnectionFactory::DestroyNativePeerConnectionFactory);
-	_signalThread->Invoke<void>(rtc::Bind((void(*)())Marshal::GetFunctionPointerForDelegate(action).ToPointer()));
-}
-
-webrtc::PeerConnectionFactoryInterface* RtcPeerConnectionFactory::GetNativePeerConnectionFactoryInterface(bool throwOnDisposed)
-{
-	if (_rpPeerConnectionFactory == nullptr || _rpPeerConnectionFactory->get() == nullptr)
+	RtcPeerConnectionFactory::RtcPeerConnectionFactory()
+	: _rpPeerConnectionFactory(nullptr)
 	{
-		if (throwOnDisposed) throw gcnew ObjectDisposedException("RtcPeerConnection");
-		return nullptr;
+		if (network_thread_ == nullptr)
+		{
+			network_thread_ = webrtc::Thread::CreateWithSocketServer();
+			network_thread_->SetName("WebRtc Network Thread", nullptr);
+			network_thread_->Start();
+		}
+
+		if (worker_thread_ == nullptr)
+		{
+			worker_thread_ = webrtc::Thread::Create();
+			worker_thread_->SetName("WebRtc Worker Thread", nullptr);
+			worker_thread_->Start();
+		}
+
+		if (signaling_thread_ == nullptr)
+		{
+			signaling_thread_ = webrtc::Thread::Create();
+			signaling_thread_->SetName("WebRtc Signaling Thread", nullptr);
+			signaling_thread_->Start();
+		}
+
+		CreateNativePeerConnectionFactory();
 	}
 
-	return _rpPeerConnectionFactory->get();
-}
-
-RtcPeerConnectionFactory ^ RtcPeerConnectionFactory::Instance::get()
-{
-	if (_instance == nullptr)
+	RtcPeerConnectionFactory::~RtcPeerConnectionFactory()
 	{
-		InitializeInstance();
+		this->!RtcPeerConnectionFactory();
 	}
 
-	return _instance;
-}
+	RtcPeerConnectionFactory::!RtcPeerConnectionFactory()
+	{
+		DestroyNativePeerConnectionFactory();
+	}
 
-void RtcPeerConnectionFactory::InitializeInstance()
-{
-	if (_instance != nullptr) return;
-	_instance = gcnew RtcPeerConnectionFactory();
-}
+	WebRtcNet::RtcPeerConnection^ RtcPeerConnectionFactory::CreatePeerConnection(RtcConfiguration^ configuration)
+	{
+		if (configuration == nullptr)
+			throw gcnew ArgumentNullException("configuration");
+		return gcnew RtcPeerConnection(configuration);
+	}
 
-void RtcPeerConnectionFactory::DestroyInstance()
-{
-	delete _instance;
-	_instance = nullptr;
-	delete _signalThread;
-	_signalThread = nullptr;
+	void RtcPeerConnectionFactory::CreateNativePeerConnectionFactory()
+	{
+		webrtc::PeerConnectionFactoryDependencies dependencies;
+		dependencies.network_thread = network_thread_.get();
+		dependencies.worker_thread = worker_thread_.get();
+		dependencies.signaling_thread = signaling_thread_.get();
+
+		auto nativeFactory = webrtc::CreateModularPeerConnectionFactory(std::move(dependencies));
+		if (nativeFactory == nullptr)
+			throw gcnew NotSupportedException("Failed to create native PeerConnectionFactory");
+
+		_rpPeerConnectionFactory =
+			new webrtc::scoped_refptr<webrtc::PeerConnectionFactoryInterface>(nativeFactory);
+	}
+
+	void RtcPeerConnectionFactory::DestroyNativePeerConnectionFactory()
+	{
+		delete _rpPeerConnectionFactory;
+		_rpPeerConnectionFactory = nullptr;
+	}
+
+	webrtc::PeerConnectionFactoryInterface* RtcPeerConnectionFactory::GetNativePeerConnectionFactoryInterface(bool throwOnDisposed)
+	{
+		if (_rpPeerConnectionFactory == nullptr || _rpPeerConnectionFactory->get() == nullptr)
+		{
+			if (throwOnDisposed)
+				throw gcnew ObjectDisposedException("RtcPeerConnectionFactory");
+			return nullptr;
+		}
+
+		return _rpPeerConnectionFactory->get();
+	}
+
+	RtcPeerConnectionFactory^ RtcPeerConnectionFactory::Instance::get()
+	{
+		if (_instance == nullptr)
+			InitializeInstance();
+		return _instance;
+	}
+
+	void RtcPeerConnectionFactory::InitializeInstance()
+	{
+		if (_instance != nullptr)
+			return;
+		_instance = gcnew RtcPeerConnectionFactory();
+	}
+
+	void RtcPeerConnectionFactory::DestroyInstance()
+	{
+		delete _instance;
+		_instance = nullptr;
+
+		if (signaling_thread_ != nullptr)
+			signaling_thread_->Stop();
+		if (worker_thread_ != nullptr)
+			worker_thread_->Stop();
+		if (network_thread_ != nullptr)
+			network_thread_->Stop();
+
+		signaling_thread_.reset();
+		worker_thread_.reset();
+		network_thread_.reset();
+	}
 }

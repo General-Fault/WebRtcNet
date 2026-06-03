@@ -5,18 +5,25 @@ using System.Threading.Tasks;
 namespace WebRtcNet.Media;
 
 /// <summary>
-/// A .NET implementation of the <c>MediaDevices</c> interface.
+/// Represents access to media input/output devices.
 /// </summary>
 /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#mediadevices" />
-public interface MediaDevices
+public abstract class MediaDevices
 {
+	/// <summary>
+	/// Initializes the media devices wrapper.
+	/// </summary>
+	protected MediaDevices()
+	{
+	}
+
 	/// <summary>
 	/// Raised when the set of available media devices changes — for example, when a camera or
 	/// microphone is connected or disconnected. The event args carry the updated device list and
 	/// a hint about which devices were recently inserted by the user.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadevices-ondevicechange" />
-	event EventHandler<DeviceChangeEventArgs> OnDeviceChange;
+	public abstract event EventHandler<DeviceChangeEventArgs> OnDeviceChange;
 
 	/// <summary>
 	/// Collects information about the available media input and output devices.
@@ -26,7 +33,7 @@ public interface MediaDevices
 	/// representing each available device.
 	/// </returns>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadevices-enumeratedevices" />
-	Task<IEnumerable<MediaDeviceInfo>> EnumerateDevices();
+	public abstract Task<IEnumerable<MediaDeviceInfo>> EnumerateDevices();
 
 	#region 10.2 MediaDevices Interface Extensions
 
@@ -40,7 +47,7 @@ public interface MediaDevices
 	/// constrainable properties are supported.
 	/// </returns>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadevices-getsupportedconstraints" />
-	MediaTrackSupportedConstraints GetSupportedConstraints();
+	public abstract MediaTrackSupportedConstraints GetSupportedConstraints();
 
 	/// <summary>
 	/// Requests access to media input devices and returns a <see cref="MediaStream" /> whose
@@ -54,7 +61,7 @@ public interface MediaDevices
 	/// to <paramref name="constraints" />.
 	/// </returns>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadevices-getusermedia" />
-	Task<MediaStream> GetUserMedia(MediaStreamConstraints constraints);
+	public abstract Task<MediaStream> GetUserMedia(MediaStreamConstraints constraints);
 
 	#endregion //10.2 MediaDevices Interface Extensions
 }

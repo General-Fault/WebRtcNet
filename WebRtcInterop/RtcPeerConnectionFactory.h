@@ -1,51 +1,41 @@
 #pragma once
 
-namespace rtc
-{
-	template <class T> class scoped_refptr;
-	class Thread;
-}
-
 namespace webrtc
 {
+	template <class T>
+	class scoped_refptr;
+	class Thread;
 	class PeerConnectionFactoryInterface;
 }
 
-
-private ref class RtcPeerConnectionFactory
+namespace WebRtcInterop
 {
-public:
-	/// <summary>
-	/// Get the singleton RtcPeerConnectionFactory. Calls InitializeInstance if necessary.
-	/// </summary>
-	static property RtcPeerConnectionFactory ^ Instance{ RtcPeerConnectionFactory ^  get(); }
+	public ref class RtcPeerConnectionFactory
+	{
+	public:
+		static WebRtcNet::RtcPeerConnection^ CreatePeerConnection(WebRtcNet::RtcConfiguration^ configuration);
 
-internal:
-	RtcPeerConnectionFactory();
-	~RtcPeerConnectionFactory();
-	!RtcPeerConnectionFactory();
+		static property RtcPeerConnectionFactory^ Instance
+		{
+			RtcPeerConnectionFactory^ get();
+		}
 
-	static void InitializeInstance();
-	static void DestroyInstance();
-	
-	webrtc::PeerConnectionFactoryInterface* GetNativePeerConnectionFactoryInterface(bool throwOnDisposed);
+	internal:
+		RtcPeerConnectionFactory();
+		~RtcPeerConnectionFactory();
+		!RtcPeerConnectionFactory();
 
-private:
-	void CreateNativePeerConnectionFactory();
-	void DestroyNativePeerConnectionFactory();
+		static void InitializeInstance();
+		static void DestroyInstance();
 
-	rtc::scoped_refptr<webrtc::PeerConnectionFactoryInterface>* _rpPeerConnectionFactory;
+		webrtc::PeerConnectionFactoryInterface* GetNativePeerConnectionFactoryInterface(bool throwOnDisposed);
 
-	static RtcPeerConnectionFactory ^ _instance;
+	private:
+		void CreateNativePeerConnectionFactory();
+		void DestroyNativePeerConnectionFactory();
 
-	static std::unique_ptr<rtc::Thread> _signalThread;
+		webrtc::scoped_refptr<webrtc::PeerConnectionFactoryInterface>* _rpPeerConnectionFactory;
 
-	rtc::WinsockInitializer _winsock_init;
-	rtc::PhysicalSocketServer _ss;
-	rtc::AutoSocketServerThread _main_thread;
-};
-
-/// <summary>
-/// Thrown when unable to create the native RtcPeerConnetionFactory.
-/// </summary>
-public ref class CreatePeerConnectionFactoryException : System::Exception{};
+		static RtcPeerConnectionFactory^ _instance = nullptr;
+	};
+}
