@@ -1,9 +1,13 @@
 #include "pch.h"
 
 #include "MediaDevices.h"
+#include "MediaStream.h"
 #include "MediaStreamTrack.h"
+#include "SimpleVideoSource.h"
 #include "Marshaling/MarshalMedia.h"
+#include "RtcPeerConnectionFactory.h"
 
+#include <api/peer_connection_interface.h>
 #include <mmdeviceapi.h>
 #include <Functiondiscoverykeys_devpkey.h>
 
@@ -204,27 +208,75 @@ namespace WebRtcInterop::Media
 	{
 		try
 		{
-			// Simplified GetUserMedia: Create default audio/video tracks based on constraints
-			// TODO: Implement full constraint validation and device selection
-			
 			if (constraints == nullptr)
 			{
 				return Task::FromException<WebRtcNet::Media::MediaStream^>(
 					gcnew System::ArgumentNullException("constraints"));
 			}
 
-			// For now, create default streams if audio/video are requested
-			// This is a simplified MVP implementation
+			// At least one of audio or video must be requested
 			if (!constraints->Audio && !constraints->Video)
 			{
 				return Task::FromException<WebRtcNet::Media::MediaStream^>(
-					gcnew WebRtcNet::Media::MediaStreamException("At least one of audio or video must be requested."));
+					gcnew WebRtcNet::Media::MediaStreamException(
+						"At least one of audio or video must be requested."));
 			}
 
-			// TODO: Implement actual audio/video source creation using WebRTC APIs
-			// This will require access to the native PeerConnectionFactory and audio/video device enumeration
-			return Task::FromException<WebRtcNet::Media::MediaStream^>(
-				gcnew System::NotImplementedException("GetUserMedia device source creation not yet implemented. Awaiting WebRTC audio/video source API integration."));
+			// Get the native peer connection factory
+			auto factory = RtcPeerConnectionFactory::Instance->GetNativePeerConnectionFactoryInterface(true);
+			if (factory == nullptr)
+			{
+				return Task::FromException<WebRtcNet::Media::MediaStream^>(
+					gcnew System::InvalidOperationException(
+						"PeerConnectionFactory not initialized."));
+			}
+
+			// Create a native MediaStream with a unique ID
+			String^ managedStreamId = System::Guid::NewGuid().ToString();
+			pin_ptr<const wchar_t> pwzStreamId = PtrToStringChars(managedStreamId);
+			std::string streamId(reinterpret_cast<const char*>(pwzStreamId), managedStreamId->Length);
+			
+			auto nativeStream = factory->CreateLocalMediaStream(streamId);
+			if (!nativeStream)
+			{
+				return Task::FromException<WebRtcNet::Media::MediaStream^>(
+					gcnew System::InvalidOperationException(
+						"Failed to create media stream."));
+			}
+
+			// Create audio track if requested
+			if (constraints->Audio)
+			{
+				String^ managedAudioLabel = "audio_" + System::Guid::NewGuid().ToString();
+				pin_ptr<const wchar_t> pwzAudioLabel = PtrToStringChars(managedAudioLabel);
+				std::string audioLabel(reinterpret_cast<const char*>(pwzAudioLabel), managedAudioLabel->Length);
+				
+				auto nativeAudioTrack = factory->CreateAudioTrack(audioLabel, nullptr);
+				if (nativeAudioTrack)
+				{
+					nativeStream->AddTrack(nativeAudioTrack);
+				}
+			}
+
+			// Create video track if requested
+			if (constraints->Video)
+			{
+				// Create a minimal video source
+				auto videoSource = webrtc::make_ref_counted<SimpleVideoSource>(false);
+				String^ managedVideoLabel = "video_" + System::Guid::NewGuid().ToString();
+				pin_ptr<const wchar_t> pwzVideoLabel = PtrToStringChars(managedVideoLabel);
+				std::string videoLabel(reinterpret_cast<const char*>(pwzVideoLabel), managedVideoLabel->Length);
+				
+				auto nativeVideoTrack = factory->CreateVideoTrack(videoSource, videoLabel);
+				if (nativeVideoTrack)
+				{
+					nativeStream->AddTrack(nativeVideoTrack);
+				}
+			}
+
+			// Create managed MediaStream wrapper
+			auto managedStream = gcnew WebRtcInterop::Media::MediaStream(nativeStream);
+			return Task::FromResult<WebRtcNet::Media::MediaStream^>(managedStream);
 		}
 		catch (System::Exception^ ex)
 		{
