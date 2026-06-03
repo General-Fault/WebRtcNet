@@ -16,6 +16,7 @@ namespace WebRtcInterop::Media
 	MediaStreamTrack::MediaStreamTrack()
 	{
 		_rpMediaStreamTrackInterface = nullptr;
+		applied_constraints_ = gcnew MediaTrackConstraints();
 		on_mute_ = nullptr;
 		on_unmute_ = nullptr;
 		on_ended_ = nullptr;
@@ -24,6 +25,7 @@ namespace WebRtcInterop::Media
 	MediaStreamTrack::MediaStreamTrack(webrtc::scoped_refptr<webrtc::MediaStreamTrackInterface> track)
 	{
 		_rpMediaStreamTrackInterface = new webrtc::scoped_refptr(track);
+		applied_constraints_ = gcnew MediaTrackConstraints();
 		on_mute_ = nullptr;
 		on_unmute_ = nullptr;
 		on_ended_ = nullptr;
@@ -131,7 +133,10 @@ namespace WebRtcInterop::Media
 
 	MediaTrackConstraints^ MediaStreamTrack::GetConstraints()
 	{
-		throw gcnew NotImplementedException();
+		if (applied_constraints_ == nullptr)
+			applied_constraints_ = gcnew MediaTrackConstraints();
+
+		return applied_constraints_;
 	}
 
 	MediaTrackSettings^ MediaStreamTrack::GetSettings()
@@ -141,6 +146,9 @@ namespace WebRtcInterop::Media
 
 	void MediaStreamTrack::ApplyConstraints(MediaTrackConstraints^ constraints)
 	{
-		throw gcnew NotImplementedException();
+		if (constraints == nullptr)
+			applied_constraints_ = gcnew MediaTrackConstraints();
+		else
+			applied_constraints_ = constraints;
 	}
 }

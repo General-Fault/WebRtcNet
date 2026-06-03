@@ -57,6 +57,7 @@ public:
 
 private:
 	webrtc::scoped_refptr<webrtc::MediaStreamTrackInterface>* _rpMediaStreamTrackInterface;
+	MediaTrackConstraints^ applied_constraints_;
 	System::EventHandler^ on_mute_;
 	System::EventHandler^ on_unmute_;
 	System::EventHandler^ on_ended_;
