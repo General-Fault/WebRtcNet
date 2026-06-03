@@ -202,7 +202,33 @@ namespace WebRtcInterop::Media
 
 	Task<WebRtcNet::Media::MediaStream^>^ MediaDevices::GetUserMedia(WebRtcNet::Media::MediaStreamConstraints^ constraints)
 	{
-		return Task::FromException<WebRtcNet::Media::MediaStream^>(
-			gcnew WebRtcNet::Media::MediaStreamException("GetUserMedia is not currently implemented."));
+		try
+		{
+			// Simplified GetUserMedia: Create default audio/video tracks based on constraints
+			// TODO: Implement full constraint validation and device selection
+			
+			if (constraints == nullptr)
+			{
+				return Task::FromException<WebRtcNet::Media::MediaStream^>(
+					gcnew System::ArgumentNullException("constraints"));
+			}
+
+			// For now, create default streams if audio/video are requested
+			// This is a simplified MVP implementation
+			if (!constraints->Audio && !constraints->Video)
+			{
+				return Task::FromException<WebRtcNet::Media::MediaStream^>(
+					gcnew WebRtcNet::Media::MediaStreamException("At least one of audio or video must be requested."));
+			}
+
+			// TODO: Implement actual audio/video source creation using WebRTC APIs
+			// This will require access to the native PeerConnectionFactory and audio/video device enumeration
+			return Task::FromException<WebRtcNet::Media::MediaStream^>(
+				gcnew System::NotImplementedException("GetUserMedia device source creation not yet implemented. Awaiting WebRTC audio/video source API integration."));
+		}
+		catch (System::Exception^ ex)
+		{
+			return Task::FromException<WebRtcNet::Media::MediaStream^>(ex);
+		}
 	}
 }
