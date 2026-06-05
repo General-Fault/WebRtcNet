@@ -4,6 +4,11 @@ Status: seeded
 
 This crosswalk maps high-value `WebRtcNet.Api` symbols to current W3C specification anchors and records expected adaptation notes for .NET usage.
 
+Source-of-truth note:
+
+- `documents\specs\index\spec-map.json` is the canonical API symbol to spec anchor map.
+- This crosswalk adds implementation status, adaptation notes, and priority guidance.
+
 ## WebRTC 1.0
 
 | API Symbol | Spec Section | Anchor URL | Status | Adaptation Notes |
