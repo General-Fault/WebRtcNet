@@ -5,27 +5,67 @@
 #include <api/make_ref_counted.h>
 #include <modules/video_capture/video_capture_defines.h>
 #include <modules/video_capture/video_capture_factory.h>
+#include <vector>
 
 namespace webrtc
 {
-	VideoCaptureCapability SelectCapability(const std::string& deviceId)
+	VideoCaptureCapability CreateCapability(const int32_t width, const int32_t height, const int32_t fps)
 	{
-		VideoCaptureCapability requested;
-		requested.width = 1280;
-		requested.height = 720;
-		requested.maxFPS = 30;
+		VideoCaptureCapability capability;
+		capability.width = width;
+		capability.height = height;
+		capability.maxFPS = fps;
+		return capability;
+	}
 
-		VideoCaptureCapability selected = requested;
-		std::unique_ptr<VideoCaptureModule::DeviceInfo> deviceInfo(
+	bool AreCapabilitiesEqual(const VideoCaptureCapability& left, const VideoCaptureCapability& right)
+	{
+		return left.width == right.width &&
+			   left.height == right.height &&
+			   left.maxFPS == right.maxFPS &&
+			   left.videoType == right.videoType &&
+			   left.interlaced == right.interlaced;
+	}
+
+	void AddCapabilityIfMissing(std::vector<VideoCaptureCapability>& capabilities, const VideoCaptureCapability& candidate)
+	{
+		for (const auto& existing : capabilities)
+		{
+			if (AreCapabilitiesEqual(existing, candidate))
+				return;
+		}
+
+		capabilities.push_back(candidate);
+	}
+
+	std::vector<VideoCaptureCapability> BuildCaptureCapabilityCandidates(const std::string& deviceId)
+	{
+		std::vector<VideoCaptureCapability> candidates;
+		std::vector<VideoCaptureCapability> requested = {
+			CreateCapability(1280, 720, 30),
+			CreateCapability(1280, 720, 15),
+			CreateCapability(960, 540, 30),
+			CreateCapability(640, 480, 30),
+			CreateCapability(640, 480, 15),
+			CreateCapability(320, 240, 30)
+		};
+
+		const std::unique_ptr<VideoCaptureModule::DeviceInfo> deviceInfo(
 			VideoCaptureFactory::CreateDeviceInfo());
 		if (!deviceInfo)
-			return selected;
+			return requested;
 
-		VideoCaptureCapability matched;
-		if (deviceInfo->GetBestMatchedCapability(deviceId.c_str(), requested, matched) >= 0)
-			selected = matched;
+		for (const auto& capability : requested)
+		{
+			VideoCaptureCapability matched;
+			if (deviceInfo->GetBestMatchedCapability(deviceId.c_str(), capability, matched) >= 0)
+				AddCapabilityIfMissing(candidates, matched);
+		}
 
-		return selected;
+		for (const auto& capability : requested)
+			AddCapabilityIfMissing(candidates, capability);
+
+		return candidates;
 	}
 }
 
@@ -89,18 +129,21 @@ namespace WebRtcInterop
 		if (!capture_module_)
 			return false;
 
-		const auto capability = webrtc::SelectCapability(deviceId);
 		capture_module_->RegisterCaptureDataCallback(this);
-		if (capture_module_->StartCapture(capability) != 0)
+		const auto capabilities = webrtc::BuildCaptureCapabilityCandidates(deviceId);
+		for (const auto& capability : capabilities)
 		{
-			capture_module_->DeRegisterCaptureDataCallback();
-			state_.store(kEnded);
-			return false;
+			if (capture_module_->StartCapture(capability) == 0)
+			{
+				capture_started_.store(true);
+				state_.store(kLive);
+				return true;
+			}
 		}
 
-		capture_started_.store(true);
-		state_.store(kLive);
-		return true;
+		capture_module_->DeRegisterCaptureDataCallback();
+		state_.store(kEnded);
+		return false;
 	}
 
 	void CameraVideoSource::Stop()

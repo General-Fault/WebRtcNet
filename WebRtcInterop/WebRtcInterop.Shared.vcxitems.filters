@@ -37,9 +37,7 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)RtcPeerConnection.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RtcPeerConnectionFactory.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Media\CameraVideoSource.cpp">
-      <Filter>Media</Filter>
-    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)CameraVideoSource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
@@ -84,8 +82,6 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)RtcPeerConnection.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RtcPeerConnectionFactory.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Media\CameraVideoSource.h">
-      <Filter>Media</Filter>
-    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)CameraVideoSource.h" />
   </ItemGroup>
 </Project>
