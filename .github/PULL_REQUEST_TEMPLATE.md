@@ -68,6 +68,6 @@ Describe externally observable behavior (state transitions, event ordering, timi
 
 ## Spec/Crosswalk Review (required for W3C-aligned behavior changes)
 
-- [ ] Reviewed `documents\crosswalk\webrtcnet-api-to-spec.md`
-- [ ] Reviewed `documents\specs\index\spec-map.md`
+- [ ] Reviewed `docs\standards\crosswalk\webrtcnet-api-to-spec.md`
+- [ ] Reviewed `docs\standards\specs\index\spec-map.md`
 - [ ] Refreshed/checked local spec snapshots (`.\scripts\update-spec-docs.ps1`) when needed

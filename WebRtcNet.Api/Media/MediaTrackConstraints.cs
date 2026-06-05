@@ -16,9 +16,8 @@ public partial class MediaTrackConstraints : MediaTrackConstraintSet
 	/// </summary>
 	/// <remarks>
 	/// This corresponds to <c>MediaTrackConstraints.advanced</c> in the specification.
-	/// Local reference: <c>documents/specs/mediacapture/mediacapture-idl.webidl</c>
-	/// (<c>MediaTrackConstraints</c>, <c>MediaTrackConstraintSet</c>, and
-	/// <c>MediaStreamTrack.applyConstraints(optional MediaTrackConstraints constraints = {})</c>).
+	/// See the published W3C definitions for <c>MediaTrackConstraints</c>,
+	/// <c>MediaTrackConstraintSet</c>, and <c>MediaStreamTrack.applyConstraints</c>.
 	/// </remarks>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackconstraints-advanced" />
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackconstraintset" />
@@ -44,9 +43,11 @@ public partial class MediaTrackConstraints : MediaTrackConstraintSet
 	/// Enumerates constraints in processing order: base set first, then <see cref="Advanced" /> entries in list order.
 	/// </summary>
 	/// <remarks>
-	/// Local reference: <c>documents/specs/mediacapture/mediacapture-idl.webidl</c>
-	/// (<c>MediaTrackConstraints</c> and <c>MediaTrackConstraints.advanced</c> sequence ordering).
+	/// See the published W3C definitions for <c>MediaTrackConstraints</c> and
+	/// <c>MediaTrackConstraints.advanced</c> sequence ordering.
 	/// </remarks>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackconstraints" />
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackconstraints-advanced" />
 	public IEnumerable<MediaTrackConstraintSet> EnumerateConstraintSetsInProcessingOrder()
 	{
 		yield return this;

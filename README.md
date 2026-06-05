@@ -13,11 +13,11 @@ See [WebRTC 1.0: Real-time Communication Between Browsers](https://www.w3.org/TR
 
 ## Local W3C spec corpus
 
-This repository keeps a local standards corpus in `documents\specs\` to support standards-alignment work in `WebRtcNet.Api` without repeated web fetching.
+This repository keeps a local standards corpus in `docs\standards\specs\` to support standards-alignment work in `WebRtcNet.Api` without repeated web fetching.
 
 - Canonical snapshots: `TR-*.html`
 - Copilot-friendly artifacts: `*-summary.md`, `*-idl.webidl`, and `specs\index\spec-map.*`
-- API mapping: `documents\crosswalk\webrtcnet-api-to-spec.md`
+- API mapping: `docs\standards\crosswalk\webrtcnet-api-to-spec.md`
 
 Refresh with:
 

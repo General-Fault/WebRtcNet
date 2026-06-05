@@ -6,7 +6,7 @@ This crosswalk maps high-value `WebRtcNet.Api` symbols to current W3C specificat
 
 Source-of-truth note:
 
-- `documents\specs\index\spec-map.json` is the canonical API symbol to spec anchor map.
+- `docs\standards\specs\index\spec-map.json` is the canonical API symbol to spec anchor map.
 - This crosswalk adds implementation status, adaptation notes, and priority guidance.
 
 ## WebRTC 1.0

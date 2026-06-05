@@ -12,7 +12,7 @@ Canonical files:
 
 - `spec-map.json` is the source of truth for API symbol to W3C anchor mapping.
 - `spec-map.md` should be kept in sync with `spec-map.json`.
-- `documents\crosswalk\webrtcnet-api-to-spec.md` captures implementation status and adaptation notes.
+- `docs\standards\crosswalk\webrtcnet-api-to-spec.md` captures implementation status and adaptation notes.
 
 ## Status vocabulary
 
