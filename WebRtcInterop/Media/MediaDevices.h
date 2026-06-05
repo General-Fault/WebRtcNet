@@ -9,6 +9,10 @@ namespace WebRtcInterop::Media
 	public ref class MediaDevices : WebRtcNet::Media::MediaDevices
 	{
 	public:
+		MediaDevices();
+		~MediaDevices();
+		!MediaDevices();
+
 		virtual event EventHandler<WebRtcNet::Media::DeviceChangeEventArgs^>^ OnDeviceChange
 		{
 			void add(EventHandler<WebRtcNet::Media::DeviceChangeEventArgs^>^ value) override { on_device_change_ += value; }
@@ -20,6 +24,13 @@ namespace WebRtcInterop::Media
 		virtual Task<WebRtcNet::Media::MediaStream^>^ GetUserMedia(WebRtcNet::Media::MediaStreamConstraints^ constraints) override;
 
 	private:
+		void RefreshKnownDevices(bool raiseEvent);
+		void OnDevicePoll(Object^ sender, System::Timers::ElapsedEventArgs^ args);
+		void StopDevicePolling();
+
+		System::Collections::Generic::Dictionary<String^, WebRtcNet::Media::MediaDeviceInfo^>^ known_devices_;
+		System::Timers::Timer^ device_poll_timer_;
+		Object^ device_poll_gate_;
 		EventHandler<WebRtcNet::Media::DeviceChangeEventArgs^>^ on_device_change_;
 	};
 }

@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace WebRtcNet.Media;
 
 /// <summary>
@@ -64,4 +66,11 @@ public record MediaDeviceInfo
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediadeviceinfo-groupid" />
 	public string GroupId { get; }
+
+	/// <summary>
+	///     Factory method for creating MediaDeviceInfo instances (for interop use only).
+	/// </summary>
+	[EditorBrowsable(EditorBrowsableState.Never)]
+	public static MediaDeviceInfo Create(string deviceId, MediaDeviceKind kind, string label, string groupId)
+		=> new(deviceId, kind, label, groupId);
 }
