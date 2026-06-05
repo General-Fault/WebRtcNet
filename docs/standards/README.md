@@ -1,4 +1,4 @@
-# Documents
+# Standards
 
 This folder contains repository-local reference material used to support standards-alignment work in `WebRtcNet.Api`.
 

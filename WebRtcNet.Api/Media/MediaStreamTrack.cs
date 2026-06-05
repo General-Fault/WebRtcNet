@@ -176,10 +176,12 @@ public abstract class MediaStreamTrack
 	/// <remarks>
 	/// Required constraints (for example <c>exact</c>, <c>min</c>, and <c>max</c>) participate in acceptance checks.
 	/// Advanced sets are evaluated in the order supplied and may be skipped when unsatisfied without failing the entire apply.
-	/// Local reference: <c>documents/specs/mediacapture/mediacapture-idl.webidl</c>
-	/// (<c>MediaStreamTrack.applyConstraints</c>, <c>MediaTrackConstraintSet</c>, and <c>MediaTrackConstraints.advanced</c>).
+	/// See the published W3C definitions for <c>applyConstraints</c>,
+	/// <c>MediaTrackConstraintSet</c>, and <c>MediaTrackConstraints.advanced</c>.
 	/// </remarks>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediastreamtrack-applyconstraints" />
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackconstraints-advanced" />
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackconstraintset" />
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#constrainable-interface" />
 	/// <param name="constraints">Constraints to apply, or <see langword="null" /> to clear constraints.</param>
 	public abstract void ApplyConstraints(MediaTrackConstraints? constraints = null);

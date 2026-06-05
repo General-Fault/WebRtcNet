@@ -23,9 +23,9 @@ PR descriptions for behavioral changes **MUST** include:
 
 For `WebRtcNet.Api` behavior changes, PRs **MUST** also update or validate:
 
-- `documents\specs\index\spec-map.json` (canonical API symbol to spec anchor map)
-- `documents\specs\index\spec-map.md` (human-readable mirror)
-- `documents\crosswalk\webrtcnet-api-to-spec.md` (implementation status/adaptation notes)
+- `docs\standards\specs\index\spec-map.json` (canonical API symbol to spec anchor map)
+- `docs\standards\specs\index\spec-map.md` (human-readable mirror)
+- `docs\standards\crosswalk\webrtcnet-api-to-spec.md` (implementation status/adaptation notes)
 
 ## 3. Test gates by change area
 

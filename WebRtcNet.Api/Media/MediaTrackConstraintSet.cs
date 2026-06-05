@@ -147,9 +147,11 @@ public class MediaTrackConstraintSet
 	/// Gets whether this set contains any required constraints (for example <c>exact</c>, <c>min</c>, or <c>max</c>).
 	/// </summary>
 	/// <remarks>
-	/// Local reference: <c>documents/specs/mediacapture/mediacapture-idl.webidl</c>
-	/// (<c>MediaTrackConstraintSet</c> and <c>Constrain*</c> definitions).
+	/// See the published W3C definitions for <c>MediaTrackConstraintSet</c> and
+	/// <c>Constrain*</c> dictionary members.
 	/// </remarks>
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackconstraintset" />
+	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackconstraints" />
 	public bool HasRequiredConstraints =>
 		(Width?.IsRequired ?? false) ||
 		(Height?.IsRequired ?? false) ||

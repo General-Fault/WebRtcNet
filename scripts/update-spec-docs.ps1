@@ -36,7 +36,7 @@ function Get-Hash {
 	return (Get-FileHash -Algorithm SHA256 -Path $FilePath).Hash
 }
 
-$specRoot = Join-Path $RepoRoot "documents\specs"
+$specRoot = Join-Path $RepoRoot "docs\standards\specs"
 $indexLog = Join-Path $specRoot "index\update-log.md"
 
 $downloads = @(
