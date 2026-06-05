@@ -131,7 +131,7 @@ namespace WebRtcInterop::Media
 		webrtc::scoped_refptr<webrtc::MediaStreamInterface> CreateNativeStream(
 			webrtc::PeerConnectionFactoryInterface* factory)
 		{
-			auto streamId = marshal_as<std::string>(Guid::NewGuid().ToString());
+			const auto streamId = marshal_as<std::string>(Guid::NewGuid().ToString());
 			auto nativeStream = factory->CreateLocalMediaStream(streamId);
 			if (!nativeStream)
 				throw gcnew InvalidOperationException("Failed to create media stream.");
@@ -141,14 +141,14 @@ namespace WebRtcInterop::Media
 
 		void AddAudioTrack(
 			webrtc::PeerConnectionFactoryInterface* factory,
-			webrtc::scoped_refptr<webrtc::MediaStreamInterface> nativeStream)
+			const webrtc::scoped_refptr<webrtc::MediaStreamInterface>& nativeStream)
 		{
-			webrtc::AudioOptions audioOptions;
-			auto nativeAudioSource = factory->CreateAudioSource(audioOptions);
+			const webrtc::AudioOptions audioOptions;
+			const auto nativeAudioSource = factory->CreateAudioSource(audioOptions);
 			if (!nativeAudioSource)
 				throw gcnew MediaStreamException("Failed to create an audio source for the requested track.");
 
-			auto nativeAudioTrack = factory->CreateAudioTrack(
+			const auto nativeAudioTrack = factory->CreateAudioTrack(
 				CreateGuidLabel(gcnew String(L"audio")),
 				nativeAudioSource.get());
 			if (!nativeAudioTrack)
@@ -169,8 +169,7 @@ namespace WebRtcInterop::Media
 					continue;
 
 				auto videoDeviceId = marshal_as<std::string>(videoDevice->DeviceId);
-				auto candidateSource = CameraVideoSource::Create(videoDeviceId);
-				if (candidateSource)
+				if (auto candidateSource = CameraVideoSource::Create(videoDeviceId))
 					return candidateSource;
 			}
 
@@ -179,11 +178,11 @@ namespace WebRtcInterop::Media
 
 		void AddVideoTrack(
 			webrtc::PeerConnectionFactoryInterface* factory,
-			webrtc::scoped_refptr<webrtc::MediaStreamInterface> nativeStream,
+			const webrtc::scoped_refptr<webrtc::MediaStreamInterface>& nativeStream,
 			List<MediaDeviceInfo^>^ videoDevices)
 		{
-			auto videoSource = CreateVideoSource(videoDevices);
-			auto nativeVideoTrack = factory->CreateVideoTrack(
+			const auto videoSource = CreateVideoSource(videoDevices);
+			const auto nativeVideoTrack = factory->CreateVideoTrack(
 				videoSource,
 				CreateGuidLabel(gcnew String(L"video")));
 			if (!nativeVideoTrack)
@@ -335,7 +334,7 @@ namespace WebRtcInterop::Media
 
 		try
 		{
-			std::unique_ptr<webrtc::VideoCaptureModule::DeviceInfo> deviceInfo(
+			const std::unique_ptr<webrtc::VideoCaptureModule::DeviceInfo> deviceInfo(
 				webrtc::VideoCaptureFactory::CreateDeviceInfo());
 			if (!deviceInfo)
 				return devices;
@@ -419,11 +418,11 @@ namespace WebRtcInterop::Media
 			auto videoDevices = ValidateAndGetRequestedVideoDevices(constraints);
 
 			// Get the native peer connection factory
-			auto factory = RtcPeerConnectionFactory::Instance->GetNativePeerConnectionFactoryInterface(true);
+			const auto factory = RtcPeerConnectionFactory::Instance->GetNativePeerConnectionFactoryInterface(true);
 			if (factory == nullptr)
 				throw gcnew InvalidOperationException("PeerConnectionFactory not initialized.");
 
-			auto nativeStream = CreateNativeStream(factory);
+			const auto nativeStream = CreateNativeStream(factory);
 
 			// Create audio track if requested
 			if (constraints->Audio)
