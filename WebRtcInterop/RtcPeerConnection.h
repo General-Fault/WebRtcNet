@@ -79,14 +79,14 @@ namespace WebRtcInterop
 		virtual Task^ AddIceCandidate([System::Runtime::InteropServices::Optional] RtcIceCandidate^ candidate) override;
 		virtual void RestartIce() override;
 		virtual void Close() override;
-		virtual Task<RtcStatsReport^>^ GetStats([System::Runtime::InteropServices::Optional] WebRtcNet::Media::MediaStreamTrack^ selector) override;
+		virtual Task<RtcStatsReport^>^ GetStats([System::Runtime::InteropServices::Optional] Media::MediaStreamTrack^ selector) override;
 
 		virtual IEnumerable<RtcRtpSender^>^ GetSenders() override;
 		virtual IEnumerable<RtcRtpReceiver^>^ GetReceivers() override;
 		virtual IEnumerable<RtcRtpTransceiver^>^ GetTransceivers() override;
-		virtual RtcRtpSender^ AddTrack(WebRtcNet::Media::MediaStreamTrack^ track, ... array<WebRtcNet::Media::MediaStream^>^ streams) override;
-		virtual RtcRtpTransceiver^ AddTransceiver(WebRtcNet::Media::MediaStreamTrack^ track, [System::Runtime::InteropServices::Optional] RtcRtpTransceiverInit^ init) override;
-		virtual RtcRtpTransceiver^ AddTransceiver(WebRtcNet::Media::MediaStreamTrackKind kind, [System::Runtime::InteropServices::Optional] RtcRtpTransceiverInit^ init) override;
+		virtual RtcRtpSender^ AddTrack(Media::MediaStreamTrack^ track, ... array<Media::MediaStream^>^ streams) override;
+		virtual RtcRtpTransceiver^ AddTransceiver(Media::MediaStreamTrack^ track, [System::Runtime::InteropServices::Optional] RtcRtpTransceiverInit^ init) override;
+		virtual RtcRtpTransceiver^ AddTransceiver(Media::MediaStreamTrackKind kind, [System::Runtime::InteropServices::Optional] RtcRtpTransceiverInit^ init) override;
 		virtual void RemoveTrack(RtcRtpSender^ sender) override;
 		virtual RtcDataChannel^ CreateDataChannel(String^ label, [System::Runtime::InteropServices::Optional] RtcDataChannelInit^ dataChannelInit) override;
 

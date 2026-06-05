@@ -4,7 +4,7 @@
 namespace WebRtcInterop
 {
 	SimpleVideoSource::SimpleVideoSource(bool remote)
-		: remote_(remote), state_(webrtc::MediaSourceInterface::kLive)
+		: remote_(remote), state_(kLive)
 	{
 	}
 

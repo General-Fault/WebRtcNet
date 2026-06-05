@@ -101,7 +101,7 @@ namespace WebRtcInterop
 		is_closed_ = true;
 	}
 
-	Task<RtcStatsReport^>^ RtcPeerConnection::GetStats(WebRtcNet::Media::MediaStreamTrack^ selector)
+	Task<RtcStatsReport^>^ RtcPeerConnection::GetStats(Media::MediaStreamTrack^ selector)
 	{
 		ThrowShimNotImplemented("RtcPeerConnection.GetStats");
 		return nullptr;
@@ -122,19 +122,19 @@ namespace WebRtcInterop
 		return gcnew List<RtcRtpTransceiver^>();
 	}
 
-	RtcRtpSender^ RtcPeerConnection::AddTrack(WebRtcNet::Media::MediaStreamTrack^ track, ... array<WebRtcNet::Media::MediaStream^>^ streams)
+	RtcRtpSender^ RtcPeerConnection::AddTrack(Media::MediaStreamTrack^ track, ... array<Media::MediaStream^>^ streams)
 	{
 		ThrowShimNotImplemented("RtcPeerConnection.AddTrack");
 		return nullptr;
 	}
 
-	RtcRtpTransceiver^ RtcPeerConnection::AddTransceiver(WebRtcNet::Media::MediaStreamTrack^ track, RtcRtpTransceiverInit^ init)
+	RtcRtpTransceiver^ RtcPeerConnection::AddTransceiver(Media::MediaStreamTrack^ track, RtcRtpTransceiverInit^ init)
 	{
 		ThrowShimNotImplemented("RtcPeerConnection.AddTransceiver(track)");
 		return nullptr;
 	}
 
-	RtcRtpTransceiver^ RtcPeerConnection::AddTransceiver(WebRtcNet::Media::MediaStreamTrackKind kind, RtcRtpTransceiverInit^ init)
+	RtcRtpTransceiver^ RtcPeerConnection::AddTransceiver(Media::MediaStreamTrackKind kind, RtcRtpTransceiverInit^ init)
 	{
 		ThrowShimNotImplemented("RtcPeerConnection.AddTransceiver(kind)");
 		return nullptr;

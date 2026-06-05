@@ -23,14 +23,14 @@ namespace WebRtcInterop::Media
 {
 	namespace
 	{
-		String^ GetDeviceMapKey(WebRtcNet::Media::MediaDeviceInfo^ device)
+		String^ GetDeviceMapKey(MediaDeviceInfo^ device)
 		{
 			return String::Format("{0}|{1}", (int)device->Kind, device->DeviceId);
 		}
 	}
 
 	MediaDevices::MediaDevices()
-		: known_devices_(gcnew Dictionary<String^, WebRtcNet::Media::MediaDeviceInfo^>()),
+		: known_devices_(gcnew Dictionary<String^, MediaDeviceInfo^>()),
 		  device_poll_timer_(gcnew Timer(2000.0)),
 		  device_poll_gate_(gcnew Object()),
 		  on_device_change_(nullptr)
@@ -68,7 +68,7 @@ namespace WebRtcInterop::Media
 
 	void MediaDevices::RefreshKnownDevices(bool raiseEvent)
 	{
-		System::Threading::Monitor::Enter(device_poll_gate_);
+		Threading::Monitor::Enter(device_poll_gate_);
 		try
 		{
 			auto enumerateTask = EnumerateDevices();
@@ -76,9 +76,9 @@ namespace WebRtcInterop::Media
 				return;
 
 			auto devices = enumerateTask->GetAwaiter().GetResult();
-			auto current = gcnew Dictionary<String^, WebRtcNet::Media::MediaDeviceInfo^>();
-			auto inserted = gcnew List<WebRtcNet::Media::MediaDeviceInfo^>();
-			auto all = gcnew List<WebRtcNet::Media::MediaDeviceInfo^>();
+			auto current = gcnew Dictionary<String^, MediaDeviceInfo^>();
+			auto inserted = gcnew List<MediaDeviceInfo^>();
+			auto all = gcnew List<MediaDeviceInfo^>();
 
 			for each (auto device in devices)
 			{
@@ -108,22 +108,22 @@ namespace WebRtcInterop::Media
 				known_devices_->Add(kvp.Key, kvp.Value);
 
 			if (raiseEvent && changed && on_device_change_ != nullptr)
-				on_device_change_(this, gcnew WebRtcNet::Media::DeviceChangeEventArgs(all, inserted));
+				on_device_change_(this, gcnew DeviceChangeEventArgs(all, inserted));
 		}
-		catch (System::Exception^)
+		catch (Exception^)
 		{
 			// Device polling must not crash the process. Failures are retried on next poll.
 		}
 		finally
 		{
-			System::Threading::Monitor::Exit(device_poll_gate_);
+			Threading::Monitor::Exit(device_poll_gate_);
 		}
 	}
 
 	// Helper to enumerate Windows audio devices
-	static List<WebRtcNet::Media::MediaDeviceInfo^>^ EnumerateAudioDevices()
+	static List<MediaDeviceInfo^>^ EnumerateAudioDevices()
 	{
-		auto devices = gcnew List<WebRtcNet::Media::MediaDeviceInfo^>();
+		auto devices = gcnew List<MediaDeviceInfo^>();
 
 		try
 		{
@@ -155,10 +155,10 @@ namespace WebRtcInterop::Media
 									LPWSTR pwszId = nullptr;
 									if (SUCCEEDED(pDevice->GetId(&pwszId)))
 									{
-										auto id = gcnew System::String(pwszId);
-										auto kind = WebRtcNet::Media::MediaDeviceKind::AudioInput;
-										auto label = gcnew System::String(L"Audio Input Device");
-										auto groupId = gcnew System::String(L"");
+										auto id = gcnew String(pwszId);
+										auto kind = MediaDeviceKind::AudioInput;
+										auto label = gcnew String(L"Audio Input Device");
+										auto groupId = gcnew String(L"");
 
 										// Try to get friendly name
 										IPropertyStore* pProps = nullptr;
@@ -169,13 +169,13 @@ namespace WebRtcInterop::Media
 											if (SUCCEEDED(pProps->GetValue(PKEY_Device_FriendlyName, &varName)))
 											{
 												if (varName.vt == VT_LPWSTR)
-													label = gcnew System::String(varName.pwszVal);
+													label = gcnew String(varName.pwszVal);
 												PropVariantClear(&varName);
 											}
 											pProps->Release();
 										}
 
-										auto deviceInfo = WebRtcNet::Media::MediaDeviceInfo::Create(id, kind, label, groupId);
+										auto deviceInfo = MediaDeviceInfo::Create(id, kind, label, groupId);
 										devices->Add(deviceInfo);
 
 										CoTaskMemFree(pwszId);
@@ -203,10 +203,10 @@ namespace WebRtcInterop::Media
 									LPWSTR pwszId = nullptr;
 									if (SUCCEEDED(pDevice->GetId(&pwszId)))
 									{
-										auto id = gcnew System::String(pwszId);
-										auto kind = WebRtcNet::Media::MediaDeviceKind::AudioOutput;
-										auto label = gcnew System::String(L"Audio Output Device");
-										auto groupId = gcnew System::String(L"");
+										auto id = gcnew String(pwszId);
+										auto kind = MediaDeviceKind::AudioOutput;
+										auto label = gcnew String(L"Audio Output Device");
+										auto groupId = gcnew String(L"");
 
 										// Try to get friendly name
 										IPropertyStore* pProps = nullptr;
@@ -217,13 +217,13 @@ namespace WebRtcInterop::Media
 											if (SUCCEEDED(pProps->GetValue(PKEY_Device_FriendlyName, &varName)))
 											{
 												if (varName.vt == VT_LPWSTR)
-													label = gcnew System::String(varName.pwszVal);
+													label = gcnew String(varName.pwszVal);
 												PropVariantClear(&varName);
 											}
 											pProps->Release();
 										}
 
-										auto deviceInfo = WebRtcNet::Media::MediaDeviceInfo::Create(id, kind, label, groupId);
+										auto deviceInfo = MediaDeviceInfo::Create(id, kind, label, groupId);
 										devices->Add(deviceInfo);
 
 										CoTaskMemFree(pwszId);
@@ -250,9 +250,9 @@ namespace WebRtcInterop::Media
 	}
 
 	// Helper to enumerate Windows video devices using DirectShow
-	static List<WebRtcNet::Media::MediaDeviceInfo^>^ EnumerateVideoDevices()
+	static List<MediaDeviceInfo^>^ EnumerateVideoDevices()
 	{
-		auto devices = gcnew List<WebRtcNet::Media::MediaDeviceInfo^>();
+		auto devices = gcnew List<MediaDeviceInfo^>();
 
 		try
 		{
@@ -287,9 +287,9 @@ namespace WebRtcInterop::Media
 						? marshal_as<String^>(std::string(productUniqueId))
 						: String::Empty;
 
-				devices->Add(WebRtcNet::Media::MediaDeviceInfo::Create(
+				devices->Add(MediaDeviceInfo::Create(
 					id,
-					WebRtcNet::Media::MediaDeviceKind::VideoInput,
+					MediaDeviceKind::VideoInput,
 					label,
 					groupId));
 			}
@@ -302,11 +302,11 @@ namespace WebRtcInterop::Media
 		return devices;
 	}
 
-	Task<IEnumerable<WebRtcNet::Media::MediaDeviceInfo^>^>^ MediaDevices::EnumerateDevices()
+	Task<IEnumerable<MediaDeviceInfo^>^>^ MediaDevices::EnumerateDevices()
 	{
 		try
 		{
-			auto allDevices = gcnew List<WebRtcNet::Media::MediaDeviceInfo^>();
+			auto allDevices = gcnew List<MediaDeviceInfo^>();
 
 			// Enumerate audio devices
 			auto audioDevices = EnumerateAudioDevices();
@@ -318,34 +318,34 @@ namespace WebRtcInterop::Media
 			if (videoDevices != nullptr)
 				allDevices->AddRange(videoDevices);
 
-			return Task::FromResult<IEnumerable<WebRtcNet::Media::MediaDeviceInfo^>^>(allDevices);
+			return Task::FromResult<IEnumerable<MediaDeviceInfo^>^>(allDevices);
 		}
-		catch (System::Exception^ ex)
+		catch (Exception^ ex)
 		{
-			return Task::FromException<IEnumerable<WebRtcNet::Media::MediaDeviceInfo^>^>(ex);
+			return Task::FromException<IEnumerable<MediaDeviceInfo^>^>(ex);
 		}
 	}
 
-	WebRtcNet::Media::MediaTrackSupportedConstraints^ MediaDevices::GetSupportedConstraints()
+	MediaTrackSupportedConstraints^ MediaDevices::GetSupportedConstraints()
 	{
-		return gcnew WebRtcNet::Media::MediaTrackSupportedConstraints();
+		return gcnew MediaTrackSupportedConstraints();
 	}
 
-	Task<WebRtcNet::Media::MediaStream^>^ MediaDevices::GetUserMedia(WebRtcNet::Media::MediaStreamConstraints^ constraints)
+	Task<WebRtcNet::Media::MediaStream^>^ MediaDevices::GetUserMedia(MediaStreamConstraints^ constraints)
 	{
 		try
 		{
 			if (constraints == nullptr)
 			{
 				return Task::FromException<WebRtcNet::Media::MediaStream^>(
-					gcnew System::ArgumentNullException("constraints"));
+					gcnew ArgumentNullException("constraints"));
 			}
 
 			// At least one of audio or video must be requested
 			if (!constraints->Audio && !constraints->Video)
 			{
 				return Task::FromException<WebRtcNet::Media::MediaStream^>(
-					gcnew WebRtcNet::Media::MediaStreamException(
+					gcnew MediaStreamException(
 						"At least one of audio or video must be requested."));
 			}
 
@@ -355,7 +355,7 @@ namespace WebRtcInterop::Media
 				if (audioDevices == nullptr || audioDevices->Count == 0)
 				{
 					return Task::FromException<WebRtcNet::Media::MediaStream^>(
-						gcnew WebRtcNet::Media::MediaStreamException(
+						gcnew MediaStreamException(
 							"No audio input devices are currently available."));
 				}
 			}
@@ -366,7 +366,7 @@ namespace WebRtcInterop::Media
 				if (videoDevices == nullptr || videoDevices->Count == 0)
 				{
 					return Task::FromException<WebRtcNet::Media::MediaStream^>(
-						gcnew WebRtcNet::Media::MediaStreamException(
+						gcnew MediaStreamException(
 							"No video input devices are currently available."));
 				}
 			}
@@ -376,40 +376,40 @@ namespace WebRtcInterop::Media
 			if (factory == nullptr)
 			{
 				return Task::FromException<WebRtcNet::Media::MediaStream^>(
-					gcnew System::InvalidOperationException(
+					gcnew InvalidOperationException(
 						"PeerConnectionFactory not initialized."));
 			}
 
 			// Create a native MediaStream with a unique ID
-			String^ managedStreamId = System::Guid::NewGuid().ToString();
+			String^ managedStreamId = Guid::NewGuid().ToString();
 			std::string streamId = marshal_as<std::string>(managedStreamId);
 			
 			auto nativeStream = factory->CreateLocalMediaStream(streamId);
 			if (!nativeStream)
 			{
 				return Task::FromException<WebRtcNet::Media::MediaStream^>(
-					gcnew System::InvalidOperationException(
+					gcnew InvalidOperationException(
 						"Failed to create media stream."));
 			}
 
 			// Create audio track if requested
 			if (constraints->Audio)
 			{
-				String^ managedAudioLabel = "audio_" + System::Guid::NewGuid().ToString();
+				String^ managedAudioLabel = "audio_" + Guid::NewGuid().ToString();
 				std::string audioLabel = marshal_as<std::string>(managedAudioLabel);
 				
 				auto nativeAudioTrack = factory->CreateAudioTrack(audioLabel, nullptr);
 				if (!nativeAudioTrack)
 				{
 					return Task::FromException<WebRtcNet::Media::MediaStream^>(
-						gcnew WebRtcNet::Media::MediaStreamException(
+						gcnew MediaStreamException(
 							"Failed to create the requested audio track."));
 				}
 
 				if (!nativeStream->AddTrack(nativeAudioTrack))
 				{
 					return Task::FromException<WebRtcNet::Media::MediaStream^>(
-						gcnew WebRtcNet::Media::MediaStreamException(
+						gcnew MediaStreamException(
 							"Failed to add the audio track to the media stream."));
 				}
 			}
@@ -419,30 +419,30 @@ namespace WebRtcInterop::Media
 			{
 				// Create a minimal video source
 				auto videoSource = webrtc::make_ref_counted<SimpleVideoSource>(false);
-				String^ managedVideoLabel = "video_" + System::Guid::NewGuid().ToString();
+				String^ managedVideoLabel = "video_" + Guid::NewGuid().ToString();
 				std::string videoLabel = marshal_as<std::string>(managedVideoLabel);
 				
 				auto nativeVideoTrack = factory->CreateVideoTrack(videoSource, videoLabel);
 				if (!nativeVideoTrack)
 				{
 					return Task::FromException<WebRtcNet::Media::MediaStream^>(
-						gcnew WebRtcNet::Media::MediaStreamException(
+						gcnew MediaStreamException(
 							"Failed to create the requested video track."));
 				}
 
 				if (!nativeStream->AddTrack(nativeVideoTrack))
 				{
 					return Task::FromException<WebRtcNet::Media::MediaStream^>(
-						gcnew WebRtcNet::Media::MediaStreamException(
+						gcnew MediaStreamException(
 							"Failed to add the video track to the media stream."));
 				}
 			}
 
 			// Create managed MediaStream wrapper
-			auto managedStream = gcnew WebRtcInterop::Media::MediaStream(nativeStream);
+			auto managedStream = gcnew MediaStream(nativeStream);
 			return Task::FromResult<WebRtcNet::Media::MediaStream^>(managedStream);
 		}
-		catch (System::Exception^ ex)
+		catch (Exception^ ex)
 		{
 			return Task::FromException<WebRtcNet::Media::MediaStream^>(ex);
 		}
