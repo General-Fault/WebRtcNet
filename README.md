@@ -6,6 +6,11 @@ WebRtcNet currently uses WebRTC branch-heads/7778, which corresponds to Chromium
 
 See [WebRTC 1.0: Real-time Communication Between Browsers](https://www.w3.org/TR/webrtc/) for API documentation.
 
+## Contribution and AI guidance
+
+- Human contributor workflow requirements: `CONTRIBUTING.md`
+- AI execution guardrails for this repository: `Agents.md`
+
 ## Local W3C spec corpus
 
 This repository keeps a local standards corpus in `documents\specs\` to support standards-alignment work in `WebRtcNet.Api` without repeated web fetching.
