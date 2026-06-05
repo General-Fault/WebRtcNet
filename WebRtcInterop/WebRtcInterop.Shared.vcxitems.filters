@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)InteropHResult.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaStream.cpp">
       <Filter>Media</Filter>
@@ -28,13 +29,21 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)RtcDataChannel.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RtcIceTransport.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaDevices.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaDevicesFactory.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaDevices.cpp">
+      <Filter>Media</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaDevicesFactory.cpp">
+      <Filter>Media</Filter>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)RtcPeerConnection.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RtcPeerConnectionFactory.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Media\CameraVideoSource.cpp">
+      <Filter>Media</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)InteropHResult.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ManagedScopedRefPtr.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalCollections.h">
       <Filter>Marshaling</Filter>
@@ -67,9 +76,16 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Resource.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RtcDataChannel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RtcIceTransport.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaDevices.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaDevicesFactory.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaDevices.h">
+      <Filter>Media</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaDevicesFactory.h">
+      <Filter>Media</Filter>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)RtcPeerConnection.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RtcPeerConnectionFactory.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Media\CameraVideoSource.h">
+      <Filter>Media</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
