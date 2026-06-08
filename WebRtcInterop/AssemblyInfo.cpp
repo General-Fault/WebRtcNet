@@ -6,6 +6,9 @@ using namespace System::Runtime::CompilerServices;
 using namespace System::Runtime::InteropServices;
 using namespace System::Security::Permissions;
 
+// Declare WebRtcNet.Api as a friend assembly to allow it to access internal types
+[assembly: InternalsVisibleTo("WebRtcNet.Api")];
+
 [assembly:AssemblyTitleAttribute(L"WebRtcInterop")];
 [assembly:AssemblyDescriptionAttribute(L"A .Net WebRtc implementation using the Google WebRtc native client.")];
 [assembly:AssemblyConfigurationAttribute(L"")];

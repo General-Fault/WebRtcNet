@@ -1,5 +1,8 @@
 #include "pch.h"
 
+// Make WebRtcNet.Api types accessible as friends
+#pragma as_friend("WebRtcNet.Api")
+
 #include <api/audio_options.h>
 #include "MediaDevices.h"
 #include "CameraVideoSource.h"
