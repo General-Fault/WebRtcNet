@@ -68,7 +68,7 @@ public abstract class MediaStreamTrack
 	/// Returns the native media stream track interface used by WebRtcInterop.
 	/// </summary>
 	/// <param name="throwOnDisposed">True to throw when the track has already been disposed.</param>
-	internal abstract IntPtr GetNativeMediaStreamTrackInterface(bool throwOnDisposed);
+	protected internal abstract IntPtr GetNativeMediaStreamTrackInterface(bool throwOnDisposed);
 
 	/// <summary>
 	/// A generated identifier for the track.

@@ -45,6 +45,7 @@ public:
 		void remove(System::EventHandler^ value) override { on_ended_ -= value; }
 	}
 
+public:
 	WebRtcNet::Media::MediaStreamTrack^ Clone() override;
 	void Stop() override;
 	MediaTrackCapabilities^ GetCapabilities() override;
@@ -52,7 +53,7 @@ public:
 	MediaTrackSettings^ GetSettings() override;
 	void ApplyConstraints(MediaTrackConstraints^ constraints) override;
 
-public:
+protected internal:
 	System::IntPtr GetNativeMediaStreamTrackInterface(bool throwOnDisposed) override;
 
 private:
