@@ -184,7 +184,7 @@ public sealed record MediaTrackCapabilities
 	/// Factory method for creating MediaTrackCapabilities instances (for interop use only).
 	/// </summary>
 	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-	public static MediaTrackCapabilities Create(
+	internal static MediaTrackCapabilities Create(
 		ValueRange<uint>? width = null,
 		ValueRange<uint>? height = null,
 		ValueRange<double>? aspectRatio = null,
