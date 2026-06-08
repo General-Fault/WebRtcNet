@@ -1,9 +1,5 @@
 #include "pch.h"
 
-// Make WebRtcNet.Api types accessible as friends
-#pragma as_friend("WebRtcNet.Api")
-
-#include <api/audio_options.h>
 #include "MediaDevices.h"
 #include "CameraVideoSource.h"
 #include "Logging/InteropHResult.h"
@@ -12,6 +8,7 @@
 #include "Marshaling/MarshalMediaDevices.h"
 #include "RtcPeerConnectionFactory.h"
 
+#include <api/audio_options.h>
 #include <api/peer_connection_interface.h>
 #include <modules/video_capture/video_capture_factory.h>
 #include <mmdeviceapi.h>

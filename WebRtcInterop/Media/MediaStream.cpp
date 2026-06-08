@@ -120,15 +120,10 @@ namespace WebRtcInterop::Media
 	void MediaStream::AddTrack(WebRtcNet::Media::MediaStreamTrack^ track)
 	{
 		if (track == nullptr) throw gcnew ArgumentNullException(NAMEOF(track));
-		auto interop_track = dynamic_cast<MediaStreamTrack^>(track);
-		if (interop_track == nullptr)
-		{
-			throw gcnew InvalidCastException("The provided track must be a WebRtcInterop::Media::MediaStreamTrack instance.");
-		}
 
 		const auto native_stream = _rpMediaStreamInterface->get();
 		const auto native_track = reinterpret_cast<webrtc::MediaStreamTrackInterface*>(
-			interop_track->GetNativeMediaStreamTrackInterface(true).ToPointer());
+			track->GetNativeMediaStreamTrackInterface(true).ToPointer());
 
 		if (native_track->kind() == webrtc::MediaStreamTrackInterface::kAudioKind)
 		{
@@ -152,15 +147,10 @@ namespace WebRtcInterop::Media
 	void MediaStream::RemoveTrack(WebRtcNet::Media::MediaStreamTrack^ track)
 	{
 		if (track == nullptr) throw gcnew ArgumentNullException(NAMEOF(track));
-		auto interop_track = dynamic_cast<MediaStreamTrack^>(track);
-		if (interop_track == nullptr)
-		{
-			throw gcnew InvalidCastException("The provided track must be a WebRtcInterop::Media::MediaStreamTrack instance.");
-		}
 
 		const auto native_stream = _rpMediaStreamInterface->get();
 		const auto native_track = reinterpret_cast<webrtc::MediaStreamTrackInterface*>(
-			interop_track->GetNativeMediaStreamTrackInterface(true).ToPointer());
+			track->GetNativeMediaStreamTrackInterface(true).ToPointer());
 
 		if (native_track->kind() == webrtc::MediaStreamTrackInterface::kAudioKind)
 		{
