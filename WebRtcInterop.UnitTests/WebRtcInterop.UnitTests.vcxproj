@@ -51,6 +51,7 @@
     <ClInclude Include="include\TestUtils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="InteropHResultTests.cpp" />
     <ClCompile Include="ManagedScopedRefPtrTests.cpp" />
     <ClCompile Include="Marshaling\MarshalCollectionsTests.cpp" />
     <ClCompile Include="Marshaling\MarshalMediaTests.cpp" />

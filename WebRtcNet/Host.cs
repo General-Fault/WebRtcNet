@@ -1,7 +1,8 @@
 using System;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Threading;
+using Microsoft.Extensions.Logging;
+using WebRtcNet.Logging;
 using WebRtcNet.Media;
 
 namespace WebRtcNet;
@@ -20,13 +21,29 @@ public static class Host
 	public static MediaDevices MediaDevices => media_devices_.Value;
 
 	/// <summary>
+	/// Sets the ILoggerFactory for the host.
+	/// Must be called before creating MediaDevices or PeerConnection instances to configure logging for the library.
+	/// </summary>
+	/// <param name="factory">Logger factory to use for all WebRtcNet layers.</param>
+	/// <remarks>
+	/// If not called, Debug builds will log to console; Release builds will be silent.
+	/// </remarks>
+	public static void SetLoggerFactory(ILoggerFactory factory)
+	{
+		if (factory == null)
+			throw new ArgumentNullException(nameof(factory));
+		WebRtcLogWriterBridge.SetLoggerFactory(factory);
+	}
+
+	/// <summary>
 	/// Creates a peer connection using the active native backend.
 	/// </summary>
 	/// <param name="configuration">Peer connection configuration.</param>
 	/// <returns>A new peer connection instance.</returns>
 	public static RtcPeerConnection CreatePeerConnection(RtcConfiguration configuration)
 	{
-		Contract.Requires<ArgumentNullException>(configuration != null, nameof(configuration));
+		if (configuration == null)
+			throw new ArgumentNullException(nameof(configuration));
 		return CreateInteropInstance(
 			() => WebRtcInterop.RtcPeerConnectionFactory.CreatePeerConnection(configuration));
 	}

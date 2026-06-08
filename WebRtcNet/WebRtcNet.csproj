@@ -1,24 +1,25 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<TargetFrameworks>net10.0-windows;net48</TargetFrameworks>
-		<OutputType>Library</OutputType>
-		<Platforms>ARM64;x64;x86</Platforms>
-		<AssemblyTitle>WebRtcNet</AssemblyTitle>
-		<AssemblyDescription>A WebRtc implementation for .Net</AssemblyDescription>
-		<Guid>3CA16CE5-8124-4D86-8E37-2171B15BE276</Guid>
-		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-		<LangVersion>latest</LangVersion>
-	</PropertyGroup>
-
-	<PropertyGroup>
-		<PackageLicenseFile>..\LICENSE</PackageLicenseFile>
-		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-		<DocumentationFile>$(OutputPath)$(TargetFramework)\WebRtcNet.XML</DocumentationFile>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\WebRtcInterop\WebRtcInterop.Framework.vcxproj" Condition="'$(TargetFramework)' == 'net48'" ReferenceOutputAssembly="true" Private="true" PrivateAssets="none" />
-		<ProjectReference Include="..\WebRtcInterop\WebRtcInterop.Core.vcxproj" Condition="'$(TargetFramework)' == 'net10.0-windows'" ReferenceOutputAssembly="true" Private="true" PrivateAssets="none" />
-		<ProjectReference Include="..\WebRtcNet.Api\WebRtcNet.Api.csproj"/>
-	</ItemGroup>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net10.0-windows;net48</TargetFrameworks>
+    <OutputType>Library</OutputType>
+    <Platforms>ARM64;x64;x86</Platforms>
+    <AssemblyTitle>WebRtcNet</AssemblyTitle>
+    <AssemblyDescription>A WebRtc implementation for .Net</AssemblyDescription>
+    <Guid>3CA16CE5-8124-4D86-8E37-2171B15BE276</Guid>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageLicenseFile>..\LICENSE</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <DocumentationFile>$(OutputPath)$(TargetFramework)\WebRtcNet.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WebRtcInterop\WebRtcInterop.Framework.vcxproj" Condition="'$(TargetFramework)' == 'net48'" ReferenceOutputAssembly="true" Private="true" PrivateAssets="none" />
+    <ProjectReference Include="..\WebRtcInterop\WebRtcInterop.Core.vcxproj" Condition="'$(TargetFramework)' == 'net10.0-windows'" ReferenceOutputAssembly="true" Private="true" PrivateAssets="none" />
+    <ProjectReference Include="..\WebRtcNet.Api\WebRtcNet.Api.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
+  </ItemGroup>
 </Project>

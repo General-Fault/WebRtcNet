@@ -128,7 +128,7 @@ ninja -C "$(WebRtcOutRoot)\$(Configuration)\$(Platform)"
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)ManagedScopedRefPtr.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)InteropHResult.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Logging\InteropHResult.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalCollections.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalDataChannel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalEnums.h" />
@@ -150,7 +150,7 @@ ninja -C "$(WebRtcOutRoot)\$(Configuration)\$(Platform)"
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)CameraVideoSource.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)InteropHResult.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Logging\InteropHResult.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaDevices.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaDevicesFactory.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaStream.cpp" />
@@ -160,6 +160,7 @@ ninja -C "$(WebRtcOutRoot)\$(Configuration)\$(Platform)"
     <ClCompile Include="$(MSBuildThisFileDirectory)RtcIceTransport.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RtcPeerConnection.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RtcPeerConnectionFactory.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Logging\WebRtcLogSink.cpp" xmlns="" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cpp" />
@@ -167,5 +168,7 @@ ninja -C "$(WebRtcOutRoot)\$(Configuration)\$(Platform)"
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Logging\Marshaling\MarshalLogging.h" xmlns="" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Logging\WebRtcLogSink.h" xmlns="" />
   </ItemGroup>
 </Project>

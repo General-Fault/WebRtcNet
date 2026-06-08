@@ -77,6 +77,26 @@ dotnet msbuild WebRtcInterop.UnitTests\WebRtcInterop.UnitTests.vcxproj /p:Config
 .\WebRtcInterop.UnitTests\x64\Debug\WebRtcInterop.UnitTests.exe
 ```
 
+## Logging configuration
+
+`Host.SetLoggerFactory(...)` configures logging for managed API code, C++/CLI interop code, and WebRTC native logs.
+
+```csharp
+using Microsoft.Extensions.Logging;
+using WebRtcNet;
+
+var loggerFactory = LoggerFactory.Create(builder =>
+{
+	builder
+		.SetMinimumLevel(LogLevel.Information)
+		.AddConsole();
+});
+
+Host.SetLoggerFactory(loggerFactory);
+```
+
+If `SetLoggerFactory` is not called, Debug builds default to console logging and Release builds are silent.
+
 ## Docker pipeline
 
 The build pipeline uses individual-stage Dockerfiles rather than a single monolithic file. `docker buildx` is not used — Windows containers require classic `docker build`.

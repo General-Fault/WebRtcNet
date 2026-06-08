@@ -1,5 +1,7 @@
 #pragma once
 
+namespace WebRtcInterop::Logging { class WebRtcLogSink; }
+
 namespace webrtc
 {
 	template <class T>
