@@ -7,6 +7,22 @@
 namespace msclr::interop
 {
 	/// <summary>
+	/// Marshals EchoCancellationValue from a boolean.
+	/// </summary>
+	inline WebRtcNet::Media::EchoCancellationValue MarshalEchoCancellationValue(bool value)
+	{
+		return WebRtcNet::Media::EchoCancellationValue(value);
+	}
+
+	/// <summary>
+	/// Marshals EchoCancellationValue from a mode string.
+	/// </summary>
+	inline WebRtcNet::Media::EchoCancellationValue MarshalEchoCancellationValue(const std::string& modeStr)
+	{
+		return WebRtcNet::Media::EchoCancellationValue(marshal_as<System::String^>(modeStr));
+	}
+
+	/// <summary>
 	/// Marshals a nullable value to a ValueRange<T> by setting both Min and Max.
 	/// If the value is null, returns an empty range.
 	/// </summary>
