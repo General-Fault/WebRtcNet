@@ -1,0 +1,49 @@
+{
+  "logCategoryMappings": [
+    {
+      "tagPattern": "peerconnection",
+      "category": "WebRTC.PeerConnection",
+      "eventIdBase": 1000
+    },
+    {
+      "tagPattern": "peerconnectionfactory",
+      "category": "WebRTC.PeerConnection",
+      "eventIdBase": 1000
+    },
+    {
+      "tagPattern": "datachannel",
+      "category": "WebRTC.DataChannel",
+      "eventIdBase": 1100
+    },
+    {
+      "tagPattern": "audio_device|audio_coding",
+      "category": "WebRTC.Audio",
+      "eventIdBase": 1200
+    },
+    {
+      "tagPattern": "audio_processing(\\.aec|\\.ns)?",
+      "category": "WebRTC.AudioProcessing",
+      "eventIdBase": 1300
+    },
+    {
+      "tagPattern": "video_capture|video_coding",
+      "category": "WebRTC.Video",
+      "eventIdBase": 1400
+    },
+    {
+      "tagPattern": "ice_.*|dtls_transport|srtp_transport|transport",
+      "category": "WebRTC.Transport",
+      "eventIdBase": 1500
+    },
+    {
+      "tagPattern": "webrtcsdp|rtp_rtcp",
+      "category": "WebRTC.Transport",
+      "eventIdBase": 1500
+    },
+    {
+      "tagPattern": ".*",
+      "category": "WebRTC.Other",
+      "eventIdBase": 1900
+    }
+  ]
+}

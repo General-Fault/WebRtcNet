@@ -2,6 +2,8 @@ using System;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Threading;
+using Microsoft.Extensions.Logging;
+using WebRtcNet.Logging;
 using WebRtcNet.Media;
 
 namespace WebRtcNet;
@@ -18,6 +20,20 @@ public static class Host
 	/// Gets the process-wide media devices entry point.
 	/// </summary>
 	public static MediaDevices MediaDevices => media_devices_.Value;
+
+	/// <summary>
+	/// Sets the ILoggerFactory for the host.
+	/// Must be called before creating MediaDevices or PeerConnection instances to configure logging for the library.
+	/// </summary>
+	/// <param name="factory">Logger factory to use for all WebRtcNet layers.</param>
+	/// <remarks>
+	/// If not called, Debug builds will log to console; Release builds will be silent.
+	/// </remarks>
+	public static void SetLoggerFactory(ILoggerFactory factory)
+	{
+		Contract.Requires<ArgumentNullException>(factory != null, nameof(factory));
+		LoggerFactoryHolder.SetLoggerFactory(factory);
+	}
 
 	/// <summary>
 	/// Creates a peer connection using the active native backend.
@@ -49,7 +65,7 @@ public static class Host
 			ex is BadImageFormatException)
 		{
 			throw new InvalidOperationException(
-				$"Failed to initialize native WebRTC backend type '{typeof(T).FullName}'. Ensure WebRtcInterop assemblies and native dependencies are present for this target.",
+				\Failed to initialize native WebRTC backend type '\{typeof(T).FullName}'. Ensure WebRtcInterop assemblies and native dependencies are present for this target.\,
 				ex);
 		}
 	}
