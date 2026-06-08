@@ -1,8 +1,6 @@
 #include "pch.h"
 
 #include "WebRtcLogSink.h"
-#include "..\Marshaling\MarshalLogging.h"
-#include <msclr/marshal_cppclassm.h>
 
 using namespace System;
 using namespace WebRtcNet::Logging;
@@ -17,14 +15,14 @@ namespace WebRtcInterop::Logging
 	{
 	}
 
-	void WebRtcLogSink::OnLogMessage(const rtc::LogMessage& msg)
+	void WebRtcLogSink::OnLogMessage(const webrtc::LogLineRef& msg)
 	{
 		try
 		{
 			// Extract tag, message, and convert severity
-			auto tag = gcnew String(msg.tag);
-			auto message = gcnew String(msg.str().c_str());
-			auto severity = ConvertSeverity(msg.severity);
+			auto tag = marshal_as<String^>(std::string(msg.tag()));
+			auto message = marshal_as<String^>(std::string(msg.message()));
+			auto severity = ConvertSeverity(msg.severity());
 
 			// Resolve category and EventId base
 			String^ category = String::Empty;
@@ -35,16 +33,12 @@ namespace WebRtcInterop::Logging
 			int threadId = Threading::Thread::CurrentThread->ManagedThreadId;
 
 			// Create log event
-			auto logEvent = gcnew WebRtcLogEvent(
-				DateTime::Now,
+			WebRtcLogWriterBridge::WriteInteropLog(
 				severity,
-				gcnew EventId(eventIdBase, category),
+				eventIdBase,
 				category,
 				threadId,
 				message);
-
-			// Write to managed writer
-			WebRtcLogWriterBridge::Instance->WriteLog(logEvent);
 		}
 		catch (...)
 		{
@@ -52,22 +46,33 @@ namespace WebRtcInterop::Logging
 		}
 	}
 
-	System::Diagnostics::LogLevel WebRtcLogSink::ConvertSeverity(rtc::LoggingSeverity severity)
+	int WebRtcLogSink::ConvertSeverity(webrtc::LoggingSeverity severity)
 	{
-		return marshal_as<System::Diagnostics::LogLevel>(severity);
+		switch (severity)
+		{
+		case webrtc::LS_VERBOSE:
+			return 1;
+		case webrtc::LS_INFO:
+			return 2;
+		case webrtc::LS_WARNING:
+			return 3;
+		case webrtc::LS_ERROR:
+			return 4;
+		case webrtc::LS_NONE:
+			return 6;
+		default:
+			return 2;
+		}
 	}
 
 	void WebRtcLogSink::ResolveCategoryAndEventId(
-		const String^ tag,
+		String^ tag,
 		String^% category,
 		int% eventIdBase)
 	{
 		try
 		{
-			auto mapping = LogCategoryMapping::LoadFromResource();
-			auto [cat, base] = mapping->ResolveTagToCategory(tag);
-			category = cat;
-			eventIdBase = base;
+			WebRtcLogWriterBridge::ResolveWebRtcCategory(tag, category, eventIdBase);
 		}
 		catch (...)
 		{

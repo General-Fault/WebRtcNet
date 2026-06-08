@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.Contracts;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -28,20 +27,14 @@ internal class WebRtcLogWriter : IWebRtcLogWriter, IDisposable
 	/// </summary>
 	public void WriteLog(WebRtcLogEvent logEvent)
 	{
-		Contract.Requires<ArgumentNullException>(logEvent != null, nameof(logEvent));
+		if (logEvent == null)
+			throw new ArgumentNullException(nameof(logEvent));
 
 		if (disposed_)
 			return;
 
-		try
-		{
-			// Non-blocking write; if channel is closed, silently drop
-			channel_.Writer.TryWrite(logEvent);
-		}
-		catch
-		{
-			// Suppress exceptions; do not disrupt native code paths
-		}
+		// Non-blocking write; if channel is closed, drop the message.
+		channel_.Writer.TryWrite(logEvent);
 	}
 
 	/// <summary>
@@ -64,15 +57,15 @@ internal class WebRtcLogWriter : IWebRtcLogWriter, IDisposable
 						null,
 						(msg, _) => msg);
 				}
-				catch
+				catch (InvalidOperationException)
 				{
-					// Suppress exceptions; do not disrupt dequeue loop
+					// Logger factory may be shutting down.
 				}
 			}
 		}
-		catch
+		catch (InvalidOperationException)
 		{
-			// Suppress exceptions during dequeue
+			// Channel closed while reading.
 		}
 	}
 
@@ -87,18 +80,7 @@ internal class WebRtcLogWriter : IWebRtcLogWriter, IDisposable
 		channel_.Writer.TryComplete();
 
 		// Give background task time to drain (best effort)
-		try
-		{
-			if (!dequeue_task_.Wait(TimeSpan.FromSeconds(1)))
-			{
-				// Timeout; task is still running, but dispose anyway
-			}
-		}
-		catch
-		{
-			// Suppress any exceptions during shutdown
-		}
-
-		channel_.Dispose();
+		if (!dequeue_task_.Wait(TimeSpan.FromSeconds(1)))
+			return;
 	}
 }

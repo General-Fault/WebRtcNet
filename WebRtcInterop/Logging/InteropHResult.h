@@ -8,5 +8,6 @@ namespace WebRtcInterop
 	{
 	public:
 		static void ThrowIfFailed(HRESULT hr, System::String^ message);
+		static bool LogIfFailed(HRESULT hr, System::String^ operation, System::String^ category);
 	};
 }

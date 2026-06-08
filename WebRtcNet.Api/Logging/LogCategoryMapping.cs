@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -44,7 +43,11 @@ internal class LogCategoryMapping
 		{
 			// Load JSON from embedded resource
 			var assembly = typeof(LogCategoryMapping).Assembly;
-			var resourceName = $"{typeof(LogCategoryMapping).Namespace}.Resources.LogCategoryMapping.json";
+			var resourceName = assembly
+				.GetManifestResourceNames()
+				.FirstOrDefault(name => name.EndsWith("LogCategoryMapping.json", StringComparison.Ordinal));
+			if (resourceName == null)
+				throw new InvalidOperationException("Embedded resource 'LogCategoryMapping.json' not found.");
 
 			using var stream = assembly.GetManifestResourceStream(resourceName);
 			if (stream == null)
@@ -81,11 +84,12 @@ internal class LogCategoryMapping
 
 	/// <summary>
 	/// Resolves a WebRTC tag to category and EventId base.
-	/// Returns ("WebRTC.Other", 1600) if no match found.
+	/// Returns ("WebRTC.Other", 1900) if no match found.
 	/// </summary>
 	public (string Category, int EventIdBase) ResolveTagToCategory(string tag)
 	{
-		Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(tag), nameof(tag));
+		if (string.IsNullOrEmpty(tag))
+			throw new ArgumentException("Tag must not be null or empty.", nameof(tag));
 
 		// Remove leading/trailing parentheses if present (tags come as "(tag_name)")
 		var cleanTag = tag.Trim('(', ')');
@@ -97,6 +101,6 @@ internal class LogCategoryMapping
 		}
 
 		// Default fallback
-		return ("WebRTC.Other", 1600);
+		return ("WebRTC.Other", 1900);
 	}
 }

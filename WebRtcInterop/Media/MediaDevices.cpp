@@ -3,7 +3,7 @@
 #include <api/audio_options.h>
 #include "MediaDevices.h"
 #include "CameraVideoSource.h"
-#include "InteropHResult.h"
+#include "Logging/InteropHResult.h"
 #include "MediaStream.h"
 #include "MediaStreamTrack.h"
 #include "Marshaling/MarshalMedia.h"
@@ -28,6 +28,11 @@ namespace WebRtcInterop::Media
 
 	namespace
 	{
+		String^ GetInteropMediaDevicesCategory()
+		{
+			return "Interop.MediaDevices";
+		}
+
 		String^ GetDeviceMapKey(MediaDeviceInfo^ device)
 		{
 			return String::Format("{0}|{1}", (int)device->Kind, device->DeviceId);
@@ -37,12 +42,16 @@ namespace WebRtcInterop::Media
 		{
 			auto label = fallbackLabel;
 			IPropertyStore* propertyStore = nullptr;
-			if (FAILED(device->OpenPropertyStore(STGM_READ, &propertyStore)) || propertyStore == nullptr)
+			auto hr = device->OpenPropertyStore(STGM_READ, &propertyStore);
+			if (InteropHResult::LogIfFailed(hr, "IMMDevice::OpenPropertyStore", GetInteropMediaDevicesCategory()) ||
+				propertyStore == nullptr)
 				return label;
 
 			PROPVARIANT friendlyName;
 			PropVariantInit(&friendlyName);
-			if (SUCCEEDED(propertyStore->GetValue(PKEY_Device_FriendlyName, &friendlyName)) &&
+			hr = propertyStore->GetValue(PKEY_Device_FriendlyName, &friendlyName);
+			InteropHResult::LogIfFailed(hr, "IPropertyStore::GetValue(PKEY_Device_FriendlyName)", GetInteropMediaDevicesCategory());
+			if (SUCCEEDED(hr) &&
 				friendlyName.vt == VT_LPWSTR)
 				label = gcnew String(friendlyName.pwszVal);
 
@@ -60,12 +69,15 @@ namespace WebRtcInterop::Media
 		{
 			IMMDeviceCollection* collection = nullptr;
 			auto hr = enumerator->EnumAudioEndpoints(flow, DEVICE_STATE_ACTIVE, &collection);
-			if (FAILED(hr) || collection == nullptr)
+			if (InteropHResult::LogIfFailed(
+				hr,
+				String::Format("IMMDeviceEnumerator::EnumAudioEndpoints(flow={0})", static_cast<int>(flow)),
+				GetInteropMediaDevicesCategory()) || collection == nullptr)
 				return;
 
 			UINT count = 0;
 			hr = collection->GetCount(&count);
-			if (FAILED(hr))
+			if (InteropHResult::LogIfFailed(hr, "IMMDeviceCollection::GetCount", GetInteropMediaDevicesCategory()))
 			{
 				collection->Release();
 				return;
@@ -74,11 +86,20 @@ namespace WebRtcInterop::Media
 			for (UINT i = 0; i < count; ++i)
 			{
 				IMMDevice* device = nullptr;
-				if (FAILED(collection->Item(i, &device)) || device == nullptr)
+				hr = collection->Item(i, &device);
+				if (InteropHResult::LogIfFailed(
+					hr,
+					String::Format("IMMDeviceCollection::Item(index={0})", i),
+					GetInteropMediaDevicesCategory()) || device == nullptr)
 					continue;
 
 				LPWSTR deviceId = nullptr;
-				if (SUCCEEDED(device->GetId(&deviceId)))
+				hr = device->GetId(&deviceId);
+				InteropHResult::LogIfFailed(
+					hr,
+					String::Format("IMMDevice::GetId(index={0})", i),
+					GetInteropMediaDevicesCategory());
+				if (SUCCEEDED(hr))
 				{
 					auto id = gcnew String(deviceId);
 					auto label = GetAudioDeviceLabel(device, fallbackLabel);
@@ -294,11 +315,15 @@ namespace WebRtcInterop::Media
 			// Initialize COM
 			HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 			if (FAILED(hr) && hr != S_FALSE)
+			{
+				InteropHResult::LogIfFailed(hr, "CoInitializeEx", GetInteropMediaDevicesCategory());
 				return devices; // COM already initialized or failed
+			}
 
 			IMMDeviceEnumerator* enumerator = nullptr;
 			hr = CoCreateInstance(__uuidof(MMDeviceEnumerator), nullptr, CLSCTX_INPROC_SERVER,
 				__uuidof(IMMDeviceEnumerator), reinterpret_cast<void**>(&enumerator));
+			InteropHResult::LogIfFailed(hr, "CoCreateInstance(MMDeviceEnumerator)", GetInteropMediaDevicesCategory());
 
 			if (SUCCEEDED(hr) && enumerator != nullptr)
 			{

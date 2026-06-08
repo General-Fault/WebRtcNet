@@ -1,7 +1,7 @@
 using System;
-using System.Diagnostics.Contracts;
-using System.Threading;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging.Console;
 
 namespace WebRtcNet.Logging;
 
@@ -42,7 +42,8 @@ internal static class LoggerFactoryHolder
 	/// </summary>
 	public static void SetLoggerFactory(ILoggerFactory factory)
 	{
-		Contract.Requires<ArgumentNullException>(factory != null, nameof(factory));
+		if (factory == null)
+			throw new ArgumentNullException(nameof(factory));
 
 		lock (lock_)
 		{
@@ -55,7 +56,8 @@ internal static class LoggerFactoryHolder
 	/// </summary>
 	public static ILogger GetLogger(string category)
 	{
-		Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(category), nameof(category));
+		if (string.IsNullOrEmpty(category))
+			throw new ArgumentException("Category must not be null or empty.", nameof(category));
 		return Current.CreateLogger(category);
 	}
 

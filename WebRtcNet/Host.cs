@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Threading;
 using Microsoft.Extensions.Logging;
@@ -31,8 +30,9 @@ public static class Host
 	/// </remarks>
 	public static void SetLoggerFactory(ILoggerFactory factory)
 	{
-		Contract.Requires<ArgumentNullException>(factory != null, nameof(factory));
-		LoggerFactoryHolder.SetLoggerFactory(factory);
+		if (factory == null)
+			throw new ArgumentNullException(nameof(factory));
+		WebRtcLogWriterBridge.SetLoggerFactory(factory);
 	}
 
 	/// <summary>
@@ -42,7 +42,8 @@ public static class Host
 	/// <returns>A new peer connection instance.</returns>
 	public static RtcPeerConnection CreatePeerConnection(RtcConfiguration configuration)
 	{
-		Contract.Requires<ArgumentNullException>(configuration != null, nameof(configuration));
+		if (configuration == null)
+			throw new ArgumentNullException(nameof(configuration));
 		return CreateInteropInstance(
 			() => WebRtcInterop.RtcPeerConnectionFactory.CreatePeerConnection(configuration));
 	}
@@ -65,7 +66,7 @@ public static class Host
 			ex is BadImageFormatException)
 		{
 			throw new InvalidOperationException(
-				\Failed to initialize native WebRTC backend type '\{typeof(T).FullName}'. Ensure WebRtcInterop assemblies and native dependencies are present for this target.\,
+				$"Failed to initialize native WebRTC backend type '{typeof(T).FullName}'. Ensure WebRtcInterop assemblies and native dependencies are present for this target.",
 				ex);
 		}
 	}

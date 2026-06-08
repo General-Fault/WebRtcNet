@@ -1,6 +1,5 @@
 #pragma once
 
-#include <api/rtc_event_log.h>
 #include <rtc_base/logging.h>
 #include <memory>
 
@@ -10,7 +9,7 @@ namespace WebRtcInterop::Logging
 	/// Custom WebRTC log sink that forwards rtc::LogMessage events to managed IWebRtcLogWriter.
 	/// Registers with WebRTC's logging system to capture all diagnostic output.
 	/// </summary>
-	class WebRtcLogSink : public rtc::LogSink
+	class WebRtcLogSink : public webrtc::LogSink
 	{
 	public:
 		WebRtcLogSink();
@@ -20,24 +19,24 @@ namespace WebRtcInterop::Logging
 		/// Called by WebRTC for each log message.
 		/// Extracts severity, tag, and message, then forwards to managed writer.
 		/// </summary>
-		void OnLogMessage(const rtc::LogMessage& msg) override;
+		void OnLogMessage(const webrtc::LogLineRef& msg) override;
 
 		/// <summary>
 		/// Called by WebRTC for each log message (alternate interface).
 		/// </summary>
-		void OnLogMessage(const System::String^ message) override { }
+		void OnLogMessage(const std::string& message) override { }
 
 	private:
 		/// <summary>
-		/// Converts WebRTC severity level to .NET LogLevel using marshal_as.
+		/// Converts WebRTC severity level to Microsoft.Extensions.Logging.LogLevel numeric values.
 		/// </summary>
-		static System::Diagnostics::LogLevel ConvertSeverity(rtc::LoggingSeverity severity);
+		static int ConvertSeverity(webrtc::LoggingSeverity severity);
 
 		/// <summary>
 		/// Extracts category and EventId base from WebRTC tag via managed mapping.
 		/// </summary>
 		static void ResolveCategoryAndEventId(
-			const System::String^ tag,
+			System::String^ tag,
 			System::String^% category,
 			System::Int32% eventIdBase);
 	};

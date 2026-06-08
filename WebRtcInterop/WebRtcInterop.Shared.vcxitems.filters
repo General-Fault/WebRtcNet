@@ -13,10 +13,18 @@
     <Filter Include="Observers">
       <UniqueIdentifier>{9ba0ba64-d5f2-4e0f-9f00-5a827edbb003}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Logging">
+      <UniqueIdentifier>{f3d60c9c-5de3-4ff8-b8f3-1fb426952f45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Logging\Marshaling">
+      <UniqueIdentifier>{2df4c4f8-8774-4fee-8583-5b8d9a6ccb1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)InteropHResult.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Logging\InteropHResult.cpp">
+      <Filter>Logging</Filter>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaStream.cpp">
       <Filter>Media</Filter>
@@ -38,10 +46,15 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)RtcPeerConnection.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RtcPeerConnectionFactory.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)CameraVideoSource.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Logging\WebRtcLogSink.cpp">
+      <Filter>Logging</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)InteropHResult.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Logging\InteropHResult.h">
+      <Filter>Logging</Filter>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ManagedScopedRefPtr.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Marshaling\MarshalCollections.h">
       <Filter>Marshaling</Filter>
@@ -83,5 +96,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)RtcPeerConnection.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RtcPeerConnectionFactory.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CameraVideoSource.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Logging\Marshaling\MarshalLogging.h">
+      <Filter>Logging\Marshaling</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Logging\WebRtcLogSink.h">
+      <Filter>Logging</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
