@@ -6,6 +6,7 @@
 #include <api/create_modular_peer_connection_factory.h>
 #include <rtc_base/thread.h>
 #include <rtc_base/win32_socket_init.h>
+#include "Logging/WebRtcLogSink.h"
 
 using namespace System;
 
@@ -16,6 +17,7 @@ namespace WebRtcInterop
 		std::unique_ptr<webrtc::Thread> network_thread_;
 		std::unique_ptr<webrtc::Thread> worker_thread_;
 		std::unique_ptr<webrtc::Thread> signaling_thread_;
+		static WebRtcInterop::Logging::WebRtcLogSink* log_sink_;
 	}
 
 	RtcPeerConnectionFactory::RtcPeerConnectionFactory()
@@ -43,6 +45,10 @@ namespace WebRtcInterop
 		}
 
 		CreateNativePeerConnectionFactory();
+
+		// Register logging sink for WebRTC diagnostics
+		log_sink_ = new WebRtcInterop::Logging::WebRtcLogSink();
+		rtc::LogMessage::AddLogToStream(log_sink_, rtc::LS_VERBOSE);
 	}
 
 	RtcPeerConnectionFactory::~RtcPeerConnectionFactory()
@@ -52,6 +58,14 @@ namespace WebRtcInterop
 
 	RtcPeerConnectionFactory::!RtcPeerConnectionFactory()
 	{
+		// Unregister logging sink
+		if (log_sink_ != nullptr)
+		{
+			rtc::LogMessage::RemoveLogToStream(log_sink_);
+			delete log_sink_;
+			log_sink_ = nullptr;
+		}
+
 		DestroyNativePeerConnectionFactory();
 	}
 
@@ -126,3 +140,4 @@ namespace WebRtcInterop
 		network_thread_.reset();
 	}
 }
+

@@ -1,5 +1,7 @@
 #pragma once
 
+namespace WebRtcInterop::Logging { class WebRtcLogSink; }
+
 namespace webrtc
 {
 	template <class T>
@@ -37,5 +39,7 @@ namespace WebRtcInterop
 		webrtc::scoped_refptr<webrtc::PeerConnectionFactoryInterface>* _rpPeerConnectionFactory;
 
 		static RtcPeerConnectionFactory^ _instance = nullptr;
+		static WebRtcInterop::Logging::WebRtcLogSink* _log_sink = nullptr;
 	};
 }
+
