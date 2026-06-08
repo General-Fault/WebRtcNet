@@ -77,6 +77,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Media\Marshaling\MarshalMediaDevices.h">
       <Filter>Media\Marshaling</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Media\Marshaling\MarshalMediaTrackCapabilities.h">
+      <Filter>Media\Marshaling</Filter>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaStream.h">
       <Filter>Media</Filter>
     </ClInclude>

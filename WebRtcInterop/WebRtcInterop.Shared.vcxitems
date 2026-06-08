@@ -137,6 +137,7 @@ ninja -C "$(WebRtcOutRoot)\$(Configuration)\$(Platform)"
     <ClInclude Include="$(MSBuildThisFileDirectory)CameraVideoSource.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Media\Marshaling\MarshalMedia.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Media\Marshaling\MarshalMediaDevices.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Media\Marshaling\MarshalMediaTrackCapabilities.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaDevices.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaDevicesFactory.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaStream.h" />
