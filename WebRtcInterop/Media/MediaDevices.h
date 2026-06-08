@@ -19,17 +19,17 @@ namespace WebRtcInterop::Media
 			void remove(EventHandler<WebRtcNet::Media::DeviceChangeEventArgs^>^ value) override { on_device_change_ -= value; }
 		}
 
-		virtual Task<IEnumerable<WebRtcNet::Media::MediaDeviceInfo^>^>^ EnumerateDevices() override;
-		virtual WebRtcNet::Media::MediaTrackSupportedConstraints^ GetSupportedConstraints() override;
-		virtual Task<WebRtcNet::Media::MediaStream^>^ GetUserMedia(WebRtcNet::Media::MediaStreamConstraints^ constraints) override;
+		Task<IEnumerable<WebRtcNet::Media::MediaDeviceInfo^>^>^ EnumerateDevices() override;
+		WebRtcNet::Media::MediaTrackSupportedConstraints^ GetSupportedConstraints() override;
+		Task<WebRtcNet::Media::MediaStream^>^ GetUserMedia(WebRtcNet::Media::MediaStreamConstraints^ constraints) override;
 
 	private:
 		void RefreshKnownDevices(bool raiseEvent);
-		void OnDevicePoll(Object^ sender, System::Timers::ElapsedEventArgs^ args);
+		void OnDevicePoll(Object^ sender, Timers::ElapsedEventArgs^ args);
 		void StopDevicePolling();
 
-		System::Collections::Generic::Dictionary<String^, WebRtcNet::Media::MediaDeviceInfo^>^ known_devices_;
-		System::Timers::Timer^ device_poll_timer_;
+		Dictionary<String^, WebRtcNet::Media::MediaDeviceInfo^>^ known_devices_;
+		Timers::Timer^ device_poll_timer_;
 		Object^ device_poll_gate_;
 		EventHandler<WebRtcNet::Media::DeviceChangeEventArgs^>^ on_device_change_;
 	};

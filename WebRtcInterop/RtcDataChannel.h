@@ -74,7 +74,7 @@ namespace WebRtcInterop
 		webrtc::DataChannelInterface* GetNativeDataChannelInterface(bool throwOnDisposed);
 
 	protected:
-		virtual IntPtr GetNativeDataChannelHandle(bool throwOnDisposed) override;
+		IntPtr GetNativeDataChannelHandle(bool throwOnDisposed) override;
 
 	internal:
 		//Event invocation 

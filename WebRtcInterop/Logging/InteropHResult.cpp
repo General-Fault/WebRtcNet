@@ -66,7 +66,7 @@ namespace WebRtcInterop
 		}
 	}
 
-	void InteropHResult::ThrowIfFailed(HRESULT hr, System::String^ message)
+	void InteropHResult::ThrowIfFailed(HRESULT hr, String^ message)
 	{
 		if (SUCCEEDED(hr))
 			return;
@@ -92,13 +92,13 @@ namespace WebRtcInterop
 			const auto formatted = String::Format(
 				"{0} failed. HRESULT=0x{1:X8} ({2}), Facility={3}, Code={4}, SystemMessage=\"{5}\"",
 				operation,
-				static_cast<System::UInt32>(hr),
+				static_cast<UInt32>(hr),
 				hr,
 				HRESULT_FACILITY(hr),
 				HRESULT_CODE(hr),
 				FormatSystemMessage(hr));
 
-			WebRtcNet::Logging::WebRtcLogWriterBridge::WriteInteropLog(
+			WebRtcLogWriterBridge::WriteInteropLog(
 				4,
 				static_cast<int>(WebRtcLogEventId::InteropHResultFailure),
 				category,

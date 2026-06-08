@@ -72,26 +72,26 @@ namespace WebRtcInterop
 			void remove(EventHandler<RtcDataChannelEventArgs^>^ value) override { on_data_channel_ -= value; }
 		}
 
-		virtual Task<RtcSessionDescription>^ CreateOffer([System::Runtime::InteropServices::Optional] RtcOfferOptions^ options) override;
-		virtual Task<RtcSessionDescription>^ CreateAnswer([System::Runtime::InteropServices::Optional] RtcAnswerOptions^ options) override;
-		virtual Task^ SetLocalDescription([System::Runtime::InteropServices::Optional] Nullable<RtcLocalSessionDescriptionInit> description) override;
-		virtual Task^ SetRemoteDescription(RtcSessionDescription description) override;
-		virtual Task^ AddIceCandidate([System::Runtime::InteropServices::Optional] RtcIceCandidate^ candidate) override;
-		virtual void RestartIce() override;
-		virtual void Close() override;
-		virtual Task<RtcStatsReport^>^ GetStats([System::Runtime::InteropServices::Optional] WebRtcNet::Media::MediaStreamTrack^ selector) override;
+		Task<RtcSessionDescription>^ CreateOffer([System::Runtime::InteropServices::Optional] RtcOfferOptions^ options) override;
+		Task<RtcSessionDescription>^ CreateAnswer([System::Runtime::InteropServices::Optional] RtcAnswerOptions^ options) override;
+		Task^ SetLocalDescription([System::Runtime::InteropServices::Optional] Nullable<RtcLocalSessionDescriptionInit> description) override;
+		Task^ SetRemoteDescription(RtcSessionDescription description) override;
+		Task^ AddIceCandidate([System::Runtime::InteropServices::Optional] RtcIceCandidate^ candidate) override;
+		void RestartIce() override;
+		void Close() override;
+		Task<RtcStatsReport^>^ GetStats([System::Runtime::InteropServices::Optional] WebRtcNet::Media::MediaStreamTrack^ selector) override;
 
-		virtual IEnumerable<RtcRtpSender^>^ GetSenders() override;
-		virtual IEnumerable<RtcRtpReceiver^>^ GetReceivers() override;
-		virtual IEnumerable<RtcRtpTransceiver^>^ GetTransceivers() override;
-		virtual RtcRtpSender^ AddTrack(WebRtcNet::Media::MediaStreamTrack^ track, ... array<WebRtcNet::Media::MediaStream^>^ streams) override;
-		virtual RtcRtpTransceiver^ AddTransceiver(WebRtcNet::Media::MediaStreamTrack^ track, [System::Runtime::InteropServices::Optional] RtcRtpTransceiverInit^ init) override;
-		virtual RtcRtpTransceiver^ AddTransceiver(WebRtcNet::Media::MediaStreamTrackKind kind, [System::Runtime::InteropServices::Optional] RtcRtpTransceiverInit^ init) override;
-		virtual void RemoveTrack(RtcRtpSender^ sender) override;
-		virtual RtcDataChannel^ CreateDataChannel(String^ label, [System::Runtime::InteropServices::Optional] RtcDataChannelInit^ dataChannelInit) override;
+		IEnumerable<RtcRtpSender^>^ GetSenders() override;
+		IEnumerable<RtcRtpReceiver^>^ GetReceivers() override;
+		IEnumerable<RtcRtpTransceiver^>^ GetTransceivers() override;
+		RtcRtpSender^ AddTrack(WebRtcNet::Media::MediaStreamTrack^ track, ... array<WebRtcNet::Media::MediaStream^>^ streams) override;
+		RtcRtpTransceiver^ AddTransceiver(WebRtcNet::Media::MediaStreamTrack^ track, [System::Runtime::InteropServices::Optional] RtcRtpTransceiverInit^ init) override;
+		RtcRtpTransceiver^ AddTransceiver(WebRtcNet::Media::MediaStreamTrackKind kind, [System::Runtime::InteropServices::Optional] RtcRtpTransceiverInit^ init) override;
+		void RemoveTrack(RtcRtpSender^ sender) override;
+		RtcDataChannel^ CreateDataChannel(String^ label, [System::Runtime::InteropServices::Optional] RtcDataChannelInit^ dataChannelInit) override;
 
 	protected:
-		virtual IntPtr GetNativePeerConnectionHandle(bool throwOnDisposed) override;
+		IntPtr GetNativePeerConnectionHandle(bool throwOnDisposed) override;
 
 	private:
 		void ThrowShimNotImplemented(String^ memberName);

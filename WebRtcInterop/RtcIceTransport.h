@@ -50,7 +50,7 @@ namespace WebRtcInterop
 		webrtc::IceTransportInterface* GetNativeIceTransportInterface(bool throwOnDisposed);
 
 	protected:
-		virtual IntPtr GetNativeIceTransportHandle(bool throwOnDisposed) override;
+		IntPtr GetNativeIceTransportHandle(bool throwOnDisposed) override;
 
 	internal:
 		void FireOnStateChange() { if (on_state_change_ != nullptr) on_state_change_(this, EventArgs::Empty); }

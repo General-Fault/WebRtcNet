@@ -53,7 +53,7 @@ public:
 	void ApplyConstraints(MediaTrackConstraints^ constraints) override;
 
 public:
-	virtual System::IntPtr GetNativeMediaStreamTrackInterface(bool throwOnDisposed) override;
+	System::IntPtr GetNativeMediaStreamTrackInterface(bool throwOnDisposed) override;
 
 private:
 	webrtc::scoped_refptr<webrtc::MediaStreamTrackInterface>* _rpMediaStreamTrackInterface;
