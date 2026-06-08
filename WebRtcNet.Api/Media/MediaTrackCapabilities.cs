@@ -179,4 +179,45 @@ public sealed record MediaTrackCapabilities
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-groupId"/>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-groupid"/>
 	public string GroupId { get; init; } = string.Empty;
+
+	/// <summary>
+	/// Factory method for creating MediaTrackCapabilities instances (for interop use only).
+	/// </summary>
+	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+	public static MediaTrackCapabilities Create(
+		ValueRange<uint>? width = null,
+		ValueRange<uint>? height = null,
+		ValueRange<double>? aspectRatio = null,
+		ValueRange<double>? frameRate = null,
+		IReadOnlyList<VideoFacingModes>? facingMode = null,
+		IReadOnlyList<VideoResizeModes>? resizeMode = null,
+		ValueRange<uint>? sampleRate = null,
+		ValueRange<uint>? sampleSize = null,
+		IReadOnlyList<EchoCancellationValue>? echoCancellation = null,
+		IReadOnlyList<bool>? backgroundBlur = null,
+		IReadOnlyList<bool>? autoGainControl = null,
+		IReadOnlyList<bool>? noiseSuppression = null,
+		ValueRange<double>? latency = null,
+		ValueRange<uint>? channelCount = null,
+		string? deviceId = null,
+		string? groupId = null)
+		=> new()
+		{
+			Width = width,
+			Height = height,
+			AspectRatio = aspectRatio,
+			FrameRate = frameRate,
+			FacingMode = facingMode ?? [],
+			ResizeMode = resizeMode ?? [],
+			SampleRate = sampleRate,
+			SampleSize = sampleSize,
+			EchoCancellation = echoCancellation ?? [],
+			BackgroundBlur = backgroundBlur ?? [],
+			AutoGainControl = autoGainControl ?? [],
+			NoiseSuppression = noiseSuppression ?? [],
+			Latency = latency,
+			ChannelCount = channelCount,
+			DeviceId = deviceId ?? string.Empty,
+			GroupId = groupId ?? string.Empty
+		};
 }
