@@ -100,10 +100,6 @@ public abstract class RtcDataChannel
 	}
 
 	/// <summary>
-	/// Returns the native data channel interface used by WebRtcInterop.
-	/// </summary>
-	/// <param name="throwOnDisposed">True to throw when the channel has already been disposed.</param>
-	/// <summary>
 	/// Returns the native data channel handle used by WebRtcInterop.
 	/// </summary>
 	/// <remarks>
