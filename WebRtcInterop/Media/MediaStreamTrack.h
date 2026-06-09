@@ -1,6 +1,7 @@
 #pragma once
 
 #include <api/scoped_refptr.h>
+#include "../NativeWrapper.h"
 
 namespace webrtc
 {
@@ -53,11 +54,11 @@ namespace WebRtcInterop::Media
 		MediaTrackSettings^ GetSettings() override;
 		void ApplyConstraints(MediaTrackConstraints^ constraints) override;
 
-	public:
-		IntPtr GetNativeMediaStreamTrackInterface(bool throwOnDisposed) override;
+	internal:
+		webrtc::scoped_refptr<webrtc::MediaStreamTrackInterface> GetNativeMediaStreamTrackInterface(bool throwOnDisposed);
 
 	private:
-		webrtc::scoped_refptr<webrtc::MediaStreamTrackInterface>* _rpMediaStreamTrackInterface;
+		NativeWrapper<webrtc::MediaStreamTrackInterface>^ _nativeMediaStreamTrackInterface;
 		MediaTrackConstraints^ applied_constraints_;
 		EventHandler^ on_mute_;
 		EventHandler^ on_unmute_;

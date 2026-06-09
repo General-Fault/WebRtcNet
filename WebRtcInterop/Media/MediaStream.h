@@ -1,6 +1,7 @@
 #pragma once
 
 #include <api/scoped_refptr.h>
+#include "../NativeWrapper.h"
 
 namespace webrtc
 {
@@ -54,12 +55,10 @@ namespace WebRtcInterop::Media
 	internal:
 		MediaStream(webrtc::scoped_refptr<webrtc::MediaStreamInterface> stream);
 		!MediaStream();
-
-	public:
-		IntPtr GetNativeMediaStreamInterface(bool throwOnDisposed) override;
+		webrtc::scoped_refptr<webrtc::MediaStreamInterface> GetNativeMediaStreamInterface(bool throwOnDisposed);
 
 	private:
-		webrtc::scoped_refptr<webrtc::MediaStreamInterface>* _rpMediaStreamInterface;
+		NativeWrapper<webrtc::MediaStreamInterface>^ _nativeStreamInterface;
 		EventHandler^ on_active_;
 		EventHandler^ on_inactive_;
 		EventHandler<WebRtcNet::Media::MediaStreamTrack^>^ on_add_track_;
