@@ -68,13 +68,13 @@ namespace WebRtcInterop
 		void Send(String^ data) override;
 		void Send(Collections::Generic::IEnumerable<Byte>^ data) override;
 		void Send(array<Byte>^ data) override;
+
+		IntPtr GetNativeDataChannelHandle(bool throwOnDisposed) override;
+
 	internal:
 		RtcDataChannel(webrtc::DataChannelInterface* data_channel_interface);
 		!RtcDataChannel();
 		webrtc::DataChannelInterface* GetNativeDataChannelInterface(bool throwOnDisposed);
-
-	protected:
-		IntPtr GetNativeDataChannelHandle(bool throwOnDisposed) override;
 
 	internal:
 		//Event invocation 

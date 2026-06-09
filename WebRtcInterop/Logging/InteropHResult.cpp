@@ -25,7 +25,7 @@ namespace WebRtcInterop
 		String^ FormatSystemMessage(const HRESULT hr)
 		{
 			LPWSTR rawMessage = nullptr;
-			const auto flags =
+			constexpr auto flags =
 				FORMAT_MESSAGE_ALLOCATE_BUFFER |
 				FORMAT_MESSAGE_FROM_SYSTEM |
 				FORMAT_MESSAGE_IGNORE_INSERTS;
@@ -57,7 +57,7 @@ namespace WebRtcInterop
 
 			try
 			{
-				return TrimSystemMessage(gcnew String(rawMessage));
+				return TrimSystemMessage(marshal_as<String^>(rawMessage));
 			}
 			finally
 			{
@@ -66,7 +66,7 @@ namespace WebRtcInterop
 		}
 	}
 
-	void InteropHResult::ThrowIfFailed(HRESULT hr, String^ message)
+	void InteropHResult::ThrowIfFailed(const HRESULT hr, String^ message)
 	{
 		if (SUCCEEDED(hr))
 			return;

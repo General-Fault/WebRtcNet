@@ -13,22 +13,22 @@ using namespace WebRtcNet::Media;
 
 namespace WebRtcInterop::Media
 {
-	MediaStreamTrack::MediaStreamTrack()
+	MediaStreamTrack::MediaStreamTrack() 
+		: _rpMediaStreamTrackInterface(nullptr),
+			applied_constraints_(gcnew MediaTrackConstraints()),
+			on_mute_(nullptr),
+			on_unmute_(nullptr),
+			on_ended_(nullptr)
 	{
-		_rpMediaStreamTrackInterface = nullptr;
-		applied_constraints_ = gcnew MediaTrackConstraints();
-		on_mute_ = nullptr;
-		on_unmute_ = nullptr;
-		on_ended_ = nullptr;
 	}
 
-	MediaStreamTrack::MediaStreamTrack(webrtc::scoped_refptr<webrtc::MediaStreamTrackInterface> track)
-	{
-		_rpMediaStreamTrackInterface = new webrtc::scoped_refptr(track);
-		applied_constraints_ = gcnew MediaTrackConstraints();
-		on_mute_ = nullptr;
-		on_unmute_ = nullptr;
-		on_ended_ = nullptr;
+	MediaStreamTrack::MediaStreamTrack(webrtc::scoped_refptr<webrtc::MediaStreamTrackInterface> track) 
+		: _rpMediaStreamTrackInterface(new webrtc::scoped_refptr(track)),
+			applied_constraints_(gcnew MediaTrackConstraints()),
+			on_mute_(nullptr),
+			on_unmute_(nullptr),
+			on_ended_(nullptr)
+	{	  
 	}
 
 
@@ -56,15 +56,13 @@ namespace WebRtcInterop::Media
 
 	MediaStreamTrackKind MediaStreamTrack::Kind::get()
 	{
-		const auto native = reinterpret_cast<webrtc::MediaStreamTrackInterface*>(GetNativeMediaStreamTrackInterface(true).
-			ToPointer());
+		const auto native = _rpMediaStreamTrackInterface->get();
 		return marshal_as<MediaStreamTrackKind>(native->kind());
 	}
 
 	String^ MediaStreamTrack::Id::get()
 	{
-		const auto native = reinterpret_cast<webrtc::MediaStreamTrackInterface*>(GetNativeMediaStreamTrackInterface(true).
-			ToPointer());
+		const auto native = _rpMediaStreamTrackInterface->get();
 		return marshal_as<String^>(native->id());
 	}
 
@@ -75,22 +73,19 @@ namespace WebRtcInterop::Media
 
 	bool MediaStreamTrack::Enabled::get()
 	{
-		const auto native = reinterpret_cast<webrtc::MediaStreamTrackInterface*>(GetNativeMediaStreamTrackInterface(true).
-			ToPointer());
+		const auto native = _rpMediaStreamTrackInterface->get();
 		return native->enabled();
 	}
 
 	void MediaStreamTrack::Enabled::set(bool value)
 	{
-		const auto native = reinterpret_cast<webrtc::MediaStreamTrackInterface*>(GetNativeMediaStreamTrackInterface(true).
-			ToPointer());
+		const auto native = _rpMediaStreamTrackInterface->get();
 		native->set_enabled(value);
 	}
 
 	bool MediaStreamTrack::Muted::get()
 	{
-		const auto native = reinterpret_cast<webrtc::MediaStreamTrackInterface*>(GetNativeMediaStreamTrackInterface(true).
-			ToPointer());
+		const auto native = _rpMediaStreamTrackInterface->get();
 
 		if (native->kind() == webrtc::MediaStreamTrackInterface::kAudioKind)
 		{
@@ -111,8 +106,7 @@ namespace WebRtcInterop::Media
 
 	MediaStreamTrackState MediaStreamTrack::ReadyState::get()
 	{
-		const auto native = reinterpret_cast<webrtc::MediaStreamTrackInterface*>(GetNativeMediaStreamTrackInterface(true).
-			ToPointer());
+		const auto native = _rpMediaStreamTrackInterface->get();
 		return marshal_as<MediaStreamTrackState>(native->state());
 	}
 

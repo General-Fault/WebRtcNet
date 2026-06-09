@@ -1,18 +1,19 @@
 #include "pch.h"
 
-#include <api/audio_options.h>
 #include "MediaDevices.h"
 #include "CameraVideoSource.h"
 #include "Logging/InteropHResult.h"
 #include "MediaStream.h"
-#include "MediaStreamTrack.h"
 #include "Marshaling/MarshalMedia.h"
+#include "Marshaling/MarshalMediaDevices.h"
 #include "RtcPeerConnectionFactory.h"
 
+#include <api/audio_options.h>
 #include <api/peer_connection_interface.h>
 #include <modules/video_capture/video_capture_factory.h>
 #include <mmdeviceapi.h>
 #include <Functiondiscoverykeys_devpkey.h>
+#include <rtc_base/crypto_random.h>
 
 #pragma comment(lib, "ole32.lib")
 #pragma comment(lib, "mmdevapi.lib")
@@ -23,6 +24,8 @@ using namespace System::Timers;
 
 namespace WebRtcInterop::Media
 {
+	using namespace WebRtcNet::Media;
+
 	static List<MediaDeviceInfo^>^ EnumerateAudioDevices();
 	static List<MediaDeviceInfo^>^ EnumerateVideoDevices();
 
@@ -53,7 +56,7 @@ namespace WebRtcInterop::Media
 			InteropHResult::LogIfFailed(hr, "IPropertyStore::GetValue(PKEY_Device_FriendlyName)", GetInteropMediaDevicesCategory());
 			if (SUCCEEDED(hr) &&
 				friendlyName.vt == VT_LPWSTR)
-				label = gcnew String(friendlyName.pwszVal);
+				label = marshal_as<String^>(friendlyName.pwszVal);
 
 			PropVariantClear(&friendlyName);
 			propertyStore->Release();
@@ -63,7 +66,6 @@ namespace WebRtcInterop::Media
 		void EnumerateAudioEndpoints(
 			IMMDeviceEnumerator* enumerator,
 			const EDataFlow flow,
-			const MediaDeviceKind kind,
 			String^ fallbackLabel,
 			List<MediaDeviceInfo^>^ devices)
 		{
@@ -83,6 +85,9 @@ namespace WebRtcInterop::Media
 				return;
 			}
 
+			const auto kind = marshal_as<MediaDeviceKind>(flow);
+			const bool isInput = kind == MediaDeviceKind::AudioInput;
+
 			for (UINT i = 0; i < count; ++i)
 			{
 				IMMDevice* device = nullptr;
@@ -95,17 +100,22 @@ namespace WebRtcInterop::Media
 
 				LPWSTR deviceId = nullptr;
 				hr = device->GetId(&deviceId);
-				InteropHResult::LogIfFailed(
+				if (InteropHResult::LogIfFailed(
 					hr,
 					String::Format("IMMDevice::GetId(index={0})", i),
-					GetInteropMediaDevicesCategory());
-				if (SUCCEEDED(hr))
+					GetInteropMediaDevicesCategory()))
 				{
-					auto id = gcnew String(deviceId);
-					auto label = GetAudioDeviceLabel(device, fallbackLabel);
-					devices->Add(MediaDeviceInfo::Create(id, kind, label, String::Empty));
-					CoTaskMemFree(deviceId);
+					device->Release();
+					continue;
 				}
+
+				auto id = marshal_as<String^>(deviceId);
+				auto label = GetAudioDeviceLabel(device, fallbackLabel);
+				CoTaskMemFree(deviceId);
+
+				devices->Add(isInput
+					? InputDeviceInfo::Create(id, kind, label, String::Empty)
+					: MediaDeviceInfo::Create(id, kind, label, String::Empty));
 
 				device->Release();
 			}
@@ -144,15 +154,16 @@ namespace WebRtcInterop::Media
 			return videoDevices;
 		}
 
-		std::string CreateGuidLabel(String^ prefix)
+		std::string CreateGuidLabel(const std::string& prefix)
 		{
-			return marshal_as<std::string>(prefix + "_" + Guid::NewGuid().ToString());
+			return prefix + "_" + webrtc::CreateRandomUuid();
 		}
 
 		webrtc::scoped_refptr<webrtc::MediaStreamInterface> CreateNativeStream(
 			webrtc::PeerConnectionFactoryInterface* factory)
 		{
-			const auto streamId = marshal_as<std::string>(Guid::NewGuid().ToString());
+
+			const auto streamId = webrtc::CreateRandomUuid();
 			auto nativeStream = factory->CreateLocalMediaStream(streamId);
 			if (!nativeStream)
 				throw gcnew InvalidOperationException("Failed to create media stream.");
@@ -170,7 +181,7 @@ namespace WebRtcInterop::Media
 				throw gcnew MediaStreamException("Failed to create an audio source for the requested track.");
 
 			const auto nativeAudioTrack = factory->CreateAudioTrack(
-				CreateGuidLabel(gcnew String(L"audio")),
+				CreateGuidLabel("audio"),
 				nativeAudioSource.get());
 			if (!nativeAudioTrack)
 				throw gcnew MediaStreamException("Failed to create the requested audio track.");
@@ -205,7 +216,7 @@ namespace WebRtcInterop::Media
 			const auto videoSource = CreateVideoSource(videoDevices);
 			const auto nativeVideoTrack = factory->CreateVideoTrack(
 				videoSource,
-				CreateGuidLabel(gcnew String(L"video")));
+				CreateGuidLabel("video"));
 			if (!nativeVideoTrack)
 				throw gcnew MediaStreamException("Failed to create the requested video track.");
 
@@ -219,7 +230,7 @@ namespace WebRtcInterop::Media
 		  device_poll_timer_(gcnew Timer(2000.0)),
 		  device_poll_gate_(gcnew Object()),
 		  on_device_change_(nullptr)
-	{
+ 	{
 		RefreshKnownDevices(false);
 		device_poll_timer_->AutoReset = true;
 		device_poll_timer_->Elapsed += gcnew ElapsedEventHandler(this, &MediaDevices::OnDevicePoll);
@@ -328,17 +339,15 @@ namespace WebRtcInterop::Media
 			if (SUCCEEDED(hr) && enumerator != nullptr)
 			{
 				EnumerateAudioEndpoints(
-					enumerator,
-					eCapture,
-					MediaDeviceKind::AudioInput,
-					gcnew String(L"Audio Input Device"),
-					devices);
-				EnumerateAudioEndpoints(
-					enumerator,
-					eRender,
-					MediaDeviceKind::AudioOutput,
-					gcnew String(L"Audio Output Device"),
-					devices);
+						enumerator,
+						eCapture,
+						gcnew String(L"Audio Input Device"),
+						devices);
+					EnumerateAudioEndpoints(
+						enumerator,
+						eRender,
+						gcnew String(L"Audio Output Device"),
+						devices);
 				enumerator->Release();
 			}
 
@@ -390,7 +399,7 @@ namespace WebRtcInterop::Media
 						? marshal_as<String^>(std::string(productUniqueId))
 						: String::Empty;
 
-				devices->Add(MediaDeviceInfo::Create(
+				devices->Add(InputDeviceInfo::Create(
 					id,
 					MediaDeviceKind::VideoInput,
 					label,
@@ -412,13 +421,11 @@ namespace WebRtcInterop::Media
 			auto allDevices = gcnew List<MediaDeviceInfo^>();
 
 			// Enumerate audio devices
-			auto audioDevices = EnumerateAudioDevices();
-			if (audioDevices != nullptr)
+			if (auto audioDevices = EnumerateAudioDevices(); audioDevices != nullptr)
 				allDevices->AddRange(audioDevices);
 
 			// Enumerate video devices
-			auto videoDevices = EnumerateVideoDevices();
-			if (videoDevices != nullptr)
+			if (auto videoDevices = EnumerateVideoDevices(); videoDevices != nullptr)
 				allDevices->AddRange(videoDevices);
 
 			return Task::FromResult<IEnumerable<MediaDeviceInfo^>^>(allDevices);

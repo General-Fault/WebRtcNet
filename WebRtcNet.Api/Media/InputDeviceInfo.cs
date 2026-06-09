@@ -22,4 +22,11 @@ public sealed record InputDeviceInfo : MediaDeviceInfo
 	{
 		throw new NotImplementedException();
 	}
+
+	/// <summary>
+	/// Factory method for creating InputDeviceInfo instances (for interop use only).
+	/// </summary>
+	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+	public new static InputDeviceInfo Create(string deviceId, MediaDeviceKind kind, string label, string groupId)
+		=> new(deviceId, kind, label, groupId);
 }

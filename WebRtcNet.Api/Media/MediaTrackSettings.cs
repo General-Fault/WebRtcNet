@@ -109,4 +109,45 @@ public sealed record MediaTrackSettings
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-groupId" />
 	public string GroupId { get; init; } = string.Empty;
+
+	/// <summary>
+	/// Factory method for creating MediaTrackSettings instances (for interop use only).
+	/// </summary>
+	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+	internal static MediaTrackSettings Create(
+		uint width,
+		uint height,
+		double aspectRatio,
+		double frameRate,
+		VideoFacingModes? facingMode,
+		VideoResizeModes? resizeMode,
+		uint sampleRate,
+		uint sampleSize,
+		EchoCancellationValue echoCancellation,
+		bool backgroundBlur,
+		bool? autoGainControl,
+		bool? noiseSuppression,
+		double latency,
+		uint channelCount,
+		string deviceId,
+		string groupId)
+		=> new()
+		{
+			Width = width,
+			Height = height,
+			AspectRatio = aspectRatio,
+			FrameRate = frameRate,
+			FacingMode = facingMode,
+			ResizeMode = resizeMode,
+			SampleRate = sampleRate,
+			SampleSize = sampleSize,
+			EchoCancellation = echoCancellation,
+			BackgroundBlur = backgroundBlur,
+			AutoGainControl = autoGainControl,
+			NoiseSuppression = noiseSuppression,
+			Latency = latency,
+			ChannelCount = channelCount,
+			DeviceId = deviceId ?? string.Empty,
+			GroupId = groupId ?? string.Empty
+		};
 }

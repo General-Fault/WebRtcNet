@@ -40,8 +40,11 @@ public abstract class RtcSctpTransport
 	/// <summary>
 	/// Returns the native SCTP transport interface used by WebRtcInterop.
 	/// </summary>
+	/// <remarks>
+	/// This method is intended for internal use by WebRtcInterop implementations only.
+	/// </remarks>
 	/// <param name="throwOnDisposed">True to throw when the transport has already been disposed.</param>
-	internal abstract IntPtr GetNativeSctpTransportHandle(bool throwOnDisposed);
+	public abstract IntPtr GetNativeSctpTransportHandle(bool throwOnDisposed);
 
 	/// <summary>
 	/// Gets the underlying DTLS transport, if available.

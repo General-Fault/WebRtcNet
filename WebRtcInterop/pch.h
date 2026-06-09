@@ -20,4 +20,7 @@ using namespace msclr::interop;
 
 #define NAMEOF(name) #name
 
+// Make WebRtcNet.Api types accessible as friends
+#pragma as_friend("WebRtcNet.Api")
+
 #endif //PCH_H
