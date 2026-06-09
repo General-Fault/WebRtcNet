@@ -4,6 +4,8 @@
 
 namespace webrtc
 {
+	template <class T>
+	class scoped_refptr;
 	class DataChannelInterface;
 }
 
@@ -69,12 +71,10 @@ namespace WebRtcInterop
 		void Send(Collections::Generic::IEnumerable<Byte>^ data) override;
 		void Send(array<Byte>^ data) override;
 
-		IntPtr GetNativeDataChannelHandle(bool throwOnDisposed) override;
-
 	internal:
 		RtcDataChannel(webrtc::DataChannelInterface* data_channel_interface);
 		!RtcDataChannel();
-		webrtc::DataChannelInterface* GetNativeDataChannelInterface(bool throwOnDisposed);
+		webrtc::scoped_refptr<webrtc::DataChannelInterface> GetNativeDataChannelInterface(bool throwOnDisposed);
 
 	internal:
 		//Event invocation 

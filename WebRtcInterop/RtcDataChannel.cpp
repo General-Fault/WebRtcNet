@@ -40,21 +40,16 @@ namespace WebRtcInterop
 		rp_data_channel_interface_ = nullptr;
 	}
 
-	webrtc::DataChannelInterface* RtcDataChannel::GetNativeDataChannelInterface(const bool throwOnDisposed)
+	webrtc::scoped_refptr<webrtc::DataChannelInterface> RtcDataChannel::GetNativeDataChannelInterface(const bool throwOnDisposed)
 	{
 		const auto result = rp_data_channel_interface_.Get();
 		if (result == nullptr)
 		{
 			if (throwOnDisposed) throw gcnew ObjectDisposedException(NAMEOF(RtcDataChannel));
-			return nullptr;
+			return webrtc::scoped_refptr<webrtc::DataChannelInterface>();
 		}
 
-		return result;
-	}
-
-	IntPtr RtcDataChannel::GetNativeDataChannelHandle(bool throwOnDisposed)
-	{
-		return IntPtr(GetNativeDataChannelInterface(throwOnDisposed));
+		return webrtc::scoped_refptr<webrtc::DataChannelInterface>(result);
 	}
 
 	String^ RtcDataChannel::Label::get()
