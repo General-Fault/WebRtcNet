@@ -8,6 +8,8 @@ This folder stores architectural decisions that affect implementation direction,
 | --- | --- | --- |
 | [0001](0001-host-entry-point-for-api-access.md) | Host entry point for API access | accepted |
 | [0002](0002-caller-callee-tcp-alignment.md) | Caller/Callee TCP alignment | accepted |
+| [0003](0003-logging-infrastructure.md) | Logging infrastructure using Microsoft.Extensions.Logging | accepted |
+| [0004](0004-getnative-pattern-internal-scoped-refptr.md) | GetNative helpers stay internal and return scoped_refptr | accepted |
 
 ## ADR format (required)
 

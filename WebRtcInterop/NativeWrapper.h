@@ -5,7 +5,7 @@ namespace WebRtcInterop
 #include <api/scoped_refptr.h>
 
 	template <typename T>
-	public ref class NativeWrapper abstract
+	public ref class NativeWrapper
 	{
 	public:
 		NativeWrapper(T* native)
@@ -14,16 +14,17 @@ namespace WebRtcInterop
 		}
 
 		NativeWrapper(webrtc::scoped_refptr<T> rp_native)
-			: rp_native_(rp_native)
+			: rp_native_(new webrtc::scoped_refptr<T>(rp_native))
 		{
 		}
 
 		~NativeWrapper() { this->!NativeWrapper(); }
 
-		T* Get() { return rp_native_; }
+		bool HasValue() { return rp_native_ != nullptr && rp_native_->get() != nullptr; }
+		T* Get() { return rp_native_ == nullptr ? nullptr : rp_native_->get(); }
+		webrtc::scoped_refptr<T> GetScopedRef() { return rp_native_ == nullptr ? webrtc::scoped_refptr<T>() : *rp_native_; }
 
-		explicit operator bool() { return rp_native_ != nullptr && rp_native_->get() != nullptr; }
-		T* operator->() { return rp_native_; }
+		explicit operator bool() { return HasValue(); }
 
 	internal:
 		!NativeWrapper()

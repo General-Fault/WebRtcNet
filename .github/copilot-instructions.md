@@ -62,7 +62,7 @@ Skip slow stages during iteration: `-SkipToolchain`, `-SkipSync`.
   - `WebRtcInterop.Core.vcxproj` — targets .NET Core (`CLRSupport=NetCore`, experimental)
   - Both share source via `WebRtcInterop.Shared.vcxitems`
 - `RtcPeerConnectionFactory` owns the native `PeerConnectionFactoryInterface` singleton and the signaling thread.
-- `RtcPeerConnection`, `RtcDataChannel`, `MediaStream`, and related wrappers hold native `scoped_refptr` handles via the `NativeWrapper<T>` template base class (`NativeWrapper.h`).
+- `RtcPeerConnection`, `RtcDataChannel`, `MediaStream`, and related wrappers keep internal `GetNative*` helpers inside WebRtcInterop and return `scoped_refptr<T>` by value; native ownership is handled by `NativeWrapper<T>` composition where needed (`NativeWrapper.h`, ADR-0004).
 - `WebRtcInterop\Marshaling\` contains all `marshal_as<>` specializations for converting between managed DTOs/enums and native WebRTC types. Cross-boundary value translation belongs here, not inline in business logic.
 - `WebRtcInterop\Observers\` adapts native callbacks into managed events via observer classes that call `FireOn...` helpers on the wrapper types.
 - `WebRtcInterop\MediaStream.cpp` contains the concrete `Media::GetUserMedia` implementation; device enumeration and native audio/video source creation happen here, not in C#.
@@ -91,7 +91,7 @@ Individual-stage Dockerfiles in `docker\` — not a monolithic file:
 - `WebRtcNet.Api` is the contract assembly. If you add API surface there, you also need matching wrapper, marshalling, and observer work in `WebRtcInterop`.
 - Do not assume every interface member is implemented. Many interop methods still throw `NotImplementedException`, especially around stream enumeration, stats, identity, and parts of peer connection setup.
 - Managed argument validation uses `System.Diagnostics.Contracts.Contract.Requires(...)` rather than ad hoc null checks.
-- Interop wrapper classes follow the same lifetime pattern: destructor/finalizer pair, and a `GetNative...(throwOnDisposed)` helper that throws `ObjectDisposedException` when the native handle is gone.
+- Interop wrapper classes follow the same lifetime pattern: destructor/finalizer pair, and an internal `GetNative...(throwOnDisposed)` helper that returns `scoped_refptr<T>` and throws `ObjectDisposedException` when the native handle is gone.
 - Some interop methods require concrete wrapper instances, not arbitrary interface implementations. Peer connection stream operations `dynamic_cast` `IMediaStream` to `WebRtcInterop::MediaStream` before unwrapping the native object.
 - `marshal_as<>` specializations in `Marshaling\` use either switch-based dispatch (simple enums) or bidirectional `std::map` helpers (`marshal_mapped_native_type` / `marshal_mapped_managed_type` in `MarshalEnums.h`) for types where both directions are needed.
 - The solution uses standard `Debug` and `Release` configurations; use these directly for normal development and CI.

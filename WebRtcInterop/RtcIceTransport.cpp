@@ -25,21 +25,16 @@ namespace WebRtcInterop
 		rp_ice_transport_interface_ = nullptr;
 	}
 
-	webrtc::IceTransportInterface* RtcIceTransport::GetNativeIceTransportInterface(bool throwOnDisposed)
+	webrtc::scoped_refptr<webrtc::IceTransportInterface> RtcIceTransport::GetNativeIceTransportInterface(bool throwOnDisposed)
 	{
 		const auto result = rp_ice_transport_interface_.Get();
 		if (result == nullptr)
 		{
 			if (throwOnDisposed) throw gcnew ObjectDisposedException(NAMEOF(RtcIceTransport));
-			return nullptr;
+			return webrtc::scoped_refptr<webrtc::IceTransportInterface>();
 		}
 
-		return result;
-	}
-
-	IntPtr RtcIceTransport::GetNativeIceTransportHandle(bool throwOnDisposed)
-	{
-		return IntPtr(GetNativeIceTransportInterface(throwOnDisposed));
+		return webrtc::scoped_refptr<webrtc::IceTransportInterface>(result);
 	}
 
 	RtcIceRole RtcIceTransport::Role::get()
@@ -87,5 +82,4 @@ namespace WebRtcInterop
 		throw gcnew NotImplementedException();
 	}
 }
-
 

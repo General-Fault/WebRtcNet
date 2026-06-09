@@ -16,15 +16,6 @@ public abstract class RtcDtmfSender
 	}
 
 	/// <summary>
-	/// Returns the native DTMF sender interface used by WebRtcInterop.
-	/// </summary>
-	/// <remarks>
-	/// This method is intended for internal use by WebRtcInterop implementations only.
-	/// </remarks>
-	/// <param name="throwOnDisposed">True to throw when the sender has already been disposed.</param>
-	public abstract IntPtr GetNativeDtmfSenderHandle(bool throwOnDisposed);
-
-	/// <summary>
 	/// Indicates if the RTCDTMFSender is capable of sending DTMF.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/webrtc/#dom-rtcdtmfsender-caninsertdtmf"/>

@@ -4,6 +4,8 @@
 
 namespace webrtc
 {
+	template <class T>
+	class scoped_refptr;
 	class IceTransportInterface;
 }
 
@@ -44,12 +46,10 @@ namespace WebRtcInterop
 			void remove(EventHandler^ value) override { on_selected_candidate_pair_change_ -= value; }
 		}
 
-		IntPtr GetNativeIceTransportHandle(bool throwOnDisposed) override;
-
 	internal:
 		RtcIceTransport(webrtc::IceTransportInterface* ice_transport_interface);
 		!RtcIceTransport();
-		webrtc::IceTransportInterface* GetNativeIceTransportInterface(bool throwOnDisposed);
+		webrtc::scoped_refptr<webrtc::IceTransportInterface> GetNativeIceTransportInterface(bool throwOnDisposed);
 
 	internal:
 		void FireOnStateChange() { if (on_state_change_ != nullptr) on_state_change_(this, EventArgs::Empty); }

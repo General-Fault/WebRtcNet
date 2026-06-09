@@ -100,15 +100,6 @@ public abstract class RtcDataChannel
 	}
 
 	/// <summary>
-	/// Returns the native data channel handle used by WebRtcInterop.
-	/// </summary>
-	/// <remarks>
-	/// This method is intended for internal use by WebRtcInterop implementations only.
-	/// </remarks>
-	/// <param name="throwOnDisposed">True to throw when the data channel has already been disposed.</param>
-	public abstract IntPtr GetNativeDataChannelHandle(bool throwOnDisposed);
-
-	/// <summary>
 	/// The Label represents a label that can be used to distinguish this RtcDataChannel object from other RtcDataChannel
 	/// objects. Applications are allowed to create multiple RtcDataChannel objects with the same label.
 	/// </summary>
