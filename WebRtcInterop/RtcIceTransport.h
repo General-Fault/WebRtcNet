@@ -44,13 +44,12 @@ namespace WebRtcInterop
 			void remove(EventHandler^ value) override { on_selected_candidate_pair_change_ -= value; }
 		}
 
+		IntPtr GetNativeIceTransportHandle(bool throwOnDisposed) override;
+
 	internal:
 		RtcIceTransport(webrtc::IceTransportInterface* ice_transport_interface);
 		!RtcIceTransport();
 		webrtc::IceTransportInterface* GetNativeIceTransportInterface(bool throwOnDisposed);
-
-	protected:
-		IntPtr GetNativeIceTransportHandle(bool throwOnDisposed) override;
 
 	internal:
 		void FireOnStateChange() { if (on_state_change_ != nullptr) on_state_change_(this, EventArgs::Empty); }

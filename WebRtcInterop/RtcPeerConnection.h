@@ -90,7 +90,7 @@ namespace WebRtcInterop
 		void RemoveTrack(RtcRtpSender^ sender) override;
 		RtcDataChannel^ CreateDataChannel(String^ label, [System::Runtime::InteropServices::Optional] RtcDataChannelInit^ dataChannelInit) override;
 
-	protected:
+	public:
 		IntPtr GetNativePeerConnectionHandle(bool throwOnDisposed) override;
 
 	private:

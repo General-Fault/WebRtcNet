@@ -180,10 +180,13 @@ public abstract class RtcPeerConnection
 	}
 
 	/// <summary>
-	/// Returns the native peer connection interface used by WebRtcInterop.
+	/// Returns the native peer connection handle used by WebRtcInterop.
 	/// </summary>
+	/// <remarks>
+	/// This method is intended for internal use by WebRtcInterop implementations only.
+	/// </remarks>
 	/// <param name="throwOnDisposed">True to throw when the peer connection has already been disposed.</param>
-	internal abstract IntPtr GetNativePeerConnectionHandle(bool throwOnDisposed);
+	public abstract IntPtr GetNativePeerConnectionHandle(bool throwOnDisposed);
 
 	/// <summary>
 	/// The local <see cref="RtcSessionDescription">RTCSessionDescription</see> that was successfully set using

@@ -244,8 +244,11 @@ public abstract class RtcIceTransport
 	/// <summary>
 	/// Returns the native ICE transport interface used by WebRtcInterop.
 	/// </summary>
+	/// <remarks>
+	/// This method is intended for internal use by WebRtcInterop implementations only.
+	/// </remarks>
 	/// <param name="throwOnDisposed">True to throw when the transport has already been disposed.</param>
-	protected abstract IntPtr GetNativeIceTransportHandle(bool throwOnDisposed);
+	public abstract IntPtr GetNativeIceTransportHandle(bool throwOnDisposed);
 	/// <summary>
 	/// The role of this transport.
 	/// </summary>

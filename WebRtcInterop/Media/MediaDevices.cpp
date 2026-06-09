@@ -13,6 +13,7 @@
 #include <modules/video_capture/video_capture_factory.h>
 #include <mmdeviceapi.h>
 #include <Functiondiscoverykeys_devpkey.h>
+#include <rtc_base/crypto_random.h>
 
 #pragma comment(lib, "ole32.lib")
 #pragma comment(lib, "mmdevapi.lib")
@@ -155,13 +156,14 @@ namespace WebRtcInterop::Media
 
 		std::string CreateGuidLabel(const std::string& prefix)
 		{
-			return prefix + "_" + marshal_as<std::string>(Guid::NewGuid().ToString());
+			return prefix + "_" + webrtc::CreateRandomUuid();
 		}
 
 		webrtc::scoped_refptr<webrtc::MediaStreamInterface> CreateNativeStream(
 			webrtc::PeerConnectionFactoryInterface* factory)
 		{
-			const auto streamId = marshal_as<std::string>(Guid::NewGuid().ToString());
+
+			const auto streamId = webrtc::CreateRandomUuid();
 			auto nativeStream = factory->CreateLocalMediaStream(streamId);
 			if (!nativeStream)
 				throw gcnew InvalidOperationException("Failed to create media stream.");
@@ -228,7 +230,7 @@ namespace WebRtcInterop::Media
 		  device_poll_timer_(gcnew Timer(2000.0)),
 		  device_poll_gate_(gcnew Object()),
 		  on_device_change_(nullptr)
-	{
+ 	{
 		RefreshKnownDevices(false);
 		device_poll_timer_->AutoReset = true;
 		device_poll_timer_->Elapsed += gcnew ElapsedEventHandler(this, &MediaDevices::OnDevicePoll);

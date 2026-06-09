@@ -69,10 +69,13 @@ public abstract class RtcDtlsTransport
 	}
 
 	/// <summary>
-	/// Returns the native DTLS transport interface used by WebRtcInterop.
+	/// Returns the native DTLS transport handle used by WebRtcInterop.
 	/// </summary>
+	/// <remarks>
+	/// This method is intended for internal use by WebRtcInterop implementations only.
+	/// </remarks>
 	/// <param name="throwOnDisposed">True to throw when the transport has already been disposed.</param>
-	internal abstract IntPtr GetNativeDtlsTransportHandle(bool throwOnDisposed);
+	public abstract IntPtr GetNativeDtlsTransportHandle(bool throwOnDisposed);
 
 	/// <summary>
 	/// The IceTransport property is the underlying <see cref="RtcIceTransport">transport</see> that is used to send and

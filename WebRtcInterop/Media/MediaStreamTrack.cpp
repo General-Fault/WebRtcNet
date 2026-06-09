@@ -13,22 +13,22 @@ using namespace WebRtcNet::Media;
 
 namespace WebRtcInterop::Media
 {
-	MediaStreamTrack::MediaStreamTrack()
+	MediaStreamTrack::MediaStreamTrack() 
+		: _rpMediaStreamTrackInterface(nullptr),
+			applied_constraints_(gcnew MediaTrackConstraints()),
+			on_mute_(nullptr),
+			on_unmute_(nullptr),
+			on_ended_(nullptr)
 	{
-		_rpMediaStreamTrackInterface = nullptr;
-		applied_constraints_ = gcnew MediaTrackConstraints();
-		on_mute_ = nullptr;
-		on_unmute_ = nullptr;
-		on_ended_ = nullptr;
 	}
 
-	MediaStreamTrack::MediaStreamTrack(webrtc::scoped_refptr<webrtc::MediaStreamTrackInterface> track)
-	{
-		_rpMediaStreamTrackInterface = new webrtc::scoped_refptr(track);
-		applied_constraints_ = gcnew MediaTrackConstraints();
-		on_mute_ = nullptr;
-		on_unmute_ = nullptr;
-		on_ended_ = nullptr;
+	MediaStreamTrack::MediaStreamTrack(webrtc::scoped_refptr<webrtc::MediaStreamTrackInterface> track) 
+		: _rpMediaStreamTrackInterface(new webrtc::scoped_refptr(track)),
+			applied_constraints_(gcnew MediaTrackConstraints()),
+			on_mute_(nullptr),
+			on_unmute_(nullptr),
+			on_ended_(nullptr)
+	{	  
 	}
 
 

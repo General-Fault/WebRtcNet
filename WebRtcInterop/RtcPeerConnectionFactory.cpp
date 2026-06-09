@@ -88,8 +88,7 @@ namespace WebRtcInterop
 		if (nativeFactory == nullptr)
 			throw gcnew NotSupportedException("Failed to create native PeerConnectionFactory");
 
-		_rpPeerConnectionFactory =
-			new webrtc::scoped_refptr<webrtc::PeerConnectionFactoryInterface>(nativeFactory);
+		_rpPeerConnectionFactory = new webrtc::scoped_refptr(nativeFactory);
 	}
 
 	void RtcPeerConnectionFactory::DestroyNativePeerConnectionFactory()

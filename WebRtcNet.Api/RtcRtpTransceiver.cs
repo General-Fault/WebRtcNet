@@ -27,8 +27,11 @@ public abstract class RtcRtpTransceiver
 	/// <summary>
 	/// Returns the native RTP transceiver interface used by WebRtcInterop.
 	/// </summary>
+	/// <remarks>
+	/// This method is intended for internal use by WebRtcInterop implementations only.
+	/// </remarks>
 	/// <param name="throwOnDisposed">True to throw when the transceiver has already been disposed.</param>
-	internal abstract IntPtr GetNativeRtpTransceiverHandle(bool throwOnDisposed);
+	public abstract IntPtr GetNativeRtpTransceiverHandle(bool throwOnDisposed);
 
 	/// <summary>
 	/// The mid-attribute is the <see cref="RtcIceCandidate.SdpMid">media stream "identification-tag"</see> negotiated and
