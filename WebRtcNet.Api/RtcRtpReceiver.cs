@@ -19,15 +19,6 @@ public abstract class RtcRtpReceiver
 	}
 
 	/// <summary>
-	/// Returns the native RTP receiver interface used by WebRtcInterop.
-	/// </summary>
-	/// <remarks>
-	/// This method is intended for internal use by WebRtcInterop implementations only.
-	/// </remarks>
-	/// <param name="throwOnDisposed">True to throw when the receiver has already been disposed.</param>
-	public abstract IntPtr GetNativeRtpReceiverHandle(bool throwOnDisposed);
-
-	/// <summary>
 	/// The Track property is the <see cref="MediaStreamTrack">track</see> that is associated with this RTCRtpReceiver
 	/// object receiver.
 	/// Note that <see cref="MediaStreamTrack.Stop">track.stop()</see> is final, although clones are not affected. Since

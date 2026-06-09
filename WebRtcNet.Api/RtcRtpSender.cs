@@ -20,15 +20,6 @@ public abstract class RtcRtpSender
 	}
 
 	/// <summary>
-	/// Returns the native RTP sender interface used by WebRtcInterop.
-	/// </summary>
-	/// <remarks>
-	/// This method is intended for internal use by WebRtcInterop implementations only.
-	/// </remarks>
-	/// <param name="throwOnDisposed">True to throw when the sender has already been disposed.</param>
-	public abstract IntPtr GetNativeRtpSenderHandle(bool throwOnDisposed);
-
-	/// <summary>
 	/// The Track property is the <see cref="MediaStreamTrack">track</see> associated with this RTCRtpSender object. If
 	/// the track is ended, or if the track's output is disabled, i.e. the track is
 	/// <see cref="MediaStreamTrack.Enabled">disabled</see> and/or <see cref="MediaStreamTrack.Muted">muted</see>, the

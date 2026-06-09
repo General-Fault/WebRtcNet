@@ -32,12 +32,12 @@ namespace WebRtcInterop
 			memberName));
 	}
 
-	IntPtr RtcPeerConnection::GetNativePeerConnectionHandle(bool throwOnDisposed)
+	webrtc::scoped_refptr<webrtc::PeerConnectionInterface> RtcPeerConnection::GetNativePeerConnectionInterface(bool throwOnDisposed)
 	{
 		if (throwOnDisposed && is_closed_)
 			throw gcnew ObjectDisposedException(NAMEOF(RtcPeerConnection));
 
-		return IntPtr::Zero;
+		return webrtc::scoped_refptr<webrtc::PeerConnectionInterface>();
 	}
 
 	Nullable<RtcSessionDescription> RtcPeerConnection::LocalDescription::get() { return Nullable<RtcSessionDescription>(); }

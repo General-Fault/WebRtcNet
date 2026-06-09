@@ -1,5 +1,7 @@
 #pragma once
 
+#include <api/peer_connection_interface.h>
+
 namespace WebRtcInterop
 {
 	using namespace System;
@@ -90,8 +92,8 @@ namespace WebRtcInterop
 		void RemoveTrack(RtcRtpSender^ sender) override;
 		RtcDataChannel^ CreateDataChannel(String^ label, [System::Runtime::InteropServices::Optional] RtcDataChannelInit^ dataChannelInit) override;
 
-	public:
-		IntPtr GetNativePeerConnectionHandle(bool throwOnDisposed) override;
+	internal:
+		webrtc::scoped_refptr<webrtc::PeerConnectionInterface> GetNativePeerConnectionInterface(bool throwOnDisposed);
 
 	private:
 		void ThrowShimNotImplemented(String^ memberName);
