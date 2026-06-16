@@ -88,16 +88,22 @@ public sealed record MediaTrackCapabilities
 	/// <summary>
 	/// The facing modes supported by this track's video capture source.
 	/// </summary>
+	/// <remarks>
+	/// Known values map to <see cref="VideoFacingModes" />, while unknown raw strings are preserved.
+	/// </remarks>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-facingMode"/>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-facingmode"/>
-	public IReadOnlyList<VideoFacingModes> FacingMode { get; init; } = [];
+	public IReadOnlyList<VideoFacingModeValue> FacingMode { get; init; } = [];
 
 	/// <summary>
 	/// The resize modes supported by the application for this track.
 	/// </summary>
+	/// <remarks>
+	/// Known values map to <see cref="VideoResizeModes" />, while unknown raw strings are preserved.
+	/// </remarks>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-resizeMode"/>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatrackcapabilities-resizemode"/>
-	public IReadOnlyList<VideoResizeModes> ResizeMode { get; init; } = [];
+	public IReadOnlyList<VideoResizeModeValue> ResizeMode { get; init; } = [];
 
 	/// <summary>
 	/// The range of sample rates (in samples per second) supported by this track's audio source.
@@ -189,8 +195,8 @@ public sealed record MediaTrackCapabilities
 		ValueRange<uint>? height = null,
 		ValueRange<double>? aspectRatio = null,
 		ValueRange<double>? frameRate = null,
-		IReadOnlyList<VideoFacingModes>? facingMode = null,
-		IReadOnlyList<VideoResizeModes>? resizeMode = null,
+		IReadOnlyList<VideoFacingModeValue>? facingMode = null,
+		IReadOnlyList<VideoResizeModeValue>? resizeMode = null,
 		ValueRange<uint>? sampleRate = null,
 		ValueRange<uint>? sampleSize = null,
 		IReadOnlyList<EchoCancellationValue>? echoCancellation = null,

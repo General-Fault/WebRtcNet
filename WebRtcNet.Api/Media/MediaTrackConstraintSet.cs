@@ -40,16 +40,18 @@ public class MediaTrackConstraintSet
 
 	/// <summary>
 	/// The directions that the camera can face, as seen from the user's perspective.
+	/// Known values map to <see cref="VideoFacingModes" />, while unknown raw strings are preserved.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-facingMode" />
-	public MediaTrackConstraints.Constraint<VideoFacingModes>? FacingMode { get; set; }
+	public MediaTrackConstraints.Constraint<VideoFacingModeValue>? FacingMode { get; set; }
 
 	/// <summary>
 	/// The  means by which the resolution can be derived by the application. In other words, whether the application is
-	/// allowed to use cropping and down-scaling on the camera output.
+	/// allowed to use cropping and down-scaling on the camera output. Known values map to
+	/// <see cref="VideoResizeModes" />, while unknown raw strings are preserved.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-resizeMode" />
-	public MediaTrackConstraints.Constraint<VideoResizeModes>? ResizeMode { get; set; }
+	public MediaTrackConstraints.Constraint<VideoResizeModeValue>? ResizeMode { get; set; }
 
 	/// <summary>
 	/// The sample rate in samples per second for the audio data.

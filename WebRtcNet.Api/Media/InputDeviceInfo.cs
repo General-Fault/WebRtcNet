@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WebRtcNet.Media;
+﻿namespace WebRtcNet.Media;
 
 /// <summary>
 /// The InputDeviceInfo interface gives access to the capabilities of the input device it represents.
@@ -20,7 +18,9 @@ public sealed record InputDeviceInfo : MediaDeviceInfo
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-inputdeviceinfo-getcapabilities"/>
 	public MediaTrackCapabilities GetCapabilities()
 	{
-		throw new NotImplementedException();
+		return MediaTrackCapabilities.Create(
+			deviceId: DeviceId,
+			groupId: GroupId);
 	}
 
 	/// <summary>

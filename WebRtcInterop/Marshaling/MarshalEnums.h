@@ -8,8 +8,7 @@ managed_type marshal_mapped_native_type(const std::map<const native_type, const 
 	auto entry = map.find(from);
 	if (entry == map.end())
 	{
-		throw gcnew System::InvalidCastException(System::String::Format("Unable to convert {0} value '{1}' to {2}",
-		                                                native_type::typeid->FullName, static_cast<int>(from), managed_type::typeid->FullName));
+		throw gcnew System::InvalidCastException("Unable to convert native value to managed type.");
 	}
 
 	return entry->second;
@@ -23,7 +22,5 @@ native_type marshal_mapped_managed_type(const std::map<const native_type, const 
 		if (value == from) return key;
 	}
 
-	throw gcnew System::InvalidCastException(System::String::Format("Unable to convert {0} value '{1}' to {2}",
-	                                                managed_type::typeid->FullName, System::Enum::GetName(managed_type::typeid, from),
-	                                                native_type::typeid->FullName));
+	throw gcnew System::InvalidCastException("Unable to convert managed value to native type.");
 }

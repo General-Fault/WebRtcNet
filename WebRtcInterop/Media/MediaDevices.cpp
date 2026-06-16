@@ -4,8 +4,8 @@
 #include "CameraVideoSource.h"
 #include "Logging/InteropHResult.h"
 #include "MediaStream.h"
-#include "Marshaling/MarshalMedia.h"
 #include "Marshaling/MarshalMediaDevices.h"
+#include "Marshaling/MarshalMediaConstraints.h"
 #include "RtcPeerConnectionFactory.h"
 
 #include <api/audio_options.h>
