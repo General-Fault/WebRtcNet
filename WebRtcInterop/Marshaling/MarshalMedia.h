@@ -46,8 +46,8 @@ namespace msclr { namespace interop
 	};
 
 	static const std::map<const std::string, const WebRtcNet::Media::EchoCancellationMode> echo_cancellation_mode_map{
-		{"all", WebRtcNet::Media::EchoCancellationMode::All},
-		{"remote-only", WebRtcNet::Media::EchoCancellationMode::RemoteOnly},
+		{"software", WebRtcNet::Media::EchoCancellationMode::Software},
+		{"system", WebRtcNet::Media::EchoCancellationMode::System},
 	};
 
 	template<>

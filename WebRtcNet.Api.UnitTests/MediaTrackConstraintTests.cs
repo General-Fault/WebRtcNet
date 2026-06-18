@@ -230,13 +230,13 @@ public class MediaTrackConstraintTests
 	[Test]
 	public void EchoCancellationConstraint_ImplicitEnum_SetsExactMode()
 	{
-		EchoCancellationConstraint constraint = EchoCancellationMode.RemoteOnly;
+		EchoCancellationConstraint constraint = EchoCancellationMode.Software;
 		var exact = constraint.Exact;
 
 		Assert.That(exact.HasValue, Is.True);
 		Assert.That(exact.GetValueOrDefault().IsMode, Is.True);
-		Assert.That(exact.GetValueOrDefault().Mode, Is.EqualTo(EchoCancellationMode.RemoteOnly));
-		Assert.That(exact.GetValueOrDefault().ModeValue, Is.EqualTo("remote-only"));
+		Assert.That(exact.GetValueOrDefault().Mode, Is.EqualTo(EchoCancellationMode.Software));
+		Assert.That(exact.GetValueOrDefault().ModeValue, Is.EqualTo("software"));
 	}
 
 	[Test]
@@ -297,5 +297,30 @@ public class MediaTrackConstraintTests
 
 		Assert.That(capabilities.DeviceId, Is.EqualTo("device-1"));
 		Assert.That(capabilities.GroupId, Is.EqualTo("group-1"));
+	}
+
+	[Test]
+	public void InputDeviceInfo_GetCapabilities_InvokesDelegate_WhenProvided()
+	{
+		var expected = MediaTrackCapabilities.Create(
+			deviceId: "device-2",
+			groupId: "group-2",
+			width: new ValueRange<uint> { Min = 640, Max = 1920 });
+
+		var device = InputDeviceInfo.Create("device-2", MediaDeviceKind.VideoInput, "Camera", "group-2",
+			() => expected);
+
+		Assert.That(device.GetCapabilities(), Is.SameAs(expected));
+	}
+
+	[Test]
+	public void InputDeviceInfo_GetCapabilities_FallsBackToIdentityFields_WhenNoDelegateProvided()
+	{
+		var device = InputDeviceInfo.Create("device-3", MediaDeviceKind.AudioInput, "Mic", "group-3");
+		var capabilities = device.GetCapabilities();
+
+		Assert.That(capabilities.DeviceId, Is.EqualTo("device-3"));
+		Assert.That(capabilities.GroupId, Is.EqualTo("group-3"));
+		Assert.That(capabilities.Width, Is.Null);
 	}
 }

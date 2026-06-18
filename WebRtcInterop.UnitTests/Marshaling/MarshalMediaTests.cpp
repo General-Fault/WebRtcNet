@@ -151,7 +151,7 @@ TEST(marshal_media_constraints_tests, marshal_media_stream_constraints_includes_
 	videoTrackConstraints->Width->Ideal = 800;
 
 	videoTrackConstraints->EchoCancellation = gcnew EchoCancellationConstraint();
-	videoTrackConstraints->EchoCancellation->Ideal = EchoCancellationValue(EchoCancellationMode::RemoteOnly);
+	videoTrackConstraints->EchoCancellation->Ideal = EchoCancellationValue(EchoCancellationMode::Software);
 
 	videoTrackConstraints->Advanced = gcnew System::Collections::Generic::List<MediaTrackConstraintSet^>();
 	auto advancedSet = gcnew MediaTrackConstraintSet();
@@ -169,7 +169,7 @@ TEST(marshal_media_constraints_tests, marshal_media_stream_constraints_includes_
 	ASSERT_TRUE(marshaled.video_constraints->basic.echo_cancellation.has_value());
 	ASSERT_TRUE(marshaled.video_constraints->basic.echo_cancellation->ideal.has_value());
 	ASSERT_TRUE(marshaled.video_constraints->basic.echo_cancellation->ideal->mode_value.has_value());
-	ASSERT_EQ(marshaled.video_constraints->basic.echo_cancellation->ideal->mode_value.value(), "remote-only");
+	ASSERT_EQ(marshaled.video_constraints->basic.echo_cancellation->ideal->mode_value.value(), "software");
 }
 
 TEST(media_stream_track_constraint_plumbing_tests, apply_constraints_with_unknown_facing_mode_throws)

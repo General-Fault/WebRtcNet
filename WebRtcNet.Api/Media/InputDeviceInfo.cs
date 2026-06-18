@@ -1,4 +1,6 @@
-﻿namespace WebRtcNet.Media;
+﻿using System;
+
+namespace WebRtcNet.Media;
 
 /// <summary>
 /// The InputDeviceInfo interface gives access to the capabilities of the input device it represents.
@@ -6,18 +8,25 @@
 /// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-inputdeviceinfo"/>
 public sealed record InputDeviceInfo : MediaDeviceInfo
 {
-	internal InputDeviceInfo(string deviceId, MediaDeviceKind kind, string label, string groupId)
+	private readonly Func<MediaTrackCapabilities>? _getCapabilities;
+
+	internal InputDeviceInfo(string deviceId, MediaDeviceKind kind, string label, string groupId,
+		Func<MediaTrackCapabilities>? getCapabilities = null)
 		: base(deviceId, kind, label, groupId)
 	{
+		_getCapabilities = getCapabilities;
 	}
 
 	/// <summary>
-	/// Returns a MediaTrackCapabilities object describing the primary audio or video track of a device's MediaStream 
-	/// (according to its kind value), in the absence of any user-supplied constraints.
+	/// Returns a <see cref="MediaTrackCapabilities"/> object describing the primary audio or video track of a
+	/// device's MediaStream (according to its kind value), in the absence of any user-supplied constraints.
 	/// </summary>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-inputdeviceinfo-getcapabilities"/>
 	public MediaTrackCapabilities GetCapabilities()
 	{
+		if (_getCapabilities is not null)
+			return _getCapabilities();
+
 		return MediaTrackCapabilities.Create(
 			deviceId: DeviceId,
 			groupId: GroupId);
@@ -27,6 +36,7 @@ public sealed record InputDeviceInfo : MediaDeviceInfo
 	/// Factory method for creating InputDeviceInfo instances (for interop use only).
 	/// </summary>
 	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-	public new static InputDeviceInfo Create(string deviceId, MediaDeviceKind kind, string label, string groupId)
-		=> new(deviceId, kind, label, groupId);
+	public new static InputDeviceInfo Create(string deviceId, MediaDeviceKind kind, string label, string groupId,
+		Func<MediaTrackCapabilities>? getCapabilities = null)
+		=> new(deviceId, kind, label, groupId, getCapabilities);
 }

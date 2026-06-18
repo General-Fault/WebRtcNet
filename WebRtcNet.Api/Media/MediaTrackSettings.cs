@@ -120,7 +120,7 @@ public sealed record MediaTrackSettings
 	/// Factory method for creating MediaTrackSettings instances (for interop use only).
 	/// </summary>
 	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-	internal static MediaTrackSettings Create(
+	public static MediaTrackSettings Create(
 		uint width,
 		uint height,
 		double aspectRatio,

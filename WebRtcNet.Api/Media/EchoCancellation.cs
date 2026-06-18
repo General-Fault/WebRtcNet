@@ -3,22 +3,38 @@
 namespace WebRtcNet.Media;
 
 /// <summary>
-/// Named echo-cancellation modes defined by the Media Capture and Streams specification.
+/// Named echo-cancellation modes indicating which pipeline performs the cancellation.
 /// </summary>
-/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-echocancellationmodeenum" />
+/// <remarks>
+/// <para>
+/// These modes are mutually exclusive: <see cref="Software"/> opens the audio device in raw
+/// (unprocessed) mode and runs WebRTC's AEC3 algorithm in the application layer, while
+/// <see cref="System"/> opens the device in default mode and relies on the OS audio engine or
+/// driver to apply echo cancellation before samples reach the application.
+/// </para>
+/// <para>
+/// Running both simultaneously causes artifacts because each canceller assumes it is the only
+/// one in the chain. A boolean constraint value of <see langword="true"/> attempts
+/// <see cref="System"/> first and falls back to <see cref="Software"/> if the OS does not
+/// provide echo cancellation for the selected device.
+/// </para>
+/// </remarks>
+/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-echoCancellation" />
 public enum EchoCancellationMode
 {
 	/// <summary>
-	/// Attempt to remove all system-rendered sound from the captured microphone signal.
+	/// Echo cancellation is performed by WebRTC's software APM (AEC3) in the application layer.
+	/// The audio device is opened in raw (unprocessed) mode, bypassing OS audio effects.
+	/// Always available regardless of hardware or OS capabilities.
 	/// </summary>
-	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-echocancellationmodeenum-all" />
-	All,
+	Software,
 
 	/// <summary>
-	/// Attempt to remove only remote-party playback from the captured microphone signal.
+	/// Echo cancellation is performed by the OS audio engine or audio driver.
+	/// The audio device is opened in default mode, which allows the OS to apply its own
+	/// processing pipeline. Availability is device- and driver-dependent.
 	/// </summary>
-	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-echocancellationmodeenum-remote-only" />
-	RemoteOnly
+	System
 }
 
 /// <summary>
@@ -37,7 +53,12 @@ public readonly record struct EchoCancellationValue
 	/// <summary>
 	/// Creates a boolean echo-cancellation value.
 	/// </summary>
-	/// <param name="value">The requested or reported boolean state.</param>
+	/// <param name="value">
+	/// The requested or reported boolean state. When used as a constraint, <see langword="true"/>
+	/// attempts <see cref="EchoCancellationMode.System"/> first and falls back to
+	/// <see cref="EchoCancellationMode.Software"/> if OS-level echo cancellation is unavailable
+	/// for the selected device.
+	/// </param>
 	public EchoCancellationValue(bool value)
 	{
 		_booleanValue = value;
@@ -53,8 +74,8 @@ public readonly record struct EchoCancellationValue
 		_booleanValue = null;
 		_modeValue = mode switch
 		{
-			EchoCancellationMode.All => "all",
-			EchoCancellationMode.RemoteOnly => "remote-only",
+			EchoCancellationMode.Software => "software",
+			EchoCancellationMode.System => "system",
 			_ => throw new ArgumentOutOfRangeException(nameof(mode))
 		};
 	}
@@ -104,8 +125,8 @@ public readonly record struct EchoCancellationValue
 	public EchoCancellationMode? Mode
 		=> ModeValue switch
 		{
-			"all" => EchoCancellationMode.All,
-			"remote-only" => EchoCancellationMode.RemoteOnly,
+			"software" => EchoCancellationMode.Software,
+			"system" => EchoCancellationMode.System,
 			_ => null
 		};
 

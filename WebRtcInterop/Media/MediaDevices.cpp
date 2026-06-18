@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include "AudioCapabilityQuery.h"
+#include "VideoCapabilityQuery.h"
 #include "MediaDevices.h"
 #include "CameraVideoSource.h"
 #include "Logging/InteropHResult.h"
@@ -24,6 +26,7 @@ using namespace System::Timers;
 
 namespace WebRtcInterop::Media
 {
+	using namespace WebRtcNet;
 	using namespace WebRtcNet::Media;
 
 	static List<MediaDeviceInfo^>^ EnumerateAudioDevices();
@@ -114,8 +117,9 @@ namespace WebRtcInterop::Media
 				CoTaskMemFree(deviceId);
 
 				devices->Add(isInput
-					? InputDeviceInfo::Create(id, kind, label, String::Empty)
-					: MediaDeviceInfo::Create(id, kind, label, String::Empty));
+						? InputDeviceInfo::Create(id, kind, label, String::Empty,
+							gcnew Func<MediaTrackCapabilities^>(gcnew AudioCapabilityQuery(id), &AudioCapabilityQuery::Query))
+						: MediaDeviceInfo::Create(id, kind, label, String::Empty));
 
 				device->Release();
 			}
@@ -403,7 +407,8 @@ namespace WebRtcInterop::Media
 					id,
 					MediaDeviceKind::VideoInput,
 					label,
-					groupId));
+						groupId,
+						gcnew Func<MediaTrackCapabilities^>(gcnew VideoCapabilityQuery(id), &VideoCapabilityQuery::Query)));
 			}
 		}
 		catch (...)

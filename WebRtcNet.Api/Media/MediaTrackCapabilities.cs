@@ -190,7 +190,7 @@ public sealed record MediaTrackCapabilities
 	/// Factory method for creating MediaTrackCapabilities instances (for interop use only).
 	/// </summary>
 	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-	internal static MediaTrackCapabilities Create(
+	public static MediaTrackCapabilities Create(
 		ValueRange<uint>? width = null,
 		ValueRange<uint>? height = null,
 		ValueRange<double>? aspectRatio = null,
@@ -226,4 +226,12 @@ public sealed record MediaTrackCapabilities
 			DeviceId = deviceId ?? string.Empty,
 			GroupId = groupId ?? string.Empty
 		};
+
+	/// <summary>
+	/// Creates a minimal <see cref="MediaTrackCapabilities"/> containing only identity fields.
+	/// Used by interop as a fallback when platform capability queries fail.
+	/// </summary>
+	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+	public static MediaTrackCapabilities CreateIdentity(string? deviceId)
+		=> Create(deviceId: deviceId);
 }
