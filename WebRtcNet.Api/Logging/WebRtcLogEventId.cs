@@ -4,7 +4,7 @@ namespace WebRtcNet.Logging;
 /// Event ID constants for structured logging across WebRtcNet layers.
 /// Event IDs are grouped by category to enable telemetry aggregation.
 /// </summary>
-public enum WebRtcLogEventId : int
+public enum WebRtcLogEventId
 {
 	// WebRTC events (1000-1999)
 	// PeerConnection events (1000-1099)
@@ -66,6 +66,10 @@ public enum WebRtcLogEventId : int
 	VideoEnumerationStarted = 2002,
 	/// <summary>Video device enumeration failed.</summary>
 	VideoEnumerationFailed = 2003,
+	/// <summary>Audio capability query completed successfully.</summary>
+	AudioCapabilityQueryCompleted = 2004,
+	/// <summary>Video DirectShow capability scan completed.</summary>
+	VideoCapabilityQueryCompleted = 2005,
 
 	// Media constraints events (2100-2199)
 	/// <summary>Constraint validation event.</summary>

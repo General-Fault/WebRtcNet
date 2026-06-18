@@ -3,13 +3,53 @@
 #include "MediaStreamTrack.h"
 
 #include <api/media_stream_interface.h>
-#include <api/media_stream_track.h>
+#include <api/audio_options.h>
 
-#include "Media/Marshaling/MarshalMedia.h"
+#include "Marshaling/MarshalMediaConstraints.h"
 
 using namespace System;
 using namespace WebRtcNet;
 using namespace WebRtcNet::Media;
+
+namespace
+{
+	Nullable<VideoFacingModeValue> ResolveFacingMode(MediaTrackConstraints^ constraints)
+	{
+		if (constraints == nullptr || constraints->FacingMode == nullptr)
+			return System::Nullable<VideoFacingModeValue>();
+
+		if (constraints->FacingMode->Exact.HasValue)
+			return constraints->FacingMode->Exact.Value;
+		if (constraints->FacingMode->Ideal.HasValue)
+			return constraints->FacingMode->Ideal.Value;
+
+		return System::Nullable<VideoFacingModeValue>();
+	}
+
+	Nullable<VideoResizeModeValue> ResolveResizeMode(MediaTrackConstraints^ constraints)
+	{
+		if (constraints == nullptr || constraints->ResizeMode == nullptr)
+			return System::Nullable<VideoResizeModeValue>();
+
+		if (constraints->ResizeMode->Exact.HasValue)
+			return constraints->ResizeMode->Exact.Value;
+		if (constraints->ResizeMode->Ideal.HasValue)
+			return constraints->ResizeMode->Ideal.Value;
+
+		return System::Nullable<VideoResizeModeValue>();
+	}
+
+	ValueRange<unsigned int>^ CreateSingleUIntRange(int value)
+	{
+		if (value <= 0)
+			return nullptr;
+
+		auto range = gcnew ValueRange<unsigned int>();
+		range->Min = static_cast<unsigned int>(value);
+		range->Max = static_cast<unsigned int>(value);
+		return range;
+	}
+}
 
 namespace WebRtcInterop::Media
 {
@@ -122,7 +162,87 @@ namespace WebRtcInterop::Media
 
 	MediaTrackCapabilities^ MediaStreamTrack::GetCapabilities()
 	{
-		return gcnew MediaTrackCapabilities();
+		auto native = GetNativeMediaStreamTrackInterface(false);
+		if (native == nullptr)
+		{
+			return MediaTrackCapabilities::Create(
+				nullptr,
+				nullptr,
+				nullptr,
+				nullptr,
+				nullptr,
+				nullptr,
+				nullptr,
+				nullptr,
+				nullptr,
+				nullptr,
+				nullptr,
+				nullptr,
+				nullptr,
+				nullptr,
+				String::Empty,
+				String::Empty);
+		}
+
+		auto width = static_cast<ValueRange<unsigned int>^>(nullptr);
+		auto height = static_cast<ValueRange<unsigned int>^>(nullptr);
+		auto autoGainControl = gcnew List<bool>();
+		auto noiseSuppression = gcnew List<bool>();
+		auto echoCancellation = gcnew List<EchoCancellationValue>();
+
+		if (native->kind() == webrtc::MediaStreamTrackInterface::kVideoKind)
+		{
+			auto video_track = static_cast<webrtc::VideoTrackInterface*>(native.get());
+			if (video_track != nullptr)
+			{
+				auto source = video_track->GetSource();
+				if (source != nullptr)
+				{
+					webrtc::VideoTrackSourceInterface::Stats stats{};
+					if (source->GetStats(&stats))
+					{
+						width = CreateSingleUIntRange(stats.input_width);
+						height = CreateSingleUIntRange(stats.input_height);
+					}
+				}
+			}
+		}
+		else if (native->kind() == webrtc::MediaStreamTrackInterface::kAudioKind)
+		{
+			auto audio_track = static_cast<webrtc::AudioTrackInterface*>(native.get());
+			if (audio_track != nullptr)
+			{
+				auto source = audio_track->GetSource();
+				if (source != nullptr)
+				{
+					auto options = source->options();
+					if (options.echo_cancellation.has_value())
+						echoCancellation->Add(EchoCancellationValue(options.echo_cancellation.value()));
+					if (options.auto_gain_control.has_value())
+						autoGainControl->Add(options.auto_gain_control.value());
+					if (options.noise_suppression.has_value())
+						noiseSuppression->Add(options.noise_suppression.value());
+				}
+			}
+		}
+
+		return MediaTrackCapabilities::Create(
+			width,
+			height,
+			nullptr,
+			nullptr,
+			nullptr,
+			nullptr,
+			nullptr,
+			nullptr,
+			echoCancellation,
+			nullptr,
+			autoGainControl,
+			noiseSuppression,
+			nullptr,
+			nullptr,
+			Id != nullptr ? Id : String::Empty,
+			String::Empty);
 	}
 
 	MediaTrackConstraints^ MediaStreamTrack::GetConstraints()
@@ -135,14 +255,82 @@ namespace WebRtcInterop::Media
 
 	MediaTrackSettings^ MediaStreamTrack::GetSettings()
 	{
-		return gcnew MediaTrackSettings();
+		auto native = GetNativeMediaStreamTrackInterface(false);
+		auto width = 0u;
+		auto height = 0u;
+		auto echoCancellation = EchoCancellationValue(false);
+		Nullable<bool> autoGainControl;
+		Nullable<bool> noiseSuppression;
+
+		if (native != nullptr)
+		{
+			if (native->kind() == webrtc::MediaStreamTrackInterface::kVideoKind)
+			{
+				auto video_track = static_cast<webrtc::VideoTrackInterface*>(native.get());
+				if (video_track != nullptr)
+				{
+					auto source = video_track->GetSource();
+					if (source != nullptr)
+					{
+						webrtc::VideoTrackSourceInterface::Stats stats{};
+						if (source->GetStats(&stats))
+						{
+							width = stats.input_width > 0 ? static_cast<unsigned int>(stats.input_width) : 0u;
+							height = stats.input_height > 0 ? static_cast<unsigned int>(stats.input_height) : 0u;
+						}
+					}
+				}
+			}
+			else if (native->kind() == webrtc::MediaStreamTrackInterface::kAudioKind)
+			{
+				auto audio_track = static_cast<webrtc::AudioTrackInterface*>(native.get());
+				if (audio_track != nullptr)
+				{
+					auto source = audio_track->GetSource();
+					if (source != nullptr)
+					{
+						auto options = source->options();
+						if (options.echo_cancellation.has_value())
+							echoCancellation = EchoCancellationValue(options.echo_cancellation.value());
+						if (options.auto_gain_control.has_value())
+							autoGainControl = options.auto_gain_control.value();
+						if (options.noise_suppression.has_value())
+							noiseSuppression = options.noise_suppression.value();
+					}
+				}
+			}
+		}
+
+		return MediaTrackSettings::Create(
+			width,
+			height,
+			0.0,
+			0.0,
+			ResolveFacingMode(applied_constraints_),
+			ResolveResizeMode(applied_constraints_),
+			0,
+			0,
+			echoCancellation,
+			false,
+			autoGainControl,
+			noiseSuppression,
+			0.0,
+			0,
+			Id != nullptr ? Id : String::Empty,
+			String::Empty);
 	}
 
 	void MediaStreamTrack::ApplyConstraints(MediaTrackConstraints^ constraints)
 	{
 		if (constraints == nullptr)
+		{
 			applied_constraints_ = gcnew MediaTrackConstraints();
-		else
-			applied_constraints_ = constraints;
+			return;
+		}
+
+		const auto marshaled_constraints = marshal_as(constraints);
+		(void)marshaled_constraints;
+
+		applied_constraints_ = constraints;
 	}
 }

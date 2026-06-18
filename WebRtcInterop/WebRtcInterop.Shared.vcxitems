@@ -138,10 +138,12 @@ ninja -C "$(WebRtcOutRoot)\$(Configuration)\$(Platform)"
     <ClInclude Include="$(MSBuildThisFileDirectory)Media\Marshaling\MarshalMedia.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Media\Marshaling\MarshalMediaDevices.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Media\Marshaling\MarshalMediaTrackCapabilities.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Media\AudioCapabilityQuery.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaDevices.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaDevicesFactory.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaStream.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Media\MediaStreamTrack.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Media\VideoCapabilityQuery.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)NativeWrapper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Observers\DataChannelObserver.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Resource.h" />
@@ -153,10 +155,12 @@ ninja -C "$(WebRtcOutRoot)\$(Configuration)\$(Platform)"
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)CameraVideoSource.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Logging\InteropHResult.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Media\AudioCapabilityQuery.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaDevices.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaDevicesFactory.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaStream.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Media\MediaStreamTrack.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Media\VideoCapabilityQuery.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Observers\DataChannelObserver.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RtcDataChannel.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RtcIceTransport.cpp" />

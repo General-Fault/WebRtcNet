@@ -66,6 +66,14 @@ public class MediaTrackConstraintTests
 	}
 
 	[Test]
+	public void MediaTrackSettings_Defaults_FacingMode_To_Null()
+	{
+		var settings = new MediaTrackSettings();
+
+		Assert.IsNull(settings.FacingMode);
+	}
+
+	[Test]
 	public void MediaTrackSettings_Does_Not_Expose_Volume()
 	{
 		var property = typeof(MediaTrackSettings).GetProperty("Volume");
@@ -167,7 +175,7 @@ public class MediaTrackConstraintTests
 		var constraints = new MediaTrackConstraintSet
 		{
 			Width = new MediaTrackConstraints.PositiveUIntRangeConstraint { Ideal = 1280 },
-			FacingMode = new MediaTrackConstraints.Constraint<VideoFacingModes>(VideoFacingModes.User)
+			FacingMode = new MediaTrackConstraints.Constraint<VideoFacingModeValue>(VideoFacingModes.User)
 			{
 				Exact = null,
 				Ideal = VideoFacingModes.User,
@@ -222,13 +230,13 @@ public class MediaTrackConstraintTests
 	[Test]
 	public void EchoCancellationConstraint_ImplicitEnum_SetsExactMode()
 	{
-		EchoCancellationConstraint constraint = EchoCancellationMode.RemoteOnly;
+		EchoCancellationConstraint constraint = EchoCancellationMode.Software;
 		var exact = constraint.Exact;
 
 		Assert.That(exact.HasValue, Is.True);
 		Assert.That(exact.GetValueOrDefault().IsMode, Is.True);
-		Assert.That(exact.GetValueOrDefault().Mode, Is.EqualTo(EchoCancellationMode.RemoteOnly));
-		Assert.That(exact.GetValueOrDefault().ModeValue, Is.EqualTo("remote-only"));
+		Assert.That(exact.GetValueOrDefault().Mode, Is.EqualTo(EchoCancellationMode.Software));
+		Assert.That(exact.GetValueOrDefault().ModeValue, Is.EqualTo("software"));
 	}
 
 	[Test]
@@ -239,5 +247,80 @@ public class MediaTrackConstraintTests
 		Assert.That(value.IsMode, Is.True);
 		Assert.That(value.Mode, Is.Null);
 		Assert.That(value.ModeValue, Is.EqualTo("vendor-advanced-mode"));
+	}
+
+	[Test]
+	public void VideoFacingModeValue_KnownEnum_UsesKnownValueAndRawString()
+	{
+		VideoFacingModeValue value = VideoFacingModes.Environment;
+
+		Assert.That(value.IsKnown, Is.True);
+		Assert.That(value.KnownValue, Is.EqualTo(VideoFacingModes.Environment));
+		Assert.That(value.RawValue, Is.EqualTo("environment"));
+	}
+
+	[Test]
+	public void VideoFacingModeValue_RawString_PreservesUnknownValue()
+	{
+		var value = new VideoFacingModeValue("vendor-facing-mode");
+
+		Assert.That(value.IsKnown, Is.False);
+		Assert.That(value.KnownValue, Is.Null);
+		Assert.That(value.RawValue, Is.EqualTo("vendor-facing-mode"));
+	}
+
+	[Test]
+	public void VideoResizeModeValue_KnownEnum_UsesKnownValueAndRawString()
+	{
+		VideoResizeModeValue value = VideoResizeModes.CropAndScale;
+
+		Assert.That(value.IsKnown, Is.True);
+		Assert.That(value.KnownValue, Is.EqualTo(VideoResizeModes.CropAndScale));
+		Assert.That(value.RawValue, Is.EqualTo("crop-and-scale"));
+	}
+
+	[Test]
+	public void VideoResizeModeValue_RawString_PreservesUnknownValue()
+	{
+		var value = new VideoResizeModeValue("vendor-resize-mode");
+
+		Assert.That(value.IsKnown, Is.False);
+		Assert.That(value.KnownValue, Is.Null);
+		Assert.That(value.RawValue, Is.EqualTo("vendor-resize-mode"));
+	}
+
+	[Test]
+	public void InputDeviceInfo_GetCapabilities_PopulatesIdentityFields()
+	{
+		var device = InputDeviceInfo.Create("device-1", MediaDeviceKind.VideoInput, "Camera", "group-1");
+		var capabilities = device.GetCapabilities();
+
+		Assert.That(capabilities.DeviceId, Is.EqualTo("device-1"));
+		Assert.That(capabilities.GroupId, Is.EqualTo("group-1"));
+	}
+
+	[Test]
+	public void InputDeviceInfo_GetCapabilities_InvokesDelegate_WhenProvided()
+	{
+		var expected = MediaTrackCapabilities.Create(
+			deviceId: "device-2",
+			groupId: "group-2",
+			width: new ValueRange<uint> { Min = 640, Max = 1920 });
+
+		var device = InputDeviceInfo.Create("device-2", MediaDeviceKind.VideoInput, "Camera", "group-2",
+			() => expected);
+
+		Assert.That(device.GetCapabilities(), Is.SameAs(expected));
+	}
+
+	[Test]
+	public void InputDeviceInfo_GetCapabilities_FallsBackToIdentityFields_WhenNoDelegateProvided()
+	{
+		var device = InputDeviceInfo.Create("device-3", MediaDeviceKind.AudioInput, "Mic", "group-3");
+		var capabilities = device.GetCapabilities();
+
+		Assert.That(capabilities.DeviceId, Is.EqualTo("device-3"));
+		Assert.That(capabilities.GroupId, Is.EqualTo("group-3"));
+		Assert.That(capabilities.Width, Is.Null);
 	}
 }

@@ -35,16 +35,22 @@ public sealed record MediaTrackSettings
 	/// <summary>
 	/// Current facing mode setting for the track, when exposed by the platform.
 	/// </summary>
+	/// <remarks>
+	/// Known values map to <see cref="VideoFacingModes" />, while unknown raw strings are preserved.
+	/// </remarks>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-facingMode" />
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatracksettings-facingmode" />
-	public VideoFacingModes? FacingMode { get; init; }
+	public VideoFacingModeValue? FacingMode { get; init; }
 
 	/// <summary>
 	/// Current resize mode for the track, when exposed by the platform.
 	/// </summary>
+	/// <remarks>
+	/// Known values map to <see cref="VideoResizeModes" />, while unknown raw strings are preserved.
+	/// </remarks>
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#def-constraint-resizeMode" />
 	/// <seealso href="https://www.w3.org/TR/mediacapture-streams/#dom-mediatracksettings-resizemode" />
-	public VideoResizeModes? ResizeMode { get; init; }
+	public VideoResizeModeValue? ResizeMode { get; init; }
 
 	/// <summary>
 	/// Current audio sample rate setting for the track.
@@ -114,13 +120,13 @@ public sealed record MediaTrackSettings
 	/// Factory method for creating MediaTrackSettings instances (for interop use only).
 	/// </summary>
 	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-	internal static MediaTrackSettings Create(
+	public static MediaTrackSettings Create(
 		uint width,
 		uint height,
 		double aspectRatio,
 		double frameRate,
-		VideoFacingModes? facingMode,
-		VideoResizeModes? resizeMode,
+		VideoFacingModeValue? facingMode,
+		VideoResizeModeValue? resizeMode,
 		uint sampleRate,
 		uint sampleSize,
 		EchoCancellationValue echoCancellation,

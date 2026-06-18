@@ -41,14 +41,14 @@ public class MediaTrackUnsignedNumericTypesTests
 	public void MediaTrackCapabilities_UsesCollectionForFacingMode()
 	{
 		Assert.That(typeof(MediaTrackCapabilities).GetProperty(nameof(MediaTrackCapabilities.FacingMode))!.PropertyType,
-			Is.EqualTo(typeof(IReadOnlyList<VideoFacingModes>)));
+			Is.EqualTo(typeof(IReadOnlyList<VideoFacingModeValue>)));
 	}
 
 	[Test]
 	public void MediaTrackCapabilities_UsesCollectionForResizeMode()
 	{
 		Assert.That(typeof(MediaTrackCapabilities).GetProperty(nameof(MediaTrackCapabilities.ResizeMode))!.PropertyType,
-			Is.EqualTo(typeof(IReadOnlyList<VideoResizeModes>)));
+			Is.EqualTo(typeof(IReadOnlyList<VideoResizeModeValue>)));
 	}
 
 	[Test]
@@ -94,7 +94,9 @@ public class MediaTrackUnsignedNumericTypesTests
 	public void MediaTrackSettings_UsesNullableMembersForOptionalResizeAndAudioProcessingFlags()
 	{
 		Assert.That(typeof(MediaTrackSettings).GetProperty(nameof(MediaTrackSettings.ResizeMode))!.PropertyType,
-			Is.EqualTo(typeof(VideoResizeModes?)));
+			Is.EqualTo(typeof(VideoResizeModeValue?)));
+		Assert.That(typeof(MediaTrackSettings).GetProperty(nameof(MediaTrackSettings.FacingMode))!.PropertyType,
+			Is.EqualTo(typeof(VideoFacingModeValue?)));
 		Assert.That(typeof(MediaTrackSettings).GetProperty(nameof(MediaTrackSettings.AutoGainControl))!.PropertyType,
 			Is.EqualTo(typeof(bool?)));
 		Assert.That(typeof(MediaTrackSettings).GetProperty(nameof(MediaTrackSettings.NoiseSuppression))!.PropertyType,
