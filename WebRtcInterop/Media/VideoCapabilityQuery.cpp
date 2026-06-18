@@ -2,6 +2,7 @@
 
 #include "VideoCapabilityQuery.h"
 #include "Marshaling/MarshalMediaTrackCapabilities.h"
+#include "../Logging/InteropHResult.h"
 
 #include <mfapi.h>
 #include <mfidl.h>
@@ -29,6 +30,7 @@ enum MF_CAMERA_FACING_DIRECTION
 namespace WebRtcInterop::Media
 {
 	using namespace WebRtcNet;
+	using namespace WebRtcNet::Logging;
 	using namespace System::Collections::Generic;
 
 	namespace
@@ -54,6 +56,14 @@ namespace WebRtcInterop::Media
 			const int32_t count = deviceInfo
 				? deviceInfo->NumberOfCapabilities(nativeDeviceId.c_str())
 				: 0;
+
+			WebRtcLogWriterBridge::WriteInteropLog(
+				0,
+				static_cast<int>(WebRtcLogEventId::VideoCapabilityQueryCompleted),
+				"Interop.Media.Video.Capabilities",
+				System::Threading::Thread::CurrentThread->ManagedThreadId,
+				String::Format("DirectShow: {0} capability entries for device {1}", count, deviceId));
+
 			if (count <= 0)
 				return;
 
@@ -140,21 +150,24 @@ namespace WebRtcInterop::Media
 
 			try
 			{
-				if (FAILED(MFStartup(MF_VERSION, MFSTARTUP_NOSOCKET)))
+				auto hr = MFStartup(MF_VERSION, MFSTARTUP_NOSOCKET);
+				if (InteropHResult::LogIfFailed(hr, "MFStartup", "Interop.Media.Video.Capabilities"))
 					return nullptr;
 				mfStarted = true;
 
-				if (FAILED(MFCreateAttributes(&attributes, 1)) || attributes == nullptr)
+				hr = MFCreateAttributes(&attributes, 1);
+				if (InteropHResult::LogIfFailed(hr, "MFCreateAttributes", "Interop.Media.Video.Capabilities")
+					|| attributes == nullptr)
 					return nullptr;
 
-				if (FAILED(attributes->SetGUID(
+				hr = attributes->SetGUID(
 					MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE,
-					MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_GUID)))
-				{
+					MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_GUID);
+				if (InteropHResult::LogIfFailed(hr, "IMFAttributes::SetGUID(MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE)", "Interop.Media.Video.Capabilities"))
 					return nullptr;
-				}
 
-				if (FAILED(MFEnumDeviceSources(attributes, &devices, &deviceCount)))
+				hr = MFEnumDeviceSources(attributes, &devices, &deviceCount);
+				if (InteropHResult::LogIfFailed(hr, "MFEnumDeviceSources", "Interop.Media.Video.Capabilities"))
 					return nullptr;
 
 				for (UINT32 i = 0; i < deviceCount; ++i)
@@ -164,13 +177,12 @@ namespace WebRtcInterop::Media
 
 					WCHAR* link = nullptr;
 					UINT32 linkLen = 0;
-					if (FAILED(devices[i]->GetAllocatedString(
+					hr = devices[i]->GetAllocatedString(
 						MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_SYMBOLIC_LINK,
 						&link,
-						&linkLen)))
-					{
+						&linkLen);
+					if (InteropHResult::LogIfFailed(hr, "IMFActivate::GetAllocatedString(SYMBOLIC_LINK)", "Interop.Media.Video.Capabilities"))
 						continue;
-					}
 
 					const auto matches = link != nullptr && String::Equals(
 						marshal_as<String^>(link),
@@ -185,6 +197,13 @@ namespace WebRtcInterop::Media
 					devices[i]->GetUINT32(
 						MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_PANEL_INFO,
 						&panel);
+
+					WebRtcLogWriterBridge::WriteInteropLog(
+						0,
+						static_cast<int>(WebRtcLogEventId::VideoCapabilityQueryCompleted),
+						"Interop.Media.Video.Capabilities",
+						System::Threading::Thread::CurrentThread->ManagedThreadId,
+						String::Format("Facing mode panel={0} for device {1}", panel, deviceId));
 
 					if (panel == MF_CAMERA_FACING_DIRECTION_USER)
 					{

@@ -49,6 +49,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Logging\WebRtcLogSink.cpp">
       <Filter>Logging</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Media\AudioCapabilityQuery.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Media\VideoCapabilityQuery.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
@@ -108,5 +110,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Logging\WebRtcLogSink.h">
       <Filter>Logging</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Media\AudioCapabilityQuery.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Media\VideoCapabilityQuery.h" />
   </ItemGroup>
 </Project>
